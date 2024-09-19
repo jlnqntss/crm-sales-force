@@ -1,4 +1,665 @@
-include:
-  - project: 'zurich-es/shared/pipelines/ea-pipeline-scripts'
-    ref: 161-salesforce-cli-update
-    file: '/pipelines/salesforce/salesforce.gitlab-ci.yml'
+####################################################
+# Salesforce Zurich CI - Pipelines
+#
+# Adaptación de los pipelines de NTS y la plantilla estándar
+# SF para GitLab
+# para Zurich, aplicando estrategia git-flow
+#
+# author: jmartinezpisson
+#
+# Variables de entrada
+#
+# STAGING_SANDBOX_AUTH_URL:
+# URL de autenticación SFDX para el entorno SF Staging
+#
+# QA_SANDBOX_AUTH_URL:
+# URL de autenticación SFDX para el entorno SF QA
+#
+# DEVHUB_AUTH_URL:
+# URL de autenticación SFDX para el DevHub de Zurich
+#
+# TEST_DISABLED:
+# Deshabilita tests preliminares/post-staging
+#
+# ALLOW_FAILURE
+# Permite que las etapas de testing fallen
+#
+# SFDX_NTS1_GIT_URI
+# URI donde se aloja el plugin SFDX NTS1
+# proporcionado por NTS
+####################################################
+
+####################################################
+# Imagen Docker para los jobs. Puesto que el
+# pipeline es JS, se utiliza node.
+####################################################
+image: 725258198056.dkr.ecr.eu-west-1.amazonaws.com/esz/ntt/thunder/pipelines/node/20:latest
+
+
+####################################################
+# Cachea node modules entre jobs.
+# https://docs.gitlab.com/ee/ci/yaml/README.html#cache
+####################################################
+cache:
+  key: ${CI_COMMIT_REF_NAME}
+  paths:
+    - .npm/
+    - node_modules/
+    - .sfdx/
+    - .yarn
+
+
+####################################################
+# Etapas del pipeline
+#
+# Workflow Feature: validate
+# Promoción Feature a Dev (MR feat a dev): validate - promotion
+# Promoción Dev a QA (release): validate - promotion
+# Promoción QA a Prod (tag x.x.x): validate - promotion
+####################################################
+
+stages:
+ - prod-validation
+ - validate
+ - changelog
+ - promotion
+ - deploy
+ - post-deploy
+ - code-quality
+ - release
+
+before_script:
+  - npm config set proxy "$HTTP_PROXY"
+  - npm config set https-proxy "$HTTPS_PROXY"
+
+################################
+## Helpers - Comandos de apoyo
+################################
+
+.sfdx_helpers: &sfdx_helpers |
+
+  # Instala las herramientas base y dependencias npm
+  # No arguments.
+  function install_toolchain() {
+    install_salesforce_cli
+    install_jq
+    echo 'Installing dependencies'
+    npm install
+
+    ## Versiones
+    sfdx --version
+    sfdx plugins --core
+  }
+
+  # Function to install the Salesforce CLI.
+  # No arguments.
+
+  function install_salesforce_cli() {
+    # Salesforce CLI Environment Variables
+    # https://devloper.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_cli_env_variables.htm
+
+    # By default, the CLI periodically checks for and installs updates.
+    # Disable (false) this auto-update check to improve performance of CLI commands.
+    #export SFDX_AUTOUPDATE_DISABLE=false
+    export SF_AUTOUPDATE_DISABLE=true
+
+    # Set to true if you want to use the generic UNIX keychain instead of the Linux libsecret library or macOS keychain.
+    # Specify this variable when using the CLI with ssh or "headless" in a CI environment.
+    export SF_USE_GENERIC_UNIX_KEYCHAIN=true
+
+    # Specifies the time, in seconds, that the CLI waits for the Lightning Experience custom domain to resolve and become available in a newly-created scratch org.
+    # If you get errors about My Domain not configured when you try to use a newly-created scratch org, increase this wait time.
+    # export SFDX_DOMAIN_RETRY=300
+
+    # For force:package:create, disables automatic updates to the sfdx-project.json file.
+    export SF_PROJECT_AUTOUPDATE_DISABLE_FOR_PACKAGE_CREATE=true
+
+    # For force:package:version:create, disables automatic updates to the sfdx-project.json file.
+    export SF_PROJECT_AUTOUPDATE_DISABLE_FOR_PACKAGE_VERSION_CREATE=true
+    
+    # Se usa npm para evitar problemas con wget
+    npm install --global @salesforce/cli@2.51.6
+    npm install --global @salesforce/sfdx-lwc-jest --save-dev
+
+    # Se instalan los Plugins de utilidad
+    # The Salesforce CLI Scanner plug-in is a unified tool
+    # for static analysis of source code, in multiple languages (including Apex), 
+    # with a consistent command-line interface and report output.
+    npm install --global @salesforce/sfdx-scanner
+    # npm install --global lightning-flow-scanner
+    npm install --global @dxatscale/sfpowerscripts@25.5.3
+    echo y | sf plugins install sfdx-git-delta@5.42.1
+  }
+
+
+  # Function to install jq json parsing library.
+  # No arguments.
+  function install_jq() {
+      # NTS  - SSL Check
+    #npm config set registry="http://registry.npmjs.org/"
+    apt update && apt -y install jq
+  }
+
+
+  # Checks if there are LWC Jest Test files in any of the package directories of sfdx-project.json.
+  # This is necessary because npm will throw error if no test classes are found.
+  # No arguments.
+  # Returns `true` or `false`
+  #function check_has_jest_tests() {
+  #  local hasJestTests=false
+  #  for pkgDir in $(jq -r '.packageDirectories[].path' < sfdx-project.json)
+  #  do
+  #    if [ -f $pkgDir ]; then
+  #      local fileCnt=$(find $pkgDir -type f -path "**/__tests__/*.test.js" | wc -l);
+  #      if [ $fileCnt -gt 0 ]; then
+  #        hasJestTests=true
+  #      fi
+  #    fi
+  #  done
+  #  echo $hasJestTests
+  #}
+
+  # Comprueba si hay componentes LWC en el proyecto
+  # No arguments.
+  # Returns `true` or `false`
+  #function checkHasLWC() {
+  #  local hasLWC=false
+  #  for pkgDir in $(jq -r '.packageDirectories[].path' < sfdx-project.json)
+  #  do
+  #    if [ -f $pkgDir ]; then
+  #      local fileCnt=$(find $pkgDir -type f -path "**/lwc" | wc -l);
+  #      if [ $fileCnt -gt 0 ]; then
+  #        hasLWC=true
+  #      fi
+  #    fi
+  #  done
+  #  echo $hasLWC
+  #}
+
+  # Runs `npm run test:lwc` to execute LWC Jest tests.
+  # Function takes no arguments.
+  # Should be called after `setup_lwc`.
+  # Uses `check_has_jest_tests` to know if there are actually any tests to run.
+  # If there aren't any jest tests then npm would throw an error and fail the job,
+  # so we skip running npm if there are no tests, essentially skipping them to avoid error.
+  #function test_lwc_jest() {
+  #  local hasJestTests=$(check_has_jest_tests)
+  #  if [ $hasJestTests ]; then
+  #    npm run release:test:lwc
+  #  else
+  #    echo 'Skipping lwc tests, found no jest tests in any package directories' >&2
+  #  fi
+  #}
+
+  # Lanza `npm run lint` para ejecutar el linting
+  # Function takes no arguments.
+  # Should be called after `setup_lwc`.
+  # Uses `check_has_jest_tests` to know if there are actually any tests to run.
+  # If there aren't any jest tests then npm would throw an error and fail the job,
+  # so we skip running npm if there are no tests, essentially skipping them to avoid error.
+  #function lint() {
+  #  local checkHasLWC=$(checkHasLWC)
+  #  if [ $checkHasLWC ]; then
+  #    npm run lint
+  #  else
+  #    echo 'Skipping linting, found no components on any package directories' >&2
+  #  fi
+  #}
+
+  # Function to run doc generation
+  # No arguments.
+  function create_docs(){
+    npm run docs:update
+  }
+
+  # Función que extrae y convierte el código de todos los paquetes dentro de un proyecto SFDX
+  # en una única carpeta temporal
+  # Arguments
+  #  $1 directory - Directorio de exportación
+  #  $2 codeOnly - Convierte solo código
+  function convert_sfdx_project() {
+    for packageDir in $(jq -r '.packageDirectories[].path' < sfdx-project.json)
+    do
+      if [ -f $pkgDir ]; then
+        if [ -n "$2" ]; then
+          sfdx force:source:convert -r $packageDir -d "$1" -m ApexClass,ApexTrigger,ApexPage,ApexComponent,AuraDefinitionBundle,LightningComponentBundle
+        else
+          sfdx force:source:convert -r $packageDir -d "$1"
+        fi
+      fi
+    done
+  }
+
+  
+before_script:
+  - export NODE_TLS_REJECT_UNAUTHORIZED=0
+
+####################################################
+# SHARED JOBS
+####################################################
+
+####################################################
+# Ejecuta los tests LWC sobre el runner, sin org.
+# Previene el esfuerzo de realizar un deploy.
+####################################################
+test-lwc:
+  stage: validate
+  allow_failure: true
+  before_script:
+    - *sfdx_helpers
+    - install_toolchain
+  script:
+    - npm run release:test:lwc
+  tags:
+    - devops-runner
+  interruptible: true
+
+lint:
+  stage: validate
+  allow_failure: true
+  before_script:
+    - *sfdx_helpers
+    - install_toolchain
+  script:
+    - npm run lint
+  tags:
+    - devops-runner
+  interruptible: true
+
+
+
+########################################################
+# Descarga la versión de producción y ejecuta un test
+# de seguridad con Veracode para verificar dependencias
+########################################################
+veracode:
+  stage: validate
+  allow_failure: true
+  script:
+    - '[ "${VERACODE_APP_ID}" ] || exit 0'
+    - rm -rf node_modules
+    - npm install --production
+    - PROJECT_URL="https://gitlab.com/zurich-es/${CI_PROJECT_NAME}"
+    - export SRCCLR_scope=production
+    - export SRCCLR_SCM_URI=${PROJECT_URL}
+    - export SRCCLR_SCM_REF="master"
+    - export SRCCLR_SCM_REF_TYPE="branch"
+    - export SRCCLR_SCM_REV=${CI_COMMIT_REF_NAME}
+    - export DISABLE_FIPS=true
+    - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty
+    - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty | if grep -q "Issue ID"; then exit 1; fi
+  except:
+    - tags
+  tags:
+    - devops-runner
+  interruptible: true
+
+####################################################
+# Valida un despliegue sobre el entorno de integración
+# Previene el esfuerzo de realizar un deploy.
+####################################################
+validate-deploy:
+  stage: validate
+  allow_failure: true
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev"'
+      when: always
+  before_script:
+    - *sfdx_helpers
+    - install_toolchain
+  script:
+    - npm run release:authenticate -- $DEV_SANDBOX_AUTH_URL STAGING
+    - npm run release:validate -- STAGING dev RunLocalTests
+  tags:
+    - devops-runner
+  interruptible: true
+
+########################################################
+# Realiza el bump de versiones y etiqueta el merge de dev
+# con la versión candidata a release
+########################################################
+release-candidate-build:
+  stage: release
+  before_script:
+    - *sfdx_helpers
+    - install_toolchain
+  script:
+    - npm run release:tag:version
+  only:
+    - /^release/.*$/
+    - dev
+  except:
+    - tags
+  tags:
+    - devops-runner
+  interruptible: true
+
+########################################################
+# Generación de ChangeLog y documentación
+########################################################
+changelog:
+  stage: changelog
+  only:
+    refs:
+      - dev
+      - /^release/.*$/
+  except:
+    variables:
+      - $TEST_DISABLED
+  allow_failure: true
+  before_script:
+    - *sfdx_helpers
+    - install_toolchain
+  script:
+    - npm run release:changelog
+  tags:
+    - devops-runner
+  interruptible: true
+
+changelog-new-version:
+  stage: release
+  allow_failure: true
+  before_script:
+    - *sfdx_helpers
+    - install_toolchain
+  script:
+    - VERSION=$(echo $CI_COMMIT_REF_NAME | cut -d '-' -f 1)
+    - npm run release:changelog -- $VERSION
+  only:
+    - /^\d*\.\d*\.\d-UAT$/
+  except:
+    - branches
+  tags:
+    - devops-runner
+  interruptible: true
+
+docs:
+  stage: release
+  only:
+    refs:
+      - master
+      - /^release/.*$/
+  allow_failure: true
+  before_script:
+    - *sfdx_helpers
+    - install_toolchain
+  script:
+    - create_docs
+  tags:
+    - devops-runner
+  interruptible: true
+
+####################################################
+# Despliega el proyecto a Staging
+####################################################
+deploy:staging:
+  stage: deploy
+  only:
+    - dev
+  allow_failure: false
+  environment:
+    name: staging
+    url: https://test.salesforce.com
+  before_script:
+    - *sfdx_helpers
+    - install_toolchain
+  script:
+    - npm run release:authenticate -- $STAGING_SANDBOX_AUTH_URL STAGING
+    - npm run release:deploy -- STAGING dev RunLocalTests
+  tags:
+    - devops-runner
+  interruptible: true
+
+####################################################
+# Realiza un scan de calidad de codigo y lo sube a 
+# sonarcloud
+####################################################
+variables:
+  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+  GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+
+sonarcloud-check:
+  stage: code-quality
+  allow_failure: true
+  image:
+    name: 725258198056.dkr.ecr.eu-west-1.amazonaws.com/esz/ntt/sonarsource/sonar-scanner-cli:5
+    entrypoint: [""]
+  before_script:
+    - "" # override with empty before_script
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - '[ "${SONAR_TOKEN}" ] || exit 0'
+    - sonar-scanner -Dsonar.qualitygate.wait=true
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'master'
+    - if: $CI_COMMIT_BRANCH == 'dev'
+    - if: $CI_MERGE_REQUEST_ID
+  tags:
+    - devops-runner
+  interruptible: true
+
+########################################################
+# Genera el paquete de despliegue y sube a Veracode
+# el código para un scan estatico de seguridad
+########################################################
+upload-static-veracode:dev:
+  stage: post-deploy
+  allow_failure: true
+  artifacts:
+    paths:
+      - .tmp/veracode/
+  before_script:
+    - '[ "${VERACODE_APP_ID}" ] || exit 0'
+    - mkdir -p /usr/share/man/man1
+    - apt-get update
+    - apt-get install -y default-jre
+    - echo -e "@zurich-es:registry=https://gitlab.com/api/v4/packages/npm/" > ~/.npmrc
+    - echo -e "//gitlab.com/api/v4/packages/npm/:_authToken=${CI_GITLAB_TOKEN}" >> ~/.npmrc
+    - npm config set //registry.npmjs.org/:_authToken ${CI_NPM_TOKEN}
+    - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
+
+  script:
+    - *sfdx_helpers
+    - install_toolchain
+    - VERSION=$(node scripts/source/get-bumped-version | tail -1)
+    - VERSION=${CI_COMMIT_REF_NAME}.${VERSION}
+    - rm -rf node_modules
+    - npm install --production
+    - convert_sfdx_project .tmp/veracode true
+    - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip .tmp/veracode
+    - sfdx
+    - wget -O vosp-api-wrappers-java-19.11.6.0-dist.zip https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.11.6.0/vosp-api-wrappers-java-19.11.6.0-dist.zip
+    - unzip vosp-api-wrappers-java-19.11.6.0-dist.zip
+    - SANDBOX_ID=$(java -jar VeracodeJavaAPI.jar -action getsandboxlist -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID | grep -w "sandbox_name=\"DEV\"" | grep -o "sandbox_id=\".*\"" | cut -d "\"" -f2 || :)
+    - IS_SCAN_READY=$(java -jar VeracodeJavaAPI.jar -action getbuildinfo -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID| grep 'results_ready="true"' || :)
+    - echo "SANDBOX_ID=${SANDBOX_ID}"
+    - echo "IS_SCAN_READY:${IS_SCAN_READY}"
+    - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID||'
+    - java -jar VeracodeJavaAPI.jar -action uploadandscan -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -filepath $CI_DEPLOYMENT_NAME.1.zip -appname $VERACODE_APP_NAME -createprofile false -version $VERSION -scanallnonfataltoplevelmodules false -exclude *nodemodule* -createsandbox true -sandboxname DEV
+  only:
+    - dev
+  tags:
+    - devops-runner
+  interruptible: true
+
+####################################################
+# Promociona la Release Candidate a UAT
+####################################################
+promotion:uat:
+  stage: promotion
+  before_script:
+    - *sfdx_helpers
+    - install_toolchain
+  script:
+    - npm run release:start
+  only:
+    - /^\d*\.\d*\.\d*-UAT$/
+  except:
+    - branches
+  tags:
+    - devops-runner
+  interruptible: true
+
+####################################################
+# Despliega el proyecto completo al entorno QA/UAT
+####################################################
+deploy:uat:
+  stage: deploy
+  only:
+    refs:
+      - /^release/.*$/
+  allow_failure: false
+  environment:
+    name: qa
+    url: https://test.salesforce.com
+  before_script:
+    - *sfdx_helpers
+    - install_toolchain
+  script:
+    - npm run release:authenticate -- $QA_SANDBOX_AUTH_URL QA
+    - npm run release:deploy -- QA qa RunLocalTests
+  tags:
+    - devops-runner
+  interruptible: true
+
+########################################################
+# Genera el paquete de despliegue y sube a Veracode
+# el código para un scan estático de seguridad
+########################################################
+upload-static-veracode:uat:
+  stage: post-deploy
+  allow_failure: true
+  artifacts:
+    paths:
+      - .tmp/veracode/
+  before_script:
+    - '[ "${VERACODE_APP_ID}" ] || exit 0'
+    - mkdir -p /usr/share/man/man1
+    - apt-get update
+    - apt-get install -y default-jre
+    - echo -e "@zurich-es:registry=https://gitlab.com/api/v4/packages/npm/" > ~/.npmrc
+    - echo -e "//gitlab.com/api/v4/packages/npm/:_authToken=${CI_GITLAB_TOKEN}" >> ~/.npmrc
+    - npm config set //registry.npmjs.org/:_authToken ${CI_NPM_TOKEN}
+    - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
+
+  script:
+    - *sfdx_helpers
+    - install_toolchain
+    - VERSION=$(node scripts/source/get-bumped-version | tail -1)
+    - VERSION=${CI_COMMIT_REF_NAME}.${VERSION}
+    - rm -rf node_modules
+    - npm install --production
+    - convert_sfdx_project .tmp/veracode true
+    - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip .tmp/veracode
+    - sfdx
+    - wget -O vosp-api-wrappers-java-19.11.6.0-dist.zip https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.11.6.0/vosp-api-wrappers-java-19.11.6.0-dist.zip
+    - unzip vosp-api-wrappers-java-19.11.6.0-dist.zip
+    - IS_SCAN_READY=$(java -jar VeracodeJavaAPI.jar -action getbuildinfo -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID | grep 'results_ready="true"' || :)
+    - echo "IS_SCAN_READY:${IS_SCAN_READY}"
+    - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID ||'
+    - java -jar VeracodeJavaAPI.jar -action uploadandscan -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -filepath $CI_DEPLOYMENT_NAME.1.zip -appname $VERACODE_APP_NAME -createprofile false -version $VERSION -scanallnonfataltoplevelmodules false -exclude *nodemodule*
+  only:
+    refs:
+      - /^release/.*$/
+  tags:
+    - devops-runner
+  interruptible: true
+
+####################################################
+# PRODUCTION JOBS
+####################################################
+
+####################################################
+# Deploy metadata into the production org.
+####################################################
+deploy:production:
+  stage: deploy
+  only:
+    - /^\d*\.\d*\.\d*$/
+  allow_failure: false
+  when: manual
+  environment:
+    name: production
+    url: https://zurich-es.my.salesforce.com
+  before_script:
+    - *sfdx_helpers
+    - install_toolchain
+  script:
+    - npm run release:authenticate -- $PRODUCTION_AUTH_URL PRODUCTION
+    - npm run release:deploy -- PRODUCTION prod RunLocalTests
+  artifacts:
+    paths:
+      - .tmp/
+  tags:
+    - devops-runner
+  interruptible: true
+
+promotion:prd:
+  stage: promotion
+  before_script:
+    - *sfdx_helpers
+    - install_toolchain
+  script:
+    - npm run release:finish
+  only:
+    - /^\d*\.\d*\.\d*$/
+  except:
+    - branches
+  tags:
+    - devops-runner
+  interruptible: true
+
+veracode-UAT-status:prd:
+  stage: prod-validation
+  allow_failure: true
+  before_script:
+    - '[ "${VERACODE_APP_ID}" ] || exit 0'
+    - mkdir -p /usr/share/man/man1
+    - apt-get update
+    - apt-get install -y default-jre
+    - echo -e "@zurich-es:registry=https://gitlab.com/api/v4/packages/npm/" > ~/.npmrc
+    - echo -e "//gitlab.com/api/v4/packages/npm/:_authToken=${CI_GITLAB_TOKEN}" >> ~/.npmrc
+    - npm config set //registry.npmjs.org/:_authToken ${CI_NPM_TOKEN}
+    - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
+
+  script:
+    - '[ "${VERACODE_APP_ID}" ] || exit 0'
+    - javawrapperversion=$(curl https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/maven-metadata.xml | grep latest |  cut -d '>' -f 2 | cut -d '<' -f 1)
+    - echo "javawrapperversion=$javawrapperversion"
+    - wget -O vosp-api-wrappers-java-$javawrapperversion-dist.zip https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$javawrapperversion/vosp-api-wrappers-java-$javawrapperversion-dist.zip
+    - unzip -q vosp-api-wrappers-java-$javawrapperversion-dist.zip
+    - java -jar VeracodeJavaAPI.jar -action getbuildinfo -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID
+    - java -jar VeracodeJavaAPI.jar -action getbuildinfo -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID| if grep -q 'policy_compliance_status="Pass"'; then exit 0; else exit 1; fi
+  only:
+    - /^\d*\.\d*\.\d*$/
+  except:
+    - branches
+  tags:
+    - devops-runner
+  interruptible: true
+
+release-approval-check:prd:
+  stage: prod-validation
+  allow_failure: true
+  script:
+    - '[ "${JIRA_APP_ID}" ] || exit 0'
+    - FILTER="{\"jql\":\"project = $JIRA_APP_ID AND issuetype = Release AND status = 'DEFINITELY RELEASABLE' and 'Planned Start Date[Time stamp]'<= -0d AND 'Planned End Date[Time stamp]'>=-0d\"}"
+    - export ROLE=arn:aws:iam::${AWS_ACCOUNT_ID_PRD}:role/role-prd-com-parametersGenerator
+    - export creds=creds.json
+    - aws sts assume-role --role-arn $ROLE --role-session-name gitlab-pipeline-build > $creds
+    - export AWS_ACCESS_KEY_ID=$(cat ${creds} | grep "AccessKeyId" | cut -d '"' -f 4)
+    - export AWS_SECRET_ACCESS_KEY=$(cat ${creds} | grep "SecretAccessKey" | cut -d '"' -f 4)
+    - export AWS_SESSION_TOKEN=$(cat ${creds} | grep "SessionToken" | cut -d '"' -f 4)
+    - CREDENTIALS=$(aws ssm get-parameter --name /prd/shared/ci/resources/jira/credentials --with-decryption | jq '.Parameter.Value')
+    - curl -D- -u ${CREDENTIALS//\"} -X POST -H "Content-Type:application/json" --data "${FILTER}" "https://zurichspain.atlassian.net/rest/api/3/search"
+    - curl -D- -u ${CREDENTIALS//\"} -X POST -H "Content-Type:application/json" --data "${FILTER}" "https://zurichspain.atlassian.net/rest/api/3/search" | if grep -q "\"startAt\":0,\"maxResults\":50,\"total\":0"; then exit 1; fi
+  only:
+    - /^\d*\.\d*\.\d*$/
+  except:
+    - branches
+  tags:
+    - devops-runner
+  interruptible: true
