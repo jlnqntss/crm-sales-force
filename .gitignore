@@ -43,3 +43,6 @@ IlluminatedCloud/
 
 .sf
 .pmdCache
+
+# Sonar Lint Configuration
+.sonarlint

@@ -55,7 +55,12 @@ export default class OpenCTIMock extends LightningElement {
     }
 
     this.doScreenPop(number).then(function (resul) {
-      thisInPromise.doCreateTask(Object.keys(resul)[0]);
+      if (resul && typeof resul === "object") {
+        const firstKey = Object.keys(resul)[0];
+        thisInPromise.doCreateTask(firstKey);
+      } else {
+        console.error("Valor inválido para resul:", resul);
+      }
     });
   }
 
