@@ -411,36 +411,6 @@ deploy:staging:
   interruptible: true
 
 ####################################################
-# Lanza los tests unitarios en el entorno de staging
-#
-# Modificar el script "test:org" del package.json
-# para personalizaciones
-####################################################
-test-org:
-  stage: post-deploy
-  only:
-    refs:
-      - dev
-  allow_failure: false
-  dependencies:
-    - deploy:staging
-  before_script:
-    - *sfdx_helpers
-    - install_toolchain
-  script:
-    - npm run release:authenticate -- $STAGING_SANDBOX_AUTH_URL STAGING
-    - npm run release:test:apex -- STAGING
-  artifacts:
-    reports:
-      junit: tests/apex/*-junit.xml
-    paths:
-      - tests/
-  coverage: '/name="testRunCoverage" value="([\d]+%)"/'
-  tags:
-    - devops-runner
-  interruptible: true
-
-####################################################
 # Realiza un scan de calidad de codigo y lo sube a 
 # sonarcloud
 ####################################################
@@ -467,36 +437,6 @@ sonarcloud-check:
     - if: $CI_COMMIT_BRANCH == 'master'
     - if: $CI_COMMIT_BRANCH == 'dev'
     - if: $CI_MERGE_REQUEST_ID
-  tags:
-    - devops-runner
-  interruptible: true
-
-####################################################
-# Lanza los tests unitarios en el entorno de staging
-#
-# Modificar el script "test:org" del package.json
-# para personalizaciones
-####################################################
-test-org:uat:
-  stage: post-deploy
-  only:
-    refs:
-      - /^release/.*$/
-  allow_failure: false
-  dependencies:
-    - deploy:uat
-  before_script:
-    - *sfdx_helpers
-    - install_toolchain
-  script:
-    - npm run release:authenticate -- $QA_SANDBOX_AUTH_URL QA
-    - npm run release:test:apex -- QA
-  artifacts:
-    reports:
-      junit: tests/apex/*-junit.xml
-    paths:
-      - tests/
-  coverage: '/name="testRunCoverage" value="([\d]+%)"/'
   tags:
     - devops-runner
   interruptible: true
@@ -580,7 +520,7 @@ deploy:uat:
     - install_toolchain
   script:
     - npm run release:authenticate -- $QA_SANDBOX_AUTH_URL QA
-    - npm run release:deploy -- QA qa
+    - npm run release:deploy -- QA qa RunLocalTests
   tags:
     - devops-runner
   interruptible: true
@@ -649,7 +589,7 @@ deploy:production:
     - install_toolchain
   script:
     - npm run release:authenticate -- $PRODUCTION_AUTH_URL PRODUCTION
-    - npm run release:deploy -- PRODUCTION prod
+    - npm run release:deploy -- PRODUCTION prod RunLocalTests
   artifacts:
     paths:
       - .tmp/
