@@ -301,12 +301,11 @@ function deploy(deployConfig) {
   console.log(`[Info] Deploy: Validando resultados del despliegue...`);
   console.log(`[Info] Deploy: Id Despliegue: ${deployResult.id}`);
 
-  executeSfdxCommand(
+  executeBash(
     `sf project deploy report --job-id ${deployResult.id} --wait ${
       deployConfig.timeout ? deployConfig.timeout : 180
     }`,
     {
-      skipJsonParsing: true,
       stdio: "inherit"
     }
   );
