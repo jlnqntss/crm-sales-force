@@ -320,8 +320,7 @@ function deploy(deployConfig) {
   );
 
   if(deployReport === undefined || !deployReport.success) {
-    console.error(`[Error] Deployment failed.`);
-    process.exit(1);
+    throw new Error(`[Error] Deployment failed.`);
   }
 
   fs.writeFileSync("results.json", JSON.stringify(deployReport));
