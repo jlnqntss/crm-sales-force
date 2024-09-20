@@ -711,4 +711,21 @@ global with sharing class ContactUtil
             update quotesToUpdate.values();
         }
     }
+    /**
+    * @description       : 
+    * @author            : mfernandezcarrera
+    * @group             : 
+    * @last modified on  : 09-11-2024
+     * @last modified by  : mfernandezcarrera
+    **/
+    public static Map<Id, Contact> convertMap(Map<Id, SObject> processMap) {
+ 
+        Map<Id, Contact> result = new Map<Id, Contact>();
+        if (!processMap.isEmpty()) {    
+            for (Id key : processMap.keySet()) {   
+                result.put(key, (Contact) processMap.get(key));    
+            }    
+        }	
+        return result;
+    }
 }
