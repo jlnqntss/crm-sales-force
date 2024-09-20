@@ -319,6 +319,11 @@ function deploy(deployConfig) {
     `sf project deploy report --job-id ${deployResult.id} --json`
   );
 
+  if(deployReport === undefined || !deployReport.success) {
+    console.error(`[Error] Deployment failed.`);
+    process.exit(1);
+  }
+
   fs.writeFileSync("results.json", JSON.stringify(deployReport));
 }
 
