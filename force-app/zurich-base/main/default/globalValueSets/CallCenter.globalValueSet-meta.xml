@@ -66,6 +66,11 @@
         <label>SAM</label>
     </customValue>
     <customValue>
+        <fullName>Departamento de Calidad</fullName>
+        <default>false</default>
+        <label>CTL</label>
+    </customValue>
+    <customValue>
         <fullName>Sprinklr</fullName>
         <default>false</default>
         <isActive>false</isActive>
