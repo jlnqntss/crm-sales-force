@@ -86,12 +86,9 @@ function executeSfdxCommand(bash, options = {}) {
   }
   
   if (sfdxResult.status !== 0 || sfdxResult.status === undefined) {
-    console.error(
-      `[Error] Ejecución de comando SFDX: ${sfdxResult.commandName}`
-    );
-    console.error(`[Error] ${sfdxResult.name}: ${sfdxResult.message}`);
-    console.error(`[StackTrace] ${sfdxResult.stack}`);
-    throw new Error(`${sfdxResult.name}: ${sfdxResult.message}`);
+    if(!sfdxResult.result) {
+        throw new Error(`[ERROR] command exit with status ${sfdxResult.status}.`);
+    }
   }
 
   return sfdxResult.result;
@@ -289,33 +286,33 @@ function deploy(deployConfig) {
 
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
-  try {
-    let deployResult = executeSfCliScriptableCommand(
-      `sf project deploy start ${deployOptions.join(" ")} --json`
-    );
-    console.log('Parseando resultado...');
-  }
-  catch(error) {
-    console.log("[ERROR] Error during deployment.");
-    process.exit(1);
-  }
+
+  let deployResult = executeSfdxCommand(
+    `sf project deploy start ${deployOptions.join(" ")}`
+  );
+  console.log('Parseando resultado...');
+
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
 
   // 8 - Mostrando informe de despliegue
   console.log(`[Info] Deploy: Validando resultados del despliegue...`);
   console.log(`[Info] Deploy: Id Despliegue: ${deployResult.id}`);
 
-  executeSfCliCommand(
+  executeSfdxCommand(
     `sf project deploy report --job-id ${deployResult.id} --wait ${
       deployConfig.timeout ? deployConfig.timeout : 60
-    }`
+    }`,
+    {
+      skipJsonParsing: true,
+      stdio: "inherit"
+    }
   );
 
   console.log(
     `[Info] Deploy: Recuperando detalle del despliegue ${deployResult.id}`
   );
 
-  let deployReport = executeSfCliScriptableCommand(
+  let deployReport = executeSfdxCommand(
     `sf project deploy report --job-id ${deployResult.id} --json`
   );
 
