@@ -17,7 +17,7 @@
                 <leftValueReference>$Record.Account.RecordTypeId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Get_Intermediary_Record_Type_Id.Id</elementReference>
+                    <elementReference>idRecordTypeIntermediary</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -52,6 +52,16 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>idRecordTypeIntermediary</name>
+        <dataType>String</dataType>
+        <expression>IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Value__c},{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Value__c}, 
+IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Uat_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Uat_Value__c}, 
+IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Staging_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Staging_Value__c}, 
+{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Dev_Value__c})
+)
+)</expression>
+    </formulas>
     <interviewLabel>Case Trigger - Before Insert/Update - Informar Intermediary Group {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - Before Insert/Update - Informar Intermediary Group</label>
     <processMetadataValues>
@@ -73,27 +83,6 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordLookups>
-        <name>Get_Intermediary_Record_Type_Id</name>
-        <label>Get Intermediary Record Type Id</label>
-        <locationX>380</locationX>
-        <locationY>287</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Tiene_Account</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Name</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Intermediary</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>RecordType</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordUpdates>
         <name>Delete_Intermediary_Group</name>
         <label>Delete Intermediary Group</label>
@@ -134,7 +123,7 @@
         <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Intermediary_Record_Type_Id</targetReference>
+            <targetReference>Tiene_Account</targetReference>
         </connector>
         <filterLogic>(1 AND 2) OR 3</filterLogic>
         <filters>
