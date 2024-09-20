@@ -86,9 +86,12 @@ function executeSfdxCommand(bash, options = {}) {
   }
   
   if (sfdxResult.status !== 0 || sfdxResult.status === undefined) {
-    if(!sfdxResult.result) {
-        throw new Error(`[ERROR] command exit with status ${sfdxResult.status}.`);
-    }
+    console.error(
+      `[Error] Ejecución de comando SFDX: ${sfdxResult.commandName}`
+    );
+    console.error(`[Error] ${sfdxResult.name}: ${sfdxResult.message}`);
+    console.error(`[StackTrace] ${sfdxResult.stack}`);
+    throw new Error(`${sfdxResult.name}: ${sfdxResult.message}`);
   }
 
   return sfdxResult.result;
@@ -232,7 +235,7 @@ function generateSfdxDelta(targetCommit) {
 }
 
 function deploy(deployConfig) {
-  let deployOptions = ["--ignore-conflicts"];
+  let deployOptions = ["--async", "--ignore-conflicts"];
 
   // 1 - Reconciliación de perfiles
   console.log(
@@ -326,13 +329,9 @@ async function findLastSemanticTag(targetSuffix) {
     token: process.env["CI_GITLAB_TOKEN"]
   });
 
-  console.log(`[DEBUG] gitLabService ==> ` + JSON.stringify(gitLabService));
   // 1 - Se obtienen las etiquetas de la referencia
   let currentBranchTags = await gitLabService.getTags();
 
-  console.log(
-    `[DEBUG] currentBranchTags ==> ` + JSON.stringify(currentBranchTags)
-  );
   // 2 - Se define la expresión regular de búsqueda
   // 2 - Se busca a través de expresión regular la etiqueta de versionado semántico con el sufijo de tipo
   let tagToSearch = new RegExp(
@@ -340,7 +339,6 @@ async function findLastSemanticTag(targetSuffix) {
   );
   let lastTag = getLastSemanticTag(currentBranchTags, tagToSearch);
 
-  console.log(`[DEBUG] lastTag ==> ` + JSON.stringify(lastTag));
   // 3 - Si no existe tag, se genera la inicial
   if (!lastTag) {
     return gitLabService.createTag({
