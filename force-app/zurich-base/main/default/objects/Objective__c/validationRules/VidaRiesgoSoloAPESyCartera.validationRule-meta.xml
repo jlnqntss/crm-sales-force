@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VidaRiesgoSoloAPESyCartera</fullName>
+    <active>true</active>
+    <description>El segmento &apos;Vida riesgo&apos; debe tener como indicador &apos;APES&apos; o &apos;Cartera&apos;</description>
+    <errorConditionFormula>AND(TEXT(Segment__c) == $CustomMetadata.Global_Configuration__mdt.Objective_Segment_Vida_riesgo.Value__c,
+	TEXT(Indicator__c) != $CustomMetadata.Global_Configuration__mdt.Objective_Indicator_APES.Value__c,
+	TEXT(Indicator__c) != $CustomMetadata.Global_Configuration__mdt.Objective_Indicator_Portfolio.Value__c)</errorConditionFormula>
+    <errorMessage>El segmento &apos;Vida riesgo&apos; debe tener como indicador &apos;APES&apos; o &apos;Cartera&apos;</errorMessage>
+</ValidationRule>
