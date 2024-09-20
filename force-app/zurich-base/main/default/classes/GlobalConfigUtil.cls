@@ -4,6 +4,9 @@ public with sharing class GlobalConfigUtil {
     public static final String DEFAULT_RETENTION = 'Default';
     private static final String CUSTOM_OBJECT_API_NAME_ENDING = '__c';
 
+    public static final Organization org = [SELECT Id FROM Organization LIMIT 1];
+    public static final String orgId= org.Id;
+
     public static Map<String, String> getGlobalConfigurationValues() {
         
         Map<String, String> configValues = new Map<String, String>();
@@ -34,9 +37,7 @@ public with sharing class GlobalConfigUtil {
 
         //Para saber qué id devolver, necesitamos saber en qué entorno estamos
         Global_Configuration__mdt instanceConfig = Global_Configuration__mdt.getInstance(instancesId);
-        
-        Organization org = [SELECT Id FROM Organization LIMIT 1];
-        String orgId = org.Id;
+
 
         //Devolveremos el Id dependiendo del entorno en el que estemos
         if(orgId == instanceConfig.Value__c){

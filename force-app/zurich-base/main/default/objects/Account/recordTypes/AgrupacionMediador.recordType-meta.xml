@@ -4489,21 +4489,21 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>MiAgenciaUsage__c</picklist>
+        <picklist>MaxPermission__c</picklist>
         <values>
-            <fullName>High</fullName>
+            <fullName>Consulta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Low</fullName>
+            <fullName>Ofertas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Medium</fullName>
+            <fullName>Total</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Null</fullName>
+            <fullName>Total sin administración</fullName>
             <default>false</default>
         </values>
     </picklistValues>

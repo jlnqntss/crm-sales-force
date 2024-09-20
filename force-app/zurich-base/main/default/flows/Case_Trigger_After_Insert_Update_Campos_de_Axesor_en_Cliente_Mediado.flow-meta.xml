@@ -139,7 +139,7 @@
             <assignToReference>Obtener_Cliente_Mediado.BillingCity</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>$Record.RobotCompanyLocality__c</elementReference>
+                <elementReference>BillingCityControlSize</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -545,6 +545,11 @@ LPAD({!$Record.RobotCompanyActivityCnaeCode__c}, 5, &apos;0&apos;),
         <dataType>Number</dataType>
         <expression>VALUE(SUBSTITUTE({!$Record.RobotCompanyLongitude__c}, &quot;,&quot;, &quot;.&quot;))</expression>
         <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>BillingCityControlSize</name>
+        <dataType>String</dataType>
+        <expression>IF(LEN({!$Record.RobotCompanyLocality__c})&gt;40, LEFT({!$Record.RobotCompanyLocality__c}, 40), {!$Record.RobotCompanyLocality__c})</expression>
     </formulas>
     <formulas>
         <name>FuncionalidadCIFNIFControl</name>

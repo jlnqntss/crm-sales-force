@@ -84,9 +84,6 @@ function executeSfdxCommand(bash, options = {}) {
     console.error(`[Error] ${error.message}`);
     sfdxResult = {};
   }
-  console.log("return");
-  console.log(sfdxResult);
-  console.log(sfdxResult.status);
   
   if (sfdxResult.status !== 0 || sfdxResult.status === undefined) {
     console.error(
@@ -224,9 +221,9 @@ function generateSfdxDelta(targetCommit) {
     `sf sgd source delta --from ${targetCommit} --output .deploy`,
     { skipJsonParsing: true }
   );
-  console.log("Result string " + result_string);
+
   let result = JSON.parse(result_string);
-  console.log("Result " + result);
+
   if (!result.success) {
     console.error(`[Error] Ejecución de comando SFDX: ${result.error}`);
     console.error(
@@ -300,7 +297,6 @@ function deploy(deployConfig) {
   }
   catch(error) {
     console.log("[ERROR] Error during deployment.");
-    console.error(error);
     process.exit(1);
   }
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica

@@ -99,6 +99,7 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.completeUSPMilestonesWhenClosedOrPending( (List<Case>) newList, (Map<Id,Case>) oldMap );
         CaseUtil.casesZRMChangeStatus( (List<Case>) newList, (Map<Id,Case>) oldMap );
         CaseUtil.setOwnerIdPrior( (List<Case>) newList, (Map<Id,Case>) oldMap );
+        CaseUtil.setStatusPrior( (List<Case>) newList, (Map<Id,Case>) oldMap );
         CaseUtil.preProcessReasonIdForZda( (List<Case>) newList, (Map<Id,Case>) oldMap );
     }
 

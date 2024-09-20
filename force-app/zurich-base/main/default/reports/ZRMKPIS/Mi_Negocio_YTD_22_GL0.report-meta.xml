@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
     <aggregates>
-        <calculatedFormula>if( KPI__c.PA_Income__c:SUM == 0, 1, KPI__c.Income__c:SUM/KPI__c.PA_Income__c:SUM -1)</calculatedFormula>
+        <calculatedFormula>IF(OR(ISNULL(KPI__c.PA_Income__c:SUM), KPI__c.PA_Income__c:SUM == 0), 1, KPI__c.Income__c:SUM/KPI__c.PA_Income__c:SUM -1)</calculatedFormula>
         <datatype>percent</datatype>
         <description>Crecimiento Ingresos</description>
         <developerName>FORMULA1</developerName>
@@ -11,7 +11,7 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>if( KPI__c.PA_CAYLoad__c:SUM == 0, 1, KPI__c.CAYLoad__c:SUM/KPI__c.PA_CAYLoad__c:SUM -1)</calculatedFormula>
+        <calculatedFormula>IF(OR(ISNULL(KPI__c.PA_CAYLoad__c:SUM), KPI__c.PA_CAYLoad__c:SUM == 0), 1, KPI__c.CAYLoad__c:SUM/KPI__c.PA_CAYLoad__c:SUM -1)</calculatedFormula>
         <datatype>percent</datatype>
         <description>Crecimiento Carga</description>
         <developerName>FORMULA2</developerName>
@@ -21,7 +21,7 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>if( KPI__c.Ratio_PA_Claim__c:SUM == 0, 1, KPI__c.Ratio_Claim__c:SUM/KPI__c.Ratio_PA_Claim__c:SUM -1)</calculatedFormula>
+        <calculatedFormula>IF(OR(ISNULL(KPI__c.Income__c:SUM), KPI__c.Income__c:SUM == 0, ISNULL(KPI__c.PA_Income__c:SUM), KPI__c.PA_Income__c:SUM == 0), 1, ((KPI__c.TotalLoad__c:SUM / KPI__c.Income__c:SUM)/(KPI__c.PA_TotalLoad__c:SUM / KPI__c.PA_Income__c:SUM)) -1)</calculatedFormula>
         <datatype>percent</datatype>
         <description>Siniestralidad total</description>
         <developerName>FORMULA3</developerName>
@@ -31,7 +31,7 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>if( KPI__c.PA_CAYLoad__c:SUM == 0, 1, KPI__c.CAYLoad__c:SUM/KPI__c.PA_CAYLoad__c:SUM -1)</calculatedFormula>
+        <calculatedFormula>IF(OR(ISNULL(KPI__c.PA_CAYLoad__c:SUM), KPI__c.PA_CAYLoad__c:SUM == 0), 1, KPI__c.CAYLoad__c:SUM/KPI__c.PA_CAYLoad__c:SUM -1)</calculatedFormula>
         <datatype>percent</datatype>
         <description>Carga CAY</description>
         <developerName>FORMULA4</developerName>
