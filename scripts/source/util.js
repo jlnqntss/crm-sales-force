@@ -232,7 +232,7 @@ function generateSfdxDelta(targetCommit) {
 }
 
 function deploy(deployConfig) {
-  let deployOptions = ["--wait 180", "--ignore-conflicts"];
+  let deployOptions = ["--ignore-conflicts"];
 
   // 1 - Reconciliación de perfiles
   console.log(
@@ -300,7 +300,7 @@ function deploy(deployConfig) {
 
   executeSfdxCommand(
     `sf project deploy report --job-id ${deployResult.id} --wait ${
-      deployConfig.timeout ? deployConfig.timeout : 60
+      deployConfig.timeout ? deployConfig.timeout : 180
     }`,
     {
       skipJsonParsing: true,
