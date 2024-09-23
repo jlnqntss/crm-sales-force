@@ -11,19 +11,7 @@
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
-                <elementReference>idCustomNotification</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>recipientIds</name>
-            <value>
-                <elementReference>idsOwner</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>title</name>
-            <value>
-                <elementReference>titleOwner</elementReference>
+                <elementReference>getCustomNotificationAction.Id</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -33,58 +21,25 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>titleOwner</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>idsOwner</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>targetId</name>
             <value>
                 <elementReference>$Record.Id</elementReference>
             </value>
         </inputParameters>
-        <nameSegment>customNotificationAction</nameSegment>
-        <versionSegment>1</versionSegment>
-    </actionCalls>
-    <actionCalls>
-        <name>Get_Id_Custom_Notificaction</name>
-        <label>Get Id Custom Notificaction</label>
-        <locationX>50</locationX>
-        <locationY>539</locationY>
-        <actionName>GetGlobalConfigurationValueIdFlow</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>IdCustomNotificationLoop</targetReference>
-        </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>globalValueName</name>
-            <value>
-                <elementReference>Escalation_Case_Owner_Notification</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>idORg</name>
-            <value>
-                <elementReference>idORG</elementReference>
-            </value>
-        </inputParameters>
-        <nameSegment>GetGlobalConfigurationValueIdFlow</nameSegment>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>55.0</apiVersion>
-    <assignments>
-        <name>Id_Custom_Notification_Assignment</name>
-        <label>Id Custom Notification Assignment</label>
-        <locationX>138</locationX>
-        <locationY>755</locationY>
-        <assignmentItems>
-            <assignToReference>idCustomNotification</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>IdCustomNotificationLoop</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>IdCustomNotificationLoop</targetReference>
-        </connector>
-    </assignments>
     <assignments>
         <name>idOwnerAssigment</name>
         <label>idOwnerAssigment</label>
@@ -140,33 +95,14 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Id_Custom_Notificaction</targetReference>
+                <targetReference>getCustomNotificationAction</targetReference>
             </connector>
             <label>Owner Change</label>
         </rules>
     </decisions>
     <environments>Default</environments>
-    <formulas>
-        <name>idORG</name>
-        <dataType>String</dataType>
-        <expression>{!$Organization.Id}</expression>
-    </formulas>
     <interviewLabel>Case Trigger - After Update - Case Escalation Owner Notification {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Update - Case Escalation Owner Notification</label>
-    <loops>
-        <name>IdCustomNotificationLoop</name>
-        <label>Loop Id Custom Notification</label>
-        <locationX>50</locationX>
-        <locationY>647</locationY>
-        <collectionReference>Get_Id_Custom_Notificaction</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Id_Custom_Notification_Assignment</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>idOwnerAssigment</targetReference>
-        </noMoreValuesConnector>
-    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -186,6 +122,27 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>getCustomNotificationAction</name>
+        <label>Get Custom Notification</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>idOwnerAssigment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>escalationCaseOwnerNotification</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
         <locationX>254</locationX>
         <locationY>0</locationY>
@@ -206,23 +163,6 @@
         <value>
             <stringValue>Se le ha asignado el caso {!$Record.CaseNumber}</stringValue>
         </value>
-    </variables>
-    <variables>
-        <name>Escalation_Case_Owner_Notification</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <stringValue>Escalation_Case_Owner_Notification</stringValue>
-        </value>
-    </variables>
-    <variables>
-        <name>idCustomNotification</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>idsOwner</name>
