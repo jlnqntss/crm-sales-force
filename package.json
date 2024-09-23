@@ -48,7 +48,7 @@
     "@commitlint/config-conventional": "^11.0.0",
     "@commitlint/lint": "^11.0.0",
     "@dxatscale/sfpowerscripts": "25.5.3",
-    "@salesforce/cli": "2.5.7",
+    "@salesforce/cli": "2.51.6",
     "@salesforce/eslint-config-lwc": "^0.8.0",
     "@salesforce/sfdx-lwc-jest": "^5.1.0",
     "eslint": "^7.15.0",

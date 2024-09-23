@@ -235,7 +235,7 @@ function generateSfdxDelta(targetCommit) {
 }
 
 function deploy(deployConfig) {
-  let deployOptions = ["--wait 180", "--ignore-conflicts"];
+  let deployOptions = ["--async", "--ignore-conflicts"];
 
   // 1 - Reconciliación de perfiles
   console.log(
@@ -289,35 +289,40 @@ function deploy(deployConfig) {
 
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
-  try {
-    let deployResult = executeSfCliScriptableCommand(
-      `sf project deploy start ${deployOptions.join(" ")} --json`
-    );
-    console.log('Parseando resultado...');
-  }
-  catch(error) {
-    console.log("[ERROR] Error during deployment.");
-    process.exit(1);
-  }
+
+  let deployResult = executeSfdxCommand(
+    `sf project deploy start ${deployOptions.join(" ")}`
+  );
+  console.log('Parseando resultado...');
+
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
 
   // 8 - Mostrando informe de despliegue
   console.log(`[Info] Deploy: Validando resultados del despliegue...`);
   console.log(`[Info] Deploy: Id Despliegue: ${deployResult.id}`);
 
-  executeSfCliCommand(
+  executeSfdxCommand(
     `sf project deploy report --job-id ${deployResult.id} --wait ${
-      deployConfig.timeout ? deployConfig.timeout : 60
-    }`
+      deployConfig.timeout ? deployConfig.timeout : 180
+    }`,
+    {
+      skipJsonParsing: true,
+      stdio: "inherit"
+    }
   );
 
   console.log(
     `[Info] Deploy: Recuperando detalle del despliegue ${deployResult.id}`
   );
 
-  let deployReport = executeSfCliScriptableCommand(
+  let deployReport = executeSfdxCommand(
     `sf project deploy report --job-id ${deployResult.id} --json`
   );
+
+  if(deployReport === undefined || !deployReport.success) {
+    console.error(`[Error] Deployment failed.`);
+    process.exit(1);
+  }
 
   fs.writeFileSync("results.json", JSON.stringify(deployReport));
 }
@@ -329,13 +334,9 @@ async function findLastSemanticTag(targetSuffix) {
     token: process.env["CI_GITLAB_TOKEN"]
   });
 
-  console.log(`[DEBUG] gitLabService ==> ` + JSON.stringify(gitLabService));
   // 1 - Se obtienen las etiquetas de la referencia
   let currentBranchTags = await gitLabService.getTags();
 
-  console.log(
-    `[DEBUG] currentBranchTags ==> ` + JSON.stringify(currentBranchTags)
-  );
   // 2 - Se define la expresión regular de búsqueda
   // 2 - Se busca a través de expresión regular la etiqueta de versionado semántico con el sufijo de tipo
   let tagToSearch = new RegExp(
@@ -343,7 +344,6 @@ async function findLastSemanticTag(targetSuffix) {
   );
   let lastTag = getLastSemanticTag(currentBranchTags, tagToSearch);
 
-  console.log(`[DEBUG] lastTag ==> ` + JSON.stringify(lastTag));
   // 3 - Si no existe tag, se genera la inicial
   if (!lastTag) {
     return gitLabService.createTag({
