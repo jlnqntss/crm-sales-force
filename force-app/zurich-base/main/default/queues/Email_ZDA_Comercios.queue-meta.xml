@@ -2,7 +2,7 @@
 <Queue xmlns="http://soap.sforce.com/2006/04/metadata">
     <doesSendEmailToMembers>false</doesSendEmailToMembers>
     <email>notification@disabled.inv</email>
-    <name>Email_ZDA_Urgencias</name>
+    <name>Email_ZDA_Comercios</name>
     <queueMembers>
         <roles>
             <role>ZDA_Agente</role>
