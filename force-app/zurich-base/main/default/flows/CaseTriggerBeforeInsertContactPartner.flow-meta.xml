@@ -34,7 +34,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>GetRecordTypePartnerContactAction</targetReference>
+                <targetReference>PolicyNotNullDecision</targetReference>
             </connector>
             <label>USP</label>
         </rules>
@@ -103,6 +103,16 @@
 {!$Record.AccountId}&amp;BR()&amp;
 {!$Record.ContactId}</expression>
     </formulas>
+    <formulas>
+        <name>idRecordTypeContactPartner</name>
+        <dataType>String</dataType>
+        <expression>IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Value__c},{!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Value__c}, 
+IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Uat_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Uat_Value__c}, 
+IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Staging_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Staging_Value__c}, 
+{!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Dev_Value__c})
+)
+)</expression>
+    </formulas>
     <interviewLabel>Case Trigger - Before Insert/update - Vinculacion Contacto Partner {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - Before Insert/Update - Vinculacion Contacto Partner</label>
     <processMetadataValues>
@@ -142,7 +152,7 @@
             <field>RecordTypeId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>GetRecordTypePartnerContactAction.Id</elementReference>
+                <elementReference>idRecordTypeContactPartner</elementReference>
             </value>
         </filters>
         <filters>
@@ -171,7 +181,7 @@
             <field>RecordTypeId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>GetRecordTypePartnerContactAction.Id</elementReference>
+                <elementReference>idRecordTypeContactPartner</elementReference>
             </value>
         </filters>
         <filters>
@@ -190,27 +200,6 @@
             <assignToReference>$Record.ContactId</assignToReference>
             <field>Id</field>
         </outputAssignments>
-    </recordLookups>
-    <recordLookups>
-        <name>GetRecordTypePartnerContactAction</name>
-        <label>Recuperar RecordType Partner Contact</label>
-        <locationX>380</locationX>
-        <locationY>431</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>PolicyNotNullDecision</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>ContactPartner</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>RecordType</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
         <locationX>485</locationX>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email para los usuarios de SDM cuando se les asigna un caso</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>SDM_Aviso_caso_asignado</name>
+    <style>none</style>
+    <subject>Nuevo caso</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

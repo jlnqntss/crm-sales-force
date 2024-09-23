@@ -4251,6 +4251,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.DownloadAccess__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Expert__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4656,6 +4661,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.RecertificationEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.RegistryDGS__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4842,6 +4852,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Zone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ZRMAccess__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ZurichZoneAccess__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ZVGOAccess__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5137,6 +5162,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.ManagementSystemCRM__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.MaxPermission__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7356,6 +7386,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.StatusPrior__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.StopStartDate</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8120,6 +8155,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.IntermediaryCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Contact.IsSubscriber__c</field>
         <readable>true</readable>
@@ -8226,6 +8266,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contact.Permission__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contact.Phone</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8287,6 +8332,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact.YearExpiryDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.ZurichZoneUser__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11226,6 +11276,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Campaign__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ChanceOfSuccess__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

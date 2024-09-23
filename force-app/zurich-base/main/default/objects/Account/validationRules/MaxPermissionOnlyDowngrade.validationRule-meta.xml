@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MaxPermissionOnlyDowngrade</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND
+(
+     OR
+     (
+        Blocked__c = False,
+        Anonymized__c = False,
+        NOT(ISCHANGED(Blocked__c)),
+        NOT(ISCHANGED(Anonymized__c))
+     ),
+     $UserRole.Name &lt;&gt; &apos;Administrators&apos; &amp;&amp;  
+    (ISPICKVAL(PRIORVALUE(MaxPermission__c) , &apos;Consulta&apos;) &amp;&amp;  (ISPICKVAL(MaxPermission__c, &apos;Ofertas&apos;) || ISPICKVAL(MaxPermission__c, &apos;Total sin administración&apos;) || ISPICKVAL(MaxPermission__c, &apos;Total&apos;))) ||
+    (ISPICKVAL(PRIORVALUE(MaxPermission__c) , &apos;Ofertas&apos;) &amp;&amp;  (ISPICKVAL(MaxPermission__c, &apos;Total sin administración&apos;) || ISPICKVAL(MaxPermission__c, &apos;Total&apos;))) ||
+    (ISPICKVAL(PRIORVALUE(MaxPermission__c) , &apos;Total sin administración&apos;) &amp;&amp;  ISPICKVAL(MaxPermission__c, &apos;Total&apos;))
+)</errorConditionFormula>
+    <errorDisplayField>MaxPermission__c</errorDisplayField>
+    <errorMessage>El permiso máximo solo puede modificarse a la baja, si quieres darle mayores permisos contacta con e-business@zurich.com</errorMessage>
+</ValidationRule>

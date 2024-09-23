@@ -4,14 +4,57 @@ const FindFolder = require("node-find-folder");
 const GitlabAPIService = require("./GitLabAPI").default;
 const { getLastSemanticTag, SemanticTag } = require("./SemanticTag");
 
+/**
+ * Ejecuta un comando del SF Cli y muestra el resultado en pantalla
+ * @param {string} command
+ * @returns {void}
+ */
+function executeSfCliCommand(command) {
+  return executeSfdxCommand(command, {
+    skipJsonParsing: true,
+    stdio: "inherit"
+  });
+}
+
+/**
+ * Ejecuta un comando de SFDX y parsea el resultado como un JSON
+ * @param {string} command
+ * @returns {SfdxResult}
+ */
+function executeSfCliScriptableCommand(command) {
+  return executeSfdxCommand(command, {
+    skipJsonParsing: false,
+    encoding: "utf8",
+    stdio: [],
+    maxBuffer: 5 * 1024 * 1024 // 5mb
+  });
+}
+
+/**
+ * Ejecuta un comando de Bash con las opciones indicadas
+ *
+ * @author jmartinezpisson
+ * @param {String} command
+ * @param {ExecSyncOptionsWithStringEncoding} options Opciones de ejecució
+ * @param {String} sfdxAuthInfo.alias Alias de la org
+ */
 function executeBash(command, options = {}) {
   return execSync(command, {
     encoding: "utf8",
     shell: false,
+    maxBuffer: 5 * 1024 * 1024, //5mb
     ...options
   });
 }
 
+/**
+ * Ejecuta un comando de Bash con las opciones indicadas
+ *
+ * @author jmartinezpisson
+ * @param {String} command
+ * @param {ExecSyncOptionsWithStringEncoding} options Opciones de ejecució
+ * @param {String} sfdxAuthInfo.alias Alias de la org
+ */
 function executeSfdxCommand(bash, options = {}) {
   let sfdxCommand = bash;
   let sfdxJsonResult, sfdxResult;
@@ -41,7 +84,7 @@ function executeSfdxCommand(bash, options = {}) {
     console.error(`[Error] ${error.message}`);
     sfdxResult = {};
   }
-
+  
   if (sfdxResult.status !== 0 || sfdxResult.status === undefined) {
     console.error(
       `[Error] Ejecución de comando SFDX: ${sfdxResult.commandName}`
@@ -78,7 +121,7 @@ function getTargetSfdxOrgUsername() {
     console.log(`[Info] Obtención de usuario SFDX`);
 
     let configGetResult = executeSfdxCommand(
-      `sfdx force:config:get defaultusername --json`
+      `sf config set defaultusername --json`
     );
 
     return configGetResult[0].value;
@@ -95,7 +138,7 @@ function getTargetSfdxOrgUsername() {
 function setTargetSfdxOrgUsername(username) {
   try {
     console.log(`[Info] Configurando usuario SFDX`);
-    executeSfdxCommand(`sfdx force:config:set defaultusername=${username}`);
+    executeSfdxCommand(`sf config set defaultusername=${username}`);
     console.log(
       `[Info] Configurando usuario SFDX: Configurado ${username} como usuario SFDX`
     );
@@ -116,7 +159,7 @@ function authenticate(sfdxAuthInfo) {
   console.log(`[Info] Autenticando URL SFDX ${sfdxAuthInfo.authUrl}`);
   fs.writeFileSync("authInfo.txt", sfdxAuthInfo.authUrl);
   executeSfdxCommand(
-    `sfdx force:auth:sfdxurl:store --sfdxurlfile authInfo.txt --setalias ${sfdxAuthInfo.alias}`
+    `sf org login sfdx-url --sfdx-url-file authInfo.txt --alias ${sfdxAuthInfo.alias}`
   );
   console.log(
     `[Info] Autenticando URL SFDX: Autenticación de ${sfdxAuthInfo.alias} realizada`
@@ -130,7 +173,7 @@ function authenticate(sfdxAuthInfo) {
 function shouldRunLocalTests() {
   let findFolderResult = new FindFolder(`__tests__`);
 
-  return findFolderResult.length > 0 ? true : false;
+  return findFolderResult.length > 0;
 }
 
 /**
@@ -139,7 +182,7 @@ function shouldRunLocalTests() {
 function shouldLintLWC() {
   let findFolderResult = new FindFolder(`lwc`);
 
-  return findFolderResult.length > 0 ? true : false;
+  return findFolderResult.length > 0;
 }
 
 /**
@@ -148,16 +191,16 @@ function shouldLintLWC() {
 function shouldLintAura() {
   let findFolderResult = new FindFolder(`aura`);
 
-  return findFolderResult.length > 0 ? true : false;
+  return findFolderResult.length > 0;
 }
 
 function runScan() {
-  executeBash(`sfdx scanner:run -t force-app`);
+  executeBash(`sf scanner run --target force-app`);
 }
 
 function runOrgTests() {
   executeBash(
-    `sfdx force:apex:test:run --codecoverage --resultformat junit --wait 10 --outputdir ./tests/apex`
+    `sf apex run test --code-coverage --result-format junit --wait 10 --output-dir ./tests/apex`
   );
 }
 
@@ -174,17 +217,17 @@ function generateSfdxDelta(targetCommit) {
     fs.mkdirSync(".deploy");
   }
 
-  let result = JSON.parse(
-    executeSfdxCommand(
-      `sfdx sgd:source:delta --from ${targetCommit} -o .deploy`,
-      { skipJsonParsing: true }
-    )
+  let result_string = executeBash(
+    `sf sgd source delta --from ${targetCommit} --output .deploy`,
+    { skipJsonParsing: true }
   );
+
+  let result = JSON.parse(result_string);
 
   if (!result.success) {
     console.error(`[Error] Ejecución de comando SFDX: ${result.error}`);
     console.error(
-      `[Command] sfdx sgd:source:delta --from ${targetCommit} -o .deploy`
+      `[Command] sf sgd source delta --from ${targetCommit} --output .deploy`
     );
 
     throw new Error(`SFDX Delta: ${result.error}`);
@@ -192,14 +235,14 @@ function generateSfdxDelta(targetCommit) {
 }
 
 function deploy(deployConfig) {
-  let deployOptions = ["--wait 0"];
+  let deployOptions = ["--async", "--ignore-conflicts"];
 
   // 1 - Reconciliación de perfiles
   console.log(
     `[Info] Deploy: Reconciliando perfiles con usuario ${deployConfig.targetOrg}...`
   );
   executeSfdxCommand(
-    `sfdx sfpowerkit:source:profile:reconcile -u ${deployConfig.targetOrg}`,
+    `sfp profile:reconcile --targetorg ${deployConfig.targetOrg}`,
     {
       stdio: "inherit",
       skipJsonParsing: true
@@ -213,12 +256,12 @@ function deploy(deployConfig) {
     );
     generateSfdxDelta(deployConfig.targetCommit);
     deployOptions.push(
-      "--manifest .deploy/package/package.xml --postdestructivechanges .deploy/destructiveChanges/destructiveChanges.xml"
+      "--manifest .deploy/package/package.xml --post-destructive-changes .deploy/destructiveChanges/destructiveChanges.xml"
     );
   } else {
     console.log(`[Info] Deploy: Modalidad de despliegue completo`);
     // En caso contrario, se hace un despliegue completo
-    deployOptions.push("--sourcepath force-app");
+    deployOptions.push("--source-dir force-app");
   }
 
   // 3 - Se añade la ejecución de tests
@@ -226,7 +269,7 @@ function deploy(deployConfig) {
     console.log(
       `[Info] Deploy: Se ejecutarán los tests en modo ${deployConfig.testLevel}`
     );
-    deployOptions.push(`--testlevel ${deployConfig.testLevel}`);
+    deployOptions.push(`--test-level ${deployConfig.testLevel}`);
 
     if (deployConfig.testLevel === "RunSpecifiedTests") {
       console.log(
@@ -234,30 +277,33 @@ function deploy(deployConfig) {
           ","
         )}`
       );
-      deployOptions.push(`--runtests "${deployConfig.testClasses.join(",")}"`);
+      deployOptions.push(`--tests "${deployConfig.testClasses.join(" ")}"`);
     }
   }
 
   // 4 - Se identifica si es una validación
   if (deployConfig.checkOnly) {
     console.log(`[Info] Deploy: Se ejecutará una validación`);
-    deployOptions.push("--checkonly");
+    deployOptions.push("--dry-run");
   }
 
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
+
   let deployResult = executeSfdxCommand(
-    `sfdx force:source:deploy ${deployOptions.join(" ")}`
+    `sf project deploy start ${deployOptions.join(" ")}`
   );
+  console.log('Parseando resultado...');
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
 
   // 8 - Mostrando informe de despliegue
   console.log(`[Info] Deploy: Validando resultados del despliegue...`);
   console.log(`[Info] Deploy: Id Despliegue: ${deployResult.id}`);
+
   executeSfdxCommand(
-    `sfdx force:source:deploy:report --jobid ${deployResult.id} --wait ${
-      deployConfig.timeout ? deployConfig.timeout : 60
+    `sf project deploy report --job-id ${deployResult.id} --wait ${
+      deployConfig.timeout ? deployConfig.timeout : 180
     }`,
     {
       skipJsonParsing: true,
@@ -270,8 +316,13 @@ function deploy(deployConfig) {
   );
 
   let deployReport = executeSfdxCommand(
-    `sfdx force:source:deploy:report --jobid ${deployResult.id}`
+    `sf project deploy report --job-id ${deployResult.id} --json`
   );
+
+  if(deployReport === undefined || !deployReport.success) {
+    console.error(`[Error] Deployment failed.`);
+    process.exit(1);
+  }
 
   fs.writeFileSync("results.json", JSON.stringify(deployReport));
 }
@@ -289,7 +340,7 @@ async function findLastSemanticTag(targetSuffix) {
   // 2 - Se define la expresión regular de búsqueda
   // 2 - Se busca a través de expresión regular la etiqueta de versionado semántico con el sufijo de tipo
   let tagToSearch = new RegExp(
-    `^\\d*\.\\d*\.\\d*${targetSuffix ? "-" + targetSuffix : ""}`
+    `^\\d*.\\d*.\\d*${targetSuffix ? "-" + targetSuffix : ""}`
   );
   let lastTag = getLastSemanticTag(currentBranchTags, tagToSearch);
 
@@ -300,6 +351,7 @@ async function findLastSemanticTag(targetSuffix) {
       ref: process.env["CI_COMMIT_REF_NAME"]
     });
   }
+
   return lastTag;
 }
 

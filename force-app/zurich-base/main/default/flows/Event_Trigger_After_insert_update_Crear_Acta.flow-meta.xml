@@ -877,7 +877,7 @@
         </connector>
         <filterFormula>OR({!$UserRole.DeveloperName} = &apos;SDMHomeOffice&apos;, {!$UserRole.DeveloperName} = &apos;SDM_Consultor&apos;, {!$UserRole.DeveloperName} = &apos;SDM_CV&apos;, {!$UserRole.DeveloperName} = &apos;SDM_DT&apos;, {!$UserRole.DeveloperName} = &apos;SDM_DV&apos;, {!$UserRole.DeveloperName} = &apos;SDM_RN&apos;)</filterFormula>
         <object>Event</object>
-        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>

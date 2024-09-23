@@ -7,8 +7,6 @@ const { authenticate } = require("./util.js");
  *
  */
 async function main() {
-  console.log(process.argv);
-
   authenticate({
     authUrl: process.argv[2],
     alias: process.argv[3]
