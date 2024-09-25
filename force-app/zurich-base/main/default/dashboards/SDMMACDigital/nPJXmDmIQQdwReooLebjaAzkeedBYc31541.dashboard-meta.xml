@@ -235,7 +235,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_YTD_fsV</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -274,7 +274,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_YTD_fsV</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -311,7 +311,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_YTD_fsV</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -349,7 +349,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_YTD_fsV</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -386,7 +386,7 @@
                 <indicatorLowColor>#00716B</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_YTD_fsV</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -423,7 +423,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_YTD_fsV</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -520,7 +520,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Panel RN&apos;s YTD</header>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_YTD_fsV</report>
             </dashboardComponent>
             <rowIndex>5</rowIndex>
             <rowSpan>24</rowSpan>
@@ -571,7 +571,7 @@
                 <header>KPI&apos;s Ampliados Rn&apos;s y Mediadores YTD</header>
                 <legendPosition>Right</legendPosition>
                 <maxValuesDisplayed>18</maxValuesDisplayed>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mediadores_YTD_MUd</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_Mediadores_YTD_MUd</report>
                 <showPercentage>false</showPercentage>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
@@ -611,7 +611,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_Mes_Actual_4Ah</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>38</rowIndex>
@@ -650,7 +650,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_Mes_Actual_4Ah</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>38</rowIndex>
@@ -689,7 +689,7 @@
                 <indicatorLowColor>#ABABAB</indicatorLowColor>
                 <indicatorMiddleColor>#ABABAB</indicatorMiddleColor>
                 <metricLabel>Mes cerrado pa</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_Mes_Actual_4Ah</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>38</rowIndex>
@@ -727,7 +727,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_Mes_Actual_4Ah</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>38</rowIndex>
@@ -765,7 +765,7 @@
                 <indicatorLowColor>#ABABAB</indicatorLowColor>
                 <indicatorMiddleColor>#ABABAB</indicatorMiddleColor>
                 <metricLabel>Mes cerrado pa</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_Mes_Actual_4Ah</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>38</rowIndex>
@@ -803,7 +803,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_Mes_Actual_4Ah</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>38</rowIndex>
@@ -900,7 +900,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Panel Rn&apos;s Mes Actual</header>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_Mes_Actual_4Ah</report>
             </dashboardComponent>
             <rowIndex>43</rowIndex>
             <rowSpan>25</rowSpan>
@@ -951,7 +951,7 @@
                 <header>KPI&apos;s Ampliados Rn&apos;s y Mediadores Mes Actual</header>
                 <legendPosition>Right</legendPosition>
                 <maxValuesDisplayed>20</maxValuesDisplayed>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mediadores_Mes_Actual_8ew</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_Mediadores_Mes_Actual_8ew</report>
                 <showPercentage>false</showPercentage>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
@@ -1038,7 +1038,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>KPI&apos;s YTD VIDA Consultores</header>
-                <report>SDMMACDIGITALHomeOffice/KPIs_VIDA_Consultores_fDT</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_VIDA_Consultores_fDT</report>
             </dashboardComponent>
             <rowIndex>77</rowIndex>
             <rowSpan>11</rowSpan>
@@ -1122,7 +1122,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>KPI&apos;s YTD detalle producto</header>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_detalle_producto_LVZ</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_YTD_detalle_producto_LVZ</report>
             </dashboardComponent>
             <rowIndex>88</rowIndex>
             <rowSpan>15</rowSpan>
@@ -1206,7 +1206,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>KPI&apos;s Mes Actual detalle producto</header>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_detalle_producto_qNz</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_Mes_detalle_producto_qNz</report>
             </dashboardComponent>
             <rowIndex>103</rowIndex>
             <rowSpan>15</rowSpan>

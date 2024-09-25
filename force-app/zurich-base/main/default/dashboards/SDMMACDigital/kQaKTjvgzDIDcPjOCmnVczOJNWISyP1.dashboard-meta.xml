@@ -85,7 +85,7 @@
                 <indicatorHighColor>#00716B</indicatorHighColor>
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
-                <report>SDMMACRNConsultores/PrimaNB</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaNB</report>
                 <showPercentage>false</showPercentage>
                 <showRange>false</showRange>
                 <showTotal>true</showTotal>
@@ -121,7 +121,7 @@
                 <indicatorHighColor>#00716B</indicatorHighColor>
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
-                <report>SDMMACRNConsultores/PrimaCartera</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaCartera</report>
                 <showPercentage>false</showPercentage>
                 <showRange>false</showRange>
                 <showTotal>true</showTotal>
@@ -157,7 +157,7 @@
                 <indicatorHighColor>#00716B</indicatorHighColor>
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
-                <report>SDMMACRNConsultores/APES</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/APES</report>
                 <showPercentage>false</showPercentage>
                 <showRange>false</showRange>
                 <showTotal>true</showTotal>
@@ -191,7 +191,7 @@
                 <indicatorHighColor>#408080</indicatorHighColor>
                 <indicatorLowColor>#408080</indicatorLowColor>
                 <indicatorMiddleColor>#408080</indicatorMiddleColor>
-                <report>SDMMACRNConsultores/PrimaNB</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaNB</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>8</rowIndex>
@@ -222,7 +222,7 @@
                 <indicatorHighColor>#408080</indicatorHighColor>
                 <indicatorLowColor>#408080</indicatorLowColor>
                 <indicatorMiddleColor>#408080</indicatorMiddleColor>
-                <report>SDMMACRNConsultores/PrimaNB</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaNB</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>8</rowIndex>
@@ -253,7 +253,7 @@
                 <indicatorHighColor>#408080</indicatorHighColor>
                 <indicatorLowColor>#408080</indicatorLowColor>
                 <indicatorMiddleColor>#408080</indicatorMiddleColor>
-                <report>SDMMACRNConsultores/PrimaCartera</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaCartera</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>8</rowIndex>
@@ -284,7 +284,7 @@
                 <indicatorHighColor>#408080</indicatorHighColor>
                 <indicatorLowColor>#408080</indicatorLowColor>
                 <indicatorMiddleColor>#408080</indicatorMiddleColor>
-                <report>SDMMACRNConsultores/PrimaCartera</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaCartera</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>8</rowIndex>
@@ -315,7 +315,7 @@
                 <indicatorHighColor>#408080</indicatorHighColor>
                 <indicatorLowColor>#408080</indicatorLowColor>
                 <indicatorMiddleColor>#408080</indicatorMiddleColor>
-                <report>SDMMACRNConsultores/APES</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/APES</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>8</rowIndex>
@@ -346,7 +346,7 @@
                 <indicatorHighColor>#408080</indicatorHighColor>
                 <indicatorLowColor>#408080</indicatorLowColor>
                 <indicatorMiddleColor>#408080</indicatorMiddleColor>
-                <report>SDMMACRNConsultores/APES</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/APES</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>8</rowIndex>
@@ -426,7 +426,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Prima NB (€)</header>
-                <report>SDMMACRNConsultores/PrimaNB</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaNB</report>
             </dashboardComponent>
             <rowIndex>12</rowIndex>
             <rowSpan>9</rowSpan>
@@ -494,7 +494,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Prima NB Vida/No vida</header>
-                <report>SDMMACRNConsultores/PrimaNBVidaNoVida</report>
+                <report>SDMMACDIGITAL/PrimaNBVidaNoVida</report>
             </dashboardComponent>
             <rowIndex>21</rowIndex>
             <rowSpan>5</rowSpan>
@@ -567,7 +567,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Prima Cartera (€)</header>
-                <report>SDMMACRNConsultores/PrimaCartera</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaCartera</report>
             </dashboardComponent>
             <rowIndex>26</rowIndex>
             <rowSpan>9</rowSpan>
@@ -635,7 +635,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Prima Cartera Vida/No vida</header>
-                <report>SDMMACRNConsultores/PrimaCarteraVidaNoVida</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaCarteraVidaNoVida</report>
             </dashboardComponent>
             <rowIndex>35</rowIndex>
             <rowSpan>5</rowSpan>
@@ -714,7 +714,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>APES</header>
-                <report>SDMMACRNConsultores/APES</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/APES</report>
             </dashboardComponent>
             <rowIndex>40</rowIndex>
             <rowSpan>9</rowSpan>
