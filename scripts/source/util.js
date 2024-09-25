@@ -327,7 +327,7 @@ function deploy(deployConfig) {
   fs.writeFileSync("results.json", JSON.stringify(deployReport));
 }
 
-async function findLastSemanticTag(targetSuffix) {
+async function findLastSemanticTag(targetSuffix, idx = 0) {
   const gitLabService = new GitlabAPIService({
     baseUrl: process.env["CI_API_V4_URL"],
     projectId: process.env["CI_PROJECT_ID"],
@@ -342,7 +342,7 @@ async function findLastSemanticTag(targetSuffix) {
   let tagToSearch = new RegExp(
     `^\\d*.\\d*.\\d*${targetSuffix ? "-" + targetSuffix : ""}`
   );
-  let lastTag = getLastSemanticTag(currentBranchTags, tagToSearch);
+  let lastTag = getLastSemanticTag(currentBranchTags, tagToSearch, idx);
 
   // 3 - Si no existe tag, se genera la inicial
   if (!lastTag) {

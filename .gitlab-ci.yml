@@ -508,10 +508,10 @@ promotion:uat:
 ####################################################
 deploy:uat:
   stage: deploy
+  allow_failure: false
   only:
     refs:
       - /^release/.*$/
-  allow_failure: false
   environment:
     name: qa
     url: https://test.salesforce.com
@@ -577,9 +577,9 @@ upload-static-veracode:uat:
 ####################################################
 deploy:production:
   stage: deploy
+  allow_failure: false
   only:
     - /^\d*\.\d*\.\d*$/
-  allow_failure: false
   when: manual
   environment:
     name: production

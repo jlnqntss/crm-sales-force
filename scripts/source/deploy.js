@@ -27,7 +27,7 @@ async function main() {
 
     case "qa":
       if (process.env["CI_FULL_DEPLOYMENT_QA"] === "true") {  
-        let tag = await findLastSemanticTag("UAT");
+        let tag = await findLastSemanticTag("UAT", 1);
         target = tag.target;
       }
       break;
