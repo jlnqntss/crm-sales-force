@@ -167,177 +167,6 @@
             <rowSpan>8</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
-            <colSpan>4</colSpan>
-            <columnIndex>0</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <componentType>FlexTable</componentType>
-                <dashboardFilterColumns>
-                    <column>Account$Segment_sdm__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>Account$Channel__c</column>
-                </dashboardFilterColumns>
-                <flexComponentProperties>
-                    <decimalPrecision>-1</decimalPrecision>
-                    <flexTableColumn>
-                        <reportColumn>Account.INFOIntermediaryCode__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>PlanComercial__c.Intermediary_Description__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>PlanComercial__c.Name</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>PlanComercial__c.Actual_KPI__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>PlanComercial__c.TargetKPI__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableSortInfo>
-                        <sortColumn>Account.INFOIntermediaryCode__c</sortColumn>
-                        <sortOrder>1</sortOrder>
-                    </flexTableSortInfo>
-                    <hideChatterPhotos>true</hideChatterPhotos>
-                </flexComponentProperties>
-                <groupingSortProperties/>
-                <header>Prima NB (€) Objetivo no alcanzado</header>
-                <report>SDMMACDIGITAL/Prima_NB_Objetivo_no_alcanzado_zhm</report>
-            </dashboardComponent>
-            <rowIndex>8</rowIndex>
-            <rowSpan>5</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>4</colSpan>
-            <columnIndex>4</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <componentType>FlexTable</componentType>
-                <dashboardFilterColumns>
-                    <column>Account$Segment_sdm__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>Account$Channel__c</column>
-                </dashboardFilterColumns>
-                <flexComponentProperties>
-                    <decimalPrecision>-1</decimalPrecision>
-                    <flexTableColumn>
-                        <reportColumn>Account.INFOIntermediaryCode__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>PlanComercial__c.Intermediary_Description__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>PlanComercial__c.Name</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>PlanComercial__c.Actual_KPI__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>PlanComercial__c.TargetKPI__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableSortInfo>
-                        <sortColumn>Account.INFOIntermediaryCode__c</sortColumn>
-                        <sortOrder>1</sortOrder>
-                    </flexTableSortInfo>
-                    <hideChatterPhotos>true</hideChatterPhotos>
-                </flexComponentProperties>
-                <groupingSortProperties/>
-                <header>Prima Cartera (€) Objetivo no alcanzado</header>
-                <report>SDMMACDIGITAL/Prima_Cartera_Objetivo_no_alcanzado_OCL</report>
-            </dashboardComponent>
-            <rowIndex>8</rowIndex>
-            <rowSpan>5</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>4</colSpan>
-            <columnIndex>8</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <componentType>FlexTable</componentType>
-                <dashboardFilterColumns>
-                    <column>Account$Segment_sdm__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>Account$Channel__c</column>
-                </dashboardFilterColumns>
-                <flexComponentProperties>
-                    <decimalPrecision>-1</decimalPrecision>
-                    <flexTableColumn>
-                        <reportColumn>Account.INFOIntermediaryCode__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>Account.IntermediaryDescription__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>PlanComercial__c.Name</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>PlanComercial__c.Actual_KPI__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>PlanComercial__c.TargetKPI__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>detail</type>
-                    </flexTableColumn>
-                    <flexTableSortInfo>
-                        <sortColumn>Account.INFOIntermediaryCode__c</sortColumn>
-                        <sortOrder>1</sortOrder>
-                    </flexTableSortInfo>
-                    <hideChatterPhotos>true</hideChatterPhotos>
-                </flexComponentProperties>
-                <groupingSortProperties/>
-                <header>APES (€) Objetivo no alcanzado</header>
-                <report>SDMMACDIGITAL/APES_Objetivo_no_alcanzado_ykX</report>
-            </dashboardComponent>
-            <rowIndex>8</rowIndex>
-            <rowSpan>5</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
             <colSpan>2</colSpan>
             <columnIndex>0</columnIndex>
             <dashboardComponent>
@@ -365,7 +194,7 @@
                 <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaNB</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>13</rowIndex>
+            <rowIndex>8</rowIndex>
             <rowSpan>4</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -396,7 +225,7 @@
                 <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaNB</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>13</rowIndex>
+            <rowIndex>8</rowIndex>
             <rowSpan>4</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -427,7 +256,7 @@
                 <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaCartera</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>13</rowIndex>
+            <rowIndex>8</rowIndex>
             <rowSpan>4</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -458,7 +287,7 @@
                 <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaCartera</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>13</rowIndex>
+            <rowIndex>8</rowIndex>
             <rowSpan>4</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -489,7 +318,7 @@
                 <report>SDMMACDIGITAL/Informes_para_Paneles/APES</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>13</rowIndex>
+            <rowIndex>8</rowIndex>
             <rowSpan>4</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -520,7 +349,7 @@
                 <report>SDMMACDIGITAL/Informes_para_Paneles/APES</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>13</rowIndex>
+            <rowIndex>8</rowIndex>
             <rowSpan>4</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -599,7 +428,7 @@
                 <header>Prima NB (€)</header>
                 <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaNB</report>
             </dashboardComponent>
-            <rowIndex>17</rowIndex>
+            <rowIndex>12</rowIndex>
             <rowSpan>9</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -667,7 +496,7 @@
                 <header>Prima NB Vida/No vida</header>
                 <report>SDMMACDIGITAL/PrimaNBVidaNoVida</report>
             </dashboardComponent>
-            <rowIndex>26</rowIndex>
+            <rowIndex>21</rowIndex>
             <rowSpan>5</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -740,7 +569,7 @@
                 <header>Prima Cartera (€)</header>
                 <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaCartera</report>
             </dashboardComponent>
-            <rowIndex>31</rowIndex>
+            <rowIndex>26</rowIndex>
             <rowSpan>9</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -808,7 +637,7 @@
                 <header>Prima Cartera Vida/No vida</header>
                 <report>SDMMACDIGITAL/Informes_para_Paneles/PrimaCarteraVidaNoVida</report>
             </dashboardComponent>
-            <rowIndex>40</rowIndex>
+            <rowIndex>35</rowIndex>
             <rowSpan>5</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -887,7 +716,7 @@
                 <header>APES</header>
                 <report>SDMMACDIGITAL/Informes_para_Paneles/APES</report>
             </dashboardComponent>
-            <rowIndex>45</rowIndex>
+            <rowIndex>40</rowIndex>
             <rowSpan>9</rowSpan>
         </dashboardGridComponents>
         <numberOfColumns>12</numberOfColumns>
