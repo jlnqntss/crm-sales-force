@@ -12,8 +12,8 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>CustomerValue__c</field>
-                <uiBehavior>Edit</uiBehavior>
+                <field>GlobalCustomerValue_NoLife__c</field>
+                <uiBehavior>Readonly</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>

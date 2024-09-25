@@ -273,12 +273,12 @@
         <defaultConnectorLabel>Default</defaultConnectorLabel>
         <rules>
             <name>UspOutcome</name>
-            <conditionLogic>1 AND (2 OR 3 OR 4)</conditionLogic>
+            <conditionLogic>1 AND ((2 AND 5) OR 3 OR 4)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>USPInquiry</stringValue>
+                    <elementReference>case_RecordType_USP</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -300,6 +300,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StatusPrior__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>statusPending</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -399,9 +406,19 @@
 Se establece un orden de ejecución tardío al ser una llamada a un sistema externo.</description>
     <environments>Default</environments>
     <formulas>
+        <name>case_RecordType_USP</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_USP.Value__c}</expression>
+    </formulas>
+    <formulas>
         <name>Case_RecordType_ZDA</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_ZDA.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>statusPending</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Query_Filter_Status_Pendiente.Value__c}</expression>
     </formulas>
     <interviewLabel>Case Trigger - After Update - Desconexión interacciones {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Update - Desconexión interacciones</label>

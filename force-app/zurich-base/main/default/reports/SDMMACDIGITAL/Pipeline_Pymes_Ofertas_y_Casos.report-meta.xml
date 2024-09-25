@@ -31,7 +31,12 @@
         <field>Account.Opportunities__r$Name</field>
     </columns>
     <columns>
-        <field>Account.Opportunities__r$InfoUser__c</field>
+        <aggregateTypes>Maximum</aggregateTypes>
+        <field>Account.Opportunities__r$MaxOptionTotalPremium__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Maximum</aggregateTypes>
+        <field>Account.Opportunities__r$NetPremium__c</field>
     </columns>
     <columns>
         <field>Account.Opportunities__r$EffectiveDate__c</field>

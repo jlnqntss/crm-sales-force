@@ -516,6 +516,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Declinado Estado Riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Denegada - Actividad</fullName>
             <default>false</default>
         </values>

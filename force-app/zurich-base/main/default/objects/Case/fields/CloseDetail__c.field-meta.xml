@@ -647,11 +647,13 @@
         <valueSettings>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Retención</controllingFieldValue>
+            <controllingFieldValue>Sin efecto</controllingFieldValue>
             <valueName>Insatisfacción siniestros</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Retención</controllingFieldValue>
+            <controllingFieldValue>Sin efecto</controllingFieldValue>
             <valueName>Insatisfacción mediador</valueName>
         </valueSettings>
         <valueSettings>
@@ -661,16 +663,21 @@
         <valueSettings>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Retención</controllingFieldValue>
+            <controllingFieldValue>Sin efecto</controllingFieldValue>
+            <controllingFieldValue>Impago</controllingFieldValue>
             <valueName>Impago</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>A vencimiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Retención</controllingFieldValue>
             <valueName>Precio - Mejor oferta competencia</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>A vencimiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Retención</controllingFieldValue>
+            <controllingFieldValue>Sin efecto</controllingFieldValue>
             <valueName>Coberturas / Servicio – Mejor oferta competencia</valueName>
         </valueSettings>
         <valueSettings>
@@ -679,23 +686,31 @@
             <valueName>Agravación riesgo</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>A vencimiento</controllingFieldValue>
+            <controllingFieldValue>Agravación del riesgo</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Retención</controllingFieldValue>
+            <controllingFieldValue>Reemplazo</controllingFieldValue>
+            <controllingFieldValue>Sin efecto</controllingFieldValue>
             <valueName>Cambio de Condiciones</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Retención</controllingFieldValue>
+            <controllingFieldValue>A vencimiento</controllingFieldValue>
             <valueName>Llegada a término</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Retención</controllingFieldValue>
+            <controllingFieldValue>Sin efecto</controllingFieldValue>
             <valueName>Insatisfacción Atención CC</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>A vencimiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Retención</controllingFieldValue>
+            <controllingFieldValue>Sin efecto</controllingFieldValue>
             <valueName>Sin motivo / No informado</valueName>
         </valueSettings>
         <valueSettings>
@@ -824,66 +839,30 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Desaparición del riesgo</controllingFieldValue>
-            <controllingFieldValue>Agravación del riesgo</controllingFieldValue>
-            <controllingFieldValue>Sin efecto</controllingFieldValue>
-            <controllingFieldValue>A vencimiento</controllingFieldValue>
-            <controllingFieldValue>Impago</controllingFieldValue>
-            <controllingFieldValue>Reemplazo</controllingFieldValue>
-            <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <valueName>Baja en tráfico</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Desaparición del riesgo</controllingFieldValue>
-            <controllingFieldValue>Agravación del riesgo</controllingFieldValue>
-            <controllingFieldValue>Sin efecto</controllingFieldValue>
-            <controllingFieldValue>A vencimiento</controllingFieldValue>
-            <controllingFieldValue>Impago</controllingFieldValue>
-            <controllingFieldValue>Reemplazo</controllingFieldValue>
-            <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <valueName>Venta-Extorno</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Desaparición del riesgo</controllingFieldValue>
-            <controllingFieldValue>Agravación del riesgo</controllingFieldValue>
-            <controllingFieldValue>Sin efecto</controllingFieldValue>
-            <controllingFieldValue>A vencimiento</controllingFieldValue>
-            <controllingFieldValue>Impago</controllingFieldValue>
-            <controllingFieldValue>Reemplazo</controllingFieldValue>
-            <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <valueName>Venta-Reserva de prima</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Desaparición del riesgo</controllingFieldValue>
-            <controllingFieldValue>Agravación del riesgo</controllingFieldValue>
             <controllingFieldValue>Sin efecto</controllingFieldValue>
-            <controllingFieldValue>A vencimiento</controllingFieldValue>
-            <controllingFieldValue>Impago</controllingFieldValue>
-            <controllingFieldValue>Reemplazo</controllingFieldValue>
-            <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <valueName>Error fecha de efecto</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Desaparición del riesgo</controllingFieldValue>
-            <controllingFieldValue>Agravación del riesgo</controllingFieldValue>
-            <controllingFieldValue>Sin efecto</controllingFieldValue>
             <controllingFieldValue>A vencimiento</controllingFieldValue>
-            <controllingFieldValue>Impago</controllingFieldValue>
-            <controllingFieldValue>Reemplazo</controllingFieldValue>
-            <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <valueName>Resolución SDC</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Desaparición del riesgo</controllingFieldValue>
-            <controllingFieldValue>Agravación del riesgo</controllingFieldValue>
-            <controllingFieldValue>Sin efecto</controllingFieldValue>
-            <controllingFieldValue>A vencimiento</controllingFieldValue>
-            <controllingFieldValue>Impago</controllingFieldValue>
-            <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <valueName>Mal rendimiento</valueName>
