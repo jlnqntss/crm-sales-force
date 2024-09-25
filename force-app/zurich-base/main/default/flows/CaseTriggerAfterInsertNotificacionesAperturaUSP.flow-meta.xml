@@ -52,6 +52,31 @@
         </connector>
     </assignments>
     <decisions>
+        <name>Case_Document_Null</name>
+        <label>Case Document Null?</label>
+        <locationX>413</locationX>
+        <locationY>1247</locationY>
+        <defaultConnector>
+            <targetReference>FulfilPrerequisitesDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Case_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getCaseDocumentAction</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>getDocumentAction</targetReference>
+            </connector>
+            <label>Case Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>CasoClonadoDecision</name>
         <label>¿Caso Clonado?</label>
         <locationX>578</locationX>
@@ -179,6 +204,13 @@
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Generic Internal</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.SuppliedEmail</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -367,7 +399,7 @@
         <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getDocumentAction</targetReference>
+            <targetReference>Case_Document_Null</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>

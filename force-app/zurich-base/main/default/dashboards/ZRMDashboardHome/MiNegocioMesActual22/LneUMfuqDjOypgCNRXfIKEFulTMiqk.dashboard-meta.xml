@@ -217,8 +217,7 @@
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <chartSummary>
-                    <aggregate>Sum</aggregate>
-                    <column>KPI__c.Ratio_Claim__c</column>
+                    <column>FORMULA5</column>
                 </chartSummary>
                 <componentType>Metric</componentType>
                 <decimalPrecision>-1</decimalPrecision>
@@ -231,7 +230,7 @@
                 <indicatorLowColor>#23366F</indicatorLowColor>
                 <indicatorMiddleColor>#23366F</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>ZRMKPIS/Mi_Negocio_Mes_Actual_22_M7Q</report>
+                <report>ZRMKPIS/Mi_Negocio_Mes_Actual_22_2_2h3</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>8</rowIndex>

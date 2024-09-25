@@ -70,6 +70,11 @@
                 <label>Activity</label>
             </value>
             <value>
+                <fullName>Objective</fullName>
+                <default>false</default>
+                <label>Objective</label>
+            </value>
+            <value>
                 <fullName>Contact</fullName>
                 <default>false</default>
                 <label>Contact</label>

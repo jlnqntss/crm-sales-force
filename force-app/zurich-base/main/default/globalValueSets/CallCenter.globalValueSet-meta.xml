@@ -77,9 +77,14 @@
         <label>ZDA</label>
     </customValue>
     <customValue>
-        <fullName>CTL</fullName>
+        <fullName>Departamento de Calidad</fullName>
         <default>false</default>
         <label>CTL</label>
+    </customValue>
+    <customValue>
+        <fullName>CTL</fullName>
+        <default>false</default>
+        <label>CTL Deprecated</label>
     </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
