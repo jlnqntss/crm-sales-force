@@ -8,7 +8,7 @@
         <actionName>Case.Caso_asignado_SDM</actionName>
         <actionType>emailAlert</actionType>
         <connector>
-            <targetReference>Get_Intermediary_Record_Type_Id</targetReference>
+            <targetReference>Tiene_Account</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Generar_Error_Log_Envio_Email</targetReference>
@@ -28,7 +28,7 @@
         <name>Es_mediador</name>
         <label>¿Es mediador?</label>
         <locationX>182</locationX>
-        <locationY>1079</locationY>
+        <locationY>971</locationY>
         <defaultConnector>
             <targetReference>Set_Account</targetReference>
         </defaultConnector>
@@ -40,7 +40,7 @@
                 <leftValueReference>$Record.Account.RecordTypeId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Get_Intermediary_Record_Type_Id.Id</elementReference>
+                    <elementReference>idRecordTypeIntermediary</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -55,7 +55,7 @@
         <locationX>380</locationX>
         <locationY>323</locationY>
         <defaultConnector>
-            <targetReference>Get_Intermediary_Record_Type_Id</targetReference>
+            <targetReference>Tiene_Account</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -85,7 +85,7 @@
         <name>Tiene_Account</name>
         <label>¿Tiene Account?</label>
         <locationX>380</locationX>
-        <locationY>971</locationY>
+        <locationY>863</locationY>
         <defaultConnector>
             <targetReference>Delete_Intermediary_Group</targetReference>
         </defaultConnector>
@@ -107,6 +107,14 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>idRecordTypeIntermediary</name>
+        <dataType>String</dataType>
+        <expression>IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Value__c},{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Value__c}, 
+IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Uat_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Uat_Value__c}, 
+IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Staging_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Staging_Value__c}, 
+{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Dev_Value__c})))</expression>
+    </formulas>
     <interviewLabel>Case Trigger - Before Insert/Update - Informar Intermediary Group {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert/Update - SDM</label>
     <processMetadataValues>
@@ -160,32 +168,11 @@
         <object>Error_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordLookups>
-        <name>Get_Intermediary_Record_Type_Id</name>
-        <label>Get Intermediary Record Type Id</label>
-        <locationX>380</locationX>
-        <locationY>863</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Tiene_Account</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Name</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Intermediary</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>RecordType</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordUpdates>
         <name>Delete_Intermediary_Group</name>
         <label>Delete Intermediary Group</label>
         <locationX>578</locationX>
-        <locationY>1079</locationY>
+        <locationY>971</locationY>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
         </inputAssignments>
@@ -195,7 +182,7 @@
         <name>Set_Account</name>
         <label>Set Account</label>
         <locationX>314</locationX>
-        <locationY>1187</locationY>
+        <locationY>1079</locationY>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
             <value>
@@ -208,7 +195,7 @@
         <name>Set_Parent_Account</name>
         <label>Set Parent Account</label>
         <locationX>50</locationX>
-        <locationY>1187</locationY>
+        <locationY>1079</locationY>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
             <value>
