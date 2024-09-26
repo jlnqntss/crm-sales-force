@@ -1,5 +1,6 @@
 @isTest
 public with sharing class AccountRelationshipUtilTest {
+    
     @TestSetup
     static void makeData()
     {
