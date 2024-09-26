@@ -31,12 +31,7 @@
         <field>Account.Opportunities__r$Name</field>
     </columns>
     <columns>
-        <aggregateTypes>Maximum</aggregateTypes>
-        <field>Account.Opportunities__r$MaxOptionTotalPremium__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Maximum</aggregateTypes>
-        <field>Account.Opportunities__r$NetPremium__c</field>
+        <field>Account.Opportunities__r$InfoUser__c</field>
     </columns>
     <columns>
         <field>Account.Opportunities__r$EffectiveDate__c</field>
@@ -52,6 +47,10 @@
     </columns>
     <columns>
         <field>Account$Status__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Opportunities__r$MaxOptionTotalPremium__c</field>
     </columns>
     <columns>
         <field>Account.Opportunities__r.Cases__r$Subtype__c</field>
@@ -94,9 +93,6 @@
     </columns>
     <columns>
         <field>Account.Opportunities__r.Cases__r$RiskAppetite__c</field>
-    </columns>
-    <columns>
-        <field>Account.Opportunities__r$ChanceOfSuccess__c</field>
     </columns>
     <columns>
         <field>Account.Opportunities__r$Comments__c</field>
@@ -167,25 +163,11 @@
             <value>,Asignado,En Gestión,En espera,No Iniciado,Nuevo,New,Pendiente,Reabierto,Respondido,Respuesta recibida,Resuelto</value>
         </criteriaItems>
         <criteriaItems>
-            <column>Account.Opportunities__r$TotalPremium__c</column>
+            <column>Account.Opportunities__r$MaxOptionTotalPremium__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>greaterThan</operator>
+            <operator>greaterOrEqual</operator>
             <value>0</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Account.Opportunities__r$TotalPremium__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>lessThan</operator>
-            <value>1000000</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Account.Opportunities__r$ProductBranch__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>,0000000005,0000000001,AUTOS,0000000017,0000000003,0000000010,0000000006,0000000011,0000000002,0000000004,0000000008,0000000012,0000000015,0000000007,0000000009,0000000014,0000000013,0000000016</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
@@ -201,7 +183,7 @@
         <value>1</value>
     </params>
     <reportType>Accounts_Offers_and_Cases__c</reportType>
-    <scope>ownaccountteam</scope>
+    <scope>accountteamteam</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
