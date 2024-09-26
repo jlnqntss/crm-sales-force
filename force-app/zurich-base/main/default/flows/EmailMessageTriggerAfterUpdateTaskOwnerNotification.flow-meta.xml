@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Get_Id_Custom_Notification</name>
         <label>Get Id Custom Notification</label>
-        <locationX>50</locationX>
-        <locationY>431</locationY>
+        <locationX>226</locationX>
+        <locationY>1139</locationY>
         <actionName>GetGlobalConfigurationValueIdFlow</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -30,7 +30,7 @@
     <actionCalls>
         <name>sendNotificationTaskOwner</name>
         <label>Send Notification Task Owner</label>
-        <locationX>182</locationX>
+        <locationX>226</locationX>
         <locationY>1547</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
@@ -75,8 +75,8 @@
     <assignments>
         <name>IdNotificationAssignment</name>
         <label>Id Notification Assignment</label>
-        <locationX>138</locationX>
-        <locationY>647</locationY>
+        <locationX>314</locationX>
+        <locationY>1355</locationY>
         <assignmentItems>
             <assignToReference>idNotificacion</assignToReference>
             <operator>Assign</operator>
@@ -92,7 +92,7 @@
         <name>idOwnerAssigment</name>
         <label>ID Owner Assignment</label>
         <locationX>314</locationX>
-        <locationY>1163</locationY>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>idsOwner</assignToReference>
             <operator>Add</operator>
@@ -108,7 +108,7 @@
         <name>duplicatedValueDecision</name>
         <label>Duplicated value</label>
         <locationX>226</locationX>
-        <locationY>1055</locationY>
+        <locationY>647</locationY>
         <defaultConnector>
             <targetReference>idOwnerAssigment</targetReference>
         </defaultConnector>
@@ -133,9 +133,9 @@
         <name>noTaskDecision</name>
         <label>No Task Decision</label>
         <locationX>50</locationX>
-        <locationY>1439</locationY>
+        <locationY>1031</locationY>
         <defaultConnector>
-            <targetReference>sendNotificationTaskOwner</targetReference>
+            <targetReference>Get_Id_Custom_Notification</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Task</defaultConnectorLabel>
         <rules>
@@ -154,7 +154,7 @@
     <decisions>
         <name>uspCaseDecision</name>
         <label>USP Case</label>
-        <locationX>512</locationX>
+        <locationX>534</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Not USP</defaultConnectorLabel>
         <rules>
@@ -168,7 +168,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Id_Custom_Notification</targetReference>
+                <targetReference>getTaskAssociated</targetReference>
             </connector>
             <label>Case USP</label>
         </rules>
@@ -189,22 +189,22 @@
     <loops>
         <name>Loop_Id_Custom_Notification</name>
         <label>Loop Id Custom Notification</label>
-        <locationX>50</locationX>
-        <locationY>539</locationY>
+        <locationX>226</locationX>
+        <locationY>1247</locationY>
         <collectionReference>Get_Id_Custom_Notification</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>IdNotificationAssignment</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>getTaskAssociated</targetReference>
+            <targetReference>sendNotificationTaskOwner</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
         <name>taskLoop</name>
         <label>Task Loop</label>
         <locationX>50</locationX>
-        <locationY>947</locationY>
+        <locationY>539</locationY>
         <collectionReference>getTaskAssociated</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -236,8 +236,8 @@
     <recordCreates>
         <name>createRecordGetTaskAssociatedErrorAction</name>
         <label>Create Record Get Task Associated Error Action</label>
-        <locationX>710</locationX>
-        <locationY>947</locationY>
+        <locationX>754</locationX>
+        <locationY>539</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -268,7 +268,7 @@
     <recordCreates>
         <name>createRecordSendNotificationErrorAction</name>
         <label>Create Record Send Notification Error Action</label>
-        <locationX>446</locationX>
+        <locationX>490</locationX>
         <locationY>1655</locationY>
         <inputAssignments>
             <field>Message__c</field>
@@ -301,7 +301,7 @@
         <name>getTaskAssociated</name>
         <label>Get Task Associated</label>
         <locationX>50</locationX>
-        <locationY>839</locationY>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>taskLoop</targetReference>
@@ -329,7 +329,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>386</locationX>
+        <locationX>408</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>uspCaseDecision</targetReference>
