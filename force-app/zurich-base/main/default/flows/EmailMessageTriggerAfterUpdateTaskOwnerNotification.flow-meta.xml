@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Get_Id_Custom_Notification</name>
+        <label>Get Id Custom Notification</label>
+        <locationX>226</locationX>
+        <locationY>1139</locationY>
+        <actionName>GetGlobalConfigurationValueIdFlow</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Loop_Id_Custom_Notification</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>globalValueName</name>
+            <value>
+                <elementReference>Notificacion_CaseTrackingAnswered_Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>idORg</name>
+            <value>
+                <elementReference>idORG</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>GetGlobalConfigurationValueIdFlow</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
         <name>sendNotificationTaskOwner</name>
         <label>Send Notification Task Owner</label>
-        <locationX>182</locationX>
-        <locationY>1367</locationY>
+        <locationX>226</locationX>
+        <locationY>1547</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <faultConnector>
@@ -14,19 +41,7 @@
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
-                <elementReference>getCustomNotificationAction.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>body</name>
-            <value>
-                <elementReference>formulaBody</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>title</name>
-            <value>
-                <elementReference>tittleOwner</elementReference>
+                <elementReference>idNotificacion</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -36,18 +51,48 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>tittleOwner</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>formulaBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>targetId</name>
             <value>
                 <elementReference>$Record.Parent.Id</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>56.0</apiVersion>
+    <assignments>
+        <name>IdNotificationAssignment</name>
+        <label>Id Notification Assignment</label>
+        <locationX>314</locationX>
+        <locationY>1355</locationY>
+        <assignmentItems>
+            <assignToReference>idNotificacion</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Id_Custom_Notification</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Id_Custom_Notification</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <name>idOwnerAssigment</name>
         <label>ID Owner Assignment</label>
         <locationX>314</locationX>
-        <locationY>935</locationY>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>idsOwner</assignToReference>
             <operator>Add</operator>
@@ -63,7 +108,7 @@
         <name>duplicatedValueDecision</name>
         <label>Duplicated value</label>
         <locationX>226</locationX>
-        <locationY>815</locationY>
+        <locationY>647</locationY>
         <defaultConnector>
             <targetReference>idOwnerAssigment</targetReference>
         </defaultConnector>
@@ -88,9 +133,9 @@
         <name>noTaskDecision</name>
         <label>No Task Decision</label>
         <locationX>50</locationX>
-        <locationY>1247</locationY>
+        <locationY>1031</locationY>
         <defaultConnector>
-            <targetReference>sendNotificationTaskOwner</targetReference>
+            <targetReference>Get_Id_Custom_Notification</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Task</defaultConnectorLabel>
         <rules>
@@ -109,8 +154,8 @@
     <decisions>
         <name>uspCaseDecision</name>
         <label>USP Case</label>
-        <locationX>644</locationX>
-        <locationY>335</locationY>
+        <locationX>534</locationX>
+        <locationY>323</locationY>
         <defaultConnectorLabel>Not USP</defaultConnectorLabel>
         <rules>
             <name>caseUspOutcome</name>
@@ -123,7 +168,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>getCustomNotificationAction</targetReference>
+                <targetReference>getTaskAssociated</targetReference>
             </connector>
             <label>Case USP</label>
         </rules>
@@ -134,13 +179,32 @@
         <dataType>String</dataType>
         <expression>{!principioBody}+{!$Record.Parent.CaseNumber}+{!finalBody}</expression>
     </formulas>
+    <formulas>
+        <name>idORG</name>
+        <dataType>String</dataType>
+        <expression>CASESAFEID({!$Organization.Id})</expression>
+    </formulas>
     <interviewLabel>EmailMessage Trigger - After update - Task Owner Notification {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage Trigger - After update - Task Owner Notification</label>
+    <loops>
+        <name>Loop_Id_Custom_Notification</name>
+        <label>Loop Id Custom Notification</label>
+        <locationX>226</locationX>
+        <locationY>1247</locationY>
+        <collectionReference>Get_Id_Custom_Notification</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>IdNotificationAssignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>sendNotificationTaskOwner</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <loops>
         <name>taskLoop</name>
         <label>Task Loop</label>
         <locationX>50</locationX>
-        <locationY>695</locationY>
+        <locationY>539</locationY>
         <collectionReference>getTaskAssociated</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -170,42 +234,10 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
-        <name>createRecordGetNotificationErrorAction</name>
-        <label>Create Record Get Notification Error Action</label>
-        <locationX>974</locationX>
-        <locationY>575</locationY>
-        <inputAssignments>
-            <field>Message__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Class__c</field>
-            <value>
-                <stringValue>EmailMessage Trigger - After update - Task Owner Notification</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Method__c</field>
-            <value>
-                <stringValue>Recuperar notificación custom</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Throwing_Time__c</field>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Error_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
         <name>createRecordGetTaskAssociatedErrorAction</name>
         <label>Create Record Get Task Associated Error Action</label>
-        <locationX>710</locationX>
-        <locationY>695</locationY>
+        <locationX>754</locationX>
+        <locationY>539</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -236,8 +268,8 @@
     <recordCreates>
         <name>createRecordSendNotificationErrorAction</name>
         <label>Create Record Send Notification Error Action</label>
-        <locationX>446</locationX>
-        <locationY>1487</locationY>
+        <locationX>490</locationX>
+        <locationY>1655</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -266,34 +298,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
-        <name>getCustomNotificationAction</name>
-        <label>Get Custom Notification</label>
-        <locationX>50</locationX>
-        <locationY>455</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>getTaskAssociated</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>createRecordGetNotificationErrorAction</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>CaseTrackingAnswered</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>CustomNotificationType</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>getTaskAssociated</name>
         <label>Get Task Associated</label>
         <locationX>50</locationX>
-        <locationY>575</locationY>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>taskLoop</targetReference>
@@ -321,7 +329,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>518</locationX>
+        <locationX>408</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>uspCaseDecision</targetReference>
@@ -370,11 +378,28 @@
         </value>
     </variables>
     <variables>
+        <name>idNotificacion</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>idsOwner</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Notificacion_CaseTrackingAnswered_Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Notificacion_CaseTrackingAnswered_Id</stringValue>
+        </value>
     </variables>
     <variables>
         <name>principioBody</name>
