@@ -5,6 +5,9 @@
 .sfdx/
 .localdevserver
 
+# Salesforce plugins
+docs
+
 # Temp files
 tmp/force-app/*
 .tmp/
