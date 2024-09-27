@@ -12,6 +12,7 @@
     "Staging - Validar": "sf project deploy validate --source-dir force-app --target-org zurich-staging",
     "Limpiar Memoria de Seguimiento Cambios": "sf project reset tracking",
     "Desplegar Cambios Destructivos": "sf project deploy start --ignore-conflicts --manifest .\\manifest\\package.xml --pre-destructive-changes .\\manifest\\destructiveChanges.xml --ignore-warnings --test-level RunLocalTests",
+    "Generar Documento - Modelo de Datos": "sfdx nts1:docs:generate --format=asciidoc",
     "Instalar Herramientas": "npm install",
     "lint": "npm run lint:lwc",
     "lint:lwc": "eslint --no-error-on-unmatched-pattern force-app/**/main/default/lwc",
