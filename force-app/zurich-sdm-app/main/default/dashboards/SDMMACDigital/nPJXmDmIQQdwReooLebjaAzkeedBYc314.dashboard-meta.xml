@@ -223,7 +223,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACRNConsultores/Seguimiento_diario_Mac_Digital_YTD</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -260,7 +260,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACRNConsultores/Seguimiento_diario_Mac_Digital_YTD</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -298,7 +298,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACRNConsultores/Seguimiento_diario_Mac_Digital_YTD</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -335,7 +335,7 @@
                 <indicatorLowColor>#00716B</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACRNConsultores/Seguimiento_diario_Mac_Digital_YTD</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -372,7 +372,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACRNConsultores/Seguimiento_diario_Mac_Digital_YTD</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -466,7 +466,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Panel mediadores YTD</header>
-                <report>SDMMACRNConsultores/KPI_s_Mediadores_YTD</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPI_s_Mediadores_YTD</report>
             </dashboardComponent>
             <rowIndex>5</rowIndex>
             <rowSpan>16</rowSpan>
@@ -502,7 +502,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACRNConsultores/Seguimiento_diario_MacDigital_Mes_Actual</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>21</rowIndex>
@@ -541,7 +541,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACRNConsultores/Seguimiento_diario_MacDigital_Mes_Actual</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>21</rowIndex>
@@ -580,7 +580,7 @@
                 <indicatorLowColor>#ABABAB</indicatorLowColor>
                 <indicatorMiddleColor>#ABABAB</indicatorMiddleColor>
                 <metricLabel>Mes cerrado pa</metricLabel>
-                <report>SDMMACRNConsultores/Seguimiento_diario_MacDigital_Mes_Actual</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>21</rowIndex>
@@ -618,7 +618,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACRNConsultores/Seguimiento_diario_MacDigital_Mes_Actual</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>21</rowIndex>
@@ -656,7 +656,7 @@
                 <indicatorLowColor>#ABABAB</indicatorLowColor>
                 <indicatorMiddleColor>#ABABAB</indicatorMiddleColor>
                 <metricLabel>Mes cerrado pa</metricLabel>
-                <report>SDMMACRNConsultores/Seguimiento_diario_MacDigital_Mes_Actual</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>21</rowIndex>
@@ -694,7 +694,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACRNConsultores/Seguimiento_diario_MacDigital_Mes_Actual</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>21</rowIndex>
@@ -788,7 +788,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Panel Mediadores Mes Actual</header>
-                <report>SDMMACDIGITAL/KPI_s_Mediadores_Mes_Actual</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPI_s_Mediadores_Mes_Actual</report>
             </dashboardComponent>
             <rowIndex>26</rowIndex>
             <rowSpan>16</rowSpan>
@@ -872,7 +872,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>KPI&apos;s YTD detalle producto</header>
-                <report>SDMMACDIGITAL/KPI_s_YTD</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPI_s_YTD</report>
             </dashboardComponent>
             <rowIndex>42</rowIndex>
             <rowSpan>15</rowSpan>
@@ -956,7 +956,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>KPI&apos;s Mes Actual detalle producto</header>
-                <report>SDMMACDIGITAL/KPIs_Mes_detalle_producto_ioW</report>
+                <report>SDMMACDIGITAL/Informes_para_Paneles/KPIs_Mes_detalle_producto_ioW</report>
             </dashboardComponent>
             <rowIndex>57</rowIndex>
             <rowSpan>14</rowSpan>
