@@ -3640,6 +3640,11 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
+            <field>MaxOptionNetPremium__c</field>
+            <table>Account.Opportunities__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
             <field>Comments__c</field>
             <table>Account.Opportunities__r</table>
         </columns>
@@ -3649,13 +3654,5 @@
             <table>Account.Opportunities__r</table>
         </columns>
         <masterLabel>Offers</masterLabel>
-    </sections>
-    <sections>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
-            <field>MaxOptionNetPremium__c</field>
-            <table>Account.Opportunities__r</table>
-        </columns>
-        <masterLabel>Ofertas</masterLabel>
     </sections>
 </ReportType>
