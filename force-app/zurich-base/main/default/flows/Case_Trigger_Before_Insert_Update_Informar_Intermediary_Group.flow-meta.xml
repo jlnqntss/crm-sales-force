@@ -107,15 +107,13 @@
         </rules>
     </decisions>
     <environments>Default</environments>
-       <formulas>
+    <formulas>
         <name>idRecordTypeIntermediary</name>
         <dataType>String</dataType>
-        <expression>IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Value__c},{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Value__c}, 
-IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Uat_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Uat_Value__c}, 
-IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Staging_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Staging_Value__c}, 
-{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Dev_Value__c})
-)
-)</expression>
+        <expression>IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Value__c},{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Value__c}, 
+IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Uat_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Uat_Value__c}, 
+IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Staging_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Staging_Value__c}, 
+{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Dev_Value__c})))</expression>
     </formulas>
     <interviewLabel>Case Trigger - Before Insert/Update - Informar Intermediary Group {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert/Update - SDM</label>

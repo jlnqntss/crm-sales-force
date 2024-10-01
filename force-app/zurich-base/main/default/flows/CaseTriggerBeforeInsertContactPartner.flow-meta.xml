@@ -5,7 +5,7 @@
         <name>PolicyPartnerAssignment</name>
         <label>Asignación Partner Póliza</label>
         <locationX>182</locationX>
-        <locationY>671</locationY>
+        <locationY>503</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -21,7 +21,7 @@
         <name>CaseUspDecision</name>
         <label>Caso USP</label>
         <locationX>611</locationX>
-        <locationY>311</locationY>
+        <locationY>287</locationY>
         <defaultConnectorLabel>Not USP</defaultConnectorLabel>
         <rules>
             <name>USPOutcome</name>
@@ -43,7 +43,7 @@
         <name>PolicyNotNullDecision</name>
         <label>Poliza Informada</label>
         <locationX>380</locationX>
-        <locationY>551</locationY>
+        <locationY>395</locationY>
         <defaultConnector>
             <targetReference>GetContactsAction</targetReference>
         </defaultConnector>
@@ -75,7 +75,7 @@
         <name>SuppliedEmailDecision</name>
         <label>¿Supplied Email informado?</label>
         <locationX>182</locationX>
-        <locationY>791</locationY>
+        <locationY>611</locationY>
         <defaultConnectorLabel>Supplied Email no informado</defaultConnectorLabel>
         <rules>
             <name>SuppliedEmailOutcome</name>
@@ -106,9 +106,9 @@
     <formulas>
         <name>idRecordTypeContactPartner</name>
         <dataType>String</dataType>
-        <expression>IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Value__c},{!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Value__c}, 
-IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Uat_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Uat_Value__c}, 
-IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Staging_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Staging_Value__c}, 
+        <expression>IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Value__c},{!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Value__c}, 
+IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Uat_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Uat_Value__c}, 
+IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Staging_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Staging_Value__c}, 
 {!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Dev_Value__c})
 )
 )</expression>
@@ -138,7 +138,7 @@ IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.
         <name>GetContactAccountPartnerAction</name>
         <label>Recuperar Contacto Cuenta Partner</label>
         <locationX>50</locationX>
-        <locationY>911</locationY>
+        <locationY>719</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
@@ -174,7 +174,7 @@ IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.
         <name>GetContactsAction</name>
         <label>Recuperar Contactos</label>
         <locationX>578</locationX>
-        <locationY>671</locationY>
+        <locationY>503</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>

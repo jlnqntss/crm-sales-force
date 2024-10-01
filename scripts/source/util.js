@@ -289,10 +289,16 @@ function deploy(deployConfig) {
 
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
-
-  let deployResult = executeSfdxCommand(
-    `sf project deploy start ${deployOptions.join(" ")}`
-  );
+  let deployResult = null;
+  try {
+    deployResult = executeSfdxCommand(
+      `sf project deploy start ${deployOptions.join(" ")}`
+    );
+  }
+  catch(err) {
+    console.error(`[Error] Deployment failed.`);
+    process.exit(1);
+  }
   console.log('Parseando resultado...');
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
@@ -327,7 +333,7 @@ function deploy(deployConfig) {
   fs.writeFileSync("results.json", JSON.stringify(deployReport));
 }
 
-async function findLastSemanticTag(targetSuffix) {
+async function findLastSemanticTag(targetSuffix, idx = 0) {
   const gitLabService = new GitlabAPIService({
     baseUrl: process.env["CI_API_V4_URL"],
     projectId: process.env["CI_PROJECT_ID"],
@@ -342,7 +348,7 @@ async function findLastSemanticTag(targetSuffix) {
   let tagToSearch = new RegExp(
     `^\\d*.\\d*.\\d*${targetSuffix ? "-" + targetSuffix : ""}`
   );
-  let lastTag = getLastSemanticTag(currentBranchTags, tagToSearch);
+  let lastTag = getLastSemanticTag(currentBranchTags, tagToSearch, idx);
 
   // 3 - Si no existe tag, se genera la inicial
   if (!lastTag) {

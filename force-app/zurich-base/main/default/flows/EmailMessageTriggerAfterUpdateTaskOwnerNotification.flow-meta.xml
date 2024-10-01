@@ -1,9 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Get_Id_Custom_Notification</name>
+        <label>Get Id Custom Notification</label>
+        <locationX>226</locationX>
+        <locationY>1139</locationY>
+        <actionName>GetGlobalConfigurationValueIdFlow</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Loop_Id_Custom_Notification</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>globalValueName</name>
+            <value>
+                <elementReference>Notificacion_CaseTrackingAnswered_Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>idORg</name>
+            <value>
+                <elementReference>idORG</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>GetGlobalConfigurationValueIdFlow</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
         <name>sendNotificationTaskOwner</name>
         <label>Send Notification Task Owner</label>
-        <locationX>182</locationX>
+        <locationX>226</locationX>
         <locationY>1547</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
@@ -14,7 +41,7 @@
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
-                <elementReference>idNotificacionFormula</elementReference>
+                <elementReference>idNotificacion</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -46,10 +73,26 @@
     </actionCalls>
     <apiVersion>56.0</apiVersion>
     <assignments>
+        <name>IdNotificationAssignment</name>
+        <label>Id Notification Assignment</label>
+        <locationX>314</locationX>
+        <locationY>1355</locationY>
+        <assignmentItems>
+            <assignToReference>idNotificacion</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Id_Custom_Notification</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Id_Custom_Notification</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>idOwnerAssigment</name>
         <label>ID Owner Assignment</label>
         <locationX>314</locationX>
-        <locationY>1163</locationY>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>idsOwner</assignToReference>
             <operator>Add</operator>
@@ -65,7 +108,7 @@
         <name>duplicatedValueDecision</name>
         <label>Duplicated value</label>
         <locationX>226</locationX>
-        <locationY>1055</locationY>
+        <locationY>647</locationY>
         <defaultConnector>
             <targetReference>idOwnerAssigment</targetReference>
         </defaultConnector>
@@ -90,9 +133,9 @@
         <name>noTaskDecision</name>
         <label>No Task Decision</label>
         <locationX>50</locationX>
-        <locationY>1439</locationY>
+        <locationY>1031</locationY>
         <defaultConnector>
-            <targetReference>sendNotificationTaskOwner</targetReference>
+            <targetReference>Get_Id_Custom_Notification</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Task</defaultConnectorLabel>
         <rules>
@@ -111,7 +154,7 @@
     <decisions>
         <name>uspCaseDecision</name>
         <label>USP Case</label>
-        <locationX>512</locationX>
+        <locationX>534</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Not USP</defaultConnectorLabel>
         <rules>
@@ -137,27 +180,31 @@
         <expression>{!principioBody}+{!$Record.Parent.CaseNumber}+{!finalBody}</expression>
     </formulas>
     <formulas>
-        <name>idNotificacionFormula</name>
-        <dataType>String</dataType>
-        <expression>IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Value__c},{!$CustomMetadata.Global_Configuration__mdt.Notificacion_CaseTrackingAnswered_Id.Value__c}, 
-IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Uat_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Notificacion_CaseTrackingAnswered_Id.Uat_Value__c}, 
-IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Staging_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Notificacion_CaseTrackingAnswered_Id.Staging_Value__c}, 
-{!$CustomMetadata.Global_Configuration__mdt.Notificacion_CaseTrackingAnswered_Id.Dev_Value__c})
-)
-)</expression>
-    </formulas>
-    <formulas>
         <name>idORG</name>
         <dataType>String</dataType>
-        <expression>{!$Organization.Id}</expression>
+        <expression>CASESAFEID({!$Organization.Id})</expression>
     </formulas>
     <interviewLabel>EmailMessage Trigger - After update - Task Owner Notification {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage Trigger - After update - Task Owner Notification</label>
     <loops>
+        <name>Loop_Id_Custom_Notification</name>
+        <label>Loop Id Custom Notification</label>
+        <locationX>226</locationX>
+        <locationY>1247</locationY>
+        <collectionReference>Get_Id_Custom_Notification</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>IdNotificationAssignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>sendNotificationTaskOwner</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>taskLoop</name>
         <label>Task Loop</label>
         <locationX>50</locationX>
-        <locationY>947</locationY>
+        <locationY>539</locationY>
         <collectionReference>getTaskAssociated</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -189,8 +236,8 @@ IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.
     <recordCreates>
         <name>createRecordGetTaskAssociatedErrorAction</name>
         <label>Create Record Get Task Associated Error Action</label>
-        <locationX>710</locationX>
-        <locationY>947</locationY>
+        <locationX>754</locationX>
+        <locationY>539</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -221,7 +268,7 @@ IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.
     <recordCreates>
         <name>createRecordSendNotificationErrorAction</name>
         <label>Create Record Send Notification Error Action</label>
-        <locationX>446</locationX>
+        <locationX>490</locationX>
         <locationY>1655</locationY>
         <inputAssignments>
             <field>Message__c</field>
@@ -254,7 +301,7 @@ IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.
         <name>getTaskAssociated</name>
         <label>Get Task Associated</label>
         <locationX>50</locationX>
-        <locationY>839</locationY>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>taskLoop</targetReference>
@@ -282,7 +329,7 @@ IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>386</locationX>
+        <locationX>408</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>uspCaseDecision</targetReference>

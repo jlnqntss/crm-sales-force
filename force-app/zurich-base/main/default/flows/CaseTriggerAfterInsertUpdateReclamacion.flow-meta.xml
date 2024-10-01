@@ -31,7 +31,7 @@
         <name>SendNotificacionReclamacionAction</name>
         <label>Send Notificación Reclamación</label>
         <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationY>947</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -89,7 +89,7 @@
         <name>OwnerAssignment</name>
         <label>Owner Assignment</label>
         <locationX>50</locationX>
-        <locationY>539</locationY>
+        <locationY>839</locationY>
         <assignmentItems>
             <assignToReference>IdsOwner</assignToReference>
             <operator>Add</operator>
@@ -139,7 +139,7 @@
     <formulas>
         <name>idORG</name>
         <dataType>String</dataType>
-        <expression>{!$Organization.Id}</expression>
+        <expression>CASESAFEID({!$Organization.Id})</expression>
     </formulas>
     <interviewLabel>Case Trigger - After insert/update - Reclamación {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After insert/update - Reclamación</label>

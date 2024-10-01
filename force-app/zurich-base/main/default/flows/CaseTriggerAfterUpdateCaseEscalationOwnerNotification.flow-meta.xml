@@ -4,7 +4,7 @@
         <name>caseEscalationOwnerAction</name>
         <label>caseEscalationOwnerAction</label>
         <locationX>50</locationX>
-        <locationY>755</locationY>
+        <locationY>1055</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -89,7 +89,7 @@
         <name>idOwnerAssigment</name>
         <label>idOwnerAssigment</label>
         <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationY>947</locationY>
         <assignmentItems>
             <assignToReference>idsOwner</assignToReference>
             <operator>Add</operator>
@@ -149,7 +149,7 @@
     <formulas>
         <name>idORG</name>
         <dataType>String</dataType>
-        <expression>{!$Organization.Id}</expression>
+        <expression>CASESAFEID({!$Organization.Id})</expression>
     </formulas>
     <interviewLabel>Case Trigger - After Update - Case Escalation Owner Notification {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Update - Case Escalation Owner Notification</label>
@@ -196,7 +196,7 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>bodyOwner</name>
         <dataType>String</dataType>
