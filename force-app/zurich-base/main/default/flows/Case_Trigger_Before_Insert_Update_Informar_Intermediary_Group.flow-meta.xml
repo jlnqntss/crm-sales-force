@@ -92,12 +92,26 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>(1 AND 2) OR 3</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.AccountId</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Intermediary_Group__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AccountId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -210,7 +224,7 @@ IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.I
         <connector>
             <targetReference>Owner_ha_cambiado_a_un_usuario_de_SDM</targetReference>
         </connector>
-        <filterLogic>(1 AND 2) OR 3 OR 4</filterLogic>
+        <filterLogic>((1 AND 2) OR 3 OR 4) AND 5 AND 6</filterLogic>
         <filters>
             <field>Intermediary_Group__c</field>
             <operator>IsNull</operator>
@@ -237,6 +251,20 @@ IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.I
             <operator>IsChanged</operator>
             <value>
                 <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cerrado</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Combinado</stringValue>
             </value>
         </filters>
         <object>Case</object>
