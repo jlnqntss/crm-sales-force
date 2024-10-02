@@ -5,7 +5,7 @@
     <deployed>true</deployed>
     <description>Accounts with Planes Comerciales</description>
     <join>
-        <outerJoin>true</outerJoin>
+        <outerJoin>false</outerJoin>
         <relationship>PlanComercial__r</relationship>
     </join>
     <label>Accounts with Planes Comerciales</label>
