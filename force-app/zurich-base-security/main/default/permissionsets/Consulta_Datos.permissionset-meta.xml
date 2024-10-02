@@ -4045,7 +4045,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Task.MI_Equipo_Escalada__c</field>
+        <field>Task.Mi_Equipo_Escalada__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
