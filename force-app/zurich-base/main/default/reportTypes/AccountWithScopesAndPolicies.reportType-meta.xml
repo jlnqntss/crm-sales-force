@@ -2301,11 +2301,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>PersonContact.TitleType</field>
-            <table>Account</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>PersonContact.SourceCountry__c</field>
             <table>Account</table>
         </columns>
