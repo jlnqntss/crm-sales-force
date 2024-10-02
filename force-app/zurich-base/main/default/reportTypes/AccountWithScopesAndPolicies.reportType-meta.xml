@@ -1836,11 +1836,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>PersonContact.BuyerAttributes</field>
-            <table>Account</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>PersonContact.CNO__c</field>
             <table>Account</table>
         </columns>
