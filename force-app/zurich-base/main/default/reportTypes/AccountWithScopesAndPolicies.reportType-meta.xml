@@ -1901,11 +1901,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>PersonContact.DepartmentGroup</field>
-            <table>Account</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>PersonContact.Description</field>
             <table>Account</table>
         </columns>
