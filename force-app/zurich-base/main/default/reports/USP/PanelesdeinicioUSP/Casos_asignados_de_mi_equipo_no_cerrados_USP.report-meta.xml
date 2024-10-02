@@ -42,8 +42,8 @@
             <column>STATUS</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>Asignado,Nuevo,New</value>
+            <operator>notEqual</operator>
+            <value>Cerrado,Closed,Combinado</value>
         </criteriaItems>
         <criteriaItems>
             <column>Case.SoyManager__c</column>
@@ -51,6 +51,13 @@
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
             <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Case.PendingBy__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Supervisor,Other areas Zurich,Intermediary,Technical Direction,Territorial Direction,Others,Deferred,Consultant</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>

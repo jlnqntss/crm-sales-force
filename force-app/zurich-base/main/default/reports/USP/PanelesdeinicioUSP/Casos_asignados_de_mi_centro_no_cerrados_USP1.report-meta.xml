@@ -31,7 +31,7 @@
         <field>LAST_UPDATE_BY</field>
     </columns>
     <filter>
-        <booleanFilter>1 AND 2 AND (3 OR 4)</booleanFilter>
+        <booleanFilter>1 AND 2 AND 3</booleanFilter>
         <criteriaItems>
             <column>RECORDTYPE</column>
             <columnToColumn>false</columnToColumn>
@@ -50,15 +50,8 @@
             <column>STATUS</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>Nuevo,New</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>STATUS</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>Asignado</value>
+            <operator>notEqual</operator>
+            <value>Cerrado,Closed,Combinado</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
