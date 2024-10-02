@@ -4,7 +4,7 @@
     <assignments>
         <name>Asignar_SLA_Caso_Hijio</name>
         <label>Asignar SLA caso hijo</label>
-        <locationX>666</locationX>
+        <locationX>842</locationX>
         <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
@@ -17,7 +17,7 @@
     <assignments>
         <name>Asignar_SLA_caso_respondido</name>
         <label>Asignar SLA caso respondido</label>
-        <locationX>930</locationX>
+        <locationX>1106</locationX>
         <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
@@ -28,9 +28,23 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <description>Asignamos el valor máximo de SLA para los casos más urgentes de ZDA</description>
+        <name>Asignar_SLA_maximo_ZDA</name>
+        <label>Asignar SLA máximo ZDA</label>
+        <locationX>1722</locationX>
+        <locationY>866</locationY>
+        <assignmentItems>
+            <assignToReference>calculatedSla</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>SLA_Urgente_ZDA_Formula</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>AsignarSLACasoInmuebles</name>
         <label>Asignar SLA caso inmuebles</label>
-        <locationX>402</locationX>
+        <locationX>578</locationX>
         <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
@@ -43,8 +57,8 @@
     <assignments>
         <name>EstimatedEndDateAssignment</name>
         <label>Establecer fecha estimada cierre</label>
-        <locationX>1634</locationX>
-        <locationY>566</locationY>
+        <locationX>1986</locationX>
+        <locationY>782</locationY>
         <assignmentItems>
             <assignToReference>EstimatedEndDate</assignToReference>
             <operator>Assign</operator>
@@ -53,14 +67,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>SetZDASLAAssignement</targetReference>
+            <targetReference>SLAsBaseZDA_Loop</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>MaxSlaAssignment</name>
         <label>Asignar SLA máximo</label>
-        <locationX>1238</locationX>
-        <locationY>1142</locationY>
+        <locationX>50</locationX>
+        <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
             <operator>Assign</operator>
@@ -72,8 +86,8 @@
     <assignments>
         <name>SetZDASLAAssignement</name>
         <label>Asignar SLA ZDA</label>
-        <locationX>1898</locationX>
-        <locationY>758</locationY>
+        <locationX>2250</locationX>
+        <locationY>1274</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
             <operator>Assign</operator>
@@ -83,9 +97,25 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>SLABaseZDAVariable_Assignment</name>
+        <label>Asignar SLA base ZDA a Variable</label>
+        <locationX>2338</locationX>
+        <locationY>1082</locationY>
+        <assignmentItems>
+            <assignToReference>SLA_Base_ZDA_Var</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>SLAsBaseZDA_Loop.Value__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>SLAsBaseZDA_Loop</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>SlaCalculationAssignment</name>
         <label>Cálculo de SLA</label>
-        <locationX>138</locationX>
+        <locationX>314</locationX>
         <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
@@ -95,10 +125,68 @@
             </value>
         </assignmentItems>
     </assignments>
+    <assignments>
+        <name>SLAMaximoZDAVariable_Assignment</name>
+        <label>Asignar SLA máximo ZDA a Variable</label>
+        <locationX>1810</locationX>
+        <locationY>674</locationY>
+        <assignmentItems>
+            <assignToReference>SLA_Urgente_ZDA_Var</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>SLAsUrgentesZDA_Loop.Value__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>SLAsUrgentesZDA_Loop</targetReference>
+        </connector>
+    </assignments>
+    <collectionProcessors>
+        <name>ObtenerSLABaseZDAFilter</name>
+        <elementSubtype>FilterCollectionProcessor</elementSubtype>
+        <label>Filtrar SLA Base ZDA</label>
+        <locationX>2250</locationX>
+        <locationY>458</locationY>
+        <assignNextValueToReference>currentItem_ObtenerSLABaseZDAFilter</assignNextValueToReference>
+        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
+        <collectionReference>SLAs_ZDA</collectionReference>
+        <conditionLogic>and</conditionLogic>
+        <conditions>
+            <leftValueReference>currentItem_ObtenerSLABaseZDAFilter.DeveloperName</leftValueReference>
+            <operator>EqualTo</operator>
+            <rightValue>
+                <stringValue>SLA_Base_ZDA</stringValue>
+            </rightValue>
+        </conditions>
+        <connector>
+            <targetReference>RecuperarCasoZDAAction</targetReference>
+        </connector>
+    </collectionProcessors>
+    <collectionProcessors>
+        <name>ObtenerSLAUrgenteZDAFilter</name>
+        <elementSubtype>FilterCollectionProcessor</elementSubtype>
+        <label>Filtrar SLA Urgente ZDA</label>
+        <locationX>1722</locationX>
+        <locationY>458</locationY>
+        <assignNextValueToReference>currentItem_ObtenerSLAUrgenteZDAFilter</assignNextValueToReference>
+        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
+        <collectionReference>SLAs_ZDA</collectionReference>
+        <conditionLogic>and</conditionLogic>
+        <conditions>
+            <leftValueReference>currentItem_ObtenerSLAUrgenteZDAFilter.DeveloperName</leftValueReference>
+            <operator>EqualTo</operator>
+            <rightValue>
+                <stringValue>SLA_Urgente_ZDA</stringValue>
+            </rightValue>
+        </conditions>
+        <connector>
+            <targetReference>SLAsUrgentesZDA_Loop</targetReference>
+        </connector>
+    </collectionProcessors>
     <decisions>
         <name>CallCenterDecision</name>
         <label>¿Call Center?</label>
-        <locationX>1238</locationX>
+        <locationX>1480</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -163,7 +251,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Es_urgente</targetReference>
+                <targetReference>RecuperarSLAsZDAAction</targetReference>
             </connector>
             <label>ZDA</label>
         </rules>
@@ -172,8 +260,8 @@
         <description>En función del origen del caso, la prioridad se calcula de un modo u otro</description>
         <name>CaseOriginDecision</name>
         <label>Origen del caso</label>
-        <locationX>1898</locationX>
-        <locationY>458</locationY>
+        <locationX>2250</locationX>
+        <locationY>674</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>CanalUnicoOutcome</name>
@@ -209,10 +297,10 @@
     <decisions>
         <name>Es_urgente</name>
         <label>¿Es urgente?</label>
-        <locationX>1678</locationX>
-        <locationY>242</locationY>
+        <locationX>1986</locationX>
+        <locationY>350</locationY>
         <defaultConnector>
-            <targetReference>RecuperarCasoZDAAction</targetReference>
+            <targetReference>ObtenerSLABaseZDAFilter</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -226,7 +314,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>MaxSlaAssignment</targetReference>
+                <targetReference>ObtenerSLAUrgenteZDAFilter</targetReference>
             </connector>
             <label>Email urgente</label>
         </rules>
@@ -234,7 +322,7 @@
     <decisions>
         <name>EsCSMPartInmueblesDecision</name>
         <label>¿Es CSM Particulares Inmuebles?</label>
-        <locationX>666</locationX>
+        <locationX>842</locationX>
         <locationY>350</locationY>
         <defaultConnector>
             <targetReference>isChildCase</targetReference>
@@ -266,7 +354,7 @@
     <decisions>
         <name>isChildCase</name>
         <label>¿Es caso hijo?</label>
-        <locationX>930</locationX>
+        <locationX>1106</locationX>
         <locationY>458</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -310,7 +398,7 @@
     <decisions>
         <name>IsQuoteResponseDecision</name>
         <label>¿Es respuesta de venta?</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>GetCaseMilestoneAction</targetReference>
@@ -361,20 +449,62 @@
         <expression>{!casoEncontrado.EstimatedEndDate__c}-1</expression>
     </formulas>
     <formulas>
+        <description>Convertir a número el valor del metadato. El número representa minutos en espera para envejecer las interacciones de Genesys.</description>
+        <name>SLA_Base_ZDA_Formula</name>
+        <dataType>Number</dataType>
+        <expression>VALUE({!SLA_Base_ZDA_Var})</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <description>Convertir a número el valor del metadato. El número representa minutos en espera para envejecer las interacciones de Genesys.</description>
+        <name>SLA_Urgente_ZDA_Formula</name>
+        <dataType>Number</dataType>
+        <expression>VALUE({!SLA_Urgente_ZDA_Var})</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
         <name>slaFormula</name>
         <dataType>Number</dataType>
         <expression>({!$Flow.CurrentDateTime}-{!GetCaseMilestoneAction.TargetDate})*24*60</expression>
         <scale>0</scale>
     </formulas>
     <formulas>
-        <description>Formula para el calculo del SLA para los casos de ZDA que son de canal unico o email (no urgente). Sera 20000 (el valor mas prioritario, para que no sea mas urgente que las &apos;urgencias&apos;) menos la diferencia de dias entre la fecha de fin de SLA y la fecha de ahora (la resta entre dos date times en un flow da como resultado la diferencia en dias). En ZDA no se priorizan casos por horas, asi que con la diferencia en dias tenemos suficiente.</description>
+        <description>Formula para el calculo del SLA para los casos de ZDA que son de canal unico o email (no urgente). Sera indicado en el metadato Global Configuration (el valor mas prioritario, para que no sea mas urgente que las &apos;urgencias&apos;) menos la diferencia de dias entre la fecha de fin de SLA y la fecha de ahora (la resta entre dos date times en un flow da como resultado la diferencia en dias). En ZDA no se priorizan casos por horas, asi que con la diferencia en dias tenemos suficiente.</description>
         <name>zdaSlaFormula</name>
         <dataType>Number</dataType>
-        <expression>20000 - ({!EstimatedEndDate} - {!$Flow.CurrentDateTime})</expression>
+        <expression>({!SLA_Base_ZDA_Formula}) - MCEILING(({!EstimatedEndDate} - {!$Flow.CurrentDateTime}))*1440</expression>
         <scale>0</scale>
     </formulas>
     <interviewLabel>EmailMessage - Cálculo SLA {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage - Cálculo Prioridad</label>
+    <loops>
+        <name>SLAsBaseZDA_Loop</name>
+        <label>Loop SLAs Base ZDA</label>
+        <locationX>2250</locationX>
+        <locationY>974</locationY>
+        <collectionReference>ObtenerSLABaseZDAFilter</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>SLABaseZDAVariable_Assignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>SetZDASLAAssignement</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>SLAsUrgentesZDA_Loop</name>
+        <label>Loop SLAs Urgentes ZDA</label>
+        <locationX>1722</locationX>
+        <locationY>566</locationY>
+        <collectionReference>ObtenerSLAUrgenteZDAFilter</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>SLAMaximoZDAVariable_Assignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Asignar_SLA_maximo_ZDA</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -398,7 +528,7 @@
         <description>Recuperamos el caso con el que trabajamos</description>
         <name>getCase</name>
         <label>Recuperar caso</label>
-        <locationX>666</locationX>
+        <locationX>842</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -423,7 +553,7 @@
     <recordLookups>
         <name>GetCaseMilestoneAction</name>
         <label>Recuperar Case Milestone</label>
-        <locationX>138</locationX>
+        <locationX>314</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -447,11 +577,11 @@
     <recordLookups>
         <name>GetZDACaseMilestone</name>
         <label>Recuperar ZDA Case Milestone</label>
-        <locationX>1898</locationX>
-        <locationY>566</locationY>
+        <locationX>2250</locationX>
+        <locationY>782</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>SetZDASLAAssignement</targetReference>
+            <targetReference>SLAsBaseZDA_Loop</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -471,8 +601,8 @@
         <description>Recuperamos el caso de ZDA con el que trabajamos</description>
         <name>RecuperarCasoZDAAction</name>
         <label>Recuperar caso ZDA</label>
-        <locationX>1898</locationX>
-        <locationY>350</locationY>
+        <locationX>2250</locationX>
+        <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>CaseOriginDecision</targetReference>
@@ -491,8 +621,39 @@
         <queriedFields>Origin</queriedFields>
         <queriedFields>EstimatedEndDate__c</queriedFields>
     </recordLookups>
+    <recordLookups>
+        <description>Recuperamos los SLAs para asignar más adelante</description>
+        <name>RecuperarSLAsZDAAction</name>
+        <label>Recuperar SLAs ZDA</label>
+        <locationX>1986</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Es_urgente</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>SLA_Urgente_ZDA</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>SLA_Base_ZDA</stringValue>
+            </value>
+        </filters>
+        <object>Global_Configuration__mdt</object>
+        <outputReference>SLAs_ZDA</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>DeveloperName</queriedFields>
+        <queriedFields>Value__c</queriedFields>
+    </recordLookups>
     <start>
-        <locationX>1112</locationX>
+        <locationX>1354</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CallCenterDecision</targetReference>
@@ -533,6 +694,22 @@
         <objectType>Case</objectType>
     </variables>
     <variables>
+        <name>currentItem_ObtenerSLABaseZDAFilter</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Global_Configuration__mdt</objectType>
+    </variables>
+    <variables>
+        <name>currentItem_ObtenerSLAUrgenteZDAFilter</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Global_Configuration__mdt</objectType>
+    </variables>
+    <variables>
         <name>EstimatedEndDate</name>
         <dataType>DateTime</dataType>
         <isCollection>false</isCollection>
@@ -548,6 +725,37 @@
         <value>
             <booleanValue>false</booleanValue>
         </value>
+    </variables>
+    <variables>
+        <description>Variable para almacenar como texto el valor base de SLA de ZDA, que viene del custom metadata Global Value. Se establece un valor por defecto en caso de que no se encuentre el metadato por algún error.</description>
+        <name>SLA_Base_ZDA_Var</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>11520</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Variable para almacenar como texto el valor máximo de SLA de ZDA, que viene del custom metadata Global Value. Se establece un valor por defecto en caso de que no se encuentre el metadato por algún error.</description>
+        <name>SLA_Urgente_ZDA_Var</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>20000</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>SLAs para calcular priorizades en ZDA</description>
+        <name>SLAs_ZDA</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Global_Configuration__mdt</objectType>
     </variables>
     <variables>
         <name>urgentEmail</name>

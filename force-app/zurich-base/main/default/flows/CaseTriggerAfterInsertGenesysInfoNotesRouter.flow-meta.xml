@@ -617,6 +617,12 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             <targetReference>CreateErrorLogAction</targetReference>
         </faultConnector>
         <inputAssignments>
+            <field>GenesysCloudSLA__c</field>
+            <value>
+                <elementReference>PriorityCalculationSubflow.calculatedSla</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>OwnerId</field>
             <value>
                 <elementReference>$User.Id</elementReference>
@@ -716,6 +722,12 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>GenesysCloudSLA__c</field>
+            <value>
+                <elementReference>PriorityCalculationSubflow.calculatedSla</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>OwnerId</field>
             <value>
                 <elementReference>$User.Id</elementReference>
@@ -768,6 +780,12 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             <field>CallObject</field>
             <value>
                 <elementReference>interactionId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>GenesysCloudSLA__c</field>
+            <value>
+                <elementReference>PriorityCalculationSubflow.calculatedSla</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -867,6 +885,12 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             <field>CallObject</field>
             <value>
                 <elementReference>interactionId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>GenesysCloudSLA__c</field>
+            <value>
+                <elementReference>PriorityCalculationSubflow.calculatedSla</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>

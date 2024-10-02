@@ -9051,6 +9051,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.GenesysCloudSLA__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.IdentifiedByANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -13396,6 +13401,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.EventType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.GenesysCloudSLA__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
