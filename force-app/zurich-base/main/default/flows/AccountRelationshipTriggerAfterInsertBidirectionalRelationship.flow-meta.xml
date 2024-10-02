@@ -129,8 +129,8 @@
             <targetReference>Get_Inverse_Relation</targetReference>
         </connector>
         <filterFormula>OR
-({!$Profile.Name} = &apos;Agente Ventas&apos;,
-{!$Profile.Name} = &apos;Agente Ventas - AGR&apos;
+({!$Profile.Name} = {!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Agente_Ventas.Value__c},
+{!$Profile.Name} = {!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Agente_Ventas_AGR.Value__c}
 )</filterFormula>
         <object>AccountRelationship__c</object>
         <recordTriggerType>Create</recordTriggerType>
