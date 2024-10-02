@@ -210,7 +210,7 @@ IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.I
         <connector>
             <targetReference>Owner_ha_cambiado_a_un_usuario_de_SDM</targetReference>
         </connector>
-        <filterLogic>((1 AND 2) OR 3 OR 4) AND 5 AND 6</filterLogic>
+        <filterLogic>((1 AND 2) OR 3 OR 4) AND 5 AND 6 AND 7 AND 8</filterLogic>
         <filters>
             <field>Intermediary_Group__c</field>
             <operator>IsNull</operator>
@@ -251,6 +251,20 @@ IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.I
             <operator>NotEqualTo</operator>
             <value>
                 <stringValue>Combinado</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cerrado Ganado</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cerrado Perdido</stringValue>
             </value>
         </filters>
         <object>Case</object>
