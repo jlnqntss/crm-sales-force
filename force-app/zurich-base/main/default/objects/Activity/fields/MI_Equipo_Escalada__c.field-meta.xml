@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>MI_Equipo_Escalada__c</fullName>
+    <fullName>Mi_Equipo_Escalada__c</fullName>
     <description>[USP] Campo para ver tareas de casos escalados a usuarios por debajo del supervisor</description>
     <externalId>false</externalId>
     <formula>Owner:User.ManagerId = $User.Id</formula>
