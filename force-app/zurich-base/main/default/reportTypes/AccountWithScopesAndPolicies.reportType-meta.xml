@@ -6,7 +6,7 @@
     <description>Crear un nuevo informe seleccionando el tipo de informe Cuentas (Account) con Pólizas (Policy__c) y con ámbitos (Scope__c).</description>
     <join>
         <join>
-            <outerJoin>false</outerJoin>
+            <outerJoin>true</outerJoin>
             <relationship>Policies__r</relationship>
         </join>
         <outerJoin>false</outerJoin>
