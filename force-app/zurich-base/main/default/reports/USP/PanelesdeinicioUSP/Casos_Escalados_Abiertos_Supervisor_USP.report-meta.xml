@@ -19,27 +19,12 @@
         <field>Case$Account.TerritorialDirection__c</field>
     </columns>
     <filter>
-        <booleanFilter>1 AND 2 AND (3 OR 6) AND 4 AND 5</booleanFilter>
         <criteriaItems>
             <column>Case.Activities$IsTask</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
             <value>1</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Case$MiCentro__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>1</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Case.Activities$Status</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>Asignada</value>
         </criteriaItems>
         <criteriaItems>
             <column>Case$SoyManager__c</column>
@@ -60,7 +45,21 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Nuevo,New</value>
+            <value>Nuevo,New,Asignado,Pendiente,Respondido</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Case.Activities$Status</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Cerrada</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Case.Activities$Mi_Equipo_Escalada__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
@@ -70,7 +69,7 @@
         <field>Case.Activities$Owner</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Casos Escalados - Abiertos Supervisor</name>
+    <name>Casos Escalados a mi Equipo</name>
     <params>
         <name>co</name>
         <value>1</value>
