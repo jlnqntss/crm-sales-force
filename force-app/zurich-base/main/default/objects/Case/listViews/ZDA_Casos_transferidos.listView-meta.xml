@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZDA_Casos_transferidos</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>CuTicketId__c</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>CASES.TYPE</columns>
+    <columns>Subtype__c</columns>
+    <columns>TypeN3__c</columns>
+    <columns>CASES.SUBJECT</columns>
+    <columns>CASES.NAME</columns>
+    <columns>MediatedCustomer__c</columns>
+    <columns>OWNER_NAME</columns>
+    <columns>CASES.CLOSED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.ZDAInquiry</value>
+    </filters>
+    <filters>
+        <field>HasBeenTransfered__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>CORE.USERS.ALIAS</field>
+        <operation>equals</operation>
+        <value>Email_ZDA_Gestion_Cartera</value>
+    </filters>
+    <label>ZDA - Casos transferidos</label>
+    <sharedTo>
+        <role>ZDA_Agente</role>
+        <role>ZDA_Supervisor</role>
+    </sharedTo>
+</ListView>
