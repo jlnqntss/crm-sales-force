@@ -7,10 +7,10 @@
         <field>Account.ChannelZone__c</field>
     </columns>
     <columns>
-        <field>ACCOUNT_ID</field>
+        <field>ACCOUNT.NAME</field>
     </columns>
     <columns>
-        <field>ACCOUNT.NAME</field>
+        <field>Account.INFOIntermediaryCode__c</field>
     </columns>
     <columns>
         <field>Account.Channel__c</field>
@@ -19,7 +19,7 @@
         <field>Account.Association__c</field>
     </columns>
     <columns>
-        <field>Account.Segment__c</field>
+        <field>Account.SegmentDescription__c</field>
     </columns>
     <columns>
         <field>Account.BusinessManagerName__c</field>
@@ -28,7 +28,13 @@
         <field>Account.SMEConsultant__c</field>
     </columns>
     <columns>
-        <field>CASE_ID</field>
+        <field>CASE_NUMBER</field>
+    </columns>
+    <columns>
+        <field>Case.CloseDate__c</field>
+    </columns>
+    <columns>
+        <field>STATUS</field>
     </columns>
     <columns>
         <field>Case.Subtype__c</field>
@@ -37,19 +43,10 @@
         <field>SUBJECT</field>
     </columns>
     <columns>
-        <field>Case.QuotationStage__c</field>
-    </columns>
-    <columns>
-        <field>STATUS</field>
+        <field>OWNER</field>
     </columns>
     <columns>
         <field>Case.PendingBy__c</field>
-    </columns>
-    <columns>
-        <field>Case.CloseResult__c</field>
-    </columns>
-    <columns>
-        <field>Case.PolicyNum__c</field>
     </columns>
     <columns>
         <field>CREATED_DATE</field>
@@ -59,16 +56,7 @@
         <field>Case.Days_Open__c</field>
     </columns>
     <columns>
-        <field>Case.MediatedCustomerNationalId__c</field>
-    </columns>
-    <columns>
         <field>Case.MediatedCustomer__c</field>
-    </columns>
-    <columns>
-        <field>Case.ProductGroupDescription__c</field>
-    </columns>
-    <columns>
-        <field>Case.Product_Name__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -88,7 +76,7 @@
         <field>Case.RiskAppetite__c</field>
     </columns>
     <columns>
-        <field>Case.Comentario__c</field>
+        <field>CASE_COMMENT</field>
     </columns>
     <description>Informe de casos sin oferta</description>
     <filter>
@@ -105,6 +93,55 @@
             <isUnlocked>true</isUnlocked>
             <operator>greaterThan</operator>
             <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>STATUS</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,Nuevo,Asignado,En espera,Resuelto,Reabierto,Respuesta recibida,Pendiente,Respondido,No Iniciado,En Gestión</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Case.ProductGroup__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,3,4,5,7,8,9,RESP. CIVIL,10,11,12,14,15,16,17</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CREATED_DATE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>lessOrEqual</operator>
+            <value>NEXT_MONTH</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CREATED_DATE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>greaterOrEqual</operator>
+            <value>LAST_MONTH</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.TerritorialDirection__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.BusinessManagerName__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.INFOIntermediaryCode__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
