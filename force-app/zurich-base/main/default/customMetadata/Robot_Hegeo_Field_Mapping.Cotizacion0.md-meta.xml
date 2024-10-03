@@ -20,7 +20,7 @@
     </values>
     <values>
         <field>SourceType__c</field>
-        <value xsi:type="xsd:string">Cotizacion_fuera_del_estandard</value>
+        <value xsi:type="xsd:string">Cotizacion_fuera_del_estandard22</value>
     </values>
     <values>
         <field>SourceValue__c</field>
