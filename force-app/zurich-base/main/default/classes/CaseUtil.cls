@@ -2601,19 +2601,19 @@ public with sharing class CaseUtil
     {
         for (Case caseTrigger: updatedCases)
         { 
-           if (  caseTrigger.recordTypeId == RT_ID_USPINQUIRY && oldMap!=null)
-            if(oldMap.get(caseTrigger.Id).ownerId != caseTrigger.ownerId)
+           if (  caseTrigger.recordTypeId == RT_ID_USPINQUIRY && oldMap!=null && oldMap.get(caseTrigger.Id).ownerId != caseTrigger.ownerId)
             {
                 List<Id> listIdQueue= new List<Id>();
                 List<Group> listGroup= new List<Group>();
                 Id idQueue=caseTrigger.ownerId;
                 listIdQueue.add(idQueue);
                 
-            if(!listIdQueue.isEmpty())    
-                listGroup = new GroupSelector().findById(listIdQueue);
-            if(listGroup.size()>0)
-                CaseTrigger.OwnerName__c= listGroup[0].Name;
+                if(!listIdQueue.isEmpty())    
+                    listGroup = new GroupSelector().findById(listIdQueue);
+                if(listGroup.size()>0)
+                    CaseTrigger.OwnerName__c= listGroup[0].Name;
             }
+            
         }
     }
 
