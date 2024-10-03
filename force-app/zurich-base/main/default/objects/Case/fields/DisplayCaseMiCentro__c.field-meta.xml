@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DisplayCaseMiCentro__c</fullName>
+    <formula>IF
+(
+(CONTAINS(OwnerName__c, $CustomMetadata.Global_Configuration__mdt.Filter_OwnerName_USP.Value__c)&amp;&amp;
+NOT
+(
+CONTAINS(OwnerName__c, $CustomMetadata.Global_Configuration__mdt.Filter_OwnerName_Calidad.Value__c )|| CONTAINS(OwnerName__c, $CustomMetadata.Global_Configuration__mdt.Filter_OwnerName_SME.Value__c) || CONTAINS(OwnerName__c, $CustomMetadata.Global_Configuration__mdt.Filter_OwnerName_Integraciones.Value__c)
+))
+||CONTAINS(OwnerName__c, $CustomMetadata.Global_Configuration__mdt.Filter_OwnerName_Suscripcion.Value__c) , true, false)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>DisplayCaseMiCentro</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
