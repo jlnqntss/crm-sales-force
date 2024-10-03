@@ -2,6 +2,19 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
     <assignments>
+        <name>Asignar_SLA_caso_CCS_BMW</name>
+        <label>Asignar SLA caso CCS BMW</label>
+        <locationX>1370</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>calculatedSla</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>4320.0</numberValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>Asignar_SLA_Caso_Hijio</name>
         <label>Asignar SLA caso hijo</label>
         <locationX>842</locationX>
@@ -31,7 +44,7 @@
         <description>Asignamos el valor máximo de SLA para los casos más urgentes de ZDA</description>
         <name>Asignar_SLA_maximo_ZDA</name>
         <label>Asignar SLA máximo ZDA</label>
-        <locationX>1722</locationX>
+        <locationX>1986</locationX>
         <locationY>866</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
@@ -57,7 +70,7 @@
     <assignments>
         <name>EstimatedEndDateAssignment</name>
         <label>Establecer fecha estimada cierre</label>
-        <locationX>1986</locationX>
+        <locationX>2250</locationX>
         <locationY>782</locationY>
         <assignmentItems>
             <assignToReference>EstimatedEndDate</assignToReference>
@@ -86,7 +99,7 @@
     <assignments>
         <name>SetZDASLAAssignement</name>
         <label>Asignar SLA ZDA</label>
-        <locationX>2250</locationX>
+        <locationX>2514</locationX>
         <locationY>1274</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
@@ -99,7 +112,7 @@
     <assignments>
         <name>SLABaseZDAVariable_Assignment</name>
         <label>Asignar SLA base ZDA a Variable</label>
-        <locationX>2338</locationX>
+        <locationX>2602</locationX>
         <locationY>1082</locationY>
         <assignmentItems>
             <assignToReference>SLA_Base_ZDA_Var</assignToReference>
@@ -128,7 +141,7 @@
     <assignments>
         <name>SLAMaximoZDAVariable_Assignment</name>
         <label>Asignar SLA máximo ZDA a Variable</label>
-        <locationX>1810</locationX>
+        <locationX>2074</locationX>
         <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>SLA_Urgente_ZDA_Var</assignToReference>
@@ -145,7 +158,7 @@
         <name>ObtenerSLABaseZDAFilter</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filtrar SLA Base ZDA</label>
-        <locationX>2250</locationX>
+        <locationX>2514</locationX>
         <locationY>458</locationY>
         <assignNextValueToReference>currentItem_ObtenerSLABaseZDAFilter</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
@@ -166,7 +179,7 @@
         <name>ObtenerSLAUrgenteZDAFilter</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filtrar SLA Urgente ZDA</label>
-        <locationX>1722</locationX>
+        <locationX>1986</locationX>
         <locationY>458</locationY>
         <assignNextValueToReference>currentItem_ObtenerSLAUrgenteZDAFilter</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
@@ -186,7 +199,7 @@
     <decisions>
         <name>CallCenterDecision</name>
         <label>¿Call Center?</label>
-        <locationX>1480</locationX>
+        <locationX>1612</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -260,7 +273,7 @@
         <description>En función del origen del caso, la prioridad se calcula de un modo u otro</description>
         <name>CaseOriginDecision</name>
         <label>Origen del caso</label>
-        <locationX>2250</locationX>
+        <locationX>2514</locationX>
         <locationY>674</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -297,7 +310,7 @@
     <decisions>
         <name>Es_urgente</name>
         <label>¿Es urgente?</label>
-        <locationX>1986</locationX>
+        <locationX>2250</locationX>
         <locationY>350</locationY>
         <defaultConnector>
             <targetReference>ObtenerSLABaseZDAFilter</targetReference>
@@ -322,10 +335,10 @@
     <decisions>
         <name>EsCSMPartInmueblesDecision</name>
         <label>¿Es CSM Particulares Inmuebles?</label>
-        <locationX>842</locationX>
+        <locationX>908</locationX>
         <locationY>350</locationY>
         <defaultConnector>
-            <targetReference>isChildCase</targetReference>
+            <targetReference>isChildCaseOrBMW</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No CSM Particulares o no Inmuebles</defaultConnectorLabel>
         <rules>
@@ -352,9 +365,9 @@
         </rules>
     </decisions>
     <decisions>
-        <name>isChildCase</name>
-        <label>¿Es caso hijo?</label>
-        <locationX>1106</locationX>
+        <name>isChildCaseOrBMW</name>
+        <label>¿Es caso hijo o CCS BMW?</label>
+        <locationX>1238</locationX>
         <locationY>458</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -393,6 +406,21 @@
                 <targetReference>Asignar_SLA_caso_respondido</targetReference>
             </connector>
             <label>Caso respondido</label>
+        </rules>
+        <rules>
+            <name>Caso_CCS_BMW</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>casoEncontrado.Owner:Group.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Email_CCS_BMW</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_SLA_caso_CCS_BMW</targetReference>
+            </connector>
+            <label>Caso CCS BMW</label>
         </rules>
     </decisions>
     <decisions>
@@ -480,7 +508,7 @@
     <loops>
         <name>SLAsBaseZDA_Loop</name>
         <label>Loop SLAs Base ZDA</label>
-        <locationX>2250</locationX>
+        <locationX>2514</locationX>
         <locationY>974</locationY>
         <collectionReference>ObtenerSLABaseZDAFilter</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -494,7 +522,7 @@
     <loops>
         <name>SLAsUrgentesZDA_Loop</name>
         <label>Loop SLAs Urgentes ZDA</label>
-        <locationX>1722</locationX>
+        <locationX>1986</locationX>
         <locationY>566</locationY>
         <collectionReference>ObtenerSLAUrgenteZDAFilter</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -528,7 +556,7 @@
         <description>Recuperamos el caso con el que trabajamos</description>
         <name>getCase</name>
         <label>Recuperar caso</label>
-        <locationX>842</locationX>
+        <locationX>908</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -549,6 +577,7 @@
         <queriedFields>Origin</queriedFields>
         <queriedFields>Status</queriedFields>
         <queriedFields>HegeoProductGroupCode__c</queriedFields>
+        <queriedFields>OwnerId</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>GetCaseMilestoneAction</name>
@@ -577,7 +606,7 @@
     <recordLookups>
         <name>GetZDACaseMilestone</name>
         <label>Recuperar ZDA Case Milestone</label>
-        <locationX>2250</locationX>
+        <locationX>2514</locationX>
         <locationY>782</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -601,7 +630,7 @@
         <description>Recuperamos el caso de ZDA con el que trabajamos</description>
         <name>RecuperarCasoZDAAction</name>
         <label>Recuperar caso ZDA</label>
-        <locationX>2250</locationX>
+        <locationX>2514</locationX>
         <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -625,7 +654,7 @@
         <description>Recuperamos los SLAs para asignar más adelante</description>
         <name>RecuperarSLAsZDAAction</name>
         <label>Recuperar SLAs ZDA</label>
-        <locationX>1986</locationX>
+        <locationX>2250</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -653,7 +682,7 @@
         <queriedFields>Value__c</queriedFields>
     </recordLookups>
     <start>
-        <locationX>1354</locationX>
+        <locationX>1486</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CallCenterDecision</targetReference>
