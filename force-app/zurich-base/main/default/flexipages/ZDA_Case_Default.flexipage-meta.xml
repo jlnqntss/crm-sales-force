@@ -1042,6 +1042,9 @@
                             <value>MergeCase</value>
                         </valueListItems>
                         <valueListItems>
+                            <value>CustomButton.Case.Transferir</value>
+                        </valueListItems>
+                        <valueListItems>
                             <value>PrintableView</value>
                         </valueListItems>
                     </valueList>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GenesysCloudSLA__c</fullName>
+    <description>SLA aplicado para priorizar interacciones de Genesys. La magnitud utilizada es minutos. Una interacción creada con un SLA de 1440 se envejecería artificialmente 24 horas. Una vez creada la interacción en Genesys, allí el número crece a un ritmo de 1 por minuto sin atender.</description>
+    <externalId>false</externalId>
+    <label>Genesys Cloud SLA</label>
+    <precision>10</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

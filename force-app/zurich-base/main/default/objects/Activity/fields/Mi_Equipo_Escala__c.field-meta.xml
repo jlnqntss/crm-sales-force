@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Mi_Equipo_Escala__c</fullName>
+    <description>[USP] Campo para detectar que una tarea ha sido escalada por un usuario que está por debajo de un supervidor.</description>
+    <externalId>false</externalId>
+    <formula>$User.Id = CreatedBy.ManagerId</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Mi Equipo Escala</label>
+    <type>Checkbox</type>
+</CustomField>

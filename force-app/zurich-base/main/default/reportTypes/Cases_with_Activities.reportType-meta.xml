@@ -840,6 +840,11 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
+            <field>Mi_Equipo_Escala__c</field>
+            <table>Case.Activities</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
             <field>OrderOfTheDay__c</field>
             <table>Case.Activities</table>
         </columns>
@@ -941,6 +946,11 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>IsTask</field>
+            <table>Case.Activities</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Mi_Equipo_Escalada__c</field>
             <table>Case.Activities</table>
         </columns>
         <columns>

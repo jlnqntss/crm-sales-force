@@ -31,14 +31,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Pendiente</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Case$PendingBy__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>Supervisor</value>
+            <value>Nuevo,New,Asignado,Pendiente,Respondido</value>
         </criteriaItems>
         <criteriaItems>
             <column>Case$MiCentro__c</column>
@@ -68,6 +61,13 @@
             <operator>equals</operator>
             <value>Caso escalado</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Case.Activities$Mi_Equipo_Escala__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
@@ -76,7 +76,7 @@
         <field>Case.Activities$Owner</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Casos Escalados - Pendientes Supervisor</name>
+    <name>Casos Escalados por mi equipo</name>
     <params>
         <name>co</name>
         <value>1</value>
