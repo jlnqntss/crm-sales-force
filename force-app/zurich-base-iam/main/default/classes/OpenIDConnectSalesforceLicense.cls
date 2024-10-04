@@ -247,7 +247,8 @@ public with sharing class OpenIDConnectSalesforceLicense {
                     u.UserRoleId != roleId || u.alias != data.username.left(8) || u.email != data.email ||
                     (String.isNotBlank(signature) && signature != u.Signature) ||
                     u.Title != title || (ManagerId != null && u.ManagerId != ManagerId) || 
-                    (String.isNotBlank(licenseGroup) && licenseGroup != u.License_Group__c)
+                    (String.isNotBlank(licenseGroup) && licenseGroup != u.License_Group__c) ||
+                    getIAMRoleFromRoles(roleNameList) != u.IAM_Role__c
                 );
         if (modified)
         {
