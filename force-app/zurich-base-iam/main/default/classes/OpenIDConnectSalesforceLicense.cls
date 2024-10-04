@@ -238,7 +238,8 @@ public with sharing class OpenIDConnectSalesforceLicense {
         Id managerId = getManagerIdFromNickname(data);
         // UPDATE USER
         User u = [
-            SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department, Signature, Title, ManagerId, License_Group__c
+            SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department,
+            Signature, Title, ManagerId, License_Group__c, IAM_Role__c
             FROM User WHERE Id =: userId LIMIT 1
         ];
         // Se comprueban los valores, se determina si ha habido cambios
