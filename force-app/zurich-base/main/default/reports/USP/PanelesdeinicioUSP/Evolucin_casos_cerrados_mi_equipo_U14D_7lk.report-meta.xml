@@ -72,7 +72,7 @@
             <value>Cerrado</value>
         </criteriaItems>
         <criteriaItems>
-            <column>HLAST_UPDATE</column>
+            <column>CLOSED_DATE</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>

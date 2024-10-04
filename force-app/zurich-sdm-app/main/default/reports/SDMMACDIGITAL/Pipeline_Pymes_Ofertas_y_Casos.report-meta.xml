@@ -53,6 +53,10 @@
         <field>Account.Opportunities__r$MaxOptionTotalPremium__c</field>
     </columns>
     <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Opportunities__r$MaxOptionNetPremium__c</field>
+    </columns>
+    <columns>
         <field>Account.Opportunities__r.Cases__r$Subtype__c</field>
     </columns>
     <columns>
@@ -93,6 +97,9 @@
     </columns>
     <columns>
         <field>Account.Opportunities__r.Cases__r$RiskAppetite__c</field>
+    </columns>
+    <columns>
+        <field>Account.Opportunities__r$ChanceOfSuccess__c</field>
     </columns>
     <columns>
         <field>Account.Opportunities__r$Comments__c</field>
@@ -163,11 +170,25 @@
             <value>,Asignado,En Gestión,En espera,No Iniciado,Nuevo,New,Pendiente,Reabierto,Respondido,Respuesta recibida,Resuelto</value>
         </criteriaItems>
         <criteriaItems>
-            <column>Account.Opportunities__r$MaxOptionTotalPremium__c</column>
+            <column>Account.Opportunities__r$TotalPremium__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>greaterOrEqual</operator>
             <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.Opportunities__r$CommercialStructureCode__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>6200</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account$Channel__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,Agents,Brokers,Partners,Bank Insurance,Direct Management</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>

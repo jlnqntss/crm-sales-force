@@ -212,6 +212,11 @@
                 <default>false</default>
                 <label>MIXTOS EXPRESS</label>
             </value>
+            <value>
+                <fullName>PROPERTY MIDDLE</fullName>
+                <default>false</default>
+                <label>PROPERTY MIDDLE</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
