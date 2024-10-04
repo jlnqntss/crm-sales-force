@@ -6691,6 +6691,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.DisplayCase__c</field>
+	<readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.DisplayCaseMiCentro__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.ExpirationDays__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6967,6 +6977,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.OwnerIdPrior__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.OwnerName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14261,6 +14276,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>User.TypeToNotify__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.QueuesView__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
