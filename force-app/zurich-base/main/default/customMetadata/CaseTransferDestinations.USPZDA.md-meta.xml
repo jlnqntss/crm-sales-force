@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>DestinationRecordType__c</field>
-        <value xsi:type="xsd:string">USPInquiry</value>
+        <value xsi:type="xsd:string">ZDAInquiry</value>
     </values>
     <values>
         <field>SourceCallCenter__c</field>
