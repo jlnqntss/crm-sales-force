@@ -430,7 +430,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
                     (String.isNotBlank(signature) && signature != u.Signature) ||
                     u.Title != title || (ManagerId != null && u.ManagerId != ManagerId) || 
                     (String.isNotBlank(licenseGroup) && licenseGroup != u.License_Group__c) ||
-                    getIAMRoleFromRoles(roleNameList) != u.IAM_Role__c
+                    getIAMRoleFromRoles(iamRoleReceived) != u.IAM_Role__c
                 );
 
         if (modified) {
