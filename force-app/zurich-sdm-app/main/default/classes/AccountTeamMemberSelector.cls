@@ -73,6 +73,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
 
         if( userIds != null && !userIds.isEmpty() ) {
             Id rtId = (new AccountsSelector()).rtIntermediaryId;
+            String configValue = GlobalConfigUtil.getGlobalConfigurationValue('AccountTeamMember_TeamMemberRole_RN_Temporal');
 
             result = [
                 SELECT id, AccountId, Account.ParentId, UserId, NotificationsOnPlans__c, Account.IntermediaryDescription__c, Account.INFOIntermediaryCode__c
@@ -80,6 +81,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
                 WHERE Account.RecordTypeId = :rtId
                 AND UserId IN :userIds
                 AND Account.StatusIntermediary__c = 'Active'
+                AND TeamMemberRole <> :configValue
             ];
         }
 
