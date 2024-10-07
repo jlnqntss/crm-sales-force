@@ -393,6 +393,8 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         {
             u.Signature = signature;
         }
+        u.IAM_Role__c = getIAMRoleFromRoles(iamRoleReceived);
+
         return u;
     }
 
@@ -427,15 +429,17 @@ public with sharing class OpenIDConnectSalesforceCommunity {
                     u.UserRoleId != roleId || u.alias != data.username.left(8) || u.email != data.email ||
                     (String.isNotBlank(signature) && signature != u.Signature) ||
                     u.Title != title || (ManagerId != null && u.ManagerId != ManagerId) || 
-                    (String.isNotBlank(licenseGroup) && licenseGroup != u.License_Group__c)
+                    (String.isNotBlank(licenseGroup) && licenseGroup != u.License_Group__c) ||
+                    getIAMRoleFromRoles(iamRoleReceived) != u.IAM_Role__c
                 );
-        
+
         if (modified) {
             u.firstName = data.firstName;
             u.lastName = data.lastName;            
             u.profileId = profileId;
             u.alias = data.username.left(8);
             u.CommunityNickname = data.username;
+            u.IAM_Role__c = getIAMRoleFromRoles(iamRoleReceived);
             updateEmail(u, data.email);
             updateUserName(u, data.username);
             updateUserRoleId(u, roleId);
@@ -513,6 +517,28 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         }
 
         return result;
+    }
+
+    /**
+     * Obtener el nombre del rol de IAM
+     * 
+     * @author nts (jfherrero)
+     * @date 03/10/2024
+     * @param {String iamRoleReceived} roles recibidos desde iam. Debería ser sólo uno.
+     * @return {String}: Nombre del rol de IAM
+     */
+    @testvisible
+    private String getIAMRoleFromRoles(List<String> iamRoleReceived) {
+        
+        for (String iamRole : iamRoleReceived)
+        {
+            if (String.isNotBlank(iamRole))
+            {
+                return iamRole;
+            }
+        }
+
+        return '';
     }
 
     /**

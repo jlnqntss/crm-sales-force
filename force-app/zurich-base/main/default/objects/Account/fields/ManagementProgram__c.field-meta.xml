@@ -66,11 +66,6 @@
                 <label>WILLPLATINE</label>
             </value>
             <value>
-                <fullName>Otros</fullName>
-                <default>false</default>
-                <label>Otros</label>
-            </value>
-            <value>
                 <fullName>MPM - SegElevia</fullName>
                 <default>false</default>
                 <label>MPM - SegElevia</label>
@@ -84,6 +79,11 @@
                 <fullName>SOFTQS - iSegur</fullName>
                 <default>false</default>
                 <label>SOFTQS - iSegur</label>
+            </value>
+            <value>
+                <fullName>Otros</fullName>
+                <default>false</default>
+                <label>Otros</label>
             </value>
         </valueSetDefinition>
     </valueSet>

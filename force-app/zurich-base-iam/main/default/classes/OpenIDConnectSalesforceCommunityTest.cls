@@ -318,10 +318,11 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
 
             
 
-            User createdUser = [SELECT userName, email, firstName, lastName, alias, ContactId FROM user WHERE id=:u.Id];
+            User createdUser = [SELECT userName, email, firstName, lastName, alias, ContactId, IAM_Role__c FROM user WHERE id=:u.Id];
             System.assertEquals('testuserlong@zurich-es.com', createdUser.userName, 'UserName debe ser testuserlong@zurich-es.com');
             System.assertEquals('testLast', createdUser.lastName, 'LastName debe ser testLast');
             System.assertEquals('testFirst', createdUser.firstName, 'firstName debe ser testFirst');
+            System.assertEquals(iamRoleReceived[0], createdUser.IAM_Role__c, 'IAM_Role__c debe ser IAM_ROLE_A');
         }
     }
 
@@ -438,7 +439,7 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
             Test.startTest();
             User u = handler.createUser(null, sampleDataIAM, iamRoleReceived);   
 
-            User createdUser = [SELECT userName, email, firstName, lastName, alias, ContactId FROM user WHERE id=:u.Id];
+            User createdUser = [SELECT userName, email, firstName, lastName, alias, ContactId, IAM_Role__c FROM user WHERE id=:u.Id];
             System.assertEquals('testuserlong@zurich-es.com', createdUser.userName, 'UserName debe ser testuserlong@zurich-es.com');
             System.assertEquals('testLast', createdUser.lastName, 'LastName debe ser testLast');
             System.assertEquals('testFirst', createdUser.firstName, 'firstName debe ser testFirst');
@@ -464,6 +465,7 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
             
             System.assertEquals(1, afterUpdateGroups.size(), 'Solo debe tener 1 grupo publico');
             System.assertEquals(publicGroupMock, afterUpdateGroups.get(0).Group.DeveloperName, 'Los grupos deben ser el mismo que el mock C');
+            System.assertEquals(iamRoleReceived[0], u.IAM_Role__c, 'IAM_Role__c debe ser IAM_ROLE_A');
 
             // POR ALGUNA RAZÓN al validar el método futuro  que el permission set group asignado al usuario la consulta devuelve vacío, se ha comprobado que funciona correctamente con pruebas sobre la plataforma
             

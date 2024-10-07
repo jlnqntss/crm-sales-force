@@ -13,6 +13,7 @@
     <permissionSets>Consulta_CS</permissionSets>
     <permissionSets>Consulta_Conocimiento</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
+    <permissionSets>Consulta_Datos_DataOffice</permissionSets>
     <permissionSets>Consulta_Datos_Partner_OCS</permissionSets>
     <permissionSets>Consulta_Datos_SAM</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
