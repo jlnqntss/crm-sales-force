@@ -20,7 +20,7 @@ async function main() {
   switch (targetEnvironment) {
     case "prod":
       if (process.env["CI_FULL_DEPLOYMENT_PROD"] === "true") { 
-        let tag = await findLastSemanticTag();
+        let tag = await findLastSemanticTag(null, 1);
         target = tag.target;
       }
       break;
