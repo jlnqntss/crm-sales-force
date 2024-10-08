@@ -829,7 +829,6 @@
 <valueName>Traslado a gestión centro tramitador</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
