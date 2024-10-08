@@ -27,6 +27,10 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
     private static List<Event> eventsToUpdate = new List<Event>();
     private static List<Opportunity> opportunitiesToDelete = new List<Opportunity>();
     private static Map<Id, Account> accountsByIdToDelete = new Map<Id, Account>();
+    private static Map<Id, Competitor__c> competitorsToUpdate = new Map<Id, Competitor__c>();
+    private static Map<String, String> matchedLeadToDeleteWithClientMap = new Map<String, String>(); // guarda el par lead - cliente el cual id de lead se ha marcado como candidato a su eliminación
+    
+
 
     private String query
     {
@@ -91,6 +95,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
             //3º Leads
             Map<Opportunity, Set<String> > offersByIdWithContactInfoData = getOpportunitiesWithContactInfoData( scope, (Set<String>) opportunityDataMap.get(SCOPE_OPPORTUNITY_ACCOUNTID) );
             matchLeadWithOpportunities(offersByIdWithContactInfoData);
+            moveCompetitorsToMatchedAccount(); 
 
             // 4º Ejecutar DMLs
             executeDMLs();
@@ -570,13 +575,14 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
                 if (leadShouldBeDeleted)
                 {
                     accountsByIdToDelete.put(lead.Id, lead);
+                    matchedLeadToDeleteWithClientMap.put(lead.Id, opportunity.AccountId);
                 }
                 else if ( !offersToDelete.isEmpty() )
                 {
                     opportunitiesToDelete.addAll(offersToDelete);
                 }
             }
-        }
+        }        
     }
 
     //#region DMLS
@@ -605,6 +611,12 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
         if ( !eventsToUpdate.isEmpty() )
         {
             update eventsToUpdate;
+        }
+
+        // Actualizar registros de competencia del lead a borrar a su cliente con el que ha hecho merge
+        if ( !competitorsToUpdate.isEmpty() )
+        {
+            update competitorsToUpdate.values();
         }
 
         // Eliminar ofertas
@@ -740,5 +752,30 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
             result.add(value);
         }
         return result;
+    }
+
+
+    /**
+     * Método que transfiere las competencias de un lead a un cliente o a otro lead
+     * @author dmunoz
+     * @date 07/10/2024
+     */
+    private void moveCompetitorsToMatchedAccount()
+    {   
+        //Obtiene Ids de Leads:
+        List<String> leadIds = new List<String>(matchedLeadToDeleteWithClientMap.keySet());
+        
+        //Obtiene todas las competencias vinculadas a las cuentas de leads implicadas
+        List<Competitor__c> relatedComptetitors = new CompetitorsSelector().getCompetitorsRelatedWithAccauntIds( leadIds );
+
+        //Actualiza campo Id de cuenta de cada competencia
+        for (Competitor__c competitor : relatedComptetitors) {
+            // Verifica si el campo Account__c del Competitor coincide con alguna clave del mapa
+            if (matchedLeadToDeleteWithClientMap.containsKey(competitor.Account__c)) {
+                // Cambia el campo Account__c al nuevo valor del mapa
+                competitor.Account__c = matchedLeadToDeleteWithClientMap.get(competitor.Account__c);
+                competitorsToUpdate.put(competitor.Id, competitor);
+            }
+        }
     }
 }
