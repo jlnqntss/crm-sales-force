@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RPA</fullName>
+    <booleanFilter>1 AND 2 AND 3</booleanFilter>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>ActivityDescription__c</columns>
+    <columns>RPAStatusF__c</columns>
+    <columns>RPAProposal__c</columns>
+    <columns>DateReg__c</columns>
+    <columns>CASES.PRIORITY</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>RPAProposal__c</field>
+        <operation>notEqual</operation>
+        <value>null</value>
+    </filters>
+    <filters>
+        <field>ProductGroup__c</field>
+        <operation>equals</operation>
+        <value>9,RESP. CIVIL</value>
+    </filters>
+    <filters>
+        <field>Subtype__c</field>
+        <operation>equals</operation>
+        <value>Cotización</value>
+    </filters>
+    <label>RPA</label>
+    <sharedTo>
+        <group>Administrators</group>
+        <group>USP_Supervisor</group>
+        <group>USP_Suscriptor</group>
+    </sharedTo>
+</ListView>
