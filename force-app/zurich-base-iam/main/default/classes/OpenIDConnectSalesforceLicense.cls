@@ -158,6 +158,7 @@ public with sharing class OpenIDConnectSalesforceLicense {
         if( ManagerId != null ) {
             u.ManagerId = ManagerId;
         }
+        u.IAM_Role__c = getIAMRoleFromRoles(roleNameList);
         insert u;
         String signature = getSignature(u.Id, mapAuthData.get(PERMISSION_TYPE_SIGNATURE));
         // OCS-2796 @Olalla Iglesias
@@ -237,7 +238,8 @@ public with sharing class OpenIDConnectSalesforceLicense {
         Id managerId = getManagerIdFromNickname(data);
         // UPDATE USER
         User u = [
-            SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department, Signature, Title, ManagerId, License_Group__c
+            SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department,
+            Signature, Title, ManagerId, License_Group__c, IAM_Role__c
             FROM User WHERE Id =: userId LIMIT 1
         ];
         // Se comprueban los valores, se determina si ha habido cambios
@@ -246,7 +248,8 @@ public with sharing class OpenIDConnectSalesforceLicense {
                     u.UserRoleId != roleId || u.alias != data.username.left(8) || u.email != data.email ||
                     (String.isNotBlank(signature) && signature != u.Signature) ||
                     u.Title != title || (ManagerId != null && u.ManagerId != ManagerId) || 
-                    (String.isNotBlank(licenseGroup) && licenseGroup != u.License_Group__c)
+                    (String.isNotBlank(licenseGroup) && licenseGroup != u.License_Group__c) ||
+                    getIAMRoleFromRoles(roleNameList) != u.IAM_Role__c
                 );
         if (modified)
         {
@@ -285,6 +288,7 @@ public with sharing class OpenIDConnectSalesforceLicense {
             if( ManagerId != null ) {
                 u.ManagerId = ManagerId;
             }
+            u.IAM_Role__c = getIAMRoleFromRoles(roleNameList);
             update(u);
         }
         // UPDATE GROUPS
@@ -418,6 +422,29 @@ public with sharing class OpenIDConnectSalesforceLicense {
         }
         return result;
     }
+
+    /**
+     * Obtener el nombre del rol de IAM
+     * 
+     * @author nts (jfherrero)
+     * @date 03/10/2024
+     * @param {String iamRoleReceived} roles recibidos desde iam. Debería ser sólo uno.
+     * @return {String}: Nombre del rol de IAM
+     */
+    @testvisible
+    private String getIAMRoleFromRoles(List<String> roles) {
+        
+        for (String iamRole : roles)
+        {
+            if (String.isNotBlank(iamRole))
+            {
+                return iamRole;
+            }
+        }
+
+        return '';
+    }
+
     /**
      * Get the role Id configured for the given list of roles.
      * 

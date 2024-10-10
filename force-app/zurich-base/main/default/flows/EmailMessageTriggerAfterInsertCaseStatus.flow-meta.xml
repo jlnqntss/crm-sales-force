@@ -1,44 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
+    <assignments>
+        <name>Activar_Flag_estado_Respondido</name>
+        <label>Activar Flag estado Respondido</label>
+        <locationX>578</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>ActualizarStatus</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>ActualizarStageDecision</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>ActivarActualizarStage</name>
+        <label>ActivarActualizarStage</label>
+        <locationX>1898</locationX>
+        <locationY>947</locationY>
+        <assignmentItems>
+            <assignToReference>ActualizarFieldStageNotIncoming</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>ActualizarStatusYStageNotIncoming</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>ActivarActualizarStatus</name>
+        <label>ActivarActualizarStatus</label>
+        <locationX>1898</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>ActualizarStatusNoIncoming</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>ActualizarStageNotIncoming</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>ActivarFlagStage</name>
+        <label>Activar Flag Stage</label>
+        <locationX>578</locationX>
+        <locationY>947</locationY>
+        <assignmentItems>
+            <assignToReference>ActualizarStage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Actualizar_Status_y_Stage</targetReference>
+        </connector>
+    </assignments>
     <decisions>
-        <name>El_Caso_esta_Pending</name>
-        <label>¿El Caso está Pending?</label>
-        <locationX>314</locationX>
-        <locationY>431</locationY>
+        <name>Actualizar_Estado_Respondido</name>
+        <label>Actualizar Estado Respondido?</label>
+        <locationX>710</locationX>
+        <locationY>539</locationY>
+        <defaultConnector>
+            <targetReference>ActualizarStageDecision</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>Si_OCS</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>OCSInquiry</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Parent.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Pendiente</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Actualizar_Caso_a_Respondido_OCS</targetReference>
-            </connector>
-            <label>Si OCS</label>
-        </rules>
-        <rules>
-            <name>SI_USP</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4 OR 5 OR 6 OR 7 OR 8 OR 9)</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>USPInquiry</stringValue>
-                </rightValue>
-            </conditions>
+            <name>ActualizarEstadoRespondidoOutcome</name>
+            <conditionLogic>1 AND (2 OR 3 OR 4 OR 5 OR 6 OR 7 OR 8)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Parent.Status</leftValueReference>
                 <operator>EqualTo</operator>
@@ -96,7 +134,261 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Actualizar_Caso_a_Respondido_USP</targetReference>
+                <targetReference>Activar_Flag_estado_Respondido</targetReference>
+            </connector>
+            <label>Actualizar Estado Respondido</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Actualizar_Status_y_Stage</name>
+        <label>Actualizar Status y Stage?</label>
+        <locationX>710</locationX>
+        <locationY>1139</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Status_Y_Stage</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ActualizarStage</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ActualizarStatus</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActualizarCasoStageyStatus</targetReference>
+            </connector>
+            <label>Status Y Stage</label>
+        </rules>
+        <rules>
+            <name>ActualizarSoloEstadoOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ActualizarStatus</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ActualizarStage</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActualizarCasoStatus</targetReference>
+            </connector>
+            <label>Actualizar Solo Estado</label>
+        </rules>
+        <rules>
+            <name>ActualizarSoloStageoOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ActualizarStage</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ActualizarStatus</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActualizarCasoStageAction</targetReference>
+            </connector>
+            <label>Actualizar Solo Stage</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>ActualizarStageDecision</name>
+        <label>Actualizar Stage?</label>
+        <locationX>710</locationX>
+        <locationY>839</locationY>
+        <defaultConnector>
+            <targetReference>Actualizar_Status_y_Stage</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>ActualizarStageOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Parent.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.QuotationStage__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Quoted</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActivarFlagStage</targetReference>
+            </connector>
+            <label>Actualizar Stage</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>ActualizarStageNotIncoming</name>
+        <label>Actualizar Stage?</label>
+        <locationX>2030</locationX>
+        <locationY>839</locationY>
+        <defaultConnector>
+            <targetReference>ActualizarStatusYStageNotIncoming</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>ActivarActualizarStageOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Parent.QuotationStage__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Prospect</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActivarActualizarStage</targetReference>
+            </connector>
+            <label>Activar Actualizar Stage</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>ActualizarStatusYStageNotIncoming</name>
+        <label>Actualizar Status y Stage Not Incoming?</label>
+        <locationX>2030</locationX>
+        <locationY>1139</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>StatusStageOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ActualizarFieldStageNotIncoming</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ActualizarStatusNoIncoming</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActualizarCasoStatusStageNotIncoming</targetReference>
+            </connector>
+            <label>Status Y Stage</label>
+        </rules>
+        <rules>
+            <name>ActualizarSoloEstadoNotIncoming</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ActualizarStatusNoIncoming</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ActualizarFieldStageNotIncoming</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActualizarCasoSoloStatusNotIncoming</targetReference>
+            </connector>
+            <label>Actualizar Solo Estado</label>
+        </rules>
+        <rules>
+            <name>ActualizarSoloStageNotIncoming</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ActualizarFieldStageNotIncoming</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ActualizarStatusNoIncoming</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActualizarCasoSoloStageNotIncoming</targetReference>
+            </connector>
+            <label>Actualizar Solo Stage</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>El_Caso_esta_Pending</name>
+        <label>¿El Caso está Pending?</label>
+        <locationX>710</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_OCS</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>OCSRecordType</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendiente</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Actualizar_Caso_a_Respondido_OCS</targetReference>
+            </connector>
+            <label>Si OCS</label>
+        </rules>
+        <rules>
+            <name>SI_USP</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>USPRecordType</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Actualizar_Estado_Respondido</targetReference>
             </connector>
             <label>SI USP</label>
         </rules>
@@ -107,7 +399,7 @@
         <locationX>644</locationX>
         <locationY>323</locationY>
         <defaultConnector>
-            <targetReference>IsPendingUSP</targetReference>
+            <targetReference>USPDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -127,10 +419,13 @@
         </rules>
     </decisions>
     <decisions>
-        <name>IsPendingUSP</name>
-        <label>Is pending and USP?</label>
-        <locationX>974</locationX>
-        <locationY>431</locationY>
+        <name>IsPending</name>
+        <label>Is pending?</label>
+        <locationX>2030</locationX>
+        <locationY>539</locationY>
+        <defaultConnector>
+            <targetReference>ActualizarStageNotIncoming</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Pending or not USP</defaultConnectorLabel>
         <rules>
             <name>YesPendingOutcome</name>
@@ -143,13 +438,6 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>USPInquiry</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
                 <leftValueReference>$Record.Parent.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
@@ -157,13 +445,45 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Actualizar_Caso_a_Pendiente</targetReference>
+                <targetReference>ActivarActualizarStatus</targetReference>
             </connector>
             <label>Not Pending</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>USPDecision</name>
+        <label>USP?</label>
+        <locationX>2360</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>USPCaseOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>USPRecordType</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IsPending</targetReference>
+            </connector>
+            <label>Si USP</label>
+        </rules>
+    </decisions>
     <description>si llega un email, actualiza a Respondido el caso (OCS y EON)</description>
     <environments>Default</environments>
+    <formulas>
+        <name>OCSRecordType</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_OCS.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>USPRecordType</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_USP.Value__c}</expression>
+    </formulas>
     <interviewLabel>EmailMessage Trigger - After Insert Case Status {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage Trigger - After Insert Case Status</label>
     <processMetadataValues>
@@ -185,33 +505,6 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordUpdates>
-        <name>Actualizar_Caso_a_Pendiente</name>
-        <label>Actualizar Caso a Pendiente</label>
-        <locationX>842</locationX>
-        <locationY>539</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.ParentId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>PendingBy__c</field>
-            <value>
-                <stringValue>Intermediary</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Pendiente</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Case</object>
-    </recordUpdates>
     <recordUpdates>
         <name>Actualizar_Caso_a_Respondido_OCS</name>
         <label>Actualizar Caso a Respondido OCS</label>
@@ -240,10 +533,112 @@
         <object>Case</object>
     </recordUpdates>
     <recordUpdates>
-        <name>Actualizar_Caso_a_Respondido_USP</name>
-        <label>Actualizar Caso a Respondido USP</label>
+        <name>ActualizarCasoSoloStageNotIncoming</name>
+        <label>Actualizar Caso Solo Stage</label>
+        <locationX>2162</locationX>
+        <locationY>1247</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>QuotationStage__c</field>
+            <value>
+                <stringValue>Info request</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>ActualizarCasoSoloStatusNotIncoming</name>
+        <label>Actualizar Caso Solo Status</label>
+        <locationX>1898</locationX>
+        <locationY>1247</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>PendingBy__c</field>
+            <value>
+                <stringValue>Intermediary</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Pendiente</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>ActualizarCasoStageAction</name>
+        <label>Actualizar Caso Stage</label>
+        <locationX>842</locationX>
+        <locationY>1247</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>QuotationStage__c</field>
+            <value>
+                <stringValue>Work in Progress</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>ActualizarCasoStageyStatus</name>
+        <label>ActualizarCaso Stage y Status</label>
         <locationX>314</locationX>
-        <locationY>539</locationY>
+        <locationY>1247</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>PendingBy__c</field>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>QuotationStage__c</field>
+            <value>
+                <stringValue>Work in Progress</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Respondido</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>ActualizarCasoStatus</name>
+        <label>Actualizar Caso Status</label>
+        <locationX>578</locationX>
+        <locationY>1247</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -262,6 +657,39 @@
             <field>Status</field>
             <value>
                 <stringValue>Respondido</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>ActualizarCasoStatusStageNotIncoming</name>
+        <label>Actualizar Caso Status Stage</label>
+        <locationX>1634</locationX>
+        <locationY>1247</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>PendingBy__c</field>
+            <value>
+                <stringValue>Intermediary</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>QuotationStage__c</field>
+            <value>
+                <stringValue>Info request</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Pendiente</stringValue>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -285,4 +713,47 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>ActualizarFieldStageNotIncoming</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>ActualizarStage</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>ActualizarStatus</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>ActualizarStatusNoIncoming</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
 </Flow>
+
+
+    

@@ -3,7 +3,7 @@
     <fullName>Ratio_Claim__c</fullName>
     <description>Se calcula con la siguiente fórmula: ([Carga Total] / [Ingresos ])</description>
     <externalId>false</externalId>
-    <formula>TotalLoad__c /  Income__c</formula>
+    <formula>IF(OR(ISNULL(Income__c), Income__c = 0), 0, TotalLoad__c / Income__c)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Siniestralidad Total</label>
     <precision>18</precision>

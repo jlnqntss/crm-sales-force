@@ -160,7 +160,8 @@ public with sharing class UsersSelector extends RecordsSelector
         if ( userId != null && String.isNotEmpty(userId) )
         {
             List<User> userList = new List<User>([
-                                                     SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department, Signature, Title, ManagerId, License_Group__c
+                                                     SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId,
+                                                     UserRoleId, Department, Signature, Title, ManagerId, License_Group__c,  IAM_Role__c
                                                      FROM User WHERE Id =: userId LIMIT 1
                                                  ]);
 

@@ -1529,7 +1529,6 @@ public with sharing class EmailMessagesUtil
             result = false;
             ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_WARNING, 'Se ha recibido para el email con asunto ' + emailMessage.Subject + 
                                     ' el campo ToAddress con el valor ' + emailMessage.ToAddress, CLASS_NAME);
-            emailMessage.ToAddress = '';            
         } 
         return result;
     }

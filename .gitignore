@@ -5,6 +5,9 @@
 .sfdx/
 .localdevserver
 
+# Salesforce plugins
+docs
+
 # Temp files
 tmp/force-app/*
 .tmp/
@@ -43,3 +46,6 @@ IlluminatedCloud/
 
 .sf
 .pmdCache
+
+# Sonar Lint Configuration
+.sonarlint

@@ -282,11 +282,12 @@ public with sharing class OpenIDConnectSalesforceLicenseTest
         User u = handler.createUser(null, sampleDataIAM);
         Test.stopTest();
 
-        User createdUser = [SELECT userName, email, firstName, lastName, alias FROM user WHERE id=:u.Id];
+        User createdUser = [SELECT userName, email, firstName, lastName, alias, IAM_Role__c FROM user WHERE id=:u.Id];
         System.assertEquals('testuserlong@zurich-es.com', createdUser.userName);
         System.assertEquals('testuser@example.org', createdUser.email);
         System.assertEquals('testLast', createdUser.lastName);
         System.assertEquals('testFirst', createdUser.firstName);
+        System.assertEquals(IAM_ROLE_A, createdUser.IAM_Role__c, 'IAM_Role__c debe ser IAM_ROLE_A');
 
         // test update user on create
         handler.createUser(null, sampleDataIAM);

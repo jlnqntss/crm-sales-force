@@ -39,7 +39,8 @@ class SemanticTag {
   }
 }
 
-function getLastSemanticTag(tags, format) {
+function getLastSemanticTag(tags, format, idx = 0) {
+  console.log(`Tags: ` + tags + ` --- format: ` + format);
   let orderedTags = tags
     .filter((tag) => {
       return tag.name.match(format);
@@ -59,7 +60,7 @@ function getLastSemanticTag(tags, format) {
       return secondTagVersion.major - firstTagVersion.major;
     });
 
-  return orderedTags[0];
+  return orderedTags[idx];
 }
 
 module.exports = {

@@ -1889,6 +1889,70 @@ private with sharing class CaseUtilTest
         Assert.areEqual(zdaCaseNoChange.OwnerIdPrior__c, notChangedZdaCase.OwnerIdPrior__c);
     }
 
+    /**
+     * Se valida que cuando cambia el Status de un caso de USP se actualiza con el campo StatusPrior__c
+     *
+     * @author laura.rodriguez@seidor.com
+     * @date 18/09/2024
+     */
+    @isTest
+    private static void test_setStatusPrior()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+        
+        List<Case> uspCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        Id rtUSPId = CaseUtil.RT_ID_USPINQUIRY;
+        uspCases[0].RecordtypeId=rtUSPId;
+        uspCases[0].Subject='TEST STATUS';
+        uspCases[0].Status='Asignado';
+
+        insert uspCases;
+
+        Test.startTest();
+        uspCases[0].status='Pending';
+        Update uspCases[0];
+
+        Test.stopTest();
+
+        Case caseResult= [SELECT Id,StatusPrior__c FROM Case WHERE Subject='TEST STATUS'];
+        Assert.areEqual('Asignado', caseResult.StatusPrior__c);
+
+
+    }
+
+/**
+     * Se valida que cuando cambia el Status de un caso de USP se actualiza con el campo StatusPrior__c
+     *
+     * @author laura.rodriguez@seidor.com
+     * @date 03/10/2024
+     */
+    @isTest
+    private static void test_ownerName()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+        
+        Group queueOwner= [SELECT Id,Name FROM Group WHERE Type='Queue' LIMIT 1];
+        List<Case> uspCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        Id rtUSPId = CaseUtil.RT_ID_USPINQUIRY;
+        uspCases[0].RecordtypeId=rtUSPId;
+        uspCases[0].Subject='TEST STATUS';
+        uspCases[0].Status='Asignado';
+        insert uspCases;
+
+
+
+        Test.startTest();
+        uspCases[0].OwnerId= queueOwner.Id;
+        Update uspCases;
+        Test.stopTest();
+
+        Case caseResult= [SELECT Id,OwnerName__c FROM Case WHERE Subject='TEST STATUS'];
+        Assert.areEqual(queueOwner.Name, caseResult.OwnerName__c);
+
+
+    }
     @isTest
     private static void test_getRelatedPolicyIds()
     {

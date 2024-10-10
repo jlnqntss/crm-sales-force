@@ -21,7 +21,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>CTL</fullName>
+            <fullName>Departamento de Calidad</fullName>
             <default>false</default>
         </values>
         <values>
@@ -224,6 +224,10 @@
         </values>
         <values>
             <fullName>MIXTOS EXPRESS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PROPERTY MIDDLE</fullName>
             <default>false</default>
         </values>
         <values>

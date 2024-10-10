@@ -85,6 +85,17 @@
         <template>Life_Orange_Templates/Web_to_case_response_Orange_HTML</template>
     </alerts>
     <alerts>
+        <fullName>Caso_asignado_SDM</fullName>
+        <description>Caso asignado SDM</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderAddress>no.responder@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/SDM_Aviso_caso_asignado</template>
+    </alerts>
+    <alerts>
         <fullName>Caso_pendiente</fullName>
         <description>Caso pendiente</description>
         <protected>false</protected>
