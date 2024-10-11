@@ -5,7 +5,6 @@
     <columns>CASES.CASE_NUMBER</columns>
     <columns>ACCOUNT.NAME</columns>
     <columns>ActivityDescription__c</columns>
-    <columns>RPAStatusF__c</columns>
     <columns>RPAProposal__c</columns>
     <columns>DateReg__c</columns>
     <columns>CASES.PRIORITY</columns>
