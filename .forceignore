@@ -94,3 +94,7 @@ force-app/zurich-base/main/default/namedCredentials/GenesysCloud.namedCredential
 **/tsconfig.json
 
 **/*.ts
+
+# Flows obsoletos
+force-app/zurich-ventas-app/main/default/flows/AccountTriggerBeforeUpdateUpdateIntermediaryVisibilityAccField.flow-meta.xml
+force-app/zurich-base/main/default/flows/AccountTriggerAfterUpdateBlockedForIntermediary.flow-meta.xml
