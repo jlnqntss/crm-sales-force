@@ -864,4 +864,42 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                .enforceSecurity()
                .toQueryString();
     }
+
+    /**
+    * @description Método que devuelve la póliza más reciente de un cliente.
+    *
+        SELECT ID, IntermediaryId__c, IntermediaryId__r.INFOIntermediaryCode__c, CreatedDate__c 
+        FROM Opportunity
+        WHERE AccountId = :accountId
+        ORDER BY CreatedDate__c DESC
+        LIMIT 1
+    * @author igarcia 
+    * @date  06/06/2024
+    * @return List<Policy__c> lista de póliza con una sola poliza.
+    **/
+    public List<Opportunity> getMostRecentlyOfferByAccountId(String accountId)
+    {
+        List<Opportunity> result = new List<Opportunity>();
+
+
+        this.baseQuery.selectFields
+            (
+                new List<Schema.SObjectField>
+                {
+                    Opportunity.Id,
+                    Opportunity.IntermediaryId__c,
+                    Opportunity.CreatedDate__c
+                }
+            ).selectFields('Opportunity.IntermediaryId__r.INFOIntermediaryCode__c');
+
+            this.baseQuery                            
+                .addConditionEq(Opportunity.AccountId, accountId)
+                .addConditionNotEq(Opportunity.CreatedDate__c, null)
+                .orderBy('Opportunity.CreatedDate__c','DESC')
+                .setLimit(1);
+
+            result = this.baseQuery.enforceSecurity().run();
+            
+        return result;
+    }
 }

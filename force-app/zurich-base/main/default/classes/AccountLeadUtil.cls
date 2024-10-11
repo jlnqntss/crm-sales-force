@@ -8,8 +8,8 @@
 public with sharing class AccountLeadUtil
 {
     public static final String LEAD = 'Lead';
-    public static final String CUSTOMER = 'Customer';
-    public static final String BUSINESS = 'BusinessCustomer';
+
+    // #region Check Duplicates Public
 
     /**
      * Método que comprueba que se lance la validación sólo se lance desde los dos perfiles indicados
@@ -18,7 +18,9 @@ public with sharing class AccountLeadUtil
      */
     public static void checkLeadDuplicates(List<Account> newList)
     {
-        if (ProfilesSelector.getLoggedUserProfile() == Label.Profile_Ventas_User || ProfilesSelector.getLoggedUserProfile() == Label.Profile_Agente_Ventas)
+        String profileAGR = GlobalConfigUtil.getGlobalConfigurationValue('Profile_Name_Agente_Ventas_AGR');
+        String profileNameUserLogged = ProfilesSelector.getLoggedUserProfile();
+        if (Label.Profile_Ventas_User.equals(profileNameUserLogged) || Label.Profile_Agente_Ventas.equals(profileNameUserLogged) || profileAGR?.equals(profileNameUserLogged))
         {
             checkLeads(newList);
         }
@@ -83,6 +85,10 @@ public with sharing class AccountLeadUtil
         return acc;
     }
 
+    // #endregion
+
+    // #region LeadAssignment Public
+
     /**
      * @description Funcionalidad para conseguir el Id de usuario del agente intermediario
      *              al que se le debe asignar la cuenta de Lead. A partir de los parametros
@@ -112,29 +118,23 @@ public with sharing class AccountLeadUtil
 
         if(acc != null)
         {
-            String rtName = Schema.getGlobalDescribe().get('Account').getDescribe().getRecordTypeInfosById().get(acc.RecordTypeId).getDeveloperName();
-            if((rtName.equals(CUSTOMER)|| rtName.equals(BUSINESS)))
-            {
-                if( String.isNotBlank(acc.Intermediary_Name__c) )
-                {
-                    intermediaryCode = acc.Intermediary_Name__r.INFOIntermediaryCode__c;
-                }
-                List<Policy__c> mostRecentPolicy = new PoliciesSelector().getMostRecentlyPolicieByAccountId(acc.Id);
-                if(!mostRecentPolicy.isEmpty())
-                {
-                    intermediaryCode = mostRecentPolicy[0].Intermediary_Code__c; 
-                }
+            // reutilizo la variable de entrada ya que solo entra aquí si está vacía
+            intermediaryCode = leadAssignmentWhenAccountExists(acc, origin, language, postalCode);
+
+            if (String.isNotEmpty(intermediaryCode)) {
                 return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode).getAssignmentAsMap();
+            } else {
+                return leadAssignmentWhenAccountNotExists(origin, language, postalCode);
             }
-        }
 
-        if(String.isNotBlank(language) && language != 'ES')
-        {
-            return AccountLeadAssignment.getAssignedUserIdByLanguage(language).getAssignmentAsMap();
-        }
+        } else {
+            return leadAssignmentWhenAccountNotExists(origin, language, postalCode);
+        }        
+    }    
 
-        return AccountLeadAssignment.getAssignedUserIdByAssignmentType(origin, postalCode).getAssignmentAsMap();
-    }
+    // #endregion
+
+    // #region CheckDuplicates Private
 
     /**
      * @description Método para buscar una cuenta de tipo Lead asociada al documento de identificación facilitado
@@ -273,6 +273,94 @@ public with sharing class AccountLeadUtil
 
         return targetAccountCPP.ScopeId__r.AccountId__c;
     }
+
+    // #endregion
+
+    // #region LeadAssignment Private
+
+    /**
+     * @description Metodo que contiene el flujo de asignacion cuando existe una cuenta customer o business customer
+     * @author      dmunoz
+     * @return      String
+     *              Devuelve el código de mediador sobre el cual se debe asignar la oferta del lead cuando ha encontrado un cliente
+     */
+    private static String leadAssignmentWhenAccountExists(Account acc, String origin, String language, String postalCode) {
+
+        String intermediaryCode = '';
+
+        String customerRTDeveloperName = GlobalConfigUtil.getGlobalConfigurationValue('Account_RecordType_Customer');
+        String businessCustomerRTDeveloperName = GlobalConfigUtil.getGlobalConfigurationValue('Account_RecordType_BusinessCustomer');
+
+        String rtName = Schema.getGlobalDescribe().get('Account').getDescribe().getRecordTypeInfosById().get(acc.RecordTypeId).getDeveloperName();
+        
+        if((rtName.equals(customerRTDeveloperName) || rtName.equals(businessCustomerRTDeveloperName)))
+        {
+            
+            intermediaryCode = getIntermediaryFromMostRecentPolicy(acc.Id);
+
+            if (String.isEmpty(intermediaryCode)) {
+                intermediaryCode = getIntermediaryFromMostRecentOffer(acc.Id);
+            }
+
+            // en lugar de poner este if bajo la consulta al metodo getIntermediaryFromMostRecentOffer y dentro de otro if, para no incrementar la complejidad ciclomatica.
+            // de esta forma si no encuentra ni póliza ni oferta, ejecutaremos la lógica de asignacion de leads, es decir el método "leadAssignmentWhenAccountNotExists"
+            if (String.isEmpty(intermediaryCode)) {
+                leadAssignmentWhenAccountNotExists(origin, language, postalCode);
+            }
+        }
+        return intermediaryCode;
+    }
+
+
+    /**
+     * @description Metodo que contiene el flujo de asignacion cuando existe no cuenta customer o business customer o en caso que exista no se ha podido encontrar póliza u oferta asociada
+     * @author      dmunoz
+     * @return      String
+     *              Devuelve el código de mediador sobre el cual se debe asignar la oferta del lead cuando ha encontrado un cliente
+     */
+    private static Map<String, Account> leadAssignmentWhenAccountNotExists(String origin, String language, String postalCode) {
+        if(String.isNotBlank(language) && language != 'ES')
+        {
+            return AccountLeadAssignment.getAssignedUserIdByLanguage(language).getAssignmentAsMap(); 
+        }
+
+        return AccountLeadAssignment.getAssignedUserIdByAssignmentType(origin, postalCode).getAssignmentAsMap();
+    }
+
+
+    /**
+     * @description Metodo que devuelve si existe el código de mediador de la póliza mas reciente para un cliente dado
+     * @author      dmunoz
+     * @return      String
+     *              Devuelve el código de mediador de la póliza más reciente que tenga asociada el cliente
+     */
+    private static String getIntermediaryFromMostRecentPolicy(String idAccount) {
+        String intermediaryCode = '';
+
+        List<Policy__c> mostRecentPolicy = new PoliciesSelector().getMostRecentlyPolicieByAccountId(idAccount);
+
+        if(!mostRecentPolicy.isEmpty()) {
+            intermediaryCode = mostRecentPolicy.get(0).Intermediary_Code__c; 
+        }
+
+        return intermediaryCode;
+    }
+
+    private static String getIntermediaryFromMostRecentOffer(String idAccount) {
+        String intermediaryCode = '';
+
+        List<Opportunity> mostRecentOffer = new OpportunitiesSelector().getMostRecentlyOfferByAccountId(idAccount); 
+
+        if(!mostRecentOffer.isEmpty()) {
+            intermediaryCode = mostRecentOffer.get(0).IntermediaryId__r.INFOIntermediaryCode__c; 
+        }
+
+        return intermediaryCode;
+    }
+
+    // #endregion
+
+    // #region Scopes
 
     /** */
 
