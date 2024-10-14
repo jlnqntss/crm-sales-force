@@ -6,11 +6,13 @@
  * @last modified by  : rserrano
 **/
 @isTest
-public class TriggerBypassUtilityTest {
+public class TriggerBypassUtilityTest 
+{
     static final String NO_BLOQUEADO_NI_ANONIMIZADO = 'No bloqueado ni anonimizado';
     
     @testSetup
-    static void setupTestData() {
+    static void setupTestData() 
+    {
 
         List<Account> customerLst = TestDataFactory.generateAccounts('001', 'Customer', 20);
 
@@ -48,7 +50,8 @@ public class TriggerBypassUtilityTest {
     * @author rserrano | 10/09/2024 
     **/
     @isTest
-    static void testGdprBypassBeforeHandler() {
+    static void testGdprBypassBeforeHandler() 
+    {
         // Obtener los registros de prueba creados en el método testSetup
         List<Account> accounts = [SELECT Id, Name, Blocked__c, Anonymized__c FROM Account];
 
@@ -71,7 +74,8 @@ public class TriggerBypassUtilityTest {
     * @author rserrano | 10/09/2024 
     **/
     @isTest
-    static void testGdprBypassAfterHandlerWithOldMap() {
+    static void testGdprBypassAfterHandlerWithOldMap() 
+    {
         // Obtener los registros de prueba creados en el método testSetup
         List<Account> accounts = [SELECT Id, Name, Blocked__c, Anonymized__c FROM Account];
         
@@ -101,7 +105,8 @@ public class TriggerBypassUtilityTest {
     * @author rserrano | 10/09/2024 
     **/
     @isTest
-    static void testGdprBypassWithOldMapOnly() {
+    static void testGdprBypassWithOldMapOnly() 
+    {
         // Obtener los registros de prueba creados en el método testSetup
         Map<Id, Account> oldMap = new Map<Id, Account>([SELECT Id, Name, Blocked__c, Anonymized__c FROM Account]);
 
@@ -125,7 +130,8 @@ public class TriggerBypassUtilityTest {
     * @author rserrano | 10/09/2024 
     **/
     @isTest
-    static void testThrowExceptionIfBlockedOrAnonymized() {
+    static void testThrowExceptionIfBlockedOrAnonymized() 
+    {
         // Obtener los registros de prueba creados en el método testSetup
         List<Account> accounts = [SELECT Id, LegalEntity__c, Blocked__c, Anonymized__c FROM Account];
         
