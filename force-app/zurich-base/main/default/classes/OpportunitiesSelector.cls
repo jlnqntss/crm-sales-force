@@ -873,9 +873,9 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         WHERE AccountId = :accountId
         ORDER BY CreatedDate__c DESC
         LIMIT 1
-    * @author igarcia 
-    * @date  06/06/2024
-    * @return List<Policy__c> lista de póliza con una sola poliza.
+    * @author dmunoz 
+    * @date  14/10/2024
+    * @return List<Opportunity> lista de póliza con una sola poliza.
     **/
     public List<Opportunity> getMostRecentlyOfferByAccountId(String accountId)
     {
