@@ -2214,6 +2214,25 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>Permission__c</picklist>
+        <values>
+            <fullName>Consulta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ofertas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Total</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Total sin administración</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Scope__c</picklist>
         <values>
             <fullName>Z</fullName>

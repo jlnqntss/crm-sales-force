@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>GenesysQueue__c</field>
-        <value xsi:type="xsd:string">Email_ZDA_Gestion_Cartera</value>
+        <value xsi:type="xsd:string">Email_ZDA_Suplementos_y_cot_comercios</value>
     </values>
     <values>
         <field>Level__c</field>

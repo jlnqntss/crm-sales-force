@@ -31,6 +31,7 @@
         <field>LAST_UPDATE_BY</field>
     </columns>
     <filter>
+        <booleanFilter>1 AND 2 AND (3 OR 5) AND 4</booleanFilter>
         <criteriaItems>
             <column>RECORDTYPE</column>
             <columnToColumn>false</columnToColumn>
@@ -42,11 +43,25 @@
             <column>STATUS</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>Asignado,Nuevo,New</value>
+            <operator>notEqual</operator>
+            <value>Cerrado,Closed,Combinado</value>
         </criteriaItems>
         <criteriaItems>
             <column>Case.SoyManager__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Case.PendingBy__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Supervisor,Other areas Zurich,Intermediary,Technical Direction,Territorial Direction,Others,Deferred,Consultant</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Case.DisplayCase__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>

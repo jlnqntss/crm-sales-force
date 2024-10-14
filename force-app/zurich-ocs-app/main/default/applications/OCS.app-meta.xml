@@ -234,6 +234,22 @@
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
+        <content>Policy_Record_Page</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Policy__c</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>OCS User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Policy_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Policy__c</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>OCS User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
         <content>OCS_Customer_Default</content>
         <formFactor>Small</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>

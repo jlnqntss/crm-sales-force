@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>PlanComercial__c2.Actual_KPI__c:SUM / PlanComercial__c.TargetKPI__c:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>% del plan que han completado los mediadores</description>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% Completado</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>PlanComercial__c2.TargetKPI__c:SUM / PlanComercial__c.TargetKPI__c:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>% del plan que se ha bajado a los mediadores</description>
+        <developerName>FORMULA2</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% Distribuido</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <columns>
+        <field>PlanComercial__c.ParentPlans__r$Intermediary__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>PlanComercial__c.ParentPlans__r$TargetKPI__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>PlanComercial__c.ParentPlans__r$Actual_KPI__c</field>
+    </columns>
+    <description>Informe para el rol de home office para poder confirmar que todo el mundo ha completado los planes y cuadran con los datos esperados</description>
+    <filter>
+        <criteriaItems>
+            <column>PlanComercial__c$Owner.UserRole.Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>SDM DT</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>PlanComercial__c$AssignedTo__c.UserRole.Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>SDM RN</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>PlanComercial__c$RecordType</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>PlanComercial__c.AnualPlan</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>PlanComercial__c$AssignedTo__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>PlanComercial__c$Name</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>PlanComercial__c$TargetKPI__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Seguimiento planes RN - mediador</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>Planes_comerciales_DT_RN_Mediador__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>false</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>PlanComercial__c.ParentPlans__r$Intermediary__c</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>PlanComercial__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CURY</interval>
+    </timeFrameFilter>
+</Report>

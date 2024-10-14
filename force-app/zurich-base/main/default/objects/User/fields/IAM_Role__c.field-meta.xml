@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IAM_Role__c</fullName>
+    <description>Rol de IAM del usuario. Es un campo interno informativo, para identificación de roles y gestión de incidencias.</description>
+    <externalId>false</externalId>
+    <label>IAM Role</label>
+    <length>50</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

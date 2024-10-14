@@ -4,8 +4,8 @@
         <description>Hace la peticion a canal unico (asincrono) con la peticion del cierre del caso</description>
         <name>SendDocCanalUnicoAction</name>
         <label>Send close action</label>
-        <locationX>226</locationX>
-        <locationY>2330</locationY>
+        <locationX>446</locationX>
+        <locationY>2438</locationY>
         <actionName>SendDocCanalUnicoAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -26,8 +26,8 @@
         <description>Crea y asigna el nuevo link</description>
         <name>AddContentDocumentLinkAssignment</name>
         <label>Add content document link</label>
-        <locationX>314</locationX>
-        <locationY>1922</locationY>
+        <locationX>534</locationX>
+        <locationY>2030</locationY>
         <assignmentItems>
             <assignToReference>ContentDocumentLinkToCreate.ContentDocumentId</assignToReference>
             <operator>Assign</operator>
@@ -88,8 +88,8 @@
         <description>Suma el tamaño del fichero actual al total</description>
         <name>AddFileSizeAssignment</name>
         <label>Add file size</label>
-        <locationX>138</locationX>
-        <locationY>1190</locationY>
+        <locationX>358</locationX>
+        <locationY>1298</locationY>
         <assignmentItems>
             <assignToReference>TotalFileSizeAttached</assignToReference>
             <operator>Add</operator>
@@ -105,8 +105,8 @@
         <description>Pone a 0 la variable que contiene el tamaño total de archivos adjuntos</description>
         <name>ResetAttachedFileSizeVariableAssignment</name>
         <label>Reset attached file size variable</label>
-        <locationX>50</locationX>
-        <locationY>974</locationY>
+        <locationX>270</locationX>
+        <locationY>1082</locationY>
         <assignmentItems>
             <assignToReference>TotalFileSizeAttached</assignToReference>
             <operator>Assign</operator>
@@ -129,8 +129,8 @@
         <description>Informar el objeto de envio a crear</description>
         <name>SendDocObjectCreationAssignment</name>
         <label>Send doc object creation</label>
-        <locationX>226</locationX>
-        <locationY>1706</locationY>
+        <locationX>446</locationX>
+        <locationY>1814</locationY>
         <assignmentItems>
             <assignToReference>sendInfoObject.CaseId__c</assignToReference>
             <operator>Assign</operator>
@@ -160,8 +160,8 @@
         <description>Establece los datos del cierre en el caso que se va a actualizar</description>
         <name>SetCaseCloseDataAssignment</name>
         <label>Set case close data</label>
-        <locationX>226</locationX>
-        <locationY>1490</locationY>
+        <locationX>446</locationX>
+        <locationY>1598</locationY>
         <assignmentItems>
             <assignToReference>GetCaseAction.ResponseCanalUnico__c</assignToReference>
             <operator>Assign</operator>
@@ -188,7 +188,7 @@
         <description>Permitir el cierre del caso. Solo sera posible si es de tipo ZDA, origen canal unico, el status es asignado, respondido o pendiente de partner y el caso esta tipificado</description>
         <name>AllowCloseDecision</name>
         <label>Allow close</label>
-        <locationX>270</locationX>
+        <locationX>380</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>NotAllowedCloseScreen</targetReference>
@@ -267,11 +267,38 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Comprobar que el resultado de cierre no sea nulo</description>
+        <name>Close_Result_Null</name>
+        <label>Close Result Null</label>
+        <locationX>50</locationX>
+        <locationY>866</locationY>
+        <defaultConnector>
+            <targetReference>GetAttachedFilesAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>NullCloseResult</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetCaseAction.CloseResult__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>CloseCaseDataScreen</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Se comprueba si el tamaño maximo ha sido excedido</description>
         <name>MaxFileSizeExceededDecision</name>
         <label>Max file size exceeded</label>
-        <locationX>50</locationX>
-        <locationY>1382</locationY>
+        <locationX>270</locationX>
+        <locationY>1490</locationY>
         <defaultConnector>
             <targetReference>SetCaseCloseDataAssignment</targetReference>
         </defaultConnector>
@@ -358,8 +385,8 @@
         <description>Bucle para calcular el tamaño total de los adjuntos</description>
         <name>AttachedFilesSizeLoop</name>
         <label>Attached files size</label>
-        <locationX>50</locationX>
-        <locationY>1082</locationY>
+        <locationX>270</locationX>
+        <locationY>1190</locationY>
         <collectionReference>GetAttachedFilesAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -388,8 +415,8 @@
         <description>Crea el link entre los ficheros adjuntos y el caso a cerrar</description>
         <name>CreateDocumentLinksLoop</name>
         <label>Create document links loop</label>
-        <locationX>226</locationX>
-        <locationY>1814</locationY>
+        <locationX>446</locationX>
+        <locationY>1922</locationY>
         <collectionReference>GetAttachedFilesAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -422,8 +449,8 @@
         <description>Crea la lista de content document links para asociar los adjuntos con la tarea creada</description>
         <name>CreateContentDocumentLinksAction</name>
         <label>Create content document links</label>
-        <locationX>226</locationX>
-        <locationY>2114</locationY>
+        <locationX>446</locationX>
+        <locationY>2222</locationY>
         <connector>
             <targetReference>CreateSendObjectAction</targetReference>
         </connector>
@@ -433,8 +460,8 @@
         <description>Inserta el objeto para que tenga asignado un identificador</description>
         <name>CreateSendObjectAction</name>
         <label>Create send object</label>
-        <locationX>226</locationX>
-        <locationY>2222</locationY>
+        <locationX>446</locationX>
+        <locationY>2330</locationY>
         <connector>
             <targetReference>SendDocCanalUnicoAction</targetReference>
         </connector>
@@ -444,8 +471,8 @@
         <description>Se obtienen los adjuntos para validar su tamaño total</description>
         <name>GetAttachedFilesAction</name>
         <label>Get attached files</label>
-        <locationX>50</locationX>
-        <locationY>866</locationY>
+        <locationX>270</locationX>
+        <locationY>974</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ResetAttachedFileSizeVariableAssignment</targetReference>
@@ -493,7 +520,7 @@
         <description>Se obtiene el caso que se va a cerrar</description>
         <name>GetCaseAction</name>
         <label>Get case</label>
-        <locationX>270</locationX>
+        <locationX>380</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -515,8 +542,8 @@
         <description>Actualiza el caso para cerrarlo</description>
         <name>UpdateCaseAction</name>
         <label>Update case</label>
-        <locationX>226</locationX>
-        <locationY>1598</locationY>
+        <locationX>446</locationX>
+        <locationY>1706</locationY>
         <connector>
             <targetReference>SendDocObjectCreationAssignment</targetReference>
         </connector>
@@ -533,7 +560,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>GetAttachedFilesAction</targetReference>
+            <targetReference>Close_Result_Null</targetReference>
         </connector>
         <fields>
             <fieldType>ObjectProvided</fieldType>
@@ -556,6 +583,21 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <objectFieldReference>GetCaseAction.CloseResult__c</objectFieldReference>
+        </fields>
+        <fields>
+            <name>ErrorCloseResultNull</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;El campo Resultado de Cierre no puede estar vacío.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>GetCaseAction.CloseResult__c</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>ResponseInput</name>
@@ -582,7 +624,7 @@
         </fields>
         <fields>
             <name>ErrorFileSizeScreenPartnerDisplay</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;{!$Label.ZDAErrorMaxAttachmentExceededMsg}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;{!$Label.ZDAErrorMaxAttachmentExceededMsg}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -650,6 +692,13 @@
                         <booleanValue>false</booleanValue>
                     </rightValue>
                 </conditions>
+                <conditions>
+                    <leftValueReference>GetCaseAction.CloseResult__c</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
             </visibilityRule>
         </fields>
         <showFooter>true</showFooter>
@@ -659,8 +708,8 @@
         <description>Pantalla final del flujo</description>
         <name>CloseSucceededScreen</name>
         <label>Close succeeded</label>
-        <locationX>226</locationX>
-        <locationY>2438</locationY>
+        <locationX>446</locationX>
+        <locationY>2546</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -676,7 +725,7 @@
         <description>Pantalla que se muestra por no permitir cerrar el caso</description>
         <name>NotAllowedCloseScreen</name>
         <label>Cierre no permitido</label>
-        <locationX>490</locationX>
+        <locationX>710</locationX>
         <locationY>350</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -690,7 +739,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>144</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GetCaseAction</targetReference>

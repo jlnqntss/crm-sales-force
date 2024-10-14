@@ -3,8 +3,8 @@
     <actionCalls>
         <name>MandarEmailCierreCasoUSP</name>
         <label>Mandar Email Cierre Caso USP</label>
-        <locationX>314</locationX>
-        <locationY>3917</locationY>
+        <locationX>380</locationX>
+        <locationY>4409</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
         <faultConnector>
@@ -20,7 +20,7 @@
         <inputParameters>
             <name>senderAddress</name>
             <value>
-                <elementReference>GetOrganizationwideaddressAction.Address</elementReference>
+                <elementReference>No_Responder_Zurich</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -38,17 +38,125 @@
         <inputParameters>
             <name>emailTemplateId</name>
             <value>
-                <elementReference>PlantillaCasosCerradosSinFinalizarUSPAction.Id</elementReference>
+                <elementReference>IdEmailTemplate</elementReference>
             </value>
         </inputParameters>
         <nameSegment>emailSimple</nameSegment>
         <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
+        <name>Obtener_System_User</name>
+        <label>Obtener System User</label>
+        <locationX>336</locationX>
+        <locationY>3161</locationY>
+        <actionName>GetGlobalConfigurationValueIdFlow</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Loop_Id_System_User</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>globalValueName</name>
+            <value>
+                <elementReference>System_User</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>idORg</name>
+            <value>
+                <elementReference>idORG</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>GetGlobalConfigurationValueIdFlow</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>ObtenerIdEmailTemplateAction</name>
+        <label>Obtener Id Email Template</label>
+        <locationX>380</locationX>
+        <locationY>4001</locationY>
+        <actionName>GetGlobalConfigurationValueIdFlow</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>LoopIdEmailTemplate</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>globalValueName</name>
+            <value>
+                <elementReference>Caso_cerrado_sin_finalizar</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>idORg</name>
+            <value>
+                <elementReference>idORG</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>GetGlobalConfigurationValueIdFlow</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>ObtenerIdEmailTemplatePendiente</name>
+        <label>Obtener Id Email Template Pendiente</label>
+        <locationX>1788</locationX>
+        <locationY>3377</locationY>
+        <actionName>GetGlobalConfigurationValueIdFlow</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>LoopIdEmailTemplatePendiente</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>globalValueName</name>
+            <value>
+                <elementReference>Caso_pendiente_USP</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>idORg</name>
+            <value>
+                <elementReference>idORG</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>GetGlobalConfigurationValueIdFlow</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>ObtenerSystemUserSinEmail</name>
+        <label>Obtener System User Sin Email</label>
+        <locationX>2932</locationX>
+        <locationY>2195</locationY>
+        <actionName>GetGlobalConfigurationValueIdFlow</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>IdSystemUserSinEmailLoop</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>globalValueName</name>
+            <value>
+                <elementReference>System_User</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>idORg</name>
+            <value>
+                <elementReference>idORG</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>GetGlobalConfigurationValueIdFlow</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
         <name>SendEmailUSPAction</name>
         <label>Mandar Email USP</label>
-        <locationX>1898</locationX>
-        <locationY>3593</locationY>
+        <locationX>1788</locationX>
+        <locationY>3785</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -61,7 +169,7 @@
         <inputParameters>
             <name>senderAddress</name>
             <value>
-                <elementReference>OrganizationWideAddress.Address</elementReference>
+                <elementReference>No_Responder_Zurich</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -79,7 +187,7 @@
         <inputParameters>
             <name>emailTemplateId</name>
             <value>
-                <elementReference>PlantillaCasosPendientesUSPAction.Id</elementReference>
+                <elementReference>idEmailTemplatePendiente</elementReference>
             </value>
         </inputParameters>
         <nameSegment>emailSimple</nameSegment>
@@ -88,7 +196,7 @@
     <actionCalls>
         <name>SplitEmailAddress</name>
         <label>Split Email Address</label>
-        <locationX>1414</locationX>
+        <locationX>1304</locationX>
         <locationY>2087</locationY>
         <actionName>SplitEmailAddress</actionName>
         <actionType>apex</actionType>
@@ -114,7 +222,7 @@
         <description>Se le asigna una variable a true para posteriormente diferenciar si se envía email de alerta y cerrar el caso al pasar 15 días</description>
         <name>CerrarCaso15DiasAssignment</name>
         <label>Cerrar Caso 15 Dias</label>
-        <locationX>2459</locationX>
+        <locationX>2250</locationX>
         <locationY>276</locationY>
         <assignmentItems>
             <assignToReference>SeCierraCaso</assignToReference>
@@ -131,7 +239,7 @@
         <description>Se le asigna una variable a true para posteriormente diferenciar si se envía email de alerta y cerrar el caso al pasar 90 días en casos de Grandes Pymes</description>
         <name>CerrarCaso90DiasPath</name>
         <label>Cerrar Caso 90 Dias</label>
-        <locationX>2723</locationX>
+        <locationX>2514</locationX>
         <locationY>276</locationY>
         <assignmentItems>
             <assignToReference>SeCierraCasoGrandesPymes</assignToReference>
@@ -148,7 +256,7 @@
         <description>Se le asigna una variable a true para posteriormente diferenciar si se envía email de alerta y cerrar el caso al pasar 15 días</description>
         <name>CerrarCasoFechaAssignment</name>
         <label>Cerrar Caso Fecha</label>
-        <locationX>3075</locationX>
+        <locationX>2866</locationX>
         <locationY>276</locationY>
         <assignmentItems>
             <assignToReference>SeCierraCaso</assignToReference>
@@ -171,7 +279,7 @@
     <assignments>
         <name>CorreoLocalizadoAssignment</name>
         <label>Correo Localizado</label>
-        <locationX>1502</locationX>
+        <locationX>1392</locationX>
         <locationY>2519</locationY>
         <assignmentItems>
             <assignToReference>DireccionRecordatorio</assignToReference>
@@ -195,7 +303,7 @@
     <assignments>
         <name>DominioExcluidoUSPAssignment</name>
         <label>Dominio Excluido</label>
-        <locationX>1766</locationX>
+        <locationX>1656</locationX>
         <locationY>2519</locationY>
         <assignmentItems>
             <assignToReference>DominioExcluido</assignToReference>
@@ -209,10 +317,74 @@
             <targetReference>EmailAddressLoop</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>EmailTemplatePendienteAssignment</name>
+        <label>Email Template Pendiente Assignment</label>
+        <locationX>1876</locationX>
+        <locationY>3593</locationY>
+        <assignmentItems>
+            <assignToReference>idEmailTemplatePendiente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>LoopIdEmailTemplatePendiente</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>LoopIdEmailTemplatePendiente</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>IdEmailTemplateAssignment</name>
+        <label>Id Email Template Assignment</label>
+        <locationX>468</locationX>
+        <locationY>4217</locationY>
+        <assignmentItems>
+            <assignToReference>IdEmailTemplate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>LoopIdEmailTemplate</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>LoopIdEmailTemplate</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>IdSystemUserAssignment</name>
+        <label>Id System User Assignment</label>
+        <locationX>424</locationX>
+        <locationY>3377</locationY>
+        <assignmentItems>
+            <assignToReference>idSystemUser</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Id_System_User</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Id_System_User</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>IdSystemUserAssignmentSinEmail</name>
+        <label>Id System User Assignment Sin Email</label>
+        <locationX>3020</locationX>
+        <locationY>2411</locationY>
+        <assignmentItems>
+            <assignToReference>idSystemUserSinEmail</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>IdSystemUserSinEmailLoop</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>IdSystemUserSinEmailLoop</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>CloseCaseDecision</name>
         <label>¿Se cierra el caso?</label>
-        <locationX>974</locationX>
+        <locationX>864</locationX>
         <locationY>2945</locationY>
         <defaultConnector>
             <targetReference>SeHaExcluidoElDominioYCasoVentaDecision</targetReference>
@@ -258,7 +430,7 @@
     <decisions>
         <name>ContactoEncontradoCierreDecision</name>
         <label>Contacto Encontrado Cierre</label>
-        <locationX>2162</locationX>
+        <locationX>1920</locationX>
         <locationY>3269</locationY>
         <defaultConnectorLabel>Not Found</defaultConnectorLabel>
         <rules>
@@ -272,7 +444,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>PlantillaCasosPendientesUSPAction</targetReference>
+                <targetReference>ObtenerIdEmailTemplatePendiente</targetReference>
             </connector>
             <label>Found</label>
         </rules>
@@ -280,8 +452,8 @@
     <decisions>
         <name>ContactoEncontradoDecision</name>
         <label>Contacto Encontrado</label>
-        <locationX>578</locationX>
-        <locationY>3593</locationY>
+        <locationX>644</locationX>
+        <locationY>3893</locationY>
         <defaultConnectorLabel>Not Found</defaultConnectorLabel>
         <rules>
             <name>ContactFound</name>
@@ -294,7 +466,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>PlantillaCasosCerradosSinFinalizarUSPAction</targetReference>
+                <targetReference>ObtenerIdEmailTemplateAction</targetReference>
             </connector>
             <label>Contact Found</label>
         </rules>
@@ -302,10 +474,10 @@
     <decisions>
         <name>CumpleFechaEstimadaCierreDecision</name>
         <label>Cumple Fecha Estimada Cierre?</label>
-        <locationX>3086</locationX>
+        <locationX>2756</locationX>
         <locationY>2087</locationY>
         <defaultConnector>
-            <targetReference>ObtenerSystemUserCerrarCaso</targetReference>
+            <targetReference>ObtenerSystemUserSinEmail</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Cierre Habitual</defaultConnectorLabel>
         <rules>
@@ -348,7 +520,7 @@
         <locationX>50</locationX>
         <locationY>3053</locationY>
         <defaultConnector>
-            <targetReference>GetSystemUserAction</targetReference>
+            <targetReference>Obtener_System_User</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Cierre Habitual</defaultConnectorLabel>
         <rules>
@@ -388,8 +560,8 @@
     <decisions>
         <name>DominioExcluidoDecision</name>
         <label>Dominio Excluido?</label>
-        <locationX>314</locationX>
-        <locationY>3377</locationY>
+        <locationX>336</locationX>
+        <locationY>3677</locationY>
         <defaultConnector>
             <targetReference>ContactoEmailCierreAction</targetReference>
         </defaultConnector>
@@ -410,7 +582,7 @@
     <decisions>
         <name>DominioExcluidoUSPDecision</name>
         <label>¿Dominio excluido USP?</label>
-        <locationX>1634</locationX>
+        <locationX>1524</locationX>
         <locationY>2411</locationY>
         <defaultConnector>
             <targetReference>DominioExcluidoUSPAssignment</targetReference>
@@ -435,7 +607,7 @@
     <decisions>
         <name>EmailEncontradoDecision</name>
         <label>¿Email Encontrado?</label>
-        <locationX>2129</locationX>
+        <locationX>1920</locationX>
         <locationY>1871</locationY>
         <defaultConnector>
             <targetReference>SeNecesitaCerrarElCasoDecision</targetReference>
@@ -467,7 +639,7 @@
     <decisions>
         <name>fecha_estimada_cierre</name>
         <label>fecha estimada cierre</label>
-        <locationX>3075</locationX>
+        <locationX>2866</locationX>
         <locationY>384</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -510,7 +682,7 @@
     <decisions>
         <name>FulfilPrerequisitesDecision</name>
         <label>¿Cumple los prerrequisitos?</label>
-        <locationX>2129</locationX>
+        <locationX>1920</locationX>
         <locationY>1271</locationY>
         <defaultConnector>
             <targetReference>SinCuentaDecision</targetReference>
@@ -549,7 +721,7 @@
     <decisions>
         <name>GPONDecision</name>
         <label>GP ON?</label>
-        <locationX>1183</locationX>
+        <locationX>974</locationX>
         <locationY>492</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -571,7 +743,7 @@
     <decisions>
         <name>GrandesPymesONDecision</name>
         <label>Grandes Pymes ON?</label>
-        <locationX>1711</locationX>
+        <locationX>1502</locationX>
         <locationY>384</locationY>
         <defaultConnector>
             <targetReference>USPONDecision</targetReference>
@@ -596,7 +768,7 @@
     <decisions>
         <name>GrandesPymesUSPDecision</name>
         <label>Grandes Pymes/USP?</label>
-        <locationX>1183</locationX>
+        <locationX>974</locationX>
         <locationY>276</locationY>
         <defaultConnector>
             <targetReference>GrandesPymesONDecision</targetReference>
@@ -678,7 +850,7 @@
     <decisions>
         <name>SeHaExcluidoElDominioYCasoVentaDecision</name>
         <label>Se ha excluido el dominio y el caso es tipo Venta?</label>
-        <locationX>1898</locationX>
+        <locationX>1678</locationX>
         <locationY>3053</locationY>
         <defaultConnector>
             <targetReference>ContactoEmailAction</targetReference>
@@ -728,7 +900,7 @@
     <decisions>
         <name>SeNecesitaCerrarElCasoDecision</name>
         <label>¿Se necesita cerrar el caso?</label>
-        <locationX>3284</locationX>
+        <locationX>2976</locationX>
         <locationY>1979</locationY>
         <defaultConnectorLabel>No cerrar Caso</defaultConnectorLabel>
         <rules>
@@ -764,7 +936,7 @@
     <decisions>
         <name>SinCuentaDecision</name>
         <label>Sin cuenta?</label>
-        <locationX>2261</locationX>
+        <locationX>2052</locationX>
         <locationY>1379</locationY>
         <defaultConnectorLabel>Cuenta No Intermediario</defaultConnectorLabel>
         <rules>
@@ -786,7 +958,7 @@
     <decisions>
         <name>USP_ONDecision</name>
         <label>USP ON?</label>
-        <locationX>655</locationX>
+        <locationX>446</locationX>
         <locationY>492</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -808,7 +980,7 @@
     <decisions>
         <name>USPONDecision</name>
         <label>USP ON?</label>
-        <locationX>1711</locationX>
+        <locationX>1502</locationX>
         <locationY>684</locationY>
         <defaultConnectorLabel>No Desactivar USP</defaultConnectorLabel>
         <rules>
@@ -835,6 +1007,16 @@
         <scale>2</scale>
     </formulas>
     <formulas>
+        <name>idORG</name>
+        <dataType>String</dataType>
+        <expression>CASESAFEID({!$Organization.Id})</expression>
+    </formulas>
+    <formulas>
+        <name>No_Responder_Zurich</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.No_Responder_Zurich.Value__c}</expression>
+    </formulas>
+    <formulas>
         <name>statusPriorPending</name>
         <dataType>String</dataType>
         <expression>IF(ISPICKVAL({!$Record__Prior.Status},&quot;Pending&quot;), &quot;on&quot;, &quot;off&quot;)</expression>
@@ -844,7 +1026,7 @@
     <loops>
         <name>EmailAddressLoop</name>
         <label>Email Address Loop</label>
-        <locationX>1414</locationX>
+        <locationX>1304</locationX>
         <locationY>2195</locationY>
         <collectionReference>SplitEmails</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -856,9 +1038,23 @@
         </noMoreValuesConnector>
     </loops>
     <loops>
+        <name>IdSystemUserSinEmailLoop</name>
+        <label>Loop Id System User Sin Email</label>
+        <locationX>2932</locationX>
+        <locationY>2303</locationY>
+        <collectionReference>ObtenerSystemUserSinEmail</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>IdSystemUserAssignmentSinEmail</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>ActualizarCerrarCasoSinEmail</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>LastEmailSendLoop</name>
         <label>Ultimo Email Enviado Bucle</label>
-        <locationX>974</locationX>
+        <locationX>864</locationX>
         <locationY>1979</locationY>
         <collectionReference>LastEmailSendAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -867,6 +1063,48 @@
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>CloseCaseDecision</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Loop_Id_System_User</name>
+        <label>Loop Id System User</label>
+        <locationX>336</locationX>
+        <locationY>3269</locationY>
+        <collectionReference>Obtener_System_User</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>IdSystemUserAssignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>UpdateCerrarCaso</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>LoopIdEmailTemplate</name>
+        <label>Loop Id Email Template</label>
+        <locationX>380</locationX>
+        <locationY>4109</locationY>
+        <collectionReference>ObtenerIdEmailTemplateAction</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>IdEmailTemplateAssignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>MandarEmailCierreCasoUSP</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>LoopIdEmailTemplatePendiente</name>
+        <label>Loop Id Email Template Pendiente</label>
+        <locationX>1788</locationX>
+        <locationY>3485</locationY>
+        <collectionReference>ObtenerIdEmailTemplatePendiente</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>EmailTemplatePendienteAssignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>SendEmailUSPAction</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -891,8 +1129,8 @@
     <recordCreates>
         <name>CreateErrorLogCaseCloseAction</name>
         <label>Generar Error Log Cierre de caso</label>
-        <locationX>1106</locationX>
-        <locationY>3377</locationY>
+        <locationX>1172</locationX>
+        <locationY>3677</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -923,8 +1161,8 @@
     <recordCreates>
         <name>CreateErrorLogCaseEmailSend</name>
         <label>Generar Error Log Envio Email</label>
-        <locationX>578</locationX>
-        <locationY>4025</locationY>
+        <locationX>644</locationX>
+        <locationY>4517</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -955,7 +1193,7 @@
     <recordCreates>
         <name>GenerarErrorLogRecuperarContacto</name>
         <label>Generar Error Log Recuperar Contacto</label>
-        <locationX>2690</locationX>
+        <locationX>2316</locationX>
         <locationY>3269</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
@@ -985,73 +1223,9 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>GenerarErrorLogRecuperarPlantilla</name>
-        <label>Generar Error Log Recuperar Plantilla</label>
-        <locationX>2162</locationX>
-        <locationY>3485</locationY>
-        <inputAssignments>
-            <field>Source_Class__c</field>
-            <value>
-                <stringValue>Case Trigger - After Insert Update - Notificación pendiente CSM</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Method__c</field>
-            <value>
-                <stringValue>Generar Error Log Recuperar Plantilla</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Stack_Trace__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Throwing_Time__c</field>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Error_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>GenerarErrorLogSystemUser</name>
-        <label>Generar Error Log System User</label>
-        <locationX>1370</locationX>
-        <locationY>3269</locationY>
-        <inputAssignments>
-            <field>Source_Class__c</field>
-            <value>
-                <stringValue>Case Trigger - After Insert Update - Notificación pendiente CSM</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Method__c</field>
-            <value>
-                <stringValue>Generar Error Log System User</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Stack_Trace__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Throwing_Time__c</field>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Error_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
         <name>GenerarErrorLogUltimoEmail</name>
         <label>Generar Error Log Ultimo Email</label>
-        <locationX>3746</locationX>
+        <locationX>3460</locationX>
         <locationY>1871</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
@@ -1083,7 +1257,7 @@
     <recordLookups>
         <name>ContactoEmailAction</name>
         <label>Contacto Email</label>
-        <locationX>2162</locationX>
+        <locationX>1920</locationX>
         <locationY>3161</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1107,8 +1281,8 @@
     <recordLookups>
         <name>ContactoEmailCierreAction</name>
         <label>Contacto Email Cierre</label>
-        <locationX>578</locationX>
-        <locationY>3485</locationY>
+        <locationX>644</locationX>
+        <locationY>3785</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ContactoEncontradoDecision</targetReference>
@@ -1126,54 +1300,9 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>GetOrganizationwideaddressAction</name>
-        <label>Get Organization wide address</label>
-        <locationX>314</locationX>
-        <locationY>3809</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>MandarEmailCierreCasoUSP</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Address</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>no.responder@zurich.com</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>OrgWideEmailAddress</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>GetSystemUserAction</name>
-        <label>Obtener System User</label>
-        <locationX>314</locationX>
-        <locationY>3161</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>UpdateCerrarCaso</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>GenerarErrorLogSystemUser</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>0055I000000c4aOQAQ</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>User</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>LastEmailSendAction</name>
         <label>Ultimo Email Enviado</label>
-        <locationX>2129</locationX>
+        <locationX>1920</locationX>
         <locationY>1763</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1210,98 +1339,11 @@
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <recordLookups>
-        <name>ObtenerSystemUserCerrarCaso</name>
-        <label>Obtener System User Cerrar Caso</label>
-        <locationX>3218</locationX>
-        <locationY>2195</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>ActualizarCerrarCasoSinEmail</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>0055I000000c4aOQAQ</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>User</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>OrganizationWideAddress</name>
-        <label>Organization wide address</label>
-        <locationX>1898</locationX>
-        <locationY>3485</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>SendEmailUSPAction</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Address</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>no.responder@zurich.com</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>OrgWideEmailAddress</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>PlantillaCasosCerradosSinFinalizarUSPAction</name>
-        <label>Get Plantilla Casos Cerrados Sin Finalizar USP</label>
-        <locationX>314</locationX>
-        <locationY>3701</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>GetOrganizationwideaddressAction</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Name</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Caso cerrado sin finalizar</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>EmailTemplate</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>PlantillaCasosPendientesUSPAction</name>
-        <label>Plantilla Casos Pendientes USP</label>
-        <locationX>1898</locationX>
-        <locationY>3377</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>OrganizationWideAddress</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>GenerarErrorLogRecuperarPlantilla</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Name</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Caso pendiente USP</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>EmailTemplate</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordUpdates>
         <name>ActualizarCerrarCasoSinEmail</name>
         <label>Actualizar Cerrar Caso Sin Email</label>
-        <locationX>3218</locationX>
-        <locationY>2303</locationY>
+        <locationX>2932</locationX>
+        <locationY>2603</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>IsClosed</field>
@@ -1319,7 +1361,7 @@
         <inputAssignments>
             <field>ClosedBy__c</field>
             <value>
-                <elementReference>GetSystemUserAction.Id</elementReference>
+                <elementReference>idSystemUserSinEmail</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1339,7 +1381,7 @@
     <recordUpdates>
         <name>Grandes_Pymes_OFF</name>
         <label>Grandes Pymes OFF</label>
-        <locationX>1579</locationX>
+        <locationX>1370</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>USPONDecision</targetReference>
@@ -1355,7 +1397,7 @@
     <recordUpdates>
         <name>Grandes_Pymes_ON</name>
         <label>Grandes Pymes ON</label>
-        <locationX>655</locationX>
+        <locationX>446</locationX>
         <locationY>384</locationY>
         <connector>
             <targetReference>USP_ONDecision</targetReference>
@@ -1371,7 +1413,7 @@
     <recordUpdates>
         <name>GrandesPymesDesactivarAction</name>
         <label>Grandes Pymes Desactivar</label>
-        <locationX>1051</locationX>
+        <locationX>842</locationX>
         <locationY>600</locationY>
         <inputAssignments>
             <field>ModifiedByGrandesPymes__c</field>
@@ -1384,8 +1426,8 @@
     <recordUpdates>
         <name>UpdateCerrarCaso</name>
         <label>Actualizar Cerrar Caso</label>
-        <locationX>314</locationX>
-        <locationY>3269</locationY>
+        <locationX>336</locationX>
+        <locationY>3569</locationY>
         <connector>
             <targetReference>DominioExcluidoDecision</targetReference>
         </connector>
@@ -1409,7 +1451,7 @@
         <inputAssignments>
             <field>ClosedBy__c</field>
             <value>
-                <elementReference>GetSystemUserAction.Id</elementReference>
+                <elementReference>idSystemUser</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1429,7 +1471,7 @@
     <recordUpdates>
         <name>USPDesactivarAction</name>
         <label>USP Desactivar</label>
-        <locationX>523</locationX>
+        <locationX>314</locationX>
         <locationY>600</locationY>
         <inputAssignments>
             <field>ModifiedByUSP__c</field>
@@ -1442,7 +1484,7 @@
     <recordUpdates>
         <name>USPOFFAction</name>
         <label>USP OFF</label>
-        <locationX>1579</locationX>
+        <locationX>1370</locationX>
         <locationY>792</locationY>
         <inputAssignments>
             <field>ModifiedByUSP__c</field>
@@ -1455,7 +1497,7 @@
     <recordUpdates>
         <name>USPONAction</name>
         <label>USP ON</label>
-        <locationX>1183</locationX>
+        <locationX>974</locationX>
         <locationY>384</locationY>
         <connector>
             <targetReference>GPONDecision</targetReference>
@@ -1469,7 +1511,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>2003</locationX>
+        <locationX>1794</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GrandesPymesUSPDecision</targetReference>
@@ -1580,7 +1622,7 @@
     <subflows>
         <name>ExcluirDominioUSPDecision</name>
         <label>Excluir Dominio USP</label>
-        <locationX>1634</locationX>
+        <locationX>1524</locationX>
         <locationY>2303</locationY>
         <connector>
             <targetReference>DominioExcluidoUSPDecision</targetReference>
@@ -1600,6 +1642,26 @@
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
+    <variables>
+        <name>Caso_cerrado_sin_finalizar</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Caso_cerrado_sin_finalizar</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>Caso_pendiente_USP</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Caso_pendiente_USP</stringValue>
+        </value>
+    </variables>
     <variables>
         <name>DireccionRecordatorio</name>
         <dataType>String</dataType>
@@ -1623,6 +1685,34 @@
         <value>
             <booleanValue>false</booleanValue>
         </value>
+    </variables>
+    <variables>
+        <name>IdEmailTemplate</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>idEmailTemplatePendiente</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>idSystemUser</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>idSystemUserSinEmail</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>SeCierraCaso</name>
@@ -1650,5 +1740,15 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>System_User</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>System_User</stringValue>
+        </value>
     </variables>
 </Flow>

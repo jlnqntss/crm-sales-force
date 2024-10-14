@@ -103,9 +103,6 @@ class GitlabAPIService {
   /**
    */
   async getTags() {
-    console.log(
-      `[DEBUG] Recuperando tags ==> ${this.baseUrl}/projects/${this.projectId}/repository/tags`
-    );
     return await fetch(
       `${this.baseUrl}/projects/${this.projectId}/repository/tags`,
       {
@@ -118,8 +115,6 @@ class GitlabAPIService {
       }
     )
       .then((response) => {
-        console.log("[DEBUG] gitTags Token ==> " + JSON.stringify(this.token));
-        console.log("[DEBUG] gitTags Response ==> " + JSON.stringify(response));
         if (!response.ok) {
           throw new Error(`The server responded with ${response.statusText}`);
         }

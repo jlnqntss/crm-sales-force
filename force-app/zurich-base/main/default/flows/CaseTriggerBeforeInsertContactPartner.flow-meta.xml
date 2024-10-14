@@ -5,7 +5,7 @@
         <name>PolicyPartnerAssignment</name>
         <label>Asignación Partner Póliza</label>
         <locationX>182</locationX>
-        <locationY>671</locationY>
+        <locationY>503</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -21,7 +21,7 @@
         <name>CaseUspDecision</name>
         <label>Caso USP</label>
         <locationX>611</locationX>
-        <locationY>311</locationY>
+        <locationY>287</locationY>
         <defaultConnectorLabel>Not USP</defaultConnectorLabel>
         <rules>
             <name>USPOutcome</name>
@@ -34,7 +34,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>GetRecordTypePartnerContactAction</targetReference>
+                <targetReference>PolicyNotNullDecision</targetReference>
             </connector>
             <label>USP</label>
         </rules>
@@ -43,7 +43,7 @@
         <name>PolicyNotNullDecision</name>
         <label>Poliza Informada</label>
         <locationX>380</locationX>
-        <locationY>551</locationY>
+        <locationY>395</locationY>
         <defaultConnector>
             <targetReference>GetContactsAction</targetReference>
         </defaultConnector>
@@ -75,7 +75,7 @@
         <name>SuppliedEmailDecision</name>
         <label>¿Supplied Email informado?</label>
         <locationX>182</locationX>
-        <locationY>791</locationY>
+        <locationY>611</locationY>
         <defaultConnectorLabel>Supplied Email no informado</defaultConnectorLabel>
         <rules>
             <name>SuppliedEmailOutcome</name>
@@ -103,6 +103,16 @@
 {!$Record.AccountId}&amp;BR()&amp;
 {!$Record.ContactId}</expression>
     </formulas>
+    <formulas>
+        <name>idRecordTypeContactPartner</name>
+        <dataType>String</dataType>
+        <expression>IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Value__c},{!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Value__c}, 
+IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Uat_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Uat_Value__c}, 
+IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Staging_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Staging_Value__c}, 
+{!$CustomMetadata.Global_Configuration__mdt.RecordType_Contact_Partner.Dev_Value__c})
+)
+)</expression>
+    </formulas>
     <interviewLabel>Case Trigger - Before Insert/update - Vinculacion Contacto Partner {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - Before Insert/Update - Vinculacion Contacto Partner</label>
     <processMetadataValues>
@@ -128,7 +138,7 @@
         <name>GetContactAccountPartnerAction</name>
         <label>Recuperar Contacto Cuenta Partner</label>
         <locationX>50</locationX>
-        <locationY>911</locationY>
+        <locationY>719</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
@@ -142,7 +152,7 @@
             <field>RecordTypeId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>GetRecordTypePartnerContactAction.Id</elementReference>
+                <elementReference>idRecordTypeContactPartner</elementReference>
             </value>
         </filters>
         <filters>
@@ -164,14 +174,14 @@
         <name>GetContactsAction</name>
         <label>Recuperar Contactos</label>
         <locationX>578</locationX>
-        <locationY>671</locationY>
+        <locationY>503</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
             <field>RecordTypeId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>GetRecordTypePartnerContactAction.Id</elementReference>
+                <elementReference>idRecordTypeContactPartner</elementReference>
             </value>
         </filters>
         <filters>
@@ -190,27 +200,6 @@
             <assignToReference>$Record.ContactId</assignToReference>
             <field>Id</field>
         </outputAssignments>
-    </recordLookups>
-    <recordLookups>
-        <name>GetRecordTypePartnerContactAction</name>
-        <label>Recuperar RecordType Partner Contact</label>
-        <locationX>380</locationX>
-        <locationY>431</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>PolicyNotNullDecision</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>ContactPartner</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>RecordType</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
         <locationX>485</locationX>

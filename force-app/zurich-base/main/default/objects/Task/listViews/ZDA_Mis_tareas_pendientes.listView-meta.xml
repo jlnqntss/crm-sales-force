@@ -15,7 +15,7 @@
     <filters>
         <field>STATUS</field>
         <operation>equals</operation>
-        <value>Pendiente</value>
+        <value>Asignada</value>
     </filters>
     <label>ZDA - Mis tareas pendientes</label>
     <sharedTo>

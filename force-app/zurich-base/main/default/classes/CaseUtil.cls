@@ -2571,6 +2571,53 @@ public with sharing class CaseUtil
         }
     }
 
+/**
+     * Para el los casos de tipo USP establece el campo StatusPrior__c cuando cambia el Status del caso
+     *
+     * @author laura.rodriguez@seidor.com
+     * @date 18/09/2024
+     * @param updatedCases lista de los casos actualizados
+     * @param oldMap mapa de los casos antes de la actualización
+     */
+    public static void setStatusPrior(List<Case> updatedCases, Map<Id,Case> oldMap)
+    {
+        for (Case caseTrigger: updatedCases)
+        { 
+           if (  caseTrigger.recordTypeId == RT_ID_USPINQUIRY && oldMap.get(caseTrigger.Id).Status != caseTrigger.Status )
+            {
+                caseTrigger.StatusPrior__c=oldMap.get(caseTrigger.Id).Status;
+            }
+        }
+    }
+    /**
+     * Para el los casos de tipo USP establece el campo OwnerName__c cuando cambia el propietario del caso
+     *
+     * @author laura.rodriguez@seidor.com
+     * @date 02/10/2024
+     * @param updatedCases lista de los casos actualizados
+     * @param oldMap mapa de los casos antes de la actualización
+     */
+    public static void setOwnerName(List<Case> updatedCases, Map<Id,Case> oldMap)
+    {
+        for (Case caseTrigger: updatedCases)
+        { 
+           if (  caseTrigger.recordTypeId == RT_ID_USPINQUIRY && oldMap!=null && oldMap.get(caseTrigger.Id).ownerId != caseTrigger.ownerId)
+            {
+                List<Id> listIdQueue= new List<Id>();
+                List<Group> listGroup= new List<Group>();
+                Id idQueue=caseTrigger.ownerId;
+                listIdQueue.add(idQueue);
+                
+                if(!listIdQueue.isEmpty())    
+                    listGroup = new GroupSelector().findById(listIdQueue);
+                if(listGroup.size()>0)
+                    CaseTrigger.OwnerName__c= listGroup[0].Name;
+            }
+            
+        }
+    }
+
+
     /**
      * Método que actualiza el estado de un caso de ZRM en función de ciertos parámetros
      * @author arcortazar
