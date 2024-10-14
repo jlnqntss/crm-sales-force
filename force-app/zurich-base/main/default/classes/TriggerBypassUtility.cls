@@ -44,8 +44,7 @@ public with sharing class TriggerBypassUtility {
         for (sObject record: triggerRecords) {
             
             if ((record.get('Blocked__c') == true  && !isBlockedChange(record, oldMap)) || (record.get('Anonymized__c') == true && !isAnonymizedChange(record, oldMap))) {
-
-                record.addError(System.Label.GDPR_Error_DMLOnBlockedOrAnonymizedRecord); // TODO: CREAR UNA CUSTOM LABEL
+                record.addError(System.Label.GDPR_Error_DMLOnBlockedOrAnonymizedRecord); 
             }
         }
     }
