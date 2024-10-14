@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LanguageAssignmentCompactLayout</fullName>
+    <fields>AssignTo__c</fields>
+    <fields>Language__c</fields>
+    <label>Language Assignment Compact Layout</label>
+</CompactLayout>

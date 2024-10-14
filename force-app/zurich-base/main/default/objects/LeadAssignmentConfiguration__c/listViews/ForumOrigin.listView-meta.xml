@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ForumOrigin</fullName>
+    <columns>NAME</columns>
+    <columns>AssignTo__c</columns>
+    <columns>AssignmentType__c</columns>
+    <columns>ForumOrigin__c</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>LeadAssignmentConfiguration__c.ForumOriginAssignment</value>
+    </filters>
+    <label>Forum Origin</label>
+</ListView>
