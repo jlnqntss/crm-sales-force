@@ -23,18 +23,23 @@
      )
      public static List<List<String>> getIdValueGlobalConfiguration(List<FlowInputs> flowInputs) 
     {
-        List<List<String>> listsToReturn = new List<List<String>>();
-        
+        List<List<String>> listlistsToReturn = new List<List<String>>();
+        List<String> listsToReturn = new List<String>();
+
         if(! flowInputs.isEmpty())
         {
-            listsToReturn=getIdValue(flowInputs[0]);
+            for( FlowInputs flowInput:flowInputs)
+            {
+                listsToReturn=getIdValue(flowInput);
+                listlistsToReturn.add(listsToReturn);
+            }
         }
-        return listsToReturn;    
+        
+        return listlistsToReturn;    
     }
 
-    public static List<List<String>> getIdValue(FlowInputs flowInputs) {
+    public static List<String> getIdValue(FlowInputs flowInputs) {
 
-    List<List<String>> listsToReturn2 = new List<List<String>>();
     List<String> filteredList2= new List<String>();
 
     Global_Configuration__mdt config = Global_Configuration__mdt.getInstance(flowInputs.globalValueName);
@@ -51,9 +56,7 @@
         filteredList2.add(config.Dev_Value__c);
     }
 
-    listsToReturn2.add(filteredList2);
-    
-    return listsToReturn2;
+    return filteredList2;
 
     }
 
