@@ -238,16 +238,23 @@ function deploy(deployConfig) {
   let deployOptions = ["--async", "--ignore-conflicts"];
 
   // 1 - Reconciliación de perfiles
-  console.log(
-    `[Info] Deploy: Reconciliando perfiles con usuario ${deployConfig.targetOrg}...`
-  );
-  executeSfdxCommand(
-    `sfp profile:reconcile --targetorg ${deployConfig.targetOrg}`,
-    {
-      stdio: "inherit",
-      skipJsonParsing: true
-    }
-  );
+  if(deployConfig.executeReconcile) {
+    console.log(
+      `[Info] Deploy: Reconciliando perfiles con usuario ${deployConfig.targetOrg}...`
+    );
+    executeSfdxCommand(
+      `sfp profile:reconcile --targetorg ${deployConfig.targetOrg}`,
+      {
+        stdio: "inherit",
+        skipJsonParsing: true
+      }
+    );
+  }
+  else {
+    console.log(
+      `[Info] Deploy: Reconciliado de perfiles deshabilitado para ${deployConfig.targetOrg}...`
+    );
+  }
 
   // 2 - Tipo de despliegue: Si es modalidad de despliegue diferencial, se ejecuta un delta de despliegue comparando contra la rama destino
   if (deployConfig.targetCommit) {

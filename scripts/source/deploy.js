@@ -17,11 +17,15 @@ async function main() {
   const testRunLevel = testRun ? process.argv[4 + argOffset] : undefined;
 
   let target;
+  let reconcile = false;
   switch (targetEnvironment) {
     case "prod":
       if (process.env["CI_FULL_DEPLOYMENT_PROD"] === "true") { 
         let tag = await findLastSemanticTag(null, 1);
         target = tag.target;
+      }
+      if(process.env["PROFILE_RECONCILE_PROD"] === true) {
+        reconcile = true;
       }
       break;
 
@@ -30,12 +34,18 @@ async function main() {
         let tag = await findLastSemanticTag("UAT", 1);
         target = tag.target;
       }
+      if(process.env["PROFILE_RECONCILE_QA"] === true) {
+        reconcile = true;
+      }
       break;
 
     default:
       if (process.env["CI_FULL_DEPLOYMENT_DEV"] === "true") {
         let tag = await findLastSemanticTag("rc");
         target = tag.target;
+      }
+      if(process.env["PROFILE_RECONCILE_DEV"] === true) {
+        reconcile = true;
       }
       break;
   }
@@ -48,7 +58,8 @@ async function main() {
   const deployConf = {
     targetOrg: targetOrg,
     targetCommit: target || undefined,
-    checkOnly: isValidation
+    checkOnly: isValidation,
+    executeReconcile: reconcile
   };
 
   if (testRun) {
