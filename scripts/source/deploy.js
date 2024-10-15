@@ -24,7 +24,7 @@ async function main() {
         let tag = await findLastSemanticTag(null, 1);
         target = tag.target;
       }
-      if(process.env["PROFILE_RECONCILE_PROD"] === true) {
+      if(process.env["PROFILE_RECONCILE_PROD"] === "true") {
         reconcile = true;
       }
       break;
@@ -34,7 +34,7 @@ async function main() {
         let tag = await findLastSemanticTag("UAT", 1);
         target = tag.target;
       }
-      if(process.env["PROFILE_RECONCILE_QA"] === true) {
+      if(process.env["PROFILE_RECONCILE_QA"] === "true") {
         reconcile = true;
       }
       break;
@@ -44,7 +44,7 @@ async function main() {
         let tag = await findLastSemanticTag("rc");
         target = tag.target;
       }
-      if(process.env["PROFILE_RECONCILE_DEV"] === true) {
+      if(process.env["PROFILE_RECONCILE_DEV"] === "true") {
         reconcile = true;
       }
       break;
