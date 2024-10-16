@@ -57,6 +57,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.SprinklrTagN1__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.SprinklrSocialPersona__c</field>
         <readable>true</readable>
     </fieldPermissions>
