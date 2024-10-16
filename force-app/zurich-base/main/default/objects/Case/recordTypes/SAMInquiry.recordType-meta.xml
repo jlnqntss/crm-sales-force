@@ -963,6 +963,10 @@
             <fullName>Others</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>SAM</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Priority</picklist>
