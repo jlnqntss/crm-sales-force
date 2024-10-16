@@ -191,5 +191,9 @@
             <controllingFieldValue>Pendiente</controllingFieldValue>
             <valueName>Support</valueName>
         </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pendiente</controllingFieldValue>
+            <valueName>SAM</valueName>
+        </valueSettings>
     </valueSet>
 </CustomField>
