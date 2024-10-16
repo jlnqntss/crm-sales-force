@@ -10,7 +10,7 @@ public with sharing class CompetitorsSelector extends RecordsSelector
     //#region Contructores
     public CompetitorsSelector()
     {
-        super( Opportunity.getSObjectType() );
+        super( Competitor__c.getSObjectType() ); 
     }
 
     //#endregion

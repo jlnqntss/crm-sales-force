@@ -95,6 +95,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
             //3º Leads
             Map<Opportunity, Set<String> > offersByIdWithContactInfoData = getOpportunitiesWithContactInfoData( scope, (Set<String>) opportunityDataMap.get(SCOPE_OPPORTUNITY_ACCOUNTID) );
             matchLeadWithOpportunities(offersByIdWithContactInfoData);
+            // recalculo de registros de competencia que se han de mover al cliente con quien haya hecho match
             moveCompetitorsToMatchedAccount(); 
 
             // 4º Ejecutar DMLs
@@ -495,7 +496,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @author amiranda
      * @date 16-04-2024
      * @param opportunities Lista de oportunidades que potencialmente pueden
-     * hacer match
+     * hacer match (ofertas que llegan de info procedentes del metodo start)
      * @return Map<Id, Map<Opportunity, Set<String>>> Mapa de oportunidades con
      * la relación entre oportunidades que potencialmente hacen match con los
      * datos de contacto (teléfono y/o email)
@@ -544,7 +545,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @author amiranda
      * @date 17-04-2024
      * @param contactDataInfoByOpportunity Mapa que contiene el conjunto de datos
-     * de contacto (teléfono y email) por oportunidad.
+     * de contacto (teléfono y email) por oportunidad que llega de info (opportunity del metodo start).
      **/
     @TestVisible
     private void matchLeadWithOpportunities(Map<Opportunity, Set<String> > contactDataInfoByOpportunity)
@@ -756,7 +757,8 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
 
 
     /**
-     * Método que transfiere las competencias de un lead a un cliente o a otro lead
+     * Método que transfiere las competencias de un lead a un cliente para ello se modifica el valor de la relacion del lkp de competencia 
+     * usando el mapa matchedLeadToDeleteWithClientMap <IdLead, IdCliente> que relaciona el lead que se va a borrar con el cliente con el que ha hecho match
      * @author dmunoz
      * @date 07/10/2024
      */
@@ -774,7 +776,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
             if (matchedLeadToDeleteWithClientMap.containsKey(competitor.Account__c)) {
                 // Cambia el campo Account__c al nuevo valor del mapa
                 competitor.Account__c = matchedLeadToDeleteWithClientMap.get(competitor.Account__c);
-                competitorsToUpdate.put(competitor.Id, competitor);
+                competitorsToUpdate.put(competitor.Id, competitor); 
             }
         }
     }
