@@ -4,26 +4,34 @@
     <active>true</active>
     <description>Validación para restringir los cambios de etapa: Quoted&gt;App Submitted, Quoted&gt;Legit Lead y App Submitted&gt;Legit Lead</description>
     <errorConditionFormula>AND(
-    OR( 
-        $Profile.Name = &quot;Ventas User&quot;,
-        $Profile.Name = &quot;Agente Ventas - AGR&quot;,
-        $Profile.Name = &quot;Agente Ventas&quot; 
-    ),
     OR(
-       AND(
-          ISPICKVAL(PRIORVALUE(StageName), &quot;Quoted&quot;),
-          ISPICKVAL(StageName, &quot;App Submitted&quot;)
-       ),
-       AND(
-          ISPICKVAL(PRIORVALUE(StageName), &quot;Quoted&quot;),
-          ISPICKVAL(StageName, &quot;Legit Lead&quot;)
-       ),
-       AND(
-          ISPICKVAL(PRIORVALUE(StageName), &quot;App Submitted&quot;),
-          ISPICKVAL(StageName, &quot;Legit Lead&quot;)
-       )
+        Blocked__c = False,
+        Anonymized__c = False,
+        NOT(ISCHANGED(Blocked__c)),
+        NOT(ISCHANGED(Anonymized__c))
     ),
-    ISCHANGED(StageName)
+    AND(
+        OR( 
+            $Profile.Name = &quot;Ventas User&quot;,
+            $Profile.Name = &quot;Agente Ventas - AGR&quot;,
+            $Profile.Name = &quot;Agente Ventas&quot; 
+        ),
+        OR(
+        AND(
+            ISPICKVAL(PRIORVALUE(StageName), &quot;Quoted&quot;),
+            ISPICKVAL(StageName, &quot;App Submitted&quot;)
+        ),
+        AND(
+            ISPICKVAL(PRIORVALUE(StageName), &quot;Quoted&quot;),
+            ISPICKVAL(StageName, &quot;Legit Lead&quot;)
+        ),
+        AND(
+            ISPICKVAL(PRIORVALUE(StageName), &quot;App Submitted&quot;),
+            ISPICKVAL(StageName, &quot;Legit Lead&quot;)
+        )
+        ),
+        ISCHANGED(StageName)
+    )
 )</errorConditionFormula>
     <errorDisplayField>StageName</errorDisplayField>
     <errorMessage>[VR Oferta] Cambio de etapa no permitido</errorMessage>
