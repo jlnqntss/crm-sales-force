@@ -65,7 +65,7 @@ public with sharing class AccountLeadAssignment
             return forumOriginAssignmentMetadata;
         }
         set;
-    }
+    } 
 
     @TestVisible
     private static List<MunicipalityAssignment__mdt> municipalityAssignmentMetadata

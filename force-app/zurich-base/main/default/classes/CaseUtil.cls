@@ -2608,10 +2608,10 @@ public with sharing class CaseUtil
                 Id idQueue=caseTrigger.ownerId;
                 listIdQueue.add(idQueue);
                 
-                if(!listIdQueue.isEmpty())    
-                    listGroup = new GroupSelector().findById(listIdQueue);
-                if(listGroup.size()>0)
-                    CaseTrigger.OwnerName__c= listGroup[0].Name;
+                // if(!listIdQueue.isEmpty())    
+                //     listGroup = new GroupSelector().findById(listIdQueue);
+                // if(listGroup.size()>0)
+                    // CaseTrigger.OwnerName__c= listGroup[0].Name;
             }
             
         }
