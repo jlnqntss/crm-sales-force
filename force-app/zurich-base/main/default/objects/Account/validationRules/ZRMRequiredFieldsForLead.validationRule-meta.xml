@@ -3,7 +3,14 @@
     <fullName>ZRMRequiredFieldsForLead</fullName>
     <active>true</active>
     <description>Validación que requiere que esté informado el campo “NationalId__c“ o el campo “Phone“ si el tipo de registro es PersonAccount.Lead y el perfil del usuario es “Ventas User“ o “Agente Ventas“.</description>
-    <errorConditionFormula>AND(				 
+    <errorConditionFormula>AND(
+    OR
+    (
+    Blocked__c = False,
+    Anonymized__c = False,
+    NOT(ISCHANGED(Blocked__c)),
+    NOT(ISCHANGED(Anonymized__c))
+    ),				 
     RecordType.Name = &quot;Lead&quot;,
     OR(
         $Profile.Name = &quot;Ventas User&quot;,

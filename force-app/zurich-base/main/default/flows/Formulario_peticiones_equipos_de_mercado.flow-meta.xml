@@ -896,6 +896,11 @@
         <expression>DATE(YEAR(TODAY()),01,01)</expression>
     </formulas>
     <formulas>
+        <name>DescripcionCaso</name>
+        <dataType>String</dataType>
+        <expression>IF(!ISBLANK({!Descripcion}), {!Descripcion}, {!Descripci_n_propuesta_mejora})</expression>
+    </formulas>
+    <formulas>
         <name>Nuevo_caso_link_formula</name>
         <dataType>String</dataType>
         <expression>LEFT({!$Api.Partner_Server_URL_260}, FIND( &apos;/services&apos;, {!$Api.Partner_Server_URL_260})) &amp; {!Crear_caso}</expression>
@@ -994,6 +999,12 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
             <field>ClaimRate__c</field>
             <value>
                 <elementReference>Siniestralidad</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>DescripcionCaso</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
