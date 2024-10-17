@@ -23,40 +23,40 @@
      )
      public static List<List<String>> getIdValueGlobalConfiguration(List<FlowInputs> flowInputs) 
     {
-        List<List<String>> listlistsToReturn = new List<List<String>>();
-        List<String> listsToReturn = new List<String>();
+        List<List<String>> listValuesToReturn = new List<List<String>>();
+        List<String> valuesToReturn = new List<String>();
 
         if(! flowInputs.isEmpty())
         {
             for( FlowInputs flowInput:flowInputs)
             {
-                listsToReturn=getIdValue(flowInput);
-                listlistsToReturn.add(listsToReturn);
+                valuesToReturn=getIdValue(flowInput);
+                listValuesToReturn.add(valuesToReturn);
             }
         }
         
-        return listlistsToReturn;    
+        return listValuesToReturn;    
     }
 
     public static List<String> getIdValue(FlowInputs flowInputs) {
 
-    List<String> filteredList2= new List<String>();
+    List<String> filteredListByInstance= new List<String>();
 
     Global_Configuration__mdt config = Global_Configuration__mdt.getInstance(flowInputs.globalValueName);
     String instancesId = GlobalConfigUtil.getGlobalConfigurationValue('Instances_Id_Value');
     Global_Configuration__mdt instanceConfig = Global_Configuration__mdt.getInstance(instancesId);
 
     if(flowInputs.idOrg == instanceConfig.Value__c){
-        filteredList2.add(config.Value__c);
+        filteredListByInstance.add(config.Value__c);
     } else if(flowInputs.idOrg == instanceConfig.Uat_Value__c){
-        filteredList2.add(config.Uat_Value__c);
+        filteredListByInstance.add(config.Uat_Value__c);
     } else if(flowInputs.idOrg == instanceConfig.Staging_Value__c){
-        filteredList2.add(config.Staging_Value__c);
+        filteredListByInstance.add(config.Staging_Value__c);
     } else{
-        filteredList2.add(config.Dev_Value__c);
+        filteredListByInstance.add(config.Dev_Value__c);
     }
 
-    return filteredList2;
+    return filteredListByInstance;
 
     }
 
