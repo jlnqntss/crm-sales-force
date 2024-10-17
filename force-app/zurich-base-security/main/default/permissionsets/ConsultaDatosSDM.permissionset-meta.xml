@@ -1547,6 +1547,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.Related_Case_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Task.SubjectLink__c</field>
         <readable>true</readable>
@@ -2735,6 +2740,11 @@
         <editable>false</editable>
         <field>Case.Blocked__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.BusinessManagerName__c</field>
+        <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>

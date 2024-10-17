@@ -4,6 +4,13 @@
     <active>true</active>
     <description>Comprueba que no se edite ningún campo de cuenta</description>
     <errorConditionFormula>AND(
+OR
+(
+Blocked__c = False,
+Anonymized__c = False,
+NOT(ISCHANGED(Blocked__c)),
+NOT(ISCHANGED(Anonymized__c))
+),
 OR(
 ISCHANGED(Name),
 ISCHANGED(OwnerId),
