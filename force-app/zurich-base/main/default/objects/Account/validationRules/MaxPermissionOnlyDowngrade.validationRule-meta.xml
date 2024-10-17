@@ -12,9 +12,9 @@
         NOT(ISCHANGED(Anonymized__c))
      ),
      $UserRole.Name &lt;&gt; &apos;Administrators&apos; &amp;&amp;  
-    (ISPICKVAL(PRIORVALUE(MaxPermission__c) , &apos;Consulta&apos;) &amp;&amp;  (ISPICKVAL(MaxPermission__c, &apos;Ofertas&apos;) || ISPICKVAL(MaxPermission__c, &apos;Total sin administración&apos;) || ISPICKVAL(MaxPermission__c, &apos;Total&apos;))) ||
-    (ISPICKVAL(PRIORVALUE(MaxPermission__c) , &apos;Ofertas&apos;) &amp;&amp;  (ISPICKVAL(MaxPermission__c, &apos;Total sin administración&apos;) || ISPICKVAL(MaxPermission__c, &apos;Total&apos;))) ||
-    (ISPICKVAL(PRIORVALUE(MaxPermission__c) , &apos;Total sin administración&apos;) &amp;&amp;  ISPICKVAL(MaxPermission__c, &apos;Total&apos;))
+    (ISPICKVAL(PRIORVALUE(MaxPermission__c) , &apos;Consulta&apos;) &amp;&amp;  (ISPICKVAL(MaxPermissionDecission__c, &apos;Ofertas&apos;) || ISPICKVAL(MaxPermissionDecission__c, &apos;Total sin administración&apos;) || ISPICKVAL(MaxPermissionDecission__c, &apos;Total&apos;))) ||
+    (ISPICKVAL(PRIORVALUE(MaxPermission__c) , &apos;Ofertas&apos;) &amp;&amp;  (ISPICKVAL(MaxPermissionDecission__c, &apos;Total sin administración&apos;) || ISPICKVAL(MaxPermissionDecission__c, &apos;Total&apos;))) ||
+    (ISPICKVAL(PRIORVALUE(MaxPermission__c) , &apos;Total sin administración&apos;) &amp;&amp;  ISPICKVAL(MaxPermissionDecission__c, &apos;Total&apos;))
 )</errorConditionFormula>
     <errorDisplayField>MaxPermission__c</errorDisplayField>
     <errorMessage>El permiso máximo solo puede modificarse a la baja, si quieres darle mayores permisos contacta con e-business@zurich.com</errorMessage>

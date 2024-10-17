@@ -14,19 +14,34 @@
         <field>Account.ZRMAccess__c</field>
     </columns>
     <columns>
+        <field>Account.ZRMDecission__c</field>
+    </columns>
+    <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>Account.ZVGOAccess__c</field>
+    </columns>
+    <columns>
+        <field>Account.ZVGODecission__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>Account.DownloadAccess__c</field>
     </columns>
     <columns>
+        <field>Account.DownloadDecission__c</field>
+    </columns>
+    <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>Account.ZurichZoneAccess__c</field>
     </columns>
     <columns>
+        <field>Account.ZurichZoneDecission__c</field>
+    </columns>
+    <columns>
         <field>Account.MaxPermission__c</field>
+    </columns>
+    <columns>
+        <field>Account.MaxPermissionDecission__c</field>
     </columns>
     <filter>
         <criteriaItems>
