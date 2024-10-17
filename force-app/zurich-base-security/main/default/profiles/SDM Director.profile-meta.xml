@@ -2287,6 +2287,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Activity</layout>
+        <recordType>Task.Activity</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Activity</layout>
         <recordType>Task.Activity_USP</recordType>
     </layoutAssignments>
     <layoutAssignments>
