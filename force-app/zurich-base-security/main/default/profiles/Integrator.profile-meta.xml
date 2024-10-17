@@ -14238,6 +14238,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>User.RoutingTeam__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>User.TypeToNotify__c</field>
         <readable>true</readable>
     </fieldPermissions>
