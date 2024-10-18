@@ -612,6 +612,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Realizado Consulta Siniestros</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Realizado USP</fullName>
             <default>false</default>
         </values>
