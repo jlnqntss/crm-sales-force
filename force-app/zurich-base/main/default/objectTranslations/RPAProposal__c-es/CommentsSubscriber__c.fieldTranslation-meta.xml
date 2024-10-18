@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <help>Comentario del Suscriptor para que la RPA introduzca en el documento final</help>
+    <label>Respuesta suscriptor</label>
+    <name>CommentsSubscriber__c</name>
+</CustomFieldTranslation>

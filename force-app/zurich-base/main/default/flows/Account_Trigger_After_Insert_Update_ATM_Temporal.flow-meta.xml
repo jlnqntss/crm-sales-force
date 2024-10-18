@@ -241,6 +241,34 @@
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
+            <field>Blocked__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Anonymized__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Blocked__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Anonymized__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
             <field>TemporaryRnEmail__c</field>
             <operator>IsChanged</operator>
             <value>
