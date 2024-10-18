@@ -19,7 +19,7 @@
     public static final String RT_Forum_Origin_Assignment   = GlobalConfigUtil.getGlobalConfigurationValue('AccountLeadAssignmentForumRT');
     public static final String RT_Language_Assignment       = GlobalConfigUtil.getGlobalConfigurationValue('AccountLeadAssignmentLanguageRT');
     public static final String RT_Municipality_Assignment   = GlobalConfigUtil.getGlobalConfigurationValue('AccountLeadAssignmentMunicipalRT');
-    public static final String RT_Province_Assignment       = GlobalConfigUtil.getGlobalConfigurationValue('AccountLeadAssignmenProvinceRT');
+    public static final String RT_Province_Assignment       = GlobalConfigUtil.getGlobalConfigurationValue('AccountLeadAssignmentProvinceRT');
      
     public ID rtForumOriginId {
         get {

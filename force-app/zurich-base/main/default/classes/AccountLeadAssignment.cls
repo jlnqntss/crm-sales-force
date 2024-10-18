@@ -36,7 +36,7 @@ public with sharing class AccountLeadAssignment
 
     /*** MEDATADA ***/
     @TestVisible
-    private static List<LanguageAssignment__mdt> languageAssignmentMetadata
+    private  static List<LeadAssignmentConfiguration__c> languageAssignmentMetadata
     {
         get
         {
@@ -45,14 +45,16 @@ public with sharing class AccountLeadAssignment
                 return languageAssignmentMetadata;
             }
 
-            languageAssignmentMetadata = LanguageAssignment__mdt.getAll().values();
+            LeadAssignmentConfigurationsSelector selector = new LeadAssignmentConfigurationsSelector();
+            languageAssignmentMetadata = selector.getLanguageAssignments();
+
             return languageAssignmentMetadata;
         }
         set;
     }
 
     @TestVisible
-    private static List<ForumOriginAssignment__mdt> forumOriginAssignmentMetadata
+    private static List<LeadAssignmentConfiguration__c> forumOriginAssignmentMetadata
     {
         get
         {
@@ -61,14 +63,16 @@ public with sharing class AccountLeadAssignment
                 return forumOriginAssignmentMetadata;
             }
 
-            forumOriginAssignmentMetadata = ForumOriginAssignment__mdt.getAll().values();
+            LeadAssignmentConfigurationsSelector selector = new LeadAssignmentConfigurationsSelector();
+            forumOriginAssignmentMetadata = selector.getForumOriginAssignments();
+
             return forumOriginAssignmentMetadata;
         }
         set;
     } 
 
     @TestVisible
-    private static List<MunicipalityAssignment__mdt> municipalityAssignmentMetadata
+    private static List<LeadAssignmentConfiguration__c> municipalityAssignmentMetadata
     {
         get
         {
@@ -77,14 +81,16 @@ public with sharing class AccountLeadAssignment
                 return municipalityAssignmentMetadata;
             }
 
-            municipalityAssignmentMetadata = MunicipalityAssignment__mdt.getAll().values();
+            LeadAssignmentConfigurationsSelector selector = new LeadAssignmentConfigurationsSelector();
+            municipalityAssignmentMetadata = selector.getMunicipalityAssignments();
+            
             return municipalityAssignmentMetadata;
         }
         set;
     }
 
     @TestVisible
-    private static List<ProvinceAssignment__mdt> provinceAssignmentMetadata
+    private static List<LeadAssignmentConfiguration__c> provinceAssignmentMetadata
     {
         get
         {
@@ -92,8 +98,10 @@ public with sharing class AccountLeadAssignment
             {
                 return provinceAssignmentMetadata;
             }
+            
+            LeadAssignmentConfigurationsSelector selector = new LeadAssignmentConfigurationsSelector();
+            provinceAssignmentMetadata = selector.getProvinceAssignments();
 
-            provinceAssignmentMetadata = ProvinceAssignment__mdt.getAll().values();
             return provinceAssignmentMetadata;
         }
         set;
@@ -144,7 +152,7 @@ public with sharing class AccountLeadAssignment
 
     /**
      * @description Devuelve el Id de Usuario segun el idioma recibido.
-     *              La asignación corresponde segun la defición en el metadato LanguageAssignment__mdt.
+     *              La asignación corresponde segun la defición en el metadato LeadAssignmentConfiguration__c.
      *              De no encontrar un agente para el idioma facilitado devolverá
      *              el Id del usuario por defecto.
      * @author      jgallaga
@@ -157,7 +165,7 @@ public with sharing class AccountLeadAssignment
      */
     public static Assignment getAssignedUserIdByLanguage(String language)
     {
-        for(LanguageAssignment__mdt currentLanguageAssignment : languageAssignmentMetadata)
+        for(LeadAssignmentConfiguration__c currentLanguageAssignment : languageAssignmentMetadata)
         {
             if(currentLanguageAssignment.Language__c == language && String.isNotBlank(currentLanguageAssignment.AssignTo__c))
             {
@@ -230,7 +238,7 @@ public with sharing class AccountLeadAssignment
             return defaultUser;
         }
 
-        for(ForumOriginAssignment__mdt currentFOA : forumOriginAssignmentMetadata)
+        for(LeadAssignmentConfiguration__c currentFOA : forumOriginAssignmentMetadata)
         {
             if(currentFOA.ForumOrigin__c == origin && String.isNotBlank(currentFOA.AssignTo__c))
             {
@@ -243,7 +251,7 @@ public with sharing class AccountLeadAssignment
 
     /**
      * @description Proceso para conseguir el Id del intermediario a partir
-     *              del código postal recibido. Se utiliza el metadato MunicipalityAssignment__mdt
+     *              del código postal recibido. Se utiliza el metadato LeadAssignmentConfiguration__c
      *              para conocer el código de intermedario al que le corresponde
      *              el código postal con el que se obtiene el Id de usuario.
      * @author      jgallaga
@@ -268,7 +276,7 @@ public with sharing class AccountLeadAssignment
 
         String provinceCode = postalCode.substring(0, 2);
 
-        for(MunicipalityAssignment__mdt currentMA : municipalityAssignmentMetadata)
+        for(LeadAssignmentConfiguration__c currentMA : municipalityAssignmentMetadata)
         {
             if(currentMA.ProvinceCode__c == provinceCode && String.isNotBlank(currentMA.ZIPRanges__c))
             {
@@ -293,7 +301,7 @@ public with sharing class AccountLeadAssignment
      * @description Proceso para conseguir el Id del intermediario a partir
      *              del los dos primeros números del código postal recibido para
      *              conocer la provincia.
-     *              Se utiliza el metadato ProvinceAssignment__mdt
+     *              Se utiliza el metadato LeadAssignmentConfiguration__c
      *              para conocer el código de intermedario al que le corresponde
      *              el código postal con el que se obtiene el Id de usuario.
      * @author      jgallaga
@@ -313,7 +321,7 @@ public with sharing class AccountLeadAssignment
 
         String postalProvince = postalCode.substring(0, 2);
 
-        for(ProvinceAssignment__mdt currentPA : provinceAssignmentMetadata)
+        for(LeadAssignmentConfiguration__c currentPA : provinceAssignmentMetadata)
         {
             if(currentPA.PostalCode__c == postalProvince && String.isNotBlank(currentPA.AssignTo__c))
             {
@@ -329,7 +337,7 @@ public with sharing class AccountLeadAssignment
      *              realizar la búsqueda del agente intermediario a partir
      *              del origen recibido.
      *              El modo de asignación segun origen viene definido en el
-     *              metadato ForumOriginAssignment__mdt.
+     *              metadato LeadAssignmentConfiguration__c.
      *              De no encontrar una configuración, devolverá el valor de
      *              la variable DEFAULT_ASSIGNEMENT_TYPE como tipo de asignación.
      * @author      jgallaga
@@ -347,7 +355,7 @@ public with sharing class AccountLeadAssignment
             return DEFAULT_ASSIGNEMENT_TYPE;
         }
 
-        for(ForumOriginAssignment__mdt currentFOA : forumOriginAssignmentMetadata)
+        for(LeadAssignmentConfiguration__c currentFOA : forumOriginAssignmentMetadata)
         {
             if(currentFOA.ForumOrigin__c == origin && String.isNotBlank(currentFOA.AssignmentType__c))
             {
