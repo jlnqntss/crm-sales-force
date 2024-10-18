@@ -130,6 +130,14 @@
         <enabled>true</enabled>
         <name>GDPR_Bloqueo_Visibilidad</name>
     </customPermissions>
+    <classAccesses>
+        <apexClass>TriggerBypassUtility</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TriggerBypassUtilityTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.AMTecnicalIssues__c</field>
@@ -2276,6 +2284,10 @@
     <layoutAssignments>
         <layout>Contact-OCS Contact</layout>
         <recordType>Contact.ContactPartner</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Activity</layout>
+        <recordType>Task.Activity</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Activity</layout>

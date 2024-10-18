@@ -3,7 +3,7 @@
     <actionCalls>
         <name>NofityKPIEnded</name>
         <label>Nofity KPI Ended</label>
-        <locationX>270</locationX>
+        <locationX>50</locationX>
         <locationY>1055</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
@@ -41,12 +41,14 @@
                 <elementReference>$Record.Id</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <description>Avisa a la persona a la que ha sido asignado el Plan Comercial que ha superado el KPI establecido.</description>
         <name>NofityKPIReached</name>
         <label>Nofity KPI Reached</label>
-        <locationX>270</locationX>
+        <locationX>50</locationX>
         <locationY>755</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
@@ -84,12 +86,14 @@
                 <elementReference>$Record.Id</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <description>Avisa a la persona a la que ha sido asignado el plan anual que se ha modificado el Target KPI Nº</description>
         <name>Notify_KPI_Changed</name>
         <label>Notify KPI Changed</label>
-        <locationX>490</locationX>
+        <locationX>204</locationX>
         <locationY>1763</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
@@ -127,53 +131,13 @@
                 <elementReference>$Record.Id</elementReference>
             </value>
         </inputParameters>
-    </actionCalls>
-    <actionCalls>
-        <name>NotifyDaysLeft</name>
-        <label>Notify Days Left</label>
-        <locationX>50</locationX>
-        <locationY>1679</locationY>
-        <actionName>customNotificationAction</actionName>
-        <actionType>customNotificationAction</actionType>
-        <connector>
-            <targetReference>Create_Task</targetReference>
-        </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>customNotifTypeId</name>
-            <value>
-                <elementReference>Notification_type.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>body</name>
-            <value>
-                <elementReference>BodyMessageDaysLeftFormula</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>title</name>
-            <value>
-                <elementReference>DaysLeftTextFormula</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>recipientIds</name>
-            <value>
-                <elementReference>RecipientId</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>targetId</name>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>NotifyWeekLeft</name>
         <label>Notify Week Left</label>
-        <locationX>490</locationX>
+        <locationX>204</locationX>
         <locationY>1463</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
@@ -211,13 +175,15 @@
                 <elementReference>$Record.Id</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>52.0</apiVersion>
     <assignments>
         <description>Asigna el id del receptor de la notificación</description>
         <name>Assign_Notification</name>
         <label>Assign Notification</label>
-        <locationX>402</locationX>
+        <locationX>182</locationX>
         <locationY>539</locationY>
         <assignmentItems>
             <assignToReference>RecipientId</assignToReference>
@@ -258,7 +224,7 @@
         <description>Si un plan comercial anual hijo (RN) se ha modificado tu Target KPI Nº, se envía una nueva notificación al usuario asignado</description>
         <name>Anual_Plan_Target_KPI_Changed</name>
         <label>Anual Plan Target KPI Changed</label>
-        <locationX>622</locationX>
+        <locationX>336</locationX>
         <locationY>1655</locationY>
         <defaultConnector>
             <targetReference>UpdateSentNotifications</targetReference>
@@ -319,7 +285,7 @@
         <description>Valida se el plan comercial ha llegado a la fecha límite</description>
         <name>End_Date_Reached</name>
         <label>End Date Reached</label>
-        <locationX>402</locationX>
+        <locationX>182</locationX>
         <locationY>947</locationY>
         <defaultConnector>
             <targetReference>WhatTypeOfPLanIsDecision</targetReference>
@@ -349,92 +315,10 @@
         </rules>
     </decisions>
     <decisions>
-        <description>Si se ha alcanzado el objetivo KPI del mes y no se ha enviado notificación todavía, se envía notificación y se crea tarea.</description>
-        <name>IsMensualPlanKPINotReachedAndNotificationNotSentDecision</name>
-        <label>Is Mensual Plan KPI Not Reached And Notification Not Sent?</label>
-        <locationX>182</locationX>
-        <locationY>1571</locationY>
-        <defaultConnector>
-            <targetReference>UpdateSentNotifications</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>MensualPlanKPINotReachedAndNotificationNotSent</name>
-            <conditionLogic>7 AND 8 AND 9 AND ((1 AND 2) OR (3 AND 4) OR (5 AND 6))</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.TargetKPICurrency__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Actual_KPI__c</leftValueReference>
-                <operator>LessThan</operator>
-                <rightValue>
-                    <elementReference>$Record.TargetKPICurrency__c</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.TargetKPINumber__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Actual_KPI__c</leftValueReference>
-                <operator>LessThan</operator>
-                <rightValue>
-                    <elementReference>$Record.TargetKPINumber__c</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.TargetKPIPercent__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Actual_KPI__c</leftValueReference>
-                <operator>LessThan</operator>
-                <rightValue>
-                    <elementReference>$Record.TargetKPIPercent__c</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>GetFrequencyNotificationsAction</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.EndDate__c</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>DaysLeft</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>SentEndReached</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>NotifyDaysLeft</targetReference>
-            </connector>
-            <label>Mensual Plan KPI Not Reached And Notification Not Sent</label>
-        </rules>
-    </decisions>
-    <decisions>
         <description>Valida si ha alcanzado el KPI definido, en cuyo caso enviará una notificación si no ha sido enviado previamente.</description>
         <name>KPIRreached</name>
         <label>KPI reached</label>
-        <locationX>402</locationX>
+        <locationX>182</locationX>
         <locationY>647</locationY>
         <defaultConnector>
             <targetReference>End_Date_Reached</targetReference>
@@ -467,7 +351,7 @@
         <description>Valida si va a ser necesario enviar alguna notificación.</description>
         <name>SendAnynotification</name>
         <label>Send any notificaction?</label>
-        <locationX>666</locationX>
+        <locationX>413</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -567,7 +451,7 @@
         <description>Valida si queda menos de una semana para que finalice el Plan comercial</description>
         <name>WeekLeft</name>
         <label>Week Left</label>
-        <locationX>622</locationX>
+        <locationX>336</locationX>
         <locationY>1355</locationY>
         <defaultConnector>
             <targetReference>Anual_Plan_Target_KPI_Changed</targetReference>
@@ -600,7 +484,7 @@
         <description>Se identifica el tipo de plan para tomar diferentes acciones para los planes mensuales y el resto de planes.</description>
         <name>WhatTypeOfPLanIsDecision</name>
         <label>What type of plan is it?</label>
-        <locationX>402</locationX>
+        <locationX>182</locationX>
         <locationY>1247</locationY>
         <defaultConnector>
             <targetReference>WeekLeft</targetReference>
@@ -616,9 +500,6 @@
                     <elementReference>MensualPlanRTDeveloperName</elementReference>
                 </rightValue>
             </conditions>
-            <connector>
-                <targetReference>GetFrequencyNotificationsRecordTypeAction</targetReference>
-            </connector>
             <label>MensualPlan</label>
         </rules>
     </decisions>
@@ -638,15 +519,6 @@
              {!BodyDaysLeft}, 
              {!BodyDaysLeftIntermediary}
         ) 
-)</expression>
-    </formulas>
-    <formulas>
-        <name>DaysLeft</name>
-        <dataType>Date</dataType>
-        <expression>IF(
-    MONTH({!LastDayOfTheMonth} - {!GetFrequencyNotificationsAction.DaysLeft__c}) &lt;&gt; MONTH({!LastDayOfTheMonth}) ,
-   TODAY() + DAY({!LastDayOfTheMonth}), 
-   TODAY() + {!GetFrequencyNotificationsAction.DaysLeft__c}
 )</expression>
     </formulas>
     <formulas>
@@ -802,14 +674,9 @@ IF
   &quot;03;&quot;,
   IF 
   ( 
-    AND({!$Record.RecordType.DeveloperName} = {!MensualPlanRTDeveloperName}, {!NotifyDaysLeft} = true),
+    AND({!$Record.RecordType.DeveloperName} = {!MensualPlanRTDeveloperName}, {!NotifyWeekLeft} = true),
     &quot;03;&quot; , 
-    IF
-    (
-      AND({!$Record.RecordType.DeveloperName} != {!MensualPlanRTDeveloperName}, {!NotifyWeekLeft} = true),
-      &quot;03;&quot;,
-      &quot;&quot;
-    )
+	&quot;&quot;
   )
 )</expression>
     </formulas>
@@ -897,57 +764,9 @@ IF
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
-        <description>Se obtienen la frecuencia de notificación de los planes mensuales. Se encuentra almacenado en el tipo de registro &apos;Frequency of notifications&apos; del objeto Objective__c.</description>
-        <name>GetFrequencyNotificationsAction</name>
-        <label>Get Frequency Notifications</label>
-        <locationX>182</locationX>
-        <locationY>1463</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>IsMensualPlanKPINotReachedAndNotificationNotSentDecision</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>RecordTypeId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>FrequencyNotificationsRecordTypeId</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Objective__c</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>DaysLeft__c</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <description>Se obtiene el Id del Record Type &apos;Frequency of Notifications&apos; del objeto Objective__c para las notificaciones del plan mensual.</description>
-        <name>GetFrequencyNotificationsRecordTypeAction</name>
-        <label>Get Frequency Notifications Record Type</label>
-        <locationX>182</locationX>
-        <locationY>1355</locationY>
-        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>GetFrequencyNotificationsAction</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>FrequencyNotificationsRTDeveloperName</elementReference>
-            </value>
-        </filters>
-        <object>RecordType</object>
-        <outputAssignments>
-            <assignToReference>FrequencyNotificationsRecordTypeId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-    </recordLookups>
-    <recordLookups>
         <name>Notification_type</name>
         <label>Notification type</label>
-        <locationX>402</locationX>
+        <locationX>182</locationX>
         <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -968,8 +787,8 @@ IF
     <recordUpdates>
         <name>UpdateSentNotifications</name>
         <label>Update Sent Notifications</label>
-        <locationX>402</locationX>
-        <locationY>2063</locationY>
+        <locationX>336</locationX>
+        <locationY>1955</locationY>
         <inputAssignments>
             <field>SentNotifications__c</field>
             <value>
@@ -979,7 +798,7 @@ IF
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>540</locationX>
+        <locationX>287</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>SendAnynotification</targetReference>
@@ -988,60 +807,7 @@ IF
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
-    <subflows>
-        <description>Crear tarea</description>
-        <name>Create_Task</name>
-        <label>Create Task</label>
-        <locationX>50</locationX>
-        <locationY>1787</locationY>
-        <connector>
-            <targetReference>UpdateSentNotifications</targetReference>
-        </connector>
-        <flowName>SDM_Insert_Task</flowName>
-        <inputAssignments>
-            <name>AssignedTo</name>
-            <value>
-                <elementReference>$Record.AssignedTo__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>Date</name>
-            <value>
-                <elementReference>TaskDateMensualPlan</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>IsRelatedToComercialPlan</name>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>Message</name>
-            <value>
-                <elementReference>TaskMessageMensualPlan</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>RecordType</name>
-            <value>
-                <stringValue>CommercialAction</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>Subject</name>
-            <value>
-                <elementReference>TaskSubjectMensualPlan</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>WhatId</name>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </inputAssignments>
-    </subflows>
+    <status>Active</status>
     <textTemplates>
         <description>Mensaje a mostrar para las notificaciones &apos;Days Left&apos; de los planes mensuales.</description>
         <name>BodyDaysLeft</name>

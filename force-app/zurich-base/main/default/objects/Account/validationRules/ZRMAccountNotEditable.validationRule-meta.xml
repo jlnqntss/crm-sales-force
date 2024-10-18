@@ -4,6 +4,13 @@
     <active>true</active>
     <description>Comprueba que no se edite el nombre de la cuenta siempre y cuando el RT de la cuenta no sea Lead.</description>
     <errorConditionFormula>AND(
+  OR
+  (
+  Blocked__c = False,
+  Anonymized__c = False,
+  NOT(ISCHANGED(Blocked__c)),
+  NOT(ISCHANGED(Anonymized__c))
+  ),
   ISCHANGED(Name),
   OR(
     RecordType.DeveloperName = &apos;BusinessCustomer&apos;,
