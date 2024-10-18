@@ -37,8 +37,8 @@
     </applicationVisibilities>
     <applicationVisibilities>
         <application>Zurich_Empresas</application>
-        <default>true</default>
-        <visible>true</visible>
+        <default>false</default>
+        <visible>false</visible>
     </applicationVisibilities>
     <classAccesses>
         <apexClass>AccountContactRelationSelector</apexClass>
@@ -458,7 +458,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>BusinessInsuranceCreateLeadAction</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>BusinessInsuranceCreateLeadActionTest</apexClass>
@@ -490,7 +490,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CallMeBackListController</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>CallMeBackListControllerTest</apexClass>
@@ -1010,7 +1010,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>FindCustomerByPhoneAction</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>FindCustomerByPhoneActionTest</apexClass>
@@ -1042,7 +1042,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>FlowSearchAccountsByEmailAction</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>FlowSearchAccountsByEmailActionTest</apexClass>
@@ -1118,11 +1118,11 @@
     </classAccesses>
     <classAccesses>
         <apexClass>GenerateHashIdAction</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>GenerateHashIdActionTest</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>GeneratePDFActaController</apexClass>
@@ -1190,7 +1190,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>GenesysCloudLightningController</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>GenesysCloudLightningControllerTest</apexClass>
@@ -1230,11 +1230,11 @@
     </classAccesses>
     <classAccesses>
         <apexClass>GenesysCloudSendSMSAction</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>GenesysCloudSendSMSActionTest</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>GenesysCloudStatusAction</apexClass>
@@ -1426,7 +1426,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LWCCaseSelectCustomerController</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>LWCCaseSelectCustomerControllerTest</apexClass>
@@ -1962,7 +1962,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TechnicalIncidenceController</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>TechnicalIncidenceControllerTest</apexClass>
@@ -2158,7 +2158,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TriggerBypassUtility</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>TriggerBypassUtilityTest</apexClass>
@@ -2439,9 +2439,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Account.EnviadoABerkley__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -3394,9 +3394,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Competitor__c.HiringInterest__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -3894,9 +3894,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Policy__c.PotentialMatch__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -4770,6 +4770,22 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
+        <recordType>Account.BusinessCustomer</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-Account Layout</layout>
+        <recordType>Account.Intermediary</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-Account Layout</layout>
+        <recordType>Account.ParentAccount</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-Account Layout</layout>
+        <recordType>Account.PartnerOCS</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-Account Layout</layout>
         <recordType>Account.Partner_SAM</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -4777,28 +4793,12 @@
         <recordType>Account.Potential_Broker</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Business Customer</layout>
-        <recordType>Account.BusinessCustomer</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Intermediary</layout>
-        <recordType>Account.Intermediary</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Account-Master layout</layout>
         <recordType>Account.Master</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-OCS Partner</layout>
+        <layout>Account-Partner layout</layout>
         <recordType>Account.Partner</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-OCS Partner</layout>
-        <recordType>Account.PartnerOCS</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Parent Account</layout>
-        <recordType>Account.ParentAccount</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>AccountRelationship__c-Admin Layout</layout>
@@ -4810,15 +4810,11 @@
         <layout>Campaign-Campaign Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Case Default OCS</layout>
-        <recordType>Case.OCSInquiry</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Case Default ZE</layout>
-        <recordType>Case.USPInquiry</recordType>
+        <layout>Case-Case Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Layout</layout>
+        <recordType>Case.OCSInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Layout</layout>
@@ -4831,6 +4827,10 @@
     <layoutAssignments>
         <layout>Case-Case Layout</layout>
         <recordType>Case.SDMMarketTeamRequests</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Case Layout</layout>
+        <recordType>Case.USPInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Layout</layout>
@@ -4878,6 +4878,14 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Contact Layout</layout>
+        <recordType>Contact.Contact</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-Contact Layout</layout>
+        <recordType>Contact.ContactPartner</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-Contact Layout</layout>
         <recordType>Contact.SAM_Partner</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -4895,14 +4903,6 @@
     <layoutAssignments>
         <layout>Contact-Copy of Customer Layout_prod</layout>
         <recordType>Contact.LeadLife</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-OCS Contact</layout>
-        <recordType>Contact.Contact</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-OCS Contact</layout>
-        <recordType>Contact.ContactPartner</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Email_Case_AccountId_to_Intermediary__mdt-Email Case AccountId to Intermediary Layout</layout>
@@ -4977,17 +4977,21 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Objective__c-Objetivos Layout</layout>
+        <recordType>Objective__c.FrequencyNotifications</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Objetivos Layout</layout>
         <recordType>Objective__c.Objectives</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Opportunity-Offer Vida</layout>
+        <layout>Opportunity-Opportunity Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-Opportunity Layout</layout>
         <recordType>Opportunity.Life</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Opportunity-ZE Offer</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-ZE Offer</layout>
+        <layout>Opportunity-Opportunity Layout</layout>
         <recordType>Opportunity.NoLife</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -5007,15 +5011,15 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>PersonAccount-Formato de cuenta personal</layout>
-        <recordType>PersonAccount.PersonAccount</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PersonAccount-ZE Customer</layout>
         <recordType>PersonAccount.Customer</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PersonAccount-ZE Lead</layout>
+        <layout>PersonAccount-Formato de cuenta personal</layout>
         <recordType>PersonAccount.Lead</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PersonAccount-Formato de cuenta personal</layout>
+        <recordType>PersonAccount.PersonAccount</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Policy__c-Policy Layout</layout>
@@ -5045,10 +5049,6 @@
         <layout>TNPS__c-TNPS Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task-Activity</layout>
-        <recordType>Task.Activity_USP</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Task-Task Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -5057,11 +5057,19 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Task Layout</layout>
+        <recordType>Task.Activity_USP</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Task Layout</layout>
         <recordType>Task.CommercialAction</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Task Layout</layout>
         <recordType>Task.Communication</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Task Layout</layout>
+        <recordType>Task.Interaction</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Task Layout</layout>
@@ -5107,10 +5115,6 @@
     <layoutAssignments>
         <layout>ZdaCuRequestAvailableEventValues__mdt-ZDA CU Request available event value Layout</layout>
     </layoutAssignments>
-    <loginIpRanges>
-        <endAddress>255.255.255.254</endAddress>
-        <startAddress>1.1.1.1</startAddress>
-    </loginIpRanges>
     <pageAccesses>
         <apexPage>AnswersHome</apexPage>
         <enabled>false</enabled>
@@ -5177,7 +5181,7 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>OpenInfoLaunch</apexPage>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>PreferenceCentre</apexPage>
@@ -5229,15 +5233,14 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
+        <default>false</default>
         <recordType>Account.BusinessCustomer</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.Intermediary</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -5247,7 +5250,7 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.ParentAccount</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -5257,7 +5260,7 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.PartnerOCS</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -5280,9 +5283,9 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
+        <default>false</default>
         <recordType>Case.OCSInquiry</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -5320,9 +5323,9 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
+        <default>false</default>
         <recordType>Contact.Contact</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -5400,9 +5403,9 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
+        <default>false</default>
         <recordType>Opportunity.NoLife</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -5426,9 +5429,8 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>PersonAccount.Customer</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -5451,29 +5453,29 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
+        <default>false</default>
         <recordType>Relationship__c.Claim</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Relationship__c.Household</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Relationship__c.Offer</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Relationship__c.Policy</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
+        <default>false</default>
         <recordType>Task.Activity</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -5493,7 +5495,7 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Task.Interaction</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -5537,53 +5539,17 @@
         <tab>Seguimientos_Masivos</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
-    <userLicense>Salesforce</userLicense>
+    <userLicense>Salesforce Integration</userLicense>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ActivitiesAccess</name>
+        <name>ApiEnabled</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>AllowViewKnowledge</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>CanAccessCE</name>
+        <name>ApiUserOnly</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>ChatterInternalUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>CreateCustomizeFilters</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>LightningConsoleAllowedForUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>LightningExperienceUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>RunFlow</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>SendExternalEmailAvailable</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ShareFilesWithNetworks</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ViewHelpLink</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ViewTrustMeasures</name>
     </userPermissions>
 </Profile>

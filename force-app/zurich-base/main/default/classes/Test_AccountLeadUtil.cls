@@ -197,50 +197,40 @@ public with sharing class Test_AccountLeadUtil
 
     private static void setMetadataConfigurations()
     {
-        //Creación de metadatos
-        String RT_Forum_Origin_Assignment   = 'ForumOriginAssignment';
-        String RT_Language_Assignment       = 'LanguageAssignment';
-        String RT_Municipality_Assignment   = 'MunicipalityAssignment';
-        String RT_Province_Assignment       = 'ProvinceAssignment';
-
-        // Inicialización de la lista con las variables
-        List<String> RT_names = new List<String>{
-            RT_Forum_Origin_Assignment, 
-            RT_Language_Assignment, 
-            RT_Municipality_Assignment, 
-            RT_Province_Assignment
-        };
-        Map<String, Id> RTMap = LeadAssignmentConfigurationsSelector.getRecordTypeByName(RT_names);
+        String rtForumOriginId  = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('ForumOriginAssignment')?.getRecordTypeId();
+        String rtLanguageId     = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('LanguageAssignment')?.getRecordTypeId();
+        String rtMunicipalityId = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('MunicipalityAssignment')?.getRecordTypeId();
+        String rtProvinceId     = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('ProvinceAssignment')?.getRecordTypeId();
 
         //LANGUAGE
         List<LeadAssignmentConfiguration__c> testLanguageAssignmentMetadata = new List<LeadAssignmentConfiguration__c>();
-        testLanguageAssignmentMetadata.add( new LeadAssignmentConfiguration__c(Language__c = 'Spanich', AssignTo__c = 'N/A',        RecordTypeId = RTMap.get(RT_Language_Assignment)) );
-        testLanguageAssignmentMetadata.add( new LeadAssignmentConfiguration__c(Language__c = 'French',  AssignTo__c = '0000044625', RecordTypeId = RTMap.get(RT_Language_Assignment)) );
+        testLanguageAssignmentMetadata.add( new LeadAssignmentConfiguration__c(Language__c = 'Spanich', AssignTo__c = 'N/A',        RecordTypeId = rtLanguageId) );
+        testLanguageAssignmentMetadata.add( new LeadAssignmentConfiguration__c(Language__c = 'French',  AssignTo__c = '0000044625', RecordTypeId = rtLanguageId) );
 
         AccountLeadAssignment.languageAssignmentMetadata = testLanguageAssignmentMetadata;
 
         //FORUM ASSIGNMENT
         List<LeadAssignmentConfiguration__c> testforumOriginAssignmentMetadata = new List<LeadAssignmentConfiguration__c>();
-        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Direct',         AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario accidentes',       RecordTypeId = RTMap.get(RT_Forum_Origin_Assignment)) );
-        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Province',       AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario automonos',        RecordTypeId = RTMap.get(RT_Forum_Origin_Assignment)) );
-        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Province',       AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario pymes',            RecordTypeId = RTMap.get(RT_Forum_Origin_Assignment)) );
-        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Municipality',   AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario embarcaciones',    RecordTypeId = RTMap.get(RT_Forum_Origin_Assignment)) );
-        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Municipality',   AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario salud',            RecordTypeId = RTMap.get(RT_Forum_Origin_Assignment)) );
-        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Direct',         AssignTo__c ='CONTACT_CENTER',  ForumOrigin__c = 'ContactCenter',               RecordTypeId = RTMap.get(RT_Forum_Origin_Assignment)) );
+        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Direct',         AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario accidentes',       RecordTypeId = rtForumOriginId) );
+        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Province',       AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario automonos',        RecordTypeId = rtForumOriginId) );
+        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Province',       AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario pymes',            RecordTypeId = rtForumOriginId) );
+        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Municipality',   AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario embarcaciones',    RecordTypeId = rtForumOriginId) );
+        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Municipality',   AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario salud',            RecordTypeId = rtForumOriginId) );
+        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Direct',         AssignTo__c ='CONTACT_CENTER',  ForumOrigin__c = 'ContactCenter',           RecordTypeId = rtForumOriginId) );
 
         AccountLeadAssignment.forumOriginAssignmentMetadata = testforumOriginAssignmentMetadata;
 
         //MUNICIPALITY ASSIGNMENT
         List<LeadAssignmentConfiguration__c> testMunicipalityAssignmentMetadata = new List<LeadAssignmentConfiguration__c>();
-        testMunicipalityAssignmentMetadata.add( new LeadAssignmentConfiguration__c(ZIPRanges__c= '{"25999": "0000044625"}', ProvinceCode__c='25', RecordTypeId = RTMap.get(RT_Municipality_Assignment)) );
-        testMunicipalityAssignmentMetadata.add( new LeadAssignmentConfiguration__c(ZIPRanges__c= '{"02999": "0000044625"}', ProvinceCode__c='02', RecordTypeId = RTMap.get(RT_Municipality_Assignment)) );
+        testMunicipalityAssignmentMetadata.add( new LeadAssignmentConfiguration__c(ZIPRanges__c= '{"25999": "0000044625"}', ProvinceCode__c='25', RecordTypeId = rtMunicipalityId) );
+        testMunicipalityAssignmentMetadata.add( new LeadAssignmentConfiguration__c(ZIPRanges__c= '{"02999": "0000044625"}', ProvinceCode__c='02', RecordTypeId = rtMunicipalityId) );
 
 
         AccountLeadAssignment.MunicipalityAssignmentMetadata = testMunicipalityAssignmentMetadata;
 
         //PROVINCE ASSIGNMENT
         List<LeadAssignmentConfiguration__c> testProvinceAssignmentMetadata = new List<LeadAssignmentConfiguration__c>();
-        testProvinceAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignTo__c='0000044625',PostalCode__c='02',Province__c='Albacete', RecordTypeId = RTMap.get(RT_Province_Assignment)) );
+        testProvinceAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignTo__c='0000044625',PostalCode__c='02',Province__c='Albacete', RecordTypeId = rtProvinceId) );
 
         AccountLeadAssignment.ProvinceAssignmentMetadata = testProvinceAssignmentMetadata;
     }
@@ -526,17 +516,10 @@ public with sharing class Test_AccountLeadUtil
     {
         setMetadataConfigurations();
 
-        String RT_Forum_Origin_Assignment   = 'ForumOriginAssignment';
-        String RT_Language_Assignment       = 'LanguageAssignment';
-        String RT_Municipality_Assignment   = 'MunicipalityAssignment';
-        String RT_Province_Assignment       = 'ProvinceAssignment';
-
-        // Inicialización de la lista con las variables
-        List<String> RT_names = new List<String>{
-            RT_Forum_Origin_Assignment, 
-            RT_Province_Assignment
-        };
-        Map<String, Id> RTMap = LeadAssignmentConfigurationsSelector.getRecordTypeByName(RT_names);
+        String rtForumOriginId  = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('ForumOriginAssignment')?.getRecordTypeId();
+        String rtLanguageId     = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('LanguageAssignment')?.getRecordTypeId();
+        String rtMunicipalityId = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('MunicipalityAssignment')?.getRecordTypeId();
+        String rtProvinceId     = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('ProvinceAssignment')?.getRecordTypeId();
 
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;	
         User intermediary = [SELECT Id  FROM User WHERE Alias = :aliasDefaultUser];
@@ -545,7 +528,7 @@ public with sharing class Test_AccountLeadUtil
                                                                      AssignTo__c='0000044625',
                                                                      ForumOrigin__c = 'formulario inventado',
                                                                      AssignmentType__c='Direct',
-                                                                     RecordTypeId = RTMap.get(RT_Forum_Origin_Assignment)
+                                                                     RecordTypeId = rtForumOriginId
                                                                  ) );       
 
         Test.startTest();

@@ -3654,8 +3654,8 @@ public with sharing class TestDataFactory
         List<LeadAssignmentConfiguration__c> testforumOriginAssignmentMetadata = new List<LeadAssignmentConfiguration__c>();
         testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Direct',         AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario accidentes',       RecordTypeId = rtForumOriginId) );
         testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Province',       AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario automonos',        RecordTypeId = rtForumOriginId) );
-        //testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Municipality',   AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario pymes',            RecordTypeId = rtForumOriginId) );
-        //testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Municipality',   AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario embarcaciones',    RecordTypeId = rtForumOriginId) );
+        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Municipality',   AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario pymes',            RecordTypeId = rtForumOriginId) );
+        testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Municipality',   AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario embarcaciones',    RecordTypeId = rtForumOriginId) );
         testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Municipality',   AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario salud',            RecordTypeId = rtForumOriginId) );
        
 
