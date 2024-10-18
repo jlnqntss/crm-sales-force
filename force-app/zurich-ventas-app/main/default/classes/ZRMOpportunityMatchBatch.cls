@@ -23,8 +23,8 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
 
     private static Set<String> contactPoints = new Set<String>();
     private static Map<id, Opportunity> opportunitiesToUpdate = new Map<Id, Opportunity>();
-    private static List<Task> tasksToUpdate = new List<Task>();
-    private static List<Event> eventsToUpdate = new List<Event>();
+    private static Map<id, Task> tasksToUpdate = new Map<id, Task>();
+    private static Map<id, Event> eventsToUpdate = new Map<id, Event>();
     private static Map<Id, Opportunity> opportunitiesToDelete = new Map<Id, Opportunity>();
     private static Map<Id, Account> accountsByIdToDelete = new Map<Id, Account>();
 
@@ -398,11 +398,18 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @date 15/04/2024
      */
     @TestVisible
-    private List<Task> moveTasksToScopeOffers(Map<String, String> matchIdByScopeId)
+    private Map<id, Task> moveTasksToScopeOffers(Map<String, String> matchIdByScopeId)
     {
+        Map<Id, Task> result = new Map<Id, Task>();
         List<Task> relatedTasks = new TaskSelector().getTaskRelatedWithWhatId( matchIdByScopeId.values() );
         Map<String, List<SObject> > taskByOppMatchId = fillMapList(relatedTasks, Task.WhatId);
-        return moveRelatedObjectToScopeOffers(matchIdByScopeId, taskByOppMatchId, Task.WhatId);
+        Map<Id, Sobject> movedTasks = moveRelatedObjectToScopeOffers(matchIdByScopeId, taskByOppMatchId, Task.WhatId);
+
+        for (SObject obj: movedTasks.values()) {
+            result.put(obj.Id, (Task) obj);
+        }
+
+        return result;
     }
 
 
@@ -412,11 +419,18 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @date 15/04/2024
      */
     @TestVisible
-    private List<Event> moveEventsToScopeOffers(Map<String, String> matchIdByScopeId)
+    private Map<id, Event> moveEventsToScopeOffers(Map<String, String> matchIdByScopeId)
     {
+        Map<Id, Event> result = new Map<Id, Event>();
         List<Event> relatedEvents = new EventSelector().getRelatedEventsFromRecord( matchIdByScopeId.values() );
         Map<String, List<SObject> > eventByOppMatchId = fillMapList(relatedEvents, Event.WhatId);
-        return moveRelatedObjectToScopeOffers(matchIdByScopeId, eventByOppMatchId, Event.WhatId);
+        Map<Id, Sobject> movedEvents = moveRelatedObjectToScopeOffers(matchIdByScopeId, eventByOppMatchId, Event.WhatId);
+
+        for (SObject obj: movedEvents.values()) {
+            result.put(obj.Id, (Event) obj);
+        }
+
+        return result;
     }
 
 
@@ -426,9 +440,9 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @author  igarcia
      */
     @TestVisible
-    private List<Sobject> moveRelatedObjectToScopeOffers(Map<String, String> matchIdByScopeId, Map<String, List<SObject> > sObjectByOppMatchId, Schema.SObjectField relatedField)
+    private Map<id, Sobject> moveRelatedObjectToScopeOffers(Map<String, String> matchIdByScopeId, Map<String, List<SObject> > sObjectByOppMatchId, Schema.SObjectField relatedField)
     {
-        List<SObject> movedSobject = new List<SObject>();
+        Map<id, SObject> movedSobject = new Map<id, SObject>();
 
         String matchId;
         for( String scopeId : matchIdByScopeId.keySet() )
@@ -440,7 +454,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
                 for( SObject obj : sObjectByOppMatchId.get(matchId) )
                 {
                     obj.put(relatedField, scopeId);
-                    movedSobject.add(obj);
+                    movedSobject.put(obj.Id, obj);
                 }
             }
         }
@@ -599,13 +613,13 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
         // Actualizar tareas que se han movido a la nueva que se ha mergeado
         if ( !tasksToUpdate.isEmpty() )
         {
-            update tasksToUpdate;
+            update tasksToUpdate.values();
         }
 
         // Actualizar eventos que se han movido a la nueva que se ha mergeado
         if ( !eventsToUpdate.isEmpty() )
         {
-            update eventsToUpdate;
+            update eventsToUpdate.values();
         }
 
         // Eliminar ofertas
