@@ -1,12 +1,22 @@
-/**
- * @description       : Clase de test para la clase AccountsSelectorTLeadAssignmentConfigurationsSelector
- * @author            :
- * @group             :
- * @last modified on  : 17-10-2024
- * @last modified by  : jlnavarro
- **/
-@isTest
-private with sharing class AccountsSelectorTLeadAssignmentConfigurationsSelectorTest
-{
+@IsTest
+public with sharing class LeadAssignmentConfigurationsSelectorTest {
+    @TestSetup
+    public static void createScenario(){
+        TestDataFactory.insertAccountLeadAssignmentCriterias();
+    }
 
+    @IsTest
+    static void test_getLeadAssignmentConfiguratioByRT(){
+        Test.startTest();
+        LeadAssignmentConfigurationsSelector leadAssignmentConfigurationsSelector = new LeadAssignmentConfigurationsSelector(); 
+
+        List<LeadAssignmentConfiguration__c> forumOrigins = leadAssignmentConfigurationsSelector.getForumOriginAssignments();
+
+        List<LeadAssignmentConfiguration__c> languages = leadAssignmentConfigurationsSelector.getLanguageAssignments();
+
+        List<LeadAssignmentConfiguration__c> municipalities = leadAssignmentConfigurationsSelector.getMunicipalityAssignments();
+
+        List<LeadAssignmentConfiguration__c> provinces = leadAssignmentConfigurationsSelector.getProvinceAssignments();
+        Test.stopTest();
+    }
 }

@@ -16,58 +16,58 @@
     }
 
     //#region RECORD TYPES
-    public static final String RT_Forum_Origin_Assignment   = GlobalConfigUtil.getGlobalConfigurationValue('AccountLeadAssignmentForumRT');
-    public static final String RT_Language_Assignment       = GlobalConfigUtil.getGlobalConfigurationValue('AccountLeadAssignmentLanguageRT');
-    public static final String RT_Municipality_Assignment   = GlobalConfigUtil.getGlobalConfigurationValue('AccountLeadAssignmentMunicipalRT');
-    public static final String RT_Province_Assignment       = GlobalConfigUtil.getGlobalConfigurationValue('AccountLeadAssignmentProvinceRT');
+    public static final String rt_Forum_Origin_Assignment   = GlobalConfigUtil.getGlobalConfigurationValue('AccountLeadAssignmentForumRT');
+    public static final String rt_Language_Assignment       = GlobalConfigUtil.getGlobalConfigurationValue('AccountLeadAssignmentLanguageRT');
+    public static final String rt_Municipality_Assignment   = GlobalConfigUtil.getGlobalConfigurationValue('AccountLeadAssignmentMunicipalRT');
+    public static final String rt_Province_Assignment       = GlobalConfigUtil.getGlobalConfigurationValue('AccountLeadAssignmentProvinceRT');
      
     public ID rtForumOriginId {
         get {
-            return Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get(RT_Forum_Origin_Assignment)?.getRecordTypeId();
+            return Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get(rt_Forum_Origin_Assignment)?.getRecordTypeId();
         }
     }
      
      public ID rtLanguageAssignmentId {
         get {
-            return Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get(RT_Language_Assignment)?.getRecordTypeId();
+            return Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get(rt_Language_Assignment)?.getRecordTypeId();
         }
     }
      
      public ID rtMunicipalityAssignmentId {
         get {
-            return Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get(RT_Municipality_Assignment)?.getRecordTypeId();
+            return Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get(rt_Municipality_Assignment)?.getRecordTypeId();
         }
     }
      
      public ID rtProvinceAssignmentId {
         get {
-            return Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get(RT_Province_Assignment)?.getRecordTypeId();
+            return Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get(rt_Province_Assignment)?.getRecordTypeId();
         }
     }
     
     // Recupera campos del RecordType ForumOriginAssignment de LeadAssignmentConfiguratio
     public List<LeadAssignmentConfiguration__c> getForumOriginAssignments() {
-        return getLeadAssignmentConfiguratioByRT( RT_Forum_Origin_Assignment );
+        return getLeadAssignmentConfiguratioByRT( rt_Forum_Origin_Assignment );
     }
 
     // Recupera campos del RecordType LanguageAssignment de LeadAssignmentConfiguratio
     public List<LeadAssignmentConfiguration__c> getLanguageAssignments() {
-        return getLeadAssignmentConfiguratioByRT( RT_Language_Assignment );
+        return getLeadAssignmentConfiguratioByRT( rt_Language_Assignment );
     }
 
     // Recupera campos del RecordType MunicipalityAssignment de LeadAssignmentConfiguratio
     public List<LeadAssignmentConfiguration__c> getMunicipalityAssignments() {
-        return getLeadAssignmentConfiguratioByRT( RT_Municipality_Assignment );
+        return getLeadAssignmentConfiguratioByRT( rt_Municipality_Assignment );
     }
 
     // Recupera campos del RecordType ProvinceAssignment de LeadAssignmentConfiguratio
     public List<LeadAssignmentConfiguration__c> getProvinceAssignments() {
-        return getLeadAssignmentConfiguratioByRT( RT_Province_Assignment );
+        return getLeadAssignmentConfiguratioByRT( rt_Province_Assignment );
     }
 
     private List<LeadAssignmentConfiguration__c> getLeadAssignmentConfiguratioByRT(String rt) {
             
-        if( rt == RT_Forum_Origin_Assignment ){
+        if( rt == rt_Forum_Origin_Assignment ){
             // Agregar los campos a seleccionar
             this.baseQuery.selectFields
             (
@@ -81,7 +81,7 @@
             // Agregar la condición para filtrar por RecordTypeId
         	this.baseQuery.addConditionEq('RecordTypeId', rtForumOriginId);
         }
-        if( rt == RT_Language_Assignment ){
+        if( rt == rt_Language_Assignment ){
             // Agregar los campos a seleccionar
             this.baseQuery.selectFields
             (
@@ -94,7 +94,7 @@
             // Agregar la condición para filtrar por RecordTypeId
         	this.baseQuery.addConditionEq('RecordTypeId', rtLanguageAssignmentId);
         }
-        if( rt == RT_Municipality_Assignment ){
+        if( rt == rt_Municipality_Assignment ){
             // Agregar los campos a seleccionar
             this.baseQuery.selectFields
             (
@@ -107,7 +107,7 @@
             // Agregar la condición para filtrar por RecordTypeId
         	this.baseQuery.addConditionEq('RecordTypeId', rtMunicipalityAssignmentId);
         }
-        if( rt == RT_Province_Assignment ){
+        if( rt == rt_Province_Assignment ){
             // Agregar los campos a seleccionar
             this.baseQuery.selectFields
             (
