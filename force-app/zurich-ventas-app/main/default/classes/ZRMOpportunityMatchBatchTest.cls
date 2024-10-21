@@ -132,7 +132,7 @@ private class ZRMOpportunityMatchBatchTest
 
         ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch();
         Test.startTest();
-        update zrmOppMatchBatch.moveTasksToScopeOffers(matchIdByScopeId);
+        update zrmOppMatchBatch.moveTasksToScopeOffers(matchIdByScopeId).values();
         Test.stopTest();
 
         List<Task> movedTask = [SELECT Id FROM Task WHERE WhatId = : optys[0].Id];
@@ -175,7 +175,7 @@ private class ZRMOpportunityMatchBatchTest
         ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch();
 
         Test.startTest();
-        update zrmOppMatchBatch.moveEventsToScopeOffers(matchIdByScopeId);
+        update zrmOppMatchBatch.moveEventsToScopeOffers(matchIdByScopeId).values();
         Test.stopTest();
 
         List<Event> movedEvents = [SELECT Id FROM Event WHERE WhatId = : optys[0].Id];
