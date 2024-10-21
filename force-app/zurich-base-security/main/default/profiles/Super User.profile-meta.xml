@@ -12454,6 +12454,71 @@
         <field>TNPS__c.TNPSExternalId__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>LeadAssignmentConfiguration__c.ActionName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>LeadAssignmentConfiguration__c.AssignmentType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>LeadAssignmentConfiguration__c.AssignTo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>LeadAssignmentConfiguration__c.FormFactor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>LeadAssignmentConfiguration__c.ForumOrigin__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>LeadAssignmentConfiguration__c.Language__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>LeadAssignmentConfiguration__c.PostalCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>LeadAssignmentConfiguration__c.Property__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>LeadAssignmentConfiguration__c.Province__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>LeadAssignmentConfiguration__c.ProvinceCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>LeadAssignmentConfiguration__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>LeadAssignmentConfiguration__c.Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>LeadAssignmentConfiguration__c.ZIPRanges__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <flowAccesses>
         <enabled>false</enabled>
         <flow>AccountTriggerBeforeInsert</flow>
@@ -13475,6 +13540,22 @@
     <layoutAssignments>
         <layout>TNPS__c-TNPS Layout</layout>
     </layoutAssignments>
+    <layoutAssignments>
+        <layout>LeadAssignmentConfiguration__c-Lead Forum Origin Assignment Configuration Layout</layout>
+		<recordType>LeadAssignmentConfiguration__c.ForumOriginAssignment</recordType>
+    </layoutAssignments>
+	<layoutAssignments>
+        <layout>LeadAssignmentConfiguration__c-Lead Language Assignment Configuration Layout</layout>
+		<recordType>LeadAssignmentConfiguration__c.LanguageAssignment</recordType>
+    </layoutAssignments>
+	<layoutAssignments>
+        <layout>LeadAssignmentConfiguration__c-Lead Municipality Assignment Configuration Layout</layout>
+		<recordType>LeadAssignmentConfiguration__c.MunicMunicipalityAssignmentipalityAssignment</recordType>
+    </layoutAssignments>
+	<layoutAssignments>
+        <layout>LeadAssignmentConfiguration__c-Lead Province Assignment Configuration Layout</layout>
+		<recordType>LeadAssignmentConfiguration__c.ProvinceAssignment</recordType>
+    </layoutAssignments>
     <loginIpRanges>
         <endAddress>255.255.255.254</endAddress>
         <startAddress>1.1.1.1</startAddress>
@@ -14125,6 +14206,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>TNPS__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>LeadAssignmentConfiguration__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <pageAccesses>
