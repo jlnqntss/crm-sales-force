@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value><!-- RPA --></value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value><!-- RPA --></value>
+    </caseValues>
+    <gender><!-- Feminine --></gender>
+    <layouts>
+        <layout>Propuesta RPA Layout</layout>
+        <sections>
+            <label><!-- Accidentes de trabajo --></label>
+            <section>Accidentes de trabajo</section>
+        </sections>
+        <sections>
+            <label><!-- Cajas de seguridad del propio hotel --></label>
+            <section>Cajas de seguridad del propio hotel</section>
+        </sections>
+        <sections>
+            <label><!-- Campos Adicionales --></label>
+            <section>Campos Adicionales</section>
+        </sections>
+        <sections>
+            <label><!-- Campos Obligatorios --></label>
+            <section>Campos Obligatorios</section>
+        </sections>
+        <sections>
+            <label><!-- Campos Opcionales --></label>
+            <section>Campos Opcionales</section>
+        </sections>
+        <sections>
+            <label><!-- Construcción --></label>
+            <section>Construcción</section>
+        </sections>
+        <sections>
+            <label><!-- Contaminación accidental --></label>
+            <section>Contaminación accidental</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Daños a bienes / animales en custodia --></label>
+            <section>Daños a bienes / animales en custodia</section>
+        </sections>
+        <sections>
+            <label><!-- EON --></label>
+            <section>EON</section>
+        </sections>
+        <sections>
+            <label><!-- Fijos ZZ --></label>
+            <section>Fijos ZZ</section>
+        </sections>
+        <sections>
+            <label><!-- Hoteles --></label>
+            <section>Hoteles</section>
+        </sections>
+        <sections>
+            <label><!-- Objeto en vehículos aparcados --></label>
+            <section>Objeto en vehículos aparcados</section>
+        </sections>
+        <sections>
+            <label><!-- Post-trabajos --></label>
+            <section>Post-trabajos</section>
+        </sections>
+        <sections>
+            <label><!-- Productos y trabajos entregados --></label>
+            <section>Productos y trabajos entregados</section>
+        </sections>
+        <sections>
+            <label><!-- Reglas Fijas --></label>
+            <section>Reglas Fijas</section>
+        </sections>
+        <sections>
+            <label><!-- Servicio Aparcacoches --></label>
+            <section>Servicio Aparcacoches</section>
+        </sections>
+        <sections>
+            <label>Talleres y Concesionarios</label>
+            <section>Workshops and Dealers</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel><!-- RPA Activity Name --></nameFieldLabel>
+    <quickActions>
+        <label><!-- Envío oferta RPA --></label>
+        <name>Env_o_oferta_RPA</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- New Propuesta RPA --></label>
+        <name>RPA_Propuesta</name>
+    </quickActions>
+</CustomObjectTranslation>

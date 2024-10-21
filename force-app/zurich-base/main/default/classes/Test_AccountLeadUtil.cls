@@ -310,32 +310,31 @@ public with sharing class Test_AccountLeadUtil
 
     /**
      * @description Test que comprueba que se consigue el Id del intermediario que esta relacionado
-     *              con la cuenta que se recibe.
+     *              con la poliza asociada.
      * @author      jgallaga
      * @date        14/08/2023
      */
     @isTest
     static void test_AssignmnetIntermediaryAccount_OK()
     {
-        Account intermediaryAccount = [SELECT Id FROM Account WHERE INFOIntermediaryCode__c = 'IDIOMA-QQ'];
-        RecordType leadAccountRT = [SELECT Id FROM RecordType WHERE Name = 'Customer' AND SobjectType = 'Account'];
+        Account intermediaryAccount = [SELECT Id, INFOIntermediaryCode__c FROM Account WHERE INFOIntermediaryCode__c = 'IDIOMA-QQ'];
 
-        String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
-		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        insert accounts;
 
-        Account testAccount = new Account(Lastname = 'TestAccount', Intermediary_Name__c = intermediaryAccount.Id, RecordTypeId = leadAccountRT.Id);
-        insert testAccount;
-        testAccount = [SELECT Intermediary_Name__r.INFOIntermediaryCode__c, RecordTypeId FROM Account Where Id = : testAccount.Id];
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
+        policies[0].Intermediary_Code__c = intermediaryAccount.INFOIntermediaryCode__c;
+        policies[0].IntermediaryId__c = intermediaryAccount.Id;
+        policies[0].InfoCreatedDate__c = Date.today();
+
+        insert policies;
 
         Test.startTest();
-        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(testAccount, null, 'origin', 'language', 'postalCode');
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(accounts.get(0), null, 'origin', 'language', 'postalCode');
+        System.debug(assignee);
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, new List<String>( assignee.keySet() ).get(0), 'No se ha asignado el intermediario esperado');
-
-        Account intermediaryAccountAsignee = assignee.get(intermediary.Id);
-        Assert.isNotNull(intermediaryAccountAsignee, 'No se ha recuperado la cuenta del intermediario');
-        Assert.isNotNull(intermediaryAccountAsignee.INFOIntermediaryCode__c, 'No se ha recuperado el valor del campo');
+        Assert.areEqual(intermediaryAccount.Id, assignee.values()?.get(0)?.Id, 'No se ha asignado el intermediario esperado');
     }
 
     /**

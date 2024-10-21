@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RPA</fullName>
+    <fields>StatusRPA__c</fields>
+    <fields>OfferNumber__c</fields>
+    <fields>ClientTaxID__c</fields>
+    <fields>Activity__c</fields>
+    <fields>BillingPostalCode__c</fields>
+    <fields>BaseTypeOfCalculation__c</fields>
+    <fields>CalculationBase__c</fields>
+    <label>RPA</label>
+</CompactLayout>
