@@ -3667,7 +3667,7 @@ public with sharing class TestDataFactory
         testMunicipalityAssignmentMetadata.add( new LeadAssignmentConfiguration__c(ZIPRanges__c= '{"25999": "0000031570"}', ProvinceCode__c='25', RecordTypeId = rtMunicipalityId) );
         
 
-        //insert testMunicipalityAssignmentMetadata;
+        insert testMunicipalityAssignmentMetadata;
 
         //PROVINCE ASSIGNMENT
         List<LeadAssignmentConfiguration__c> testProvinceAssignmentMetadata = new List<LeadAssignmentConfiguration__c>();
@@ -3677,4 +3677,6 @@ public with sharing class TestDataFactory
 
         insert testProvinceAssignmentMetadata;
     }
+
+
 }
