@@ -5,7 +5,7 @@
     <columns>AssignTo__c</columns>
     <columns>AssignmentType__c</columns>
     <columns>ForumOrigin__c</columns>
-    <filterScope>Mine</filterScope>
+    <filterScope>Everything</filterScope>
     <filters>
         <field>RECORDTYPE</field>
         <operation>equals</operation>

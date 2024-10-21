@@ -5,7 +5,7 @@
     <columns>AssignTo__c</columns>
     <columns>PostalCode__c</columns>
     <columns>Province__c</columns>
-    <filterScope>Mine</filterScope>
+    <filterScope>Everything</filterScope>
     <filters>
         <field>RECORDTYPE</field>
         <operation>equals</operation>
