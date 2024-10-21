@@ -3636,10 +3636,10 @@ public with sharing class TestDataFactory
     public static void insertAccountLeadAssignmentCriterias()
     {
 
-        String rtForumOriginId = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('ForumOriginAssignment')?.getRecordTypeId();
-        String rtLanguageId = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('LanguageAssignment')?.getRecordTypeId();
+        String rtForumOriginId  = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('ForumOriginAssignment')?.getRecordTypeId();
+        String rtLanguageId     = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('LanguageAssignment')?.getRecordTypeId();
         String rtMunicipalityId = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('MunicipalityAssignment')?.getRecordTypeId();
-        String rtProvinceId = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('ProvinceAssignment')?.getRecordTypeId();
+        String rtProvinceId     = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('ProvinceAssignment')?.getRecordTypeId();
         
         //LANGUAGE
         List<LeadAssignmentConfiguration__c> testLanguageAssignmentMetadata = new List<LeadAssignmentConfiguration__c>();
@@ -3677,5 +3677,4 @@ public with sharing class TestDataFactory
 
         insert testProvinceAssignmentMetadata;
     }
-
 }

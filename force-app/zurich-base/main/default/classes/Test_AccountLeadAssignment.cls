@@ -867,10 +867,6 @@ public with sharing class Test_AccountLeadAssignment
 
         // Llamar al método que accede a provinceAssignmentMetadata
         List<LeadAssignmentConfiguration__c> assignments = AccountLeadAssignment.provinceAssignmentMetadata;
-
-        // Asegurarse de que la propiedad no sigue siendo nula después de la llamada
-        //Assert.areNotEqual(null, AccountLeadAssignment.provinceAssignmentMetadata,'Se espera un valor nulo: ' + AccountLeadAssignment.provinceAssignmentMetadata);
-
         Test.stopTest();
     }
 }
