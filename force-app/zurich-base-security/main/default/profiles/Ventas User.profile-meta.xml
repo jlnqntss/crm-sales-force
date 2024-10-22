@@ -5190,6 +5190,22 @@
     <layoutAssignments>
         <layout>WebServicesControl__mdt-Formato WebServicesControl</layout>
     </layoutAssignments>
+    <layoutAssignments>
+        <layout>LeadAssignmentConfiguration__c-Lead Forum Origin Assignment Configuration Layout</layout>
+        <recordType>LeadAssignmentConfiguration__c.ForumOriginAssignment</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>LeadAssignmentConfiguration__c-Lead Language Assignment Configuration Layout</layout>
+        <recordType>LeadAssignmentConfiguration__c.LanguageAssignment</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>LeadAssignmentConfiguration__c-Lead Municipality Assignment Configuration Layout</layout>
+        <recordType>LeadAssignmentConfiguration__c.MunicipalityAssignment</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>LeadAssignmentConfiguration__c-Lead Province Assignment Configuration Layout</layout>
+        <recordType>LeadAssignmentConfiguration__c.ProvinceAssignment</recordType>
+    </layoutAssignments>
     <loginIpRanges>
         <endAddress>255.255.255.254</endAddress>
         <startAddress>1.1.1.1</startAddress>
