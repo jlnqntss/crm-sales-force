@@ -25,6 +25,11 @@
         <default>false</default>
         <label>Administración</label>
     </customValue>
+    <customValue>
+        <fullName>Genérica</fullName>
+        <default>false</default>
+        <label>Genérica</label>
+    </customValue>
     <masterLabel>Equipo Enrutamiento</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
