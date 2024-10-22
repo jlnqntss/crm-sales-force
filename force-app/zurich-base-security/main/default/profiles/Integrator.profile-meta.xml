@@ -11068,9 +11068,9 @@
         <tab>Objetivos</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
-    <tabSettings>
+    <tabVisibilities>
         <tab>LeadAssignmentConfiguration__c</tab>
         <visibility>Visible</visibility>
-    </tabSettings>
+    </tabVisibilities>
     <userLicense>Salesforce</userLicense>
 </Profile>
