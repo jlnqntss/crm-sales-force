@@ -109,6 +109,11 @@
                 <default>false</default>
                 <label>Support</label>
             </value>
+            <value>
+                <fullName>SAM</fullName>
+                <default>false</default>
+                <label>SAM</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Pendiente</controllingFieldValue>
@@ -185,6 +190,10 @@
         <valueSettings>
             <controllingFieldValue>Pendiente</controllingFieldValue>
             <valueName>Support</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pendiente</controllingFieldValue>
+            <valueName>SAM</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

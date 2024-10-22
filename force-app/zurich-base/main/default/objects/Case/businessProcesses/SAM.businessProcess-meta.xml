@@ -15,8 +15,4 @@
         <fullName>Pendiente</fullName>
         <default>false</default>
     </values>
-    <values>
-        <fullName>Respondido</fullName>
-        <default>false</default>
-    </values>
 </BusinessProcess>
