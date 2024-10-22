@@ -183,14 +183,6 @@
                 <field>Segment_sdm__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Segmento_Expats_Auto__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Segmento_Expats_Hogar__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Category__c</field>
             </layoutItems>
@@ -267,10 +259,6 @@
                 <behavior>Edit</behavior>
                 <field>EmailCommunications__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>RecertificationEmail__c</field>
-            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -292,6 +280,8 @@
                 <behavior>Readonly</behavior>
                 <field>EIACStatus__c</field>
             </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Alta_CIMA__c</field>
@@ -299,28 +289,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>NumberCompetingCompanies__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ZRMAccess__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ZVGOAccess__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>DownloadAccess__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ZurichZoneAccess__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>MaxPermission__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>

@@ -2126,6 +2126,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.ExpatsSegment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.IsAccountZDA__c</field>
         <readable>true</readable>
     </fieldPermissions>
