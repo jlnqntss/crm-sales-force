@@ -8,7 +8,7 @@
     <filters>
         <field>RECORDTYPE</field>
         <operation>equals</operation>
-        <value>LeadAssignmentConfiguration__c.MunicMunicipalityAssignmentipalityAssignment</value>
+        <value>LeadAssignmentConfiguration__c.MunicipalityAssignment </value>
     </filters>
     <label>Municipality Assignment</label>
 </ListView>
