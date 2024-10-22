@@ -8,7 +8,7 @@
         <plural>true</plural>
         <value>Leads Assignment Configurations</value>
     </caseValues>
-    <gender>Neuter</gender>
+    <gender>Feminine</gender>
     <layouts>
         <layout>Lead Assignment Configuration Layout</layout>
         <sections>
