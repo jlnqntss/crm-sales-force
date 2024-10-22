@@ -37,13 +37,6 @@
             <section>Custom Links</section>
         </sections>
     </layouts>
-    <layouts>
-        <layout>Lead Province Assignment Configuration Layout</layout>
-        <sections>
-            <label><!-- Custom Links --></label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
     <recordTypes>
         <label><!-- ForumOriginAssignment --></label>
         <name>ForumOriginAssignment</name>

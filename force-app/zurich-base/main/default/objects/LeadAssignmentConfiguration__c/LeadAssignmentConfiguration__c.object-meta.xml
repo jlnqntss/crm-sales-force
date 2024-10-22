@@ -175,6 +175,10 @@
         <excludedStandardButtons>MassChangeOwner</excludedStandardButtons>
         <excludedStandardButtons>PrintableListView</excludedStandardButtons>
         <excludedStandardButtons>MassAssignRecordLabel</excludedStandardButtons>
+        <searchResultsFields>ActionName__c</searchResultsFields>
+        <searchResultsFields>Type__c</searchResultsFields>
+        <searchResultsFields>Property__c</searchResultsFields>
+        <searchResultsFields>Value__c</searchResultsFields>
         <searchResultsAdditionalFields>ActionName__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields xsi:nil></searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Type__c</searchResultsAdditionalFields>
