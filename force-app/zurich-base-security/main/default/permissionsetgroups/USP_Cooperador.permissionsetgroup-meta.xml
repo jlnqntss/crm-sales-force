@@ -8,5 +8,6 @@
     <permissionSets>Gestion_Suscripcion</permissionSets>
     <permissionSets>Informes_solo_lectura</permissionSets>
     <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
+    <permissionSets>ViewUsersAvailabilityCalculator</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
