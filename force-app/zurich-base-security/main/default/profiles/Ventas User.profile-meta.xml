@@ -12125,7 +12125,7 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>LeadAssignmentConfiguration__c-Lead Municipality Assignment Configuration Layout</layout>
-        <recordType>LeadAssignmentConfiguration__c.MunicMunicipalityAssignmentipalityAssignment</recordType>
+        <recordType>LeadAssignmentConfiguration__c.MunicipalityAssignment</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>LeadAssignmentConfiguration__c-Lead Province Assignment Configuration Layout</layout>
