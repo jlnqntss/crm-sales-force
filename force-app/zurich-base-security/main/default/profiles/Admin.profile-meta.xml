@@ -4679,6 +4679,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Recertification2024__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.RegistryDGS__c</field>
         <readable>true</readable>
     </fieldPermissions>

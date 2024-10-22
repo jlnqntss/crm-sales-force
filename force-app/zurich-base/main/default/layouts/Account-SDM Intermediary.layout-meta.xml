@@ -283,6 +283,10 @@
                 <behavior>Edit</behavior>
                 <field>ZRMPermisionDecission__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Recertification2024__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>

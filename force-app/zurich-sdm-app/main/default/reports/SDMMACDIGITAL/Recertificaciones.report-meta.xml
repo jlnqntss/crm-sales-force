@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
     <columns>
+        <field>Account.INFOIntermediaryCode__c</field>
+    </columns>
+    <columns>
         <field>ACCOUNT.NAME</field>
     </columns>
     <columns>
@@ -8,27 +11,6 @@
     </columns>
     <columns>
         <field>Account.RecertificationEmail__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>Account.ZRMAccess__c</field>
-    </columns>
-    <columns>
-        <field>Account.ZRMDecission__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>Account.ZVGOAccess__c</field>
-    </columns>
-    <columns>
-        <field>Account.ZVGODecission__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>Account.DownloadAccess__c</field>
-    </columns>
-    <columns>
-        <field>Account.DownloadDecission__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -42,6 +24,36 @@
     </columns>
     <columns>
         <field>Account.MaxPermissionDecission__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.DownloadAccess__c</field>
+    </columns>
+    <columns>
+        <field>Account.DownloadDecission__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.ZVGOAccess__c</field>
+    </columns>
+    <columns>
+        <field>Account.ZVGODecission__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.ZRMAccess__c</field>
+    </columns>
+    <columns>
+        <field>Account.ZRMDecission__c</field>
+    </columns>
+    <columns>
+        <field>Account.ZRMPermission__c</field>
+    </columns>
+    <columns>
+        <field>Account.ZRMPermisionDecission__c</field>
+    </columns>
+    <columns>
+        <field>Account.Recertification2024__c</field>
     </columns>
     <filter>
         <criteriaItems>
