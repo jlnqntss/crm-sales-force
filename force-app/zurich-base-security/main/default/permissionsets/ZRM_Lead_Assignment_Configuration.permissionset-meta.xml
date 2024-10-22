@@ -18,11 +18,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>LeadAssignmentConfiguration__c.FormFactor__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>LeadAssignmentConfiguration__c.ForumOrigin__c</field>
         <readable>true</readable>
     </fieldPermissions>

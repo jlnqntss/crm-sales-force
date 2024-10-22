@@ -175,7 +175,6 @@
         <excludedStandardButtons>PrintableListView</excludedStandardButtons>
         <excludedStandardButtons>MassAssignRecordLabel</excludedStandardButtons>
         <searchResultsAdditionalFields>ActionName__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>FormFactor__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Type__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Property__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Value__c</searchResultsAdditionalFields>

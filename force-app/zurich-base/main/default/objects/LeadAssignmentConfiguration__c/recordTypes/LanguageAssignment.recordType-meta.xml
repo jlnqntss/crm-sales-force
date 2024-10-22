@@ -19,19 +19,4 @@
             <default>false</default>
         </values>
     </picklistValues>
-    <picklistValues>
-        <picklist>FormFactor__c</picklist>
-        <values>
-            <fullName>Direct</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Municipality</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Province</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
 </RecordType>

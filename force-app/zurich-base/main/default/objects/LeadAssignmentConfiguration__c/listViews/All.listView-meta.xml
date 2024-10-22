@@ -4,7 +4,6 @@
     <columns>NAME</columns>
     <columns>AssignTo__c</columns>
     <columns>Language__c</columns>
-    <columns>FormFactor__c</columns>
     <columns>AssignmentType__c</columns>
     <columns>ForumOrigin__c</columns>
     <columns>ProvinceCode__c</columns>
