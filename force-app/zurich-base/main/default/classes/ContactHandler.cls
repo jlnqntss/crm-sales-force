@@ -99,8 +99,6 @@ public without sharing class ContactHandler implements ITrigger
      */
     public void afterDelete(Map<Id, SObject> oldMap)
     {
-        /*List<SObject> processList = TriggerBypassUtility.gdprBypass(newList, oldMap);
-        ContactUtil.SummaryTotalContacts(null, (Map<Id, Contact>) oldMap);*/
         Map<Id, SObject> processMap = new Map<Id, SObject>(TriggerBypassUtility.gdprBypass(oldMap));
         convertedMap = ContactUtil.convertMap (processMap);
         //This conversion has been added due to the error "Invalid conversion from runtime type Map<Id,SObject> to Map<Id, CampaignMember>"
