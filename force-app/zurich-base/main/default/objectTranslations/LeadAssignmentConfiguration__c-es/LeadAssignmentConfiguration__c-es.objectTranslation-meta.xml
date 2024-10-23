@@ -10,27 +10,6 @@
     </caseValues>
     <gender>Feminine</gender>
     <layouts>
-        <layout>Lead Assignment Configuration Layout</layout>
-        <sections>
-            <label><!-- Custom Links --></label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <layouts>
-        <layout>Lead Forum Origin Assignment Configuration Layout</layout>
-        <sections>
-            <label><!-- Custom Links --></label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <layouts>
-        <layout>Lead Language Assignment Configuration Layout</layout>
-        <sections>
-            <label><!-- Custom Links --></label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <layouts>
         <layout>Lead Municipality Assignment Configuration Layout</layout>
         <sections>
             <label><!-- Custom Links --></label>
