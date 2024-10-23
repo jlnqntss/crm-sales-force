@@ -11,7 +11,7 @@
         <chartType>Donut</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>false</expandOthers>
-        <groupingColumn>User.ActiveAgent__c</groupingColumn>
+        <groupingColumn>User.RoutingTeam__c</groupingColumn>
         <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
         <showAxisLabels>true</showAxisLabels>
@@ -44,11 +44,11 @@
 Solo los usuarios activos para el enrutamiento recibirán casos de forma automatizada desde la plataforma CRM.</description>
     <filter>
         <criteriaItems>
-            <column>DEPARTMENT</column>
+            <column>User.ActiveAgent__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>USP</value>
+            <value>1</value>
         </criteriaItems>
         <language>es</language>
     </filter>
@@ -57,11 +57,6 @@ Solo los usuarios activos para el enrutamiento recibirán casos de forma automat
         <dateGranularity>Day</dateGranularity>
         <field>User.RoutingTeam__c</field>
         <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>User.ActiveAgent__c</field>
-        <sortOrder>Desc</sortOrder>
     </groupingsDown>
     <name>Control de reparto de casos</name>
     <params>
