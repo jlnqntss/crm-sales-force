@@ -3,10 +3,18 @@
     <fullName>MandatoryDescriptionWhenSubreasonSveral</fullName>
     <active>false</active>
     <description>La Descripción del Sub-motivo es obligatoria cuando Sub-motivo es Varios.</description>
-    <errorConditionFormula>/*Si el motivo es Varios y no tiene la Descripción rellena*/
-AND(
-    ISPICKVAL( LossSubReason__c , &apos;Several&apos;) ,
-    ISBLANK( LossSubReasonDescription__c )
+    <errorConditionFormula>AND(
+    OR(
+        Blocked__c = False,
+        Anonymized__c = False,
+        NOT(ISCHANGED(Blocked__c)),
+        NOT(ISCHANGED(Anonymized__c))
+    ),
+    /*Si el motivo es Varios y no tiene la Descripción rellena*/
+    AND(
+        ISPICKVAL( LossSubReason__c , &apos;Several&apos;) ,
+        ISBLANK( LossSubReasonDescription__c )
+    )
 )</errorConditionFormula>
     <errorDisplayField>LossSubReasonDescription__c</errorDisplayField>
     <errorMessage>[VR Offer] Es necesario describir el motivo de rechazo cuando el Sub-motivo es &quot;Varios&quot;.</errorMessage>

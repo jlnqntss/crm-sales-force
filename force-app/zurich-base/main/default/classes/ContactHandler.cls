@@ -1,5 +1,13 @@
+/**
+ * @description       : 
+ * @author            : mfernandezcarrera
+ * @group             : 
+ * @last modified on  : 09-20-2024
+ * @last modified by  : mfernandezcarrera
+**/
 public without sharing class ContactHandler implements ITrigger
 {
+    private static Map<Id, Contact> convertedMap;
     public ContactHandler()
     {}
 
@@ -10,6 +18,7 @@ public without sharing class ContactHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkBefore(List<SObject> newList, Map<Id, SObject> oldMap)
+    //If any process is added it must be added before -> Map<Id, SObject> processMap =  TriggerBypassUtility.gdprBypass();
     {}
 
     /**
@@ -19,6 +28,7 @@ public without sharing class ContactHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
+    //If any process is added it must be added before -> Map<Id, SObject> processMap =  TriggerBypassUtility.gdprBypass();
     {}
 
     /**
@@ -28,6 +38,7 @@ public without sharing class ContactHandler implements ITrigger
      * trigger. Never execute any SOQL/SOSL etc in this and other iterative methods.
      */
     public void beforeInsert(List<SObject> newList)
+    //If any process is added it must be added before -> Map<Id, SObject> processMap =  TriggerBypassUtility.gdprBypass();
     {}
 
     /**
@@ -37,6 +48,7 @@ public without sharing class ContactHandler implements ITrigger
      * trigger.
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
+    //If any process is added it must be added before -> Map<Id, SObject> processMap =  TriggerBypassUtility.gdprBypass();
     {}
 
     /**
@@ -46,6 +58,7 @@ public without sharing class ContactHandler implements ITrigger
      * trigger.
      */
     public void beforeDelete(Map<Id, SObject> oldMap)
+    //If any process is added it must be added before -> Map<Id, SObject> processMap =  TriggerBypassUtility.gdprBypass();
     {}
 
     /**
@@ -57,8 +70,9 @@ public without sharing class ContactHandler implements ITrigger
      */
     public void afterInsert(List<SObject> newList)
     {
-        ContactUtil.SummaryTotalContacts( (List<Contact>) newList, null );
-        ContactUtil.generateHashContactId( (List<Contact>) newList, null );
+        List<SObject> processList = TriggerBypassUtility.gdprBypass(newList);
+        ContactUtil.SummaryTotalContacts( (List<Contact>) processList, null );
+        ContactUtil.generateHashContactId( (List<Contact>) processList, null );
     }
 
     /**
@@ -69,8 +83,10 @@ public without sharing class ContactHandler implements ITrigger
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
+
+        List<SObject> processList = TriggerBypassUtility.gdprBypass(newList, oldMap);
         ContactUtil.updateQuoteStep4and5(
-            (List<Contact>) newList,
+            (List<Contact>) processList,
             (Map<Id, Contact>) oldMap
             );
     }
@@ -83,7 +99,11 @@ public without sharing class ContactHandler implements ITrigger
      */
     public void afterDelete(Map<Id, SObject> oldMap)
     {
-        ContactUtil.SummaryTotalContacts(null, (Map<Id, Contact>) oldMap);
+        Map<Id, SObject> processMap = new Map<Id, SObject>(TriggerBypassUtility.gdprBypass(oldMap));
+        convertedMap = ContactUtil.convertMap (processMap);
+        //This conversion has been added due to the error "Invalid conversion from runtime type Map<Id,SObject> to Map<Id, CampaignMember>"
+        ContactUtil.SummaryTotalContacts(null, convertedMap);
+
     }
 
     /**
@@ -93,5 +113,6 @@ public without sharing class ContactHandler implements ITrigger
      * method to accomplish any final operations such as creation or updates of other records.
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
+    //If any process is added it must be added before -> Map<Id, SObject> processMap =  TriggerBypassUtility.gdprBypass();
     {}
 }
