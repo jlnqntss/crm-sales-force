@@ -5073,6 +5073,10 @@
         <layout>Opportunity-Agente zrm</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Opportunity-Offer Vida</layout>
+        <recordType>Opportunity.Life</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>OpportunityLineItem-Opportunity Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
