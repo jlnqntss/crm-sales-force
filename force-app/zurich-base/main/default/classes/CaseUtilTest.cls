@@ -2,8 +2,8 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 08-03-2024
- * @last modified by  : aberuete
+ * @last modified on  : 10-21-2024
+ * @last modified by  : mfernandezcarrera
  **/
 @isTest
 private with sharing class CaseUtilTest
@@ -2088,7 +2088,7 @@ private with sharing class CaseUtilTest
             // Se ha creado una nueva VR para casos de retención de ZRM que hace necesario rellenar ciertos campos de póliza con valores concretos.
             policy.MovementStartDate__c = System.today().addDays(10);
             policy.MovementReasonCode__c = '581'; 
-            policy.MovementReason__c = '4581'; 
+            policy.MovementReason__c = GlobalConfigUtil.getGlobalConfigurationValue('Policy_MovementReason_4581');
             policy.MovementType__c = '4';
         }
 
