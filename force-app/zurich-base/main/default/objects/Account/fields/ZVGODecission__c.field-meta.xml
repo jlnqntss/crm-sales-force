@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZVGODecission__c</fullName>
+    <description>Campo en el que los usuarios pueden indicar si la cuenta debe mantener o no el acceso a ZVGO</description>
+    <externalId>false</externalId>
+    <label>Decisión ZVGO</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Mantener</fullName>
+                <default>false</default>
+                <label>Mantener</label>
+            </value>
+            <value>
+                <fullName>Retirar</fullName>
+                <default>false</default>
+                <label>Retirar</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
