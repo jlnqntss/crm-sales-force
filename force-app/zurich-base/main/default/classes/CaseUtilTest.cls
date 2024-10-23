@@ -556,6 +556,41 @@ private with sharing class CaseUtilTest
     }
 
     /**
+     * Se comprueba que el metodo extractFieldsFromZDABody funciona correctamente. Para ello:
+     * - Crea un caso de tipo ZDA (origen CanalUnico) con descripcion que contenga campos a extraer
+     * - Se compara que los campos extraíbles se informan y los demás quedan vacíos
+     * @author jfherrero
+     * @date 22/10/2024
+     */
+    @isTest
+    private static void test_extractFieldsFromZDABody()
+    {
+        List<Case> zdaCasesList = TestDataFactory.generateZDACases(1);
+
+        //Caso a formatear
+        Case newZDACaseToFormat = zdaCasesList[0];
+        newZDACaseToFormat.Description = 'Usuario: NOMBRE APELLIDO1 APELLIDO2;;Correo electrónico: USUARIO@bancsabadell.com;;Unidad de trabajo: 0086;;¿Se trata de un caso de campaña?: Si;;';
+        newZDACaseToFormat.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
+
+        String workUnitString = '0086';
+        boolean campaignCase = true;
+
+        List<Case> casesToInsert = new List<Case>();
+        casesToInsert.addAll(zdaCasesList);
+
+        Test.startTest();
+        insert casesToInsert;
+        Test.stopTest();
+
+        List<Case> casesToCompare = [SELECT Subject, Description, WorkUnit__c, CancellationReason__c, IsCampaignCase__c
+                                    FROM Case WHERE Id IN : casesToInsert];
+
+        Assert.areEqual(workUnitString, casesToCompare[0].WorkUnit__c, 'No coincide la Unidad de trabajo');
+        Assert.areEqual(null, casesToCompare[0].CancellationReason__c, 'No coincide el motivo de cancelación');
+        Assert.areEqual(campaignCase, casesToCompare[0].IsCampaignCase__c, 'No coincide ¿Es caso de campaña?');
+    }
+
+    /**
      * Se comprueba que el metodo applyFormatToZDABody funciona correctamente. Para ello:
      * - Crea un caso de tipo ZDA (origen CanalUnico) con descripcion formateable. DEBE APLICAR FORMATO
      * - Crea un caso de tipo ZDA (origen CanalUnico) con sin ;;. NO DEBE HABER CAMBIOS
