@@ -6,12 +6,12 @@ public with sharing class GetRecordsExportButton
         description = 'A partir de este botón se pueden exportar desde una vista de lista los registros que hayan sido seleccionados por el usuario'
      )
 
-     public static void GetRecordsExportButton(List<List<String>> flowInputs)
+     public static void getRecordsExportButton(List<List<String>> flowInputs)
     {
-        GetRecordExport(flowInputs[0]);
+        getRecordExport(flowInputs[0]);
     }
 
-     public static ContentVersion GetRecordExport(List<String> flowInputs)
+     public static ContentVersion getRecordExport(List<String> flowInputs)
     {
         String infoRecordsDisplay, fieldsQuery;
         Id idObjetToExport = (Id) flowInputs[0]; 
