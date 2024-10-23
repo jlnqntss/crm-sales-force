@@ -97,6 +97,10 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>EstimatedDate__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>EffectiveDate__c</field>
             </layoutItems>
             <layoutItems>

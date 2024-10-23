@@ -293,10 +293,7 @@
         <field>Account.LifeSpecialist__c</field>
     </columns>
     <columns>
-        <field>Account.Segmento_Expats_Auto__c</field>
-    </columns>
-    <columns>
-        <field>Account.Segmento_Expats_Hogar__c</field>
+        <field>Account.ExpatsSegment__c</field>
     </columns>
     <crossFilters>
         <operation>with</operation>

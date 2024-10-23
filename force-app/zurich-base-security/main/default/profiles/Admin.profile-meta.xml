@@ -996,6 +996,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.ExpatsSegment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.IsAccountZDA__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1357,6 +1362,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.DownloadAccess__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.DownloadDecission__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1771,6 +1781,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Recertification2024__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.RegistryDGS__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1966,12 +1981,37 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.ZRMDecission__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ZRMPermission__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ZRMPermisionDecission__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.ZurichZoneAccess__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.ZurichZoneDecission__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.ZVGOAccess__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ZVGODecission__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2272,6 +2312,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.MaxPermission__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.MaxPermissionDecission__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7519,6 +7564,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.EstimatedDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.ExpectedRevenue</field>
         <readable>true</readable>
@@ -9706,6 +9756,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>User.ReturnDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.RoutingTeam__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

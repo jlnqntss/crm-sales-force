@@ -412,6 +412,11 @@
         <name>NewOffer</name>
     </quickActions>
     <quickActions>
+        <aspect>Master</aspect>
+        <label>Nueva Oferta Vida</label>
+        <name>NewOfferLife</name>
+    </quickActions>
+    <quickActions>
         <label></label>
         <name>Recordatorio2</name>
     </quickActions>
