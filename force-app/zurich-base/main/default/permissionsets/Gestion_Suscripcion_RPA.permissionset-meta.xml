@@ -408,7 +408,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>RPAProposal__c.CommentsSubscriber__c</field>
         <readable>true</readable>
     </fieldPermissions>
