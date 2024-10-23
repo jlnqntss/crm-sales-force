@@ -395,7 +395,7 @@
         <customLabel>true</customLabel>
         <detailHeading>false</detailHeading>
         <editHeading>false</editHeading>
-        <label>Dirección</label>
+        <label>Address</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -408,7 +408,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>System information</label>
+        <label>System Information</label>
         <layoutColumns/>
         <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>
