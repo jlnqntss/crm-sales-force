@@ -3628,6 +3628,6 @@ public with sharing class TestDataFactory
         ventaCruzada.DefaultUser__c = 'adminkli';
 
         insert ventaCruzada;
-    } 
+    }
 
 }
