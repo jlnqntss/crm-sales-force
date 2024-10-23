@@ -1498,7 +1498,7 @@
         <editable>true</editable>
         <field>RPAProposal__c.WorkplaceAccidentsLimitPerVictim__c</field>
         <readable>true</readable>
-	 </fieldPermissions>   
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Cartera_2021__c</field>
@@ -3942,11 +3942,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.RPAProposal__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.RPAStatusF__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
