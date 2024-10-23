@@ -133,9 +133,6 @@ public class OpportunityHandler implements ITrigger
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
     {
-        if(oldMap != null){
-            List<SObject> processList = TriggerBypassUtility.gdprBypass(oldMap);
-        }	
         OpportunityUtil.updateAccountsToMarkAccountZDA();
     }
 }
