@@ -12764,7 +12764,7 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>LeadAssignmentConfiguration__c</tab>
-        <visibility>Visible</visibility>
+        <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <userLicense>Salesforce</userLicense>
 </Profile>
