@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>Administration</masterLabel>
+        <translation>Administración</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Construction</masterLabel>
+        <translation>Construcción</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Generic</masterLabel>
+        <translation>Genérica</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>NB Damages RC</masterLabel>
+        <translation>NB Daños RC</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Portfolio</masterLabel>
+        <translation>Cartera</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Specialties</masterLabel>
+        <translation>Specialties</translation>
+    </valueTranslation>
+</GlobalValueSetTranslation>
