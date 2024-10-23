@@ -4,11 +4,20 @@
     <active>true</active>
     <description>[VR Offer] El código de oferta debe ser numérico</description>
     <errorConditionFormula>AND(
-  AND (
-     NOT(ISNUMBER(   InfoQuoteNumber__c  ))
-     , NOT (ISBLANK ( InfoQuoteNumber__c ))
-  ),
-  $Profile.Name = &apos;ZE User&apos;)</errorConditionFormula>
+    OR(
+        Blocked__c = False,
+        Anonymized__c = False,
+        NOT(ISCHANGED(Blocked__c)),
+        NOT(ISCHANGED(Anonymized__c))
+    ),
+    AND(
+        AND(
+            NOT(ISNUMBER(   InfoQuoteNumber__c  )),
+            NOT (ISBLANK ( InfoQuoteNumber__c ))
+        ),
+        $Profile.Name = &apos;ZE User&apos;
+    )
+)</errorConditionFormula>
     <errorDisplayField>InfoQuoteNumber__c</errorDisplayField>
     <errorMessage>[VR Offer] El código de oferta debe ser numérico</errorMessage>
 </ValidationRule>

@@ -4,8 +4,16 @@
     <active>true</active>
     <description>Validación que no permite modificar el checkbox “Pendiente Información Cliente” en etapas diferentes a “Quoted”</description>
     <errorConditionFormula>AND(
-   ISCHANGED(PendingClientInformation__c),
-   NOT( ISPICKVAL(StageName, &apos;Quoted&apos;) )
+    OR(
+        Blocked__c = False,
+        Anonymized__c = False,
+        NOT(ISCHANGED(Blocked__c)),
+        NOT(ISCHANGED(Anonymized__c))
+    ),
+    AND(
+        ISCHANGED(PendingClientInformation__c),
+        NOT( ISPICKVAL(StageName, &apos;Quoted&apos;) )
+    )
 )</errorConditionFormula>
     <errorDisplayField>PendingClientInformation__c</errorDisplayField>
     <errorMessage>[VR Oferta] No se puede modificar el campo Pendiente Información Cliente fuera de la etapa Quoted</errorMessage>

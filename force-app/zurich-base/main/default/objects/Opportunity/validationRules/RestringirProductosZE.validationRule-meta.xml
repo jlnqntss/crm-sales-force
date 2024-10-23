@@ -4,28 +4,39 @@
     <active>true</active>
     <description>Los usuarios con perfil ZE User no podrán seleccionar productos no pertenecientes a ZE</description>
     <errorConditionFormula>AND(
-$Profile.Name = &apos;ZE User&apos;,NOT(
-OR(
-ProductId__r.INFO_Product_Number__c = &quot;00800-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00215-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00541-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00215-00003&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00847-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00886-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00845-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00674-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00483-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00481-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00526-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00516-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00515-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00721-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00504-00002&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00849-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00255-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00450-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00846-00001&quot;
-)))</errorConditionFormula>
+    OR(
+        Blocked__c = False,
+        Anonymized__c = False,
+        NOT(ISCHANGED(Blocked__c)),
+        NOT(ISCHANGED(Anonymized__c))
+    ),
+    AND(
+        $Profile.Name = &apos;ZE User&apos;,
+        NOT(
+            OR(
+                ProductId__r.INFO_Product_Number__c = &quot;00800-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00215-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00541-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00215-00003&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00847-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00886-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00845-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00674-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00483-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00481-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00526-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00516-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00515-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00721-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00504-00002&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00849-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00255-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00450-00001&quot;,
+                ProductId__r.INFO_Product_Number__c = &quot;00846-00001&quot;
+            )
+        )
+    )
+)</errorConditionFormula>
     <errorDisplayField>ProductId__c</errorDisplayField>
     <errorMessage>[VR Offer] Su perfil no permite la selección de este producto</errorMessage>
 </ValidationRule>
