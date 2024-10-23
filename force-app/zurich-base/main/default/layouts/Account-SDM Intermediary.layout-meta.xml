@@ -124,12 +124,8 @@
                 <field>LifeSegment__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Segmento_Expats_Auto__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Segmento_Expats_Hogar__c</field>
+                <behavior>Edit</behavior>
+                <field>ExpatsSegment__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

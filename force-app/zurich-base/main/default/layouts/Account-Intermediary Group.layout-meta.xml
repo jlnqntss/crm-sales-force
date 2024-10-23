@@ -183,14 +183,6 @@
                 <field>Segment_sdm__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Segmento_Expats_Auto__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Segmento_Expats_Hogar__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Category__c</field>
             </layoutItems>
