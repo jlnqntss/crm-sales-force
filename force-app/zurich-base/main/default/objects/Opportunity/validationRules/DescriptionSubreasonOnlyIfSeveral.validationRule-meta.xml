@@ -3,10 +3,18 @@
     <fullName>DescriptionSubreasonOnlyIfSeveral</fullName>
     <active>false</active>
     <description>No es posible rellenar la descripción de submotivo a menos que la razón sea “Varios”.</description>
-    <errorConditionFormula>/*Si la Descripción esta rellena y el Motivo no es varios*/
-AND(
-    !ISBLANK( LossSubReasonDescription__c ) ,    
-    !ISPICKVAL( LossSubReason__c , &apos;Several&apos;)
+    <errorConditionFormula>AND(
+    OR(
+        Blocked__c = False,
+        Anonymized__c = False,
+        NOT(ISCHANGED(Blocked__c)),
+        NOT(ISCHANGED(Anonymized__c))
+     ),
+     /*Si la Descripción esta rellena y el Motivo no es varios*/
+    AND(
+        !ISBLANK( LossSubReasonDescription__c ) ,    
+        !ISPICKVAL( LossSubReason__c , &apos;Several&apos;)
+    )
 )</errorConditionFormula>
     <errorDisplayField>LossSubReasonDescription__c</errorDisplayField>
     <errorMessage>[VR Offer] Solo puede escribir en el campo de Descripción de Sub-motivo si el Sub-motivo es &quot;Varios&quot;.</errorMessage>

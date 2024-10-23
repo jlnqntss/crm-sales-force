@@ -3,12 +3,20 @@
     <fullName>QuoteLineNumberWhenQuoted</fullName>
     <active>true</active>
     <description>[VR Oferta] Número de oferta vida es obligatorio cuando sea Quoted</description>
-    <errorConditionFormula>ISPICKVAL(StageName,&quot;Quoted&quot;) &amp;&amp;
-ISBLANK(QuoteLifeNumber__c)&amp;&amp;  
-RecordType.DeveloperName = &apos;Life&apos; &amp;&amp;
-$Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
-$Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
-$Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos;</errorConditionFormula>
+    <errorConditionFormula>AND(
+    OR(
+        Blocked__c = False,
+        Anonymized__c = False,
+        NOT(ISCHANGED(Blocked__c)),
+        NOT(ISCHANGED(Anonymized__c))
+    ),
+    ISPICKVAL(StageName,&quot;Quoted&quot;) &amp;&amp;
+    ISBLANK(QuoteLifeNumber__c)&amp;&amp;  
+    RecordType.DeveloperName = &apos;Life&apos; &amp;&amp;
+    $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
+    $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
+    $Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos;
+)</errorConditionFormula>
     <errorDisplayField>QuoteLifeNumber__c</errorDisplayField>
     <errorMessage>[VR Oferta] Número de oferta vida es obligatorio cuando sea Quoted</errorMessage>
 </ValidationRule>
