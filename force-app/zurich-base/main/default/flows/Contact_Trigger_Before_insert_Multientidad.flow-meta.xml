@@ -18,7 +18,7 @@
         <name>AccountTypeDecision</name>
         <label>¿Tipo de cuenta?</label>
         <locationX>182</locationX>
-        <locationY>311</locationY>
+        <locationY>287</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>IntermediaryOrPartnerOcsAccountOutcome</name>
@@ -44,6 +44,7 @@
         </rules>
     </decisions>
     <description>Flow que asigna al campo &quot;Legal Entity&quot; el valor Multientidad (999) siempre que se cree un contacto de una cuenta Intermediaria o Partner OCS</description>
+    <environments>Default</environments>
     <interviewLabel>Contact Trigger - Before insert - Multientidad {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Contact Trigger - Before insert - Multientidad</label>
     <processMetadataValues>
@@ -71,6 +72,21 @@
         <connector>
             <targetReference>AccountTypeDecision</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Blocked__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Anonymized__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
         <object>Contact</object>
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>

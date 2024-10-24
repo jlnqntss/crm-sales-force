@@ -12,10 +12,16 @@ public class OpportunityHandler implements ITrigger
      */
     public void bulkBefore(List<SObject> newList, Map<Id, SObject> oldMap)
     {
+        List<SObject> processList;
+        if(newList!=null){
+            processList = TriggerBypassUtility.gdprBypass(newList);
+        }else{
+            processList = newList;
+        }
         // arcortazar - 11/03/2022: ZE-1327, cargamos un listado de perfiles que tienen permitido efectuar modificaciones en las ofertas cerradas ganadas
         OpportunityUtil.initMapOfProfiles();
         // jfherrero - 21/09/2023: CV-458, cargamos un mapa de Accounts con sus record types para informar un campo en las ofertas creadas
-        OpportunityUtil.initMapOfAccountRecordTypes(newList);
+        OpportunityUtil.initMapOfAccountRecordTypes(processList);
         if ( oldMap != null && !oldMap.isEmpty() )
         {
             OpportunityUtil.initMapOfAccountRecordTypesTriggerOld( oldMap.values() );
@@ -34,7 +40,8 @@ public class OpportunityHandler implements ITrigger
     {
         if (Trigger.isInsert || Trigger.isUpdate)
         {
-            OpportunityUtil.getAccountsZDA((List<Opportunity>) newList);
+            List<SObject> processList = TriggerBypassUtility.gdprBypass(newList); //Al pasar OldMap genera error
+            OpportunityUtil.getAccountsZDA((List<Opportunity>) processList);
         }
     }
 
@@ -46,9 +53,10 @@ public class OpportunityHandler implements ITrigger
      */
     public void beforeInsert(List<SObject> newList)
     {
-        OpportunityUtil.setStageNameOpen(newList);
-        OpportunityUtil.setSalesProcess(newList);
-        OpportunityUtil.identifyPotentialMatches(newList);
+        List<SObject> processList = TriggerBypassUtility.gdprBypass(newList);
+        OpportunityUtil.setStageNameOpen(processList);
+        OpportunityUtil.setSalesProcess(processList);
+        OpportunityUtil.identifyPotentialMatches(processList);
     }
 
     /**
@@ -59,16 +67,18 @@ public class OpportunityHandler implements ITrigger
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
-        OpportunityUtil.preventNullUpdates( (List<Opportunity>) newList, (Map<Id, Opportunity>) oldMap );
-        OpportunityUtil.detectOpportunityAccountChange( (List<Opportunity>) newList, (Map<Id, Opportunity>) oldMap );
+        List<SObject> processList = TriggerBypassUtility.gdprBypass(newList, oldMap);
+        
+        OpportunityUtil.preventNullUpdates( (List<Opportunity>) processList, (Map<Id, Opportunity>) oldMap );
+        OpportunityUtil.detectOpportunityAccountChange( (List<Opportunity>) processList, (Map<Id, Opportunity>) oldMap );
 
         // fpalomo - 08/04/2024 - Nuevo método "handleAccountOrIntermediaryChange" para rellenar los campos solicitados en CV-2058
-        OpportunityUtil.handleAccountOrIntermediaryChange( (List<Opportunity>) newList, (Map<Id, Opportunity>) oldMap );
+        OpportunityUtil.handleAccountOrIntermediaryChange( (List<Opportunity>) processList, (Map<Id, Opportunity>) oldMap );
 
         // arcortazar - 09/03/2022: Validamos si puede llevarse a cabo el cambio que se presenta
-        OpportunityUtil.validateOfferStage( (List<Opportunity>) newList, (Map<Id, Opportunity>) oldMap );
+        OpportunityUtil.validateOfferStage( (List<Opportunity>) processList, (Map<Id, Opportunity>) oldMap );
         // jpereztirado - 23/12/2022: Validamos que el Old Owner y New Owner no sean ambos ZE Advisors
-        OpportunityUtil.validateChangeOwner( (List<Opportunity>) newList, (Map<Id, Opportunity>) oldMap );
+        OpportunityUtil.validateChangeOwner( (List<Opportunity>) processList, (Map<Id, Opportunity>) oldMap );
     }
 
     /**
@@ -89,8 +99,9 @@ public class OpportunityHandler implements ITrigger
      */
     public void afterInsert(List<SObject> newList)
     {
-        OpportunityUtil.generateScope(newList);
-        OpportunityUtil.zrmVisibilityNewOffer(newList);
+        List<SObject> processList = TriggerBypassUtility.gdprBypass(newList);
+        OpportunityUtil.generateScope(processList);
+        OpportunityUtil.zrmVisibilityNewOffer(processList);
     }
 
     /**
@@ -101,7 +112,8 @@ public class OpportunityHandler implements ITrigger
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
-        OpportunityUtil.generateScope(newList);
+        List<SObject> processList = TriggerBypassUtility.gdprBypass(newList, oldMap);
+        OpportunityUtil.generateScope(processList);
     }
 
     /**

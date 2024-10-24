@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ForumOriginAssignmentCompactLayout</fullName>
+    <fields>AssignmentType__c</fields>
+    <fields>AssignTo__c</fields>
+    <fields>ForumOrigin__c</fields>
+    <label>Forum Origin Assignment Compact Layout</label>
+</CompactLayout>

@@ -45,7 +45,10 @@
             <label>Update Offer</label>
         </rules>
     </decisions>
-    <description>Se mueve la actualización de ramo al nuevo flujo before insert/update de oferta Offer Trigger - After Insert/Update - Product Branch</description>
+    <description>V5
+GDPR Bypass
+V4
+Se mueve la actualización de ramo al nuevo flujo before insert/update de oferta Offer Trigger - After Insert/Update - Product Branch</description>
     <environments>Default</environments>
     <formulas>
         <description>Recortar los 100 primeros caracteres del campo Product.Description que se asocia a la oferta</description>
@@ -94,9 +97,19 @@
         <connector>
             <targetReference>Update_Stage_To_Quote</targetReference>
         </connector>
-        <filterFormula> OR({!$Record.Owner.Profile.Name} = &apos;Ventas User&apos;, {!$Record.ZRM__c} = true)
-&amp;&amp; 
-( NOT(ISPICKVAL({!$Record__Prior.StageName},  &apos;Closed Won&apos;)) || NOT(ISPICKVAL({!$Record__Prior.StageName},  &apos;Closed Lost&apos;)))</filterFormula>
+        <filterFormula>AND(
+    (
+        OR({!$Record.Owner.Profile.Name} = &apos;Ventas User&apos;, {!$Record.ZRM__c} = true)
+        &amp;&amp; 
+        ( NOT(ISPICKVAL({!$Record__Prior.StageName},  &apos;Closed Won&apos;)) || NOT(ISPICKVAL({!$Record__Prior.StageName},  &apos;Closed Lost&apos;)))
+    ),
+    AND(
+        {!$Record.Blocked__c} = False,
+        {!$Record.Anonymized__c} = False,
+        ISCHANGED({!$Record.Blocked__c}) = False,
+        ISCHANGED({!$Record.Anonymized__c}) = False
+    )
+)</filterFormula>
         <object>Opportunity</object>
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>

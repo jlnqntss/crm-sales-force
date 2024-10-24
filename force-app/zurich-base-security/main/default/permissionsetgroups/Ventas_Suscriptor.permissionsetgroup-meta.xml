@@ -18,5 +18,6 @@
     <permissionSets>Ventas_Gestion_Captacion</permissionSets>
     <permissionSets>Ventas_Tareas</permissionSets>
     <permissionSets>ZRM_Gestion_CS</permissionSets>
-    <status>Updating</status>
+    <permissionSets>ZRM_Lead_Assignment_Configuration</permissionSets>
+    <status>Updated</status>
 </PermissionSetGroup>

@@ -4,13 +4,21 @@
     <active>true</active>
     <description>Validación que no permite modificar el campo CloseDate si ISNEW()=false y el perfil del usuario es “Ventas User“ o “Agente Ventas“.</description>
     <errorConditionFormula>AND(
-  NOT(ISNEW()), 
-  OR(
-    $Profile.Name = &quot;Ventas User&quot;,
-    $Profile.Name = &quot;Agente Ventas - AGR&quot;,
-    $Profile.Name = &quot;Agente Ventas&quot;
-  ),
-  ISCHANGED(CloseDate)
+    OR(
+        Blocked__c = False,
+        Anonymized__c = False,
+        NOT(ISCHANGED(Blocked__c)),
+        NOT(ISCHANGED(Anonymized__c))
+     ),
+     AND(
+        NOT(ISNEW()), 
+        OR(
+            $Profile.Name = &quot;Ventas User&quot;,
+            $Profile.Name = &quot;Agente Ventas - AGR&quot;,
+            $Profile.Name = &quot;Agente Ventas&quot;
+        ),
+        ISCHANGED(CloseDate)
+    )
 )</errorConditionFormula>
     <errorDisplayField>CloseDate</errorDisplayField>
     <errorMessage>[VR Oferta] No tienes permisos para modificar estos datos</errorMessage>

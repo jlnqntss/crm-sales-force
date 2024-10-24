@@ -150,6 +150,11 @@
             <actionType>QuickAction</actionType>
             <sortOrder>4</sortOrder>
         </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Account.NewOfferLife</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>5</sortOrder>
+        </platformActionListItems>
     </platformActionList>
     <quickActionList/>
     <relatedLists>

@@ -11,7 +11,9 @@ public with sharing class Test_AccountLeadAssignment
     @TestSetup
     static void makeData()
     {
+        // Crear los datos
         TestDataFactory.insertCrossSellingCustomSetting();
+        TestDataFactory.insertAccountLeadAssignmentCriterias();
         createCommnunityUsers(); // Crea usuarios de comunidad con su cuenta y contact correspondiente
     }
 
@@ -194,41 +196,6 @@ public with sharing class Test_AccountLeadAssignment
         return communityAgents;
     }
 
-    private static void setMetadataConfigurations()
-    {
-        //Creación de metadatos
-
-        //LANGUAGE
-        List<LanguageAssignment__mdt> testLanguageAssignmentMetadata = new List<LanguageAssignment__mdt>();
-        testLanguageAssignmentMetadata.add( new LanguageAssignment__mdt(DeveloperName = 'Español', AssignTo__c = 'IDIOMA-ES', Language__c = 'ES') );
-        testLanguageAssignmentMetadata.add( new LanguageAssignment__mdt(DeveloperName = 'Frances', AssignTo__c = 'IDIOMA-FR', Language__c = 'FR') );
-
-        AccountLeadAssignment.languageAssignmentMetadata = testLanguageAssignmentMetadata;
-
-        //FORUM ASSIGNMENT
-        // Muchisimo cuidado en cambiar el Assignment type, puede romper un gran numero de tests.
-        List<ForumOriginAssignment__mdt> testforumOriginAssignmentMetadata = new List<ForumOriginAssignment__mdt>();
-        testforumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt(DeveloperName = 'formulario_accidentes', AssignmentType__c = 'Direct',AssignTo__c='IDIOMA-ES',ForumOrigin__c = 'formulario accidentes') );
-        testforumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt(DeveloperName = 'formulario_automonos', AssignmentType__c = 'Province',AssignTo__c='IDIOMA-DE',ForumOrigin__c = 'formulario automonos') );
-        testforumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt(DeveloperName = 'formulario_pymes', AssignmentType__c = 'Province',AssignTo__c='IDIOMA-FR',ForumOrigin__c = 'formulario pymes') );
-        testforumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt(DeveloperName = 'formulario_embarcaciones', AssignmentType__c = 'Municipality',AssignTo__c='IDIOMA-QQ',ForumOrigin__c = 'formulario embarcaciones') );
-        testforumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt(DeveloperName = 'formulario_salud', AssignmentType__c = 'Municipality',AssignTo__c='IDIOMA-QQ',ForumOrigin__c = 'formulario salud') );
-
-        AccountLeadAssignment.forumOriginAssignmentMetadata = testforumOriginAssignmentMetadata;
-
-        //MUNICIPALITY ASSIGNMENT
-        List<MunicipalityAssignment__mdt> testMunicipalityAssignmentMetadata = new List<MunicipalityAssignment__mdt>();
-        testMunicipalityAssignmentMetadata.add( new MunicipalityAssignment__mdt(DeveloperName = 'Lleida', ZIPRanges__c= '{"25999": "IDIOMA-ES"}', ProvinceCode__c='25') );
-
-        AccountLeadAssignment.MunicipalityAssignmentMetadata = testMunicipalityAssignmentMetadata;
-
-        //PROVINCE ASSIGNMENT
-        List<ProvinceAssignment__mdt> testProvinceAssignmentMetadata = new List<ProvinceAssignment__mdt>();
-        testProvinceAssignmentMetadata.add( new ProvinceAssignment__mdt(DeveloperName = 'Albacete',AssignTo__c='IDIOMA-FR',PostalCode__c='02',Province__c='Albacete') );
-
-        AccountLeadAssignment.ProvinceAssignmentMetadata = testProvinceAssignmentMetadata;
-    }
-
     /**
      * @description Test que asegura que si el el código de intermediario es Contact center
      *              la asignación se genera como "CONTACT_CENTER" con cuenta a null.
@@ -311,7 +278,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_getAssignedUserIdByLanguage_OK()
     {
-        setMetadataConfigurations();
 
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
@@ -331,7 +297,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_getAssignedUserIdByLanguage_null_KO()
     {
-        setMetadataConfigurations();
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
@@ -352,7 +317,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_getAssignedUserIdByLanguage_NoLanguageInConfig_KO()
     {
-        setMetadataConfigurations();
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
@@ -372,7 +336,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_getAssignedUserIdByAssignmentType_Directly_OK()
     {
-        setMetadataConfigurations();
 
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
@@ -393,7 +356,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_getAssignedUserIdByAssignmentType_null_KO()
     {
-        setMetadataConfigurations();
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
@@ -413,7 +375,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_getAssignedUserIdByAssignmentType_Province_OK()
     {
-        setMetadataConfigurations();
 
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;	
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
@@ -434,7 +395,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_getAssignedUserIdByAssignmentType_Municipality_OK()
     {
-        setMetadataConfigurations();
 
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
@@ -455,7 +415,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_assignedUserDirectly_OK()
     {
-        setMetadataConfigurations();
 
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;	
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
@@ -477,7 +436,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_assignedUserDirectly_NoDirectOrigin_KO()
     {
-        setMetadataConfigurations();
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
@@ -497,7 +455,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_assignedUserDirectly_null_KO()
     {
-        setMetadataConfigurations();
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
@@ -518,13 +475,11 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_assigneduserDirectly_NoAssignment_KO()
     {
-        setMetadataConfigurations();
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
-        AccountLeadAssignment.forumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt
+        AccountLeadAssignment.forumOriginAssignmentMetadata.add(new LeadAssignmentConfiguration__c
                                                                 (
-                                                                    DeveloperName = 'formulario_asignacion',
                                                                     AssignmentType__c = 'Direct',
                                                                     ForumOrigin__c = 'formulario asignacion')
                                                                 );
@@ -546,7 +501,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_assignedUserByMunicipality_OK()
     {
-        setMetadataConfigurations();
 
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
@@ -567,7 +521,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_assignedUserByMunicipality_null_KO()
     {
-        setMetadataConfigurations();
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
@@ -587,7 +540,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_assignedUserByMunicipality_NoMunicipality_KO()
     {
-        setMetadataConfigurations();
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
@@ -607,9 +559,8 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_assignedUserByMunicipality_NoAssignment_KO()
     {
-        setMetadataConfigurations();
 
-        AccountLeadAssignment.MunicipalityAssignmentMetadata.add( new MunicipalityAssignment__mdt(DeveloperName = 'X01520', ZIPRanges__c='12639') );
+        AccountLeadAssignment.MunicipalityAssignmentMetadata.add( new LeadAssignmentConfiguration__c(ZIPRanges__c='12639') );
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
@@ -629,7 +580,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_assignedUserByProvince_OK()
     {
-        setMetadataConfigurations();
 
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;	
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
@@ -649,7 +599,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_assignedUserByProvince_null_KO()
     {
-        setMetadataConfigurations();
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
@@ -669,7 +618,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_assignedUserByProvince_NoProvince_KO()
     {
-        setMetadataConfigurations();
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
@@ -690,11 +638,10 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_assignedUserByProvince_NoAssign_KO()
     {
-        setMetadataConfigurations();
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
-        AccountLeadAssignment.ProvinceAssignmentMetadata.add( new ProvinceAssignment__mdt(DeveloperName = 'Albacete',PostalCode__c='17',Province__c='Albacete') );
+        AccountLeadAssignment.ProvinceAssignmentMetadata.add( new LeadAssignmentConfiguration__c(PostalCode__c='17',Province__c='Albacete') );
 
         Test.startTest();
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByProvince('17845');
@@ -711,7 +658,19 @@ public with sharing class Test_AccountLeadAssignment
     @istest
     static void test_getAssigmentType_OK()
     {
-        setMetadataConfigurations();
+
+        //TestDataFactory.insertAccountLeadAssignmentCriterias();
+
+
+        List<LeadAssignmentConfiguration__c> selected1 = [SELECT Id,RecordType.DeveloperName, AssignmentType__c,ForumOrigin__c FROM LeadAssignmentConfiguration__c];
+        System.debug('selected1: ' + selected1);
+
+        for(LeadAssignmentConfiguration__c seln : selected1 ){
+            System.debug('seln: ' + seln);
+        }
+        System.debug('Asignación: ' + AccountLeadAssignment.getAssigmentType('formulario accidentes'));
+
+
 
         Test.startTest();
         String directResult         = AccountLeadAssignment.getAssigmentType('formulario accidentes');
@@ -733,7 +692,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_getAssigmentType_null_KO()
     {
-        setMetadataConfigurations();
 
         Test.startTest();
         String defaultResult = AccountLeadAssignment.getAssigmentType(null);
@@ -751,11 +709,9 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_getAssigmentType_NoAssignmentType_KO()
     {
-        setMetadataConfigurations();
 
-        AccountLeadAssignment.forumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt
+        AccountLeadAssignment.forumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c
                                                                  (
-                                                                     DeveloperName = 'formulario_test',
                                                                      AssignTo__c='IDIOMA-QQ',
                                                                      ForumOrigin__c = 'formulario test') );
 
@@ -840,5 +796,77 @@ public with sharing class Test_AccountLeadAssignment
         Test.stopTest();
 
         Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No ha devuelto al usuario por defecto.');
+    }
+
+    /**
+     * @description Test que asegura que compueba funcionamiento con languageAssignmentMetadata no informado (null)
+     * @author      jlnavarroq
+     * @date        14/10/2024
+     */
+    @isTest
+    static void testlanguageAssignmentMetadata_NullCase() {
+        // Limpiar el estado antes de la prueba
+        Test.startTest();
+
+        // Llamar al método que accede a languageAssignmentMetadata
+        List<LeadAssignmentConfiguration__c> assignments = AccountLeadAssignment.languageAssignmentMetadata;
+
+        // Asegurarse de que la propiedad no sigue siendo nula después de la llamada
+        Assert.areNotEqual(null, AccountLeadAssignment.languageAssignmentMetadata,'Se espera un valor nulo: ' + AccountLeadAssignment.languageAssignmentMetadata);
+
+        Test.stopTest();
+    }
+
+    /**
+     * @description Test que asegura que compueba funcionamiento con forumOriginAssignmentMetadata no informado (null)
+     * @author      jlnavarroq
+     * @date        14/10/2024
+     */
+    @isTest
+    static void testForumOriginAssignmentMetadata_NullCase() {
+        // Limpiar el estado antes de la prueba
+        Test.startTest();
+
+        // Llamar al método que accede a forumOriginAssignmentMetadata
+        List<LeadAssignmentConfiguration__c> assignments = AccountLeadAssignment.forumOriginAssignmentMetadata;
+
+        // Asegurarse de que la propiedad no sigue siendo nula después de la llamada
+        Assert.areNotEqual(null, AccountLeadAssignment.forumOriginAssignmentMetadata,'Se espera un valor nulo: ' + AccountLeadAssignment.forumOriginAssignmentMetadata);
+
+        Test.stopTest();
+    }
+
+    /**
+     * @description Test que asegura que compueba funcionamiento con municipalityAssignmentMetadata no informado (null)
+     * @author      jlnavarroq
+     * @date        14/10/2024
+     */
+    @isTest
+    static void testmunicipalityAssignmentMetadata_NullCase() {
+        // Limpiar el estado antes de la prueba
+        Test.startTest();
+
+        // Llamar al método que accede a municipalityAssignmentMetadata
+        List<LeadAssignmentConfiguration__c> assignments = AccountLeadAssignment.municipalityAssignmentMetadata;
+
+        // Asegurarse de que la propiedad no sigue siendo nula después de la llamada
+        Assert.areNotEqual(null, AccountLeadAssignment.municipalityAssignmentMetadata,'Se espera un valor nulo: ' + AccountLeadAssignment.municipalityAssignmentMetadata);
+
+        Test.stopTest();
+    }
+
+    /**
+     * @description Test que asegura que compueba funcionamiento con provinceAssignmentMetadata no informado (null)
+     * @author      jlnavarroq  
+     * @date        14/10/2024
+     */
+    @isTest
+    static void testprovinceAssignmentMetadata_NullCase() {
+        // Limpiar el estado antes de la prueba
+        Test.startTest();
+
+        // Llamar al método que accede a provinceAssignmentMetadata
+        List<LeadAssignmentConfiguration__c> assignments = AccountLeadAssignment.provinceAssignmentMetadata;
+        Test.stopTest();
     }
 }

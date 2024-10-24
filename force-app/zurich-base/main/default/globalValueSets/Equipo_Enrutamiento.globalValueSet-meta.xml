@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>NB Daños RC</fullName>
+        <fullName>NB Damages RC</fullName>
         <default>false</default>
-        <label>NB Daños RC</label>
+        <label>NB Damages RC</label>
     </customValue>
     <customValue>
-        <fullName>Cartera</fullName>
+        <fullName>Portfolio</fullName>
         <default>false</default>
-        <label>Cartera</label>
+        <label>Portfolio</label>
     </customValue>
     <customValue>
         <fullName>Specialties</fullName>
@@ -16,19 +16,19 @@
         <label>Specialties</label>
     </customValue>
     <customValue>
-        <fullName>Construcción</fullName>
+        <fullName>Construction</fullName>
         <default>false</default>
-        <label>Construcción</label>
+        <label>Construction</label>
     </customValue>
     <customValue>
-        <fullName>Administración</fullName>
+        <fullName>Administration</fullName>
         <default>false</default>
-        <label>Administración</label>
+        <label>Administration</label>
     </customValue>
     <customValue>
-        <fullName>Genérica</fullName>
+        <fullName>Generic</fullName>
         <default>false</default>
-        <label>Genérica</label>
+        <label>Generic</label>
     </customValue>
     <masterLabel>Equipo Enrutamiento</masterLabel>
     <sorted>false</sorted>

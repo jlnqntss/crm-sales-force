@@ -3,9 +3,17 @@
     <fullName>SalesLossSubReasonWhenClosedLost</fullName>
     <active>true</active>
     <description>[Venta CC] Si selecciona motivo pérdida &quot;Fuera de política de contratación&quot; hay que informar el campo Sales SubMotivo Pérdida</description>
-    <errorConditionFormula>$Profile.Name = &apos;Ventas User&apos; &amp;&amp;  
-ISPICKVAL(Sales_Loss_Reason__c,&quot;Out of Recruitment Policy&quot;) &amp;&amp;
-ISBLANK(TEXT(Sales_Loss_SubReason__c))</errorConditionFormula>
+    <errorConditionFormula>AND(
+    OR(
+        Blocked__c = False,
+        Anonymized__c = False,
+        NOT(ISCHANGED(Blocked__c)),
+        NOT(ISCHANGED(Anonymized__c))
+    ),
+    $Profile.Name = &apos;Ventas User&apos; &amp;&amp;  
+    ISPICKVAL(Sales_Loss_Reason__c,&quot;Out of Recruitment Policy&quot;) &amp;&amp;
+    ISBLANK(TEXT(Sales_Loss_SubReason__c))
+)</errorConditionFormula>
     <errorDisplayField>Sales_Loss_SubReason__c</errorDisplayField>
     <errorMessage>[VR Oferta] Sub-Motivo de Pérdida es obligatorio para el valor de Motivo seleccionado</errorMessage>
 </ValidationRule>
