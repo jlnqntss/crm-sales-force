@@ -864,4 +864,40 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                .enforceSecurity()
                .toQueryString();
     }
+
+    /**
+    * @description Obtenemos aquellas ofertas de ventas/ZRM que estén relacionadas con un lead y en una etapa determinada.
+    * Uso principal para metodo start de la clasel Batch_DeleteOldLeads 
+    * @author dmunoz 
+    * @date 24-10-2024 
+    * @return String query en formato String
+    * SELECT Id, AccountId FROM Opportunity
+        WHERE Account.RecordTypeId = AccountSelector.LeadId
+        AND StageName =: stage
+        AND CreatedDate < days
+        AND (Scope__c = 'Ventas' OR BusinessCode__c = null)
+    **/
+    public String getVentasOpportunitiesWithLeads(Integer numDays, String stage, String ventasScope) {
+        
+        Set<Schema.SObjectField> opportunityFieldsToRetrieve = new Set<Schema.SObjectField>
+        {
+            Opportunity.Id,
+            Opportunity.AccountId
+        };
+        
+        String query = this.baseQuery
+                       .selectFields(opportunityFieldsToRetrieve)
+                       .addConditionEq(Account.RecordtypeId, new AccountsSelector().rtLeadId)
+                       .addConditionEq(Opportunity.StageName, stage)
+                       .addConditionLt( Opportunity.CreatedDate, Query.LAST_N_DAYS(numDays))
+                       .addCondition(
+                            query.doOr
+                            (
+                                Query.conditionEq(Opportunity.Scope__c, ventasScope),
+                                Query.conditionEq(Opportunity.BusinessCode__c, null)
+                            )
+                       )
+                       .toQueryString();
+        return query;
+    }
 }
