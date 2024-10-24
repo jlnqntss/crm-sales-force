@@ -10,26 +10,74 @@
     </caseValues>
     <gender>Feminine</gender>
     <layouts>
-        <layout>Lead Municipality Assignment Configuration Layout</layout>
+        <layout>Lead Assignment Configuration Layout</layout>
         <sections>
             <label><!-- Custom Links --></label>
             <section>Custom Links</section>
         </sections>
     </layouts>
+    <layouts>
+        <layout>Lead Forum Origin Assignment Configuration Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Más información</label>
+            <section>More info</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Lead Language Assignment Configuration Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Más información</label>
+            <section>More info</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Lead Municipality Assignment Configuration Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Más información</label>
+            <section>More info</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Lead Province Assignment Configuration Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Más información</label>
+            <section>More info</section>
+        </sections>
+    </layouts>
     <recordTypes>
-        <label><!-- ForumOriginAssignment --></label>
+        <description><!-- Se utiliza para indicar la asignación de leads en función del formulario de origen. --></description>
+        <label>Asignación por formulario de origen</label>
         <name>ForumOriginAssignment</name>
     </recordTypes>
     <recordTypes>
-        <label><!-- LanguageAssignment --></label>
+        <description><!-- Se utiliza para indicar a qué mediador se deben asignar los leads en función de su idioma. --></description>
+        <label>Asignación por idioma</label>
         <name>LanguageAssignment</name>
     </recordTypes>
     <recordTypes>
-        <label><!-- MunicipalityAssignment --></label>
+        <description><!-- Se utiliza para indicar a qué mediador se deben asignar los leads de un determinado rango de códigos postales. --></description>
+        <label>Asignación por municipio</label>
         <name>MunicipalityAssignment</name>
     </recordTypes>
     <recordTypes>
-        <label><!-- ProvinceAssignment --></label>
+        <description><!-- Se utiliza para indicar a qué mediador se deben asignar los leads de cada provincia. --></description>
+        <label>Asignación por provincia</label>
         <name>ProvinceAssignment</name>
     </recordTypes>
 </CustomObjectTranslation>

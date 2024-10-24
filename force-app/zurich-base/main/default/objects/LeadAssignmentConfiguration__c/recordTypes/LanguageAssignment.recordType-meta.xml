@@ -3,7 +3,8 @@
     <fullName>LanguageAssignment</fullName>
     <active>true</active>
     <compactLayoutAssignment>LanguageAssignmentCompactLayout</compactLayoutAssignment>
-    <label>LanguageAssignment</label>
+    <description>Se utiliza para indicar a qué mediador se deben asignar los leads en función de su idioma.</description>
+    <label>Language Assignment</label>
     <picklistValues>
         <picklist>AssignmentType__c</picklist>
         <values>

@@ -2564,7 +2564,7 @@
         <field>Account.ZRMPermission__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.ZRMPermisionDecission__c</field>
         <readable>true</readable>
@@ -10249,11 +10249,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>LeadAssignmentConfiguration__c.ActionName__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>LeadAssignmentConfiguration__c.AssignmentType__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10279,27 +10274,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>LeadAssignmentConfiguration__c.Property__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>LeadAssignmentConfiguration__c.Province__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>LeadAssignmentConfiguration__c.ProvinceCode__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>LeadAssignmentConfiguration__c.Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>LeadAssignmentConfiguration__c.Value__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

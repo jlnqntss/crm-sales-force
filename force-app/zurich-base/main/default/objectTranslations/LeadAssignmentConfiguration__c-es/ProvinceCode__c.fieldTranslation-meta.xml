@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <help><!-- Coincide con los dos primeros números del Código Postal. Si el código postal comienza por cero (ej.: 02001), este código también lo hará (ej.: 02). --></help>
     <label>Código de profincia</label>
     <name>ProvinceCode__c</name>
 </CustomFieldTranslation>

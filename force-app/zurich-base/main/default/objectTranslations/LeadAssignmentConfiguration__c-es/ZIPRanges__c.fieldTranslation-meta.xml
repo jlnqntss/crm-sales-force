@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <help>
+        <!-- Formato json:
+
+Cada dupla contiene el último Código Postal del rango, seguido del código de mediador receptor.
+
+Con un único rango: {&quot;02999&quot;: &quot;123456789&quot;}, los códigos postales entre 02000 y 02999 se asignarán al mediador con código 123456789
+
+Con varios rangos: {&quot;08020&quot;: &quot;111111111&quot;, &quot;08999&quot;: &quot;222222222&quot;}. los códigos postales entre 00000 y 08020 se asignarán al mediador con código 111111111, los que estén entre 08021 y 08999, a 222222222. -->
+    </help>
     <label>Rango de CP</label>
     <name>ZIPRanges__c</name>
 </CustomFieldTranslation>

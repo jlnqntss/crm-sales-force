@@ -3,7 +3,8 @@
     <fullName>ForumOriginAssignment</fullName>
     <active>true</active>
     <compactLayoutAssignment>ForumOriginAssignmentCompactLayout</compactLayoutAssignment>
-    <label>ForumOriginAssignment</label>
+    <description>Se utiliza para indicar la asignación de leads en función del formulario de origen.</description>
+    <label>Forum Origin Assignment</label>
     <picklistValues>
         <picklist>AssignmentType__c</picklist>
         <values>
