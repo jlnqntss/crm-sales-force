@@ -38,17 +38,22 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>User.ActiveAgent__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>User.AssignedCases__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>User.Capacity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.RoutingTeam__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <label>USP_Consultor Muted</label>
 </MutingPermissionSet>

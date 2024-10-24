@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Case Fields</label>
+    <protected>false</protected>
+    <values>
+        <field>FieldToExport__c</field>
+        <value xsi:type="xsd:string">CaseNumber;Account.Name;Subject;PolicyId__r.Name;OfferId__r.Name;Type;Subtype__c;TypeN3__c;Status;PendingBy__c;CreatedDate;ClosedDate;LastModifiedDate;Owner.Name;RecordType.DeveloperName;CallCenter__c;Origin;SourceArea__c;Account.INFOIntermediaryCode__c;Priority__c;Requested__c;PersonalizedManager__c;LastModifiedBy.Name;Account.Association__c;Account.TerritorialDirection__c;Account.SelfServiceQuotation__c;Industry__c;Account.Segment__c;CuTicketId__c;SprinklrSocialMediaChannel__c;spr_sf__Sprinklr_Case_Number__c;SprinklrSocialPersona__c</value>
+    </values>
+    <values>
+        <field>Labels__c</field>
+        <value xsi:type="xsd:string">Caso;Cuenta;Asunto;Póliza;Oferta;N1;N2;N3;Estado;Pendiente de;Fecha de apertura;Fecha de cierre;Fecha última modificación;Alias propietario caso;Tipo caso;Call center;Origen del caso;Área de origen;Código mediador;Prioridad;Reclamado;Gestor Personalizado;Última modificación por alias;Asociación;Dirección territorial;Autoservicio;Ramo;Segmento;Petición canal único;Social Media Channel;Sprinklr case number;sprinklr social persona</value>
+    </values>
+    <values>
+        <field>Object__c</field>
+        <value xsi:type="xsd:string">Case</value>
+    </values>
+</CustomMetadata>

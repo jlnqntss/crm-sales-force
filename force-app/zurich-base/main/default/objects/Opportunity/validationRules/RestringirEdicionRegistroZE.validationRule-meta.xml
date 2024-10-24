@@ -3,6 +3,20 @@
     <fullName>RestringirEdicionRegistroZE</fullName>
     <active>false</active>
     <description>Los usuarios con perfil ZE User no podrán editar los campos de Name y CloseDate</description>
-    <errorConditionFormula>AND($Profile.Name = &apos;ZE User&apos;,OR(ISCHANGED(Name),ISCHANGED(CloseDate)))</errorConditionFormula>
+    <errorConditionFormula>AND(
+    OR(
+        Blocked__c = False,
+        Anonymized__c = False,
+        NOT(ISCHANGED(Blocked__c)),
+        NOT(ISCHANGED(Anonymized__c))
+    ),
+    AND(
+        $Profile.Name = &apos;ZE User&apos;,
+        OR(
+            ISCHANGED(Name),
+            ISCHANGED(CloseDate)
+        )
+    )
+)</errorConditionFormula>
     <errorMessage>[VR Offer] Su perfil no permite la edición de alguno de los campos modificados</errorMessage>
 </ValidationRule>

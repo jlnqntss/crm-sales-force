@@ -1056,4 +1056,76 @@ private with sharing class OpportunityUtilTest
         Account accountMarked = [SELECT Name,Id,IsAccountZDA__c  FROM Account WHERE id =:accounts[0].Id];
         Assert.isFalse(accountMarked.IsAccountZDA__c, 'La cuenta no se debería actualizar a ZDA');
     }
+    /**
+     * @description Método de test que añade validaciones de fincionamiento GDPR
+     * @author jnavarroquijada
+     * @date 19-09-2024
+     **/
+    @IsTest
+    private static void test_OpportunityHandler(){
+        // Definir las combinaciones posibles de Blocked__c y Anonymized__c
+        List<Boolean> booleanValues = new List<Boolean>{true, false};
+            
+            
+        Test.startTest();
+        
+        //Creamos el juego de pruebas con las 4 combinaciones posibles
+        for (Boolean blocked : booleanValues) {
+            for (Boolean anonymized : booleanValues) {
+                 Opportunity opp = new Opportunity(
+                    Name = 'Test Opportunity',
+                    StageName = 'Prospecting',
+                    CloseDate = Date.today().addDays(30),
+                    Blocked__c = false,
+                    Anonymized__c = false
+                );
+                insert opp;
+            }
+        }
+        
+        //Seleccionamos el conjunto de pruebas creado
+        List <Opportunity> insertedOpps = [SELECT Id, Blocked__c, Anonymized__c, Name FROM Opportunity WHERE Name LIKE 'Test Opportunity'];
+        
+        //Recorremos cada instancia del juego de pruebas y operamos sobre ella
+        Integer cont = 0;
+        for (Boolean blocked : booleanValues) {
+            for (Boolean anonymized : booleanValues) {
+                try{
+                    Opportunity insertedOpp = insertedOpps[cont];
+                    Opportunity selectedOpp = [SELECT Id, Blocked__c, Anonymized__c, Name FROM Opportunity WHERE Id = :insertedOpp.Id];
+                    
+                    // Guardar el nombre actual para verificar si cambia después del update
+                	String originalName = selectedOpp.Name;
+
+                    // Establecer las combinaciones actuales
+                    selectedOpp.Blocked__c = blocked;
+                    selectedOpp.Anonymized__c = anonymized;
+                    
+                    // Actualizar la oportunidad
+                    if(blocked || anonymized){
+                        selectedOpp.Name = 'Error en cambio';
+                    }else{
+                        selectedOpp.Name = 'Cambio correcto';
+                    }
+                    update selectedOpp;
+                    Opportunity updatedOpp = [SELECT Id, Blocked__c, Anonymized__c, Name FROM Opportunity WHERE Id = :selectedOpp.Id];
+                    
+                    System.assertEquals(selectedOpp.Name, updatedOpp.Name, 'The record should have been updated.');
+                    
+                    try{
+                        delete updatedOpp;
+                    	System.assert(true);
+                    }catch(Exception e){
+                    	System.assert(false);
+                    }
+                    
+                }catch(Exception e){
+                    	System.assert(false);
+                }
+                cont++;
+            }
+            
+        }
+        Test.stopTest(); 
+    }
 }

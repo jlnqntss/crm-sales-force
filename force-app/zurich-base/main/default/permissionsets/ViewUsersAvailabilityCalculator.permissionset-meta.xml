@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Permite a los Supervisores editar aquellos campos del objeto Usuario que se usan para la Calculadora de Disponibilidad en el reparto de casos</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.ActiveAgent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.AssignedCases__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.RoutingTeam__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Acceso Gestores Calculadora</label>
+</PermissionSet>

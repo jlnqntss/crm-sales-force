@@ -42,21 +42,14 @@
         <connector>
             <targetReference>UpdateContactAction</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>InactiveContact__c</field>
-            <operator>IsChanged</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>InactiveContact__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
+        <filterFormula>AND(
+{!$Record.Blocked__c}= False,
+{!$Record.Anonymized__c}= False,
+ISCHANGED({!$Record.Blocked__c})&lt;&gt; False,
+ISCHANGED({!$Record.Anonymized__c})&lt;&gt; False,
+ISCHANGED({!$Record.InactiveContact__c})=True,
+{!$Record.InactiveContact__c} = True
+)</filterFormula>
         <object>Contact</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>

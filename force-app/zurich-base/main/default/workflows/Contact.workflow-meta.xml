@@ -37,6 +37,16 @@
             <field>Contact.CustomerNum__c</field>
             <operation>notEqual</operation>
         </criteriaItems>
+        <criteriaItems>
+            <field>Contact.Blocked__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Contact.Anonymized__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
         <description>After 1h from created date if the lead still contains 0 quotes it is considered to be abandoned and the lead is marked in order that Marketing Cloud starts the journey.</description>
         <triggerType>onCreateOnly</triggerType>
         <workflowTimeTriggers>
@@ -56,25 +66,28 @@
             <type>FieldUpdate</type>
         </actions>
         <active>true</active>
-        <booleanFilter>((1 AND 2) OR 3) AND 4</booleanFilter>
-        <criteriaItems>
-            <field>Contact.Email</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Contact.Bounced__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Contact.MobilePhone</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Contact.RecordTypeId</field>
-            <operation>equals</operation>
-            <value>Customer GI,Customer Life,Lead GI,Lead Life</value>
-        </criteriaItems>
+        <formula>(
+ NOT(ISCHANGED( Blocked__c ))&amp;&amp;
+ NOT(ISCHANGED(Anonymized__c))&amp;&amp;
+ Blocked__c = FALSE &amp;&amp;
+ Anonymized__c = FALSE
+)
+&amp;&amp;
+(
+    (NOT(ISBLANK(Email)) &amp;&amp;  Bounced__c  = FALSE) 
+    || 
+    (NOT(ISBLANK( MobilePhone )))
+) 
+&amp;&amp; 
+(
+    RecordType.DeveloperName = &apos;Customer GI&apos;
+    || 
+    RecordType.DeveloperName = &apos;Customer Life&apos;  
+    || 
+    RecordType.DeveloperName = &apos;Lead GI&apos;
+    || 
+    RecordType.DeveloperName = &apos;Lead Life&apos;
+)</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
 </Workflow>
