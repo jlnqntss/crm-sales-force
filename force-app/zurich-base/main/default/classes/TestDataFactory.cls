@@ -3703,8 +3703,6 @@ public with sharing class TestDataFactory
         AccountLeadAssignment.ProvinceAssignmentMetadata = testProvinceAssignmentMetadata;
 
         insert testProvinceAssignmentMetadata;
-    }
-
-    
+    }   
 
 }
