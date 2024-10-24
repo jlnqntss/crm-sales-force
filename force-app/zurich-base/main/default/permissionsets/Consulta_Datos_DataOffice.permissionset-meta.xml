@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Permite acceso de lectura a ciertos objetos y campos para que el DataOffice pueda explotarlos.</description>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>User.IAM_Role__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Consulta Datos DataOffice</label>
+</PermissionSet>

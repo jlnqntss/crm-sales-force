@@ -4,6 +4,13 @@
     <active>true</active>
     <description>Comprueba que el campo CSM Administration Manager tenga un formato válido de email.</description>
     <errorConditionFormula>AND(
+OR
+(
+Blocked__c = False,
+Anonymized__c = False,
+NOT(ISCHANGED(Blocked__c)),
+NOT(ISCHANGED(Anonymized__c))
+),
 NOT(REGEX(CsmAdministrationManager__c,&apos;([a-zA-Z0-9_\\-\\.]+)@((\\[a-z]{1,3}\\.[a-z]{1,3}\\.[a-z]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})&apos;)),
 NOT(ISBLANK(CsmAdministrationManager__c)),
 $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos;,

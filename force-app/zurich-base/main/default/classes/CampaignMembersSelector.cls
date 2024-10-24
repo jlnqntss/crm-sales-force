@@ -2,15 +2,14 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 21-03-2024
- * @last modified by  : amiranda
+ * @last modified on  : 10-18-2024
+ * @last modified by  : mfernandezcarrera
  **/
 public with sharing class CampaignMembersSelector extends BaseSelector
 {
     //#region Atributos
     private final static String BASE_SELECT = 'SELECT {0} FROM CampaignMember ';
     private static final Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
-    private static final String PRODUCT_BRANCH_VIDA_CODE = configValues.get('Product_Branch_Vida_Code');
     private static final String CAMPAIGN_CROSS_SELLING_TYPE = configValues.get('Campaign_Cross_Selling_Type');
     private static final String CAMPAIGN_STATUS_PDT_REVISION_MEDIADOR = configValues.get('CampaignMemberPdteRevisionMediador_value');
 
@@ -125,8 +124,8 @@ public with sharing class CampaignMembersSelector extends BaseSelector
                                                                 WHERE Campaign.Type = :CAMPAIGN_CROSS_SELLING_TYPE
                                                                                       AND Campaign.IsActive = true
                                                                                                               AND Campaign.StartDate <= TODAY
-                                                                                                              AND Status = :CAMPAIGN_STATUS_PDT_REVISION_MEDIADOR
-                                                                                                              AND Campaign.ProductBranch__c != :PRODUCT_BRANCH_VIDA_CODE]);
+                                                                                                              AND Status = :CAMPAIGN_STATUS_PDT_REVISION_MEDIADOR]);
+                                                                                                              
         return result;
     }
 

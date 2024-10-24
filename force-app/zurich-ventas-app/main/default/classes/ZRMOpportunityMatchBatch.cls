@@ -22,10 +22,10 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
     private static final String SCOPE_OPPORTUNITY_INTERMEDIARY_GROUP = 'IntermediaryGroup';
 
     private static Set<String> contactPoints = new Set<String>();
-    private static List<Opportunity> opportunitiesToUpdate = new List<Opportunity>();
-    private static List<Task> tasksToUpdate = new List<Task>();
-    private static List<Event> eventsToUpdate = new List<Event>();
-    private static List<Opportunity> opportunitiesToDelete = new List<Opportunity>();
+    private static Map<id, Opportunity> opportunitiesToUpdate = new Map<Id, Opportunity>();
+    private static Map<id, Task> tasksToUpdate = new Map<id, Task>();
+    private static Map<id, Event> eventsToUpdate = new Map<id, Event>();
+    private static Map<Id, Opportunity> opportunitiesToDelete = new Map<Id, Opportunity>();
     private static Map<Id, Account> accountsByIdToDelete = new Map<Id, Account>();
     private static Map<Id, Competitor__c> competitorsToUpdate = new Map<Id, Competitor__c>();
     private static Map<String, String> matchedLeadToDeleteWithClientMap = new Map<String, String>(); // guarda el par lead - cliente el cual id de lead se ha marcado como candidato a su eliminación
@@ -354,14 +354,14 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
                 // 2º Identificar esa oferta para mover sus tareas y eventos
                 matchIdByScopeId.put(scopeOffer.Id, matchOffer.Id);
                 // 3º Marcamos a eliminar la oferta que ha hecho match
-                if( !opportunitiesToDelete.contains(matchOffer) )
+                if( !opportunitiesToDelete.containsKey(matchOffer.Id) )
                 {
-                    opportunitiesToDelete.add(matchOffer);
+                    opportunitiesToDelete.put(matchOffer.Id, matchOffer);
                 }
             }
 
             scopeOffer.PotentialMatch__c = false; //Desmarcamos para que no vuelva a pasar por el flujo
-            opportunitiesToUpdate.add(scopeOffer);  //Añadimos la oferta modificada tenga match o no.
+            opportunitiesToUpdate.put(scopeOffer.Id, scopeOffer);  //Añadimos la oferta modificada tenga match o no.
         }
 
         // Mover tareas y eventos de aquellas ofertas que si tienen un match
@@ -404,11 +404,18 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @date 15/04/2024
      */
     @TestVisible
-    private List<Task> moveTasksToScopeOffers(Map<String, String> matchIdByScopeId)
+    private Map<id, Task> moveTasksToScopeOffers(Map<String, String> matchIdByScopeId)
     {
+        Map<Id, Task> result = new Map<Id, Task>();
         List<Task> relatedTasks = new TaskSelector().getTaskRelatedWithWhatId( matchIdByScopeId.values() );
         Map<String, List<SObject> > taskByOppMatchId = fillMapList(relatedTasks, Task.WhatId);
-        return moveRelatedObjectToScopeOffers(matchIdByScopeId, taskByOppMatchId, Task.WhatId);
+        Map<Id, Sobject> movedTasks = moveRelatedObjectToScopeOffers(matchIdByScopeId, taskByOppMatchId, Task.WhatId);
+
+        for (SObject obj: movedTasks.values()) {
+            result.put(obj.Id, (Task) obj);
+        }
+
+        return result;
     }
 
 
@@ -418,11 +425,18 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @date 15/04/2024
      */
     @TestVisible
-    private List<Event> moveEventsToScopeOffers(Map<String, String> matchIdByScopeId)
+    private Map<id, Event> moveEventsToScopeOffers(Map<String, String> matchIdByScopeId)
     {
+        Map<Id, Event> result = new Map<Id, Event>();
         List<Event> relatedEvents = new EventSelector().getRelatedEventsFromRecord( matchIdByScopeId.values() );
         Map<String, List<SObject> > eventByOppMatchId = fillMapList(relatedEvents, Event.WhatId);
-        return moveRelatedObjectToScopeOffers(matchIdByScopeId, eventByOppMatchId, Event.WhatId);
+        Map<Id, Sobject> movedEvents = moveRelatedObjectToScopeOffers(matchIdByScopeId, eventByOppMatchId, Event.WhatId);
+
+        for (SObject obj: movedEvents.values()) {
+            result.put(obj.Id, (Event) obj);
+        }
+
+        return result;
     }
 
 
@@ -432,9 +446,9 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @author  igarcia
      */
     @TestVisible
-    private List<Sobject> moveRelatedObjectToScopeOffers(Map<String, String> matchIdByScopeId, Map<String, List<SObject> > sObjectByOppMatchId, Schema.SObjectField relatedField)
+    private Map<id, Sobject> moveRelatedObjectToScopeOffers(Map<String, String> matchIdByScopeId, Map<String, List<SObject> > sObjectByOppMatchId, Schema.SObjectField relatedField)
     {
-        List<SObject> movedSobject = new List<SObject>();
+        Map<id, SObject> movedSobject = new Map<id, SObject>();
 
         String matchId;
         for( String scopeId : matchIdByScopeId.keySet() )
@@ -446,7 +460,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
                 for( SObject obj : sObjectByOppMatchId.get(matchId) )
                 {
                     obj.put(relatedField, scopeId);
-                    movedSobject.add(obj);
+                    movedSobject.put(obj.Id, obj);
                 }
             }
         }
@@ -580,7 +594,8 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
                 }
                 else if ( !offersToDelete.isEmpty() )
                 {
-                    opportunitiesToDelete.addAll(offersToDelete);
+                    // el metodo putAll es capaz de convertir una lista<SObject> en Map<Id, SObject
+                    opportunitiesToDelete.putAll(offersToDelete);
                 }
             }
         }        
@@ -599,19 +614,19 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
         // Actualizar todas las ofertas del scope, (incluye el merge de ofertas de cliente y el blanqueo del campo PotencialMatch__c)
         if ( !opportunitiesToUpdate.isEmpty() )
         {
-            update opportunitiesToUpdate;
+            update opportunitiesToUpdate.values(); 
         }
 
         // Actualizar tareas que se han movido a la nueva que se ha mergeado
         if ( !tasksToUpdate.isEmpty() )
         {
-            update tasksToUpdate;
+            update tasksToUpdate.values();
         }
 
         // Actualizar eventos que se han movido a la nueva que se ha mergeado
         if ( !eventsToUpdate.isEmpty() )
         {
-            update eventsToUpdate;
+            update eventsToUpdate.values();
         }
 
         // Actualizar registros de competencia del lead a borrar a su cliente con el que ha hecho merge
@@ -623,7 +638,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
         // Eliminar ofertas
         if ( !opportunitiesToDelete.isEmpty() )
         {
-            delete opportunitiesToDelete;
+            delete opportunitiesToDelete.values();
         }
 
         // Eliminar leads

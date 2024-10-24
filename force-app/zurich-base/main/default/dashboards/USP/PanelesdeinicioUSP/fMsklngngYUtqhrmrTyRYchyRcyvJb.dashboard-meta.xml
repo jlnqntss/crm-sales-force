@@ -54,7 +54,8 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>RowCount</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Casos asignados de mi equipo no cerrados</header>
@@ -89,7 +90,8 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>RowCount</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Casos pendientes de mi equipo por motivo</header>
@@ -150,7 +152,8 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>RowCount</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Casos respondidos de mi equipo</header>
@@ -185,10 +188,11 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>RowCount</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>Casos Escalados - Pendientes Supervisor</header>
+                <header>Casos Escalados por mi Equipo</header>
                 <legendPosition>Bottom</legendPosition>
                 <report>PanelesdeinicioUSP/Casos_Escalados_Pendientes_Supervisor_USP</report>
                 <showPercentage>false</showPercentage>
@@ -221,10 +225,11 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>RowCount</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>Casos Escalados - Abiertos Supervisor</header>
+                <header>Casos Escalados a mi Equipo</header>
                 <legendPosition>Bottom</legendPosition>
                 <report>PanelesdeinicioUSP/Casos_Escalados_Abiertos_Supervisor_USP</report>
                 <showPercentage>false</showPercentage>
@@ -257,7 +262,8 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>RowCount</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Ranking cierre de casos (U1D)</header>
@@ -292,7 +298,8 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>RowCount</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Evolución llamadas atendidas (U14D)</header>
@@ -327,7 +334,8 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>RowCount</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Ranking cierre de casos (U14D)</header>
@@ -412,7 +420,8 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>RowCount</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Casos pendientes de mi centro por motivo</header>
@@ -450,7 +459,8 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>RowCount</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Casos respondidos de mi centro</header>
@@ -488,7 +498,8 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>RowCount</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Casos asignados de mi centro no cerrados</header>
@@ -526,7 +537,8 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>RowCount</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Evol. llamadas atendidas centro (U14D)</header>
@@ -563,7 +575,8 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>RowCount</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Ranking cierre de casos mi centro (U1D)</header>

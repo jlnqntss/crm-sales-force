@@ -23,6 +23,10 @@ private with sharing class OpportunitiesSelectorTest
         insert scopes;
 
         List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachScope(scopes, 'Qualification', System.today(), 10);
+        // añado a estas ofertas el campo CreatedDate__c (Fecha creación INFO)
+        for (Opportunity opp: opportunities) {
+            opp.CreatedDate__c = Date.today(); 
+        }
         insert opportunities;
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachOpportunity(opportunities, 1);
@@ -512,5 +516,18 @@ private with sharing class OpportunitiesSelectorTest
         Test.stopTest();
 
         System.assertEquals(true, retrievedOpportunitites != null, 'No Debe ser nulo');
+    }
+
+    @isTest
+    private static void getMostRecentlyOfferByAccountId_OK()
+    {
+        // Obtenemos lista de clientes
+        List<Account> accounts = new List<Account>([SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Customer' LIMIT 1]);
+
+        Test.startTest();
+        List<Opportunity> retrievedOpportunitites = ( new OpportunitiesSelector().getMostRecentlyOfferByAccountId(accounts.get(0).Id) );
+        Test.stopTest();
+
+        Assert.isTrue(retrievedOpportunitites.size() > 0, 'Debe devolver resultados');
     }
 }

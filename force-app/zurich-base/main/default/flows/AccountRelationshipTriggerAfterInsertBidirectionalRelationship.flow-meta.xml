@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <decisions>
+        <description>En caso que exista resultado no hacemos nada, en caso contrario se crea el registro</description>
+        <name>Check_if_Inverse_Exists</name>
+        <label>Check if Inverse Exists</label>
+        <locationX>182</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>Yes</defaultConnectorLabel>
+        <rules>
+            <name>No</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Inverse_Relation</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Inverse_Record</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
+    </decisions>
+    <description>Si un usuario de ZRM crea una cuenta relacionada se ha de crear la contraria</description>
+    <environments>Default</environments>
+    <interviewLabel>AccountRelationship {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>AccountRelationship Trigger - After Insert Bidirectional Relationship</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Crear el registro con la información inversa</description>
+        <name>Create_Inverse_Record</name>
+        <label>Create Inverse Record</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Account__c</field>
+            <value>
+                <elementReference>$Record.RelatedAccount__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description__c</field>
+            <value>
+                <elementReference>$Record.Description__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IntermediaryId__c</field>
+            <value>
+                <elementReference>$Record.IntermediaryId__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RelatedAccount__c</field>
+            <value>
+                <elementReference>$Record.Account__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RelationshipType__c</field>
+            <value>
+                <elementReference>$Record.RelationshipType__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>AccountRelationship__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <description>Compruebo si para ese mediador existe la relación inversa para las cuentas a relacionar</description>
+        <name>Get_Inverse_Relation</name>
+        <label>Get Inverse Relation</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_if_Inverse_Exists</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Account__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.RelatedAccount__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>RelatedAccount__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Account__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IntermediaryId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.IntermediaryId__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>AccountRelationship__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Inverse_Relation</targetReference>
+        </connector>
+        <filterFormula>OR
+({!$Profile.Name} = {!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Agente_Ventas.Value__c},
+{!$Profile.Name} = {!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Agente_Ventas_AGR.Value__c}
+)</filterFormula>
+        <object>AccountRelationship__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

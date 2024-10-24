@@ -195,6 +195,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>PROPERTY MIDDLE</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>ZURICH ASISTENCIA SH BASICOS</fullName>
             <default>false</default>
         </values>
@@ -957,6 +961,10 @@
         </values>
         <values>
             <fullName>Others</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SAM</fullName>
             <default>false</default>
         </values>
     </picklistValues>
