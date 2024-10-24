@@ -84,7 +84,7 @@ function executeSfdxCommand(bash, options = {}) {
     console.error(`[Error] ${error.message}`);
     sfdxResult = {};
   }
-
+  
   if (sfdxResult.status !== 0 || sfdxResult.status === undefined) {
     console.error(
       `[Error] Ejecución de comando SFDX: ${sfdxResult.commandName}`
@@ -238,7 +238,7 @@ function deploy(deployConfig) {
   let deployOptions = ["--async", "--ignore-conflicts"];
 
   // 1 - Reconciliación de perfiles
-  if (deployConfig.executeReconcile) {
+  if(deployConfig.executeReconcile) {
     console.log(
       `[Info] Deploy: Reconciliando perfiles con usuario ${deployConfig.targetOrg}...`
     );
@@ -249,7 +249,8 @@ function deploy(deployConfig) {
         skipJsonParsing: true
       }
     );
-  } else {
+  }
+  else {
     console.log(
       `[Info] Deploy: Reconciliado de perfiles deshabilitado para ${deployConfig.targetOrg}...`
     );
@@ -300,11 +301,12 @@ function deploy(deployConfig) {
     deployResult = executeSfdxCommand(
       `sf project deploy start ${deployOptions.join(" ")}`
     );
-  } catch (err) {
+  }
+  catch(err) {
     console.error(`[Error] Deployment failed.`);
     process.exit(1);
   }
-  console.log("Parseando resultado...");
+  console.log('Parseando resultado...');
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
 
@@ -330,7 +332,7 @@ function deploy(deployConfig) {
     `sf project deploy report --job-id ${deployResult.id} --json`
   );
 
-  if (deployReport === undefined || !deployReport.success) {
+  if(deployReport === undefined || !deployReport.success) {
     console.error(`[Error] Deployment failed.`);
     process.exit(1);
   }
