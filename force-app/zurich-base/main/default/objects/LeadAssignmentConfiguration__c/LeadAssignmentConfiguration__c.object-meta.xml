@@ -175,6 +175,7 @@
         <excludedStandardButtons>MassChangeOwner</excludedStandardButtons>
         <excludedStandardButtons>PrintableListView</excludedStandardButtons>
         <excludedStandardButtons>MassAssignRecordLabel</excludedStandardButtons>
+        <searchResultsFields>Name</searchResultsFields>
         <searchResultsAdditionalFields xsi:nil></searchResultsAdditionalFields>
         <searchResultsAdditionalFields xsi:nil></searchResultsAdditionalFields>
         <searchResultsAdditionalFields xsi:nil></searchResultsAdditionalFields>
