@@ -175,10 +175,6 @@
         <excludedStandardButtons>MassChangeOwner</excludedStandardButtons>
         <excludedStandardButtons>PrintableListView</excludedStandardButtons>
         <excludedStandardButtons>MassAssignRecordLabel</excludedStandardButtons>
-        <searchResultsAdditionalFields xsi:nil></searchResultsAdditionalFields>
-        <searchResultsAdditionalFields xsi:nil></searchResultsAdditionalFields>
-        <searchResultsAdditionalFields xsi:nil></searchResultsAdditionalFields>
-        <searchResultsAdditionalFields xsi:nil></searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
