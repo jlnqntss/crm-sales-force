@@ -8818,7 +8818,6 @@
         <field>Policy__c.IntermediaryNameForm__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.IntermediaryVisibilityAcc__c</field>
