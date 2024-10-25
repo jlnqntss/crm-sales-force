@@ -10,5 +10,5 @@
         <operation>equals</operation>
         <value>LeadAssignmentConfiguration__c.MunicipalityAssignment</value>
     </filters>
-    <label>Municipality Assignment</label>
+    <label>Asignación por municipio</label>
 </ListView>
