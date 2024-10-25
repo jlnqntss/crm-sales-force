@@ -89,6 +89,10 @@
                 <behavior>Edit</behavior>
                 <field>Requested__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>RPAProposal__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
