@@ -533,6 +533,78 @@ public with sharing class CaseUtil
     }
 
     /**
+     * Para aquellos casos que sean de ZDA y el origen sea Canal unico (llegan via API estandar), se extrae información de la
+     * descripción del caso para tratar de informar varios campos del caso de interés para Canal Único. La extracción se realiza
+     * por búsqueda de texto. Se localiza la etiqueta y luego el valor, que estará entre los dos siguientes ';'
+     *
+     * @author seidor - jfherrero
+     * @date 22/10/2024
+     * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
+     */
+    public static void extractFieldsFromZDABody(List<Case> insertedCases)
+    {
+
+        List<String> workUnitLabels = GlobalConfigUtil.getGlobalConfigurationValue('WorkUnit_Desc_Labels').split(';;');
+        List<String> interlocutorRoleLabels = GlobalConfigUtil.getGlobalConfigurationValue('InterlocutorRole_Desc_Labels').split(';;');
+        List<String> cancellationReasonLabels = GlobalConfigUtil.getGlobalConfigurationValue('CancellationReason_Desc_Labels').split(';;');
+        List<String> isCampaingnCaseLabels = GlobalConfigUtil.getGlobalConfigurationValue('IsCampaignCase_Desc_Labels').split(';;');
+        List<String> affirmativeLabel = GlobalConfigUtil.getGlobalConfigurationValue('Yes_String_Value').split(';');
+
+        for(Case insertedCase : insertedCases)
+        {
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && 'CanalUnico'.equals(insertedCase.Origin) && insertedCase.Description != null)
+            {
+                insertedCase.WorkUnit__c = extractZDAFieldFromCaseDescription(insertedCase, workUnitLabels);
+                insertedCase.InterlocutorRole__c = extractZDAFieldFromCaseDescription(insertedCase, interlocutorRoleLabels);
+                insertedCase.CancellationReason__c = extractZDAFieldFromCaseDescription(insertedCase, cancellationReasonLabels);
+
+                if (affirmativeLabel.contains(extractZDAFieldFromCaseDescription(insertedCase, isCampaingnCaseLabels).toLowerCase()))
+                {
+                    insertedCase.IsCampaignCase__c = true;
+                }
+            }
+        }
+    }
+
+    /**
+    * Para el caso suministrado, recupera los valores del body en función de los label suministrados.
+    *
+    * @author seidor - jfherrero
+    * @date 22/10/2024
+    * @param insertedCase Nuevos caso que se inserta en la base de datos.
+    * @param fieldLabels Colección de labels para localizar el valor a extraer para cada campo.
+    */ 
+
+    @testvisible  
+    private static string extractZDAFieldFromCaseDescription(Case insertedCase, List<String> fieldLabels)
+    {
+        String description = insertedCase.Description;
+        String separator = ';;';
+        Integer startPosition = 0;
+        Integer endPosition = 0;
+
+        for (String label : fieldLabels)
+        {
+            if (description.contains(label))
+            {
+                startPosition = description.indexof(label)+label.length();
+                endPosition = description.indexof(separator, startPosition);
+                break;
+            }
+        }
+
+        if ( endPosition > 0 && startPosition < endPosition)
+        {
+            return description.substring(startPosition, endPosition);
+        }
+        else
+        {
+            return '';
+        }
+
+    }
+
+    /**
      * Para aquellos casos que sean de ZDA y el origen sea Canal unico (llegan via API estandar), se aplica formato a la descripcion
      * del caso, puesto que llegan con este formato:
      * Usuario: NOMBRE APELLIDO1 APELLIDO2;;Correo electrónico: USUARIO@bancsabadell.com;;Unidad de trabajo: 0086
