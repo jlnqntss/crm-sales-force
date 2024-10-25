@@ -29,6 +29,11 @@
                 <default>false</default>
                 <label>Direct</label>
             </value>
+            <value>
+                <fullName>CONTACT_CENTER</fullName>
+                <default>false</default>
+                <label>Contact Center</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
