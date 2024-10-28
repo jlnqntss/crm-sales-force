@@ -135,19 +135,16 @@ global with sharing class Batch_DeleteOldLeads implements Database.Batchable<sOb
     **/
     private List<Account> checkLeadOpportunity(Account lead, List<Account> result) {
 
-        Boolean decision = false;
+        Boolean decision = true;
 
         // Recorro las ofertas del lead, de nuevo con la excepción de las ofertas de scope que se van a eliminar
         for (Opportunity leadOpportunity: lead.Opportunities) {
-        
-            // Verificamos que la oferta no tenga el BusinessCode en blanco, que el scope no sea Ventas o ZRM, y que la etapa no sea 'Legit Lead'
-            if (String.isBlank(leadOpportunity.BusinessCode__c) 
-                || leadOpportunity.Scope__c != OFFER_SCOPE_VENTAS 
-                || leadOpportunity.StageName != OFFER_STATUS_LEGIT_LEAD) {
-                
+                    
+            // Verificamos que las demás ofertas del lead sean de ze, ni estén alguna en legit lead o haya otra oferta de zrm menos a 90 dias de creación. En caso contrario eliminamos el lead
+            if (isZRMOffer(leadOpportunity) || isZEOffer(leadOpportunity) || isNotLegitLead(leadOpportunity)) {
                 decision = false; // Si alguna oferta no cumple las condiciones, no se puede borrar
-                break;
-            } 
+                break;            
+            }
         }
 
         if (decision) {
@@ -155,31 +152,35 @@ global with sharing class Batch_DeleteOldLeads implements Database.Batchable<sOb
         }
 
         return result;
+    }
 
+
+    /**
+    * @description : compruebo si la oferta de zrm permite eliminar el lead
+    * @author dmunoz | 24/10/2024 
+    * @param leadOpportunity : oferta a comprobar
+    **/
+    private Boolean isZRMOffer(Opportunity leadOpportunity) {
+        return (OFFER_SCOPE_VENTAS.equals(leadOpportunity.Scope__c) || String.isBlank(leadOpportunity.BusinessCode__c)) &&
+                leadOpportunity.createdDate > (Date.today() - DAYS);
     }
 
     /**
-     * Recorre la lista de cuentas de la entrnoteada y selecciona aquellos a eliminar
-     *
-     * @author dmunoz
-     * @date 22/10/2024
-     * @param  scope   Lista de cuentas recibidas por el metodo start del batch
-     *
-     * @return              Listado de cuentas que tiene una oferta con Id de Cuentas indicadas
-     */
-    private List<Account> getAccountsToDelete(List<Account> scope)
-    {
+    * @description : compruebo si la oferta es de ze -> no eliminar el lead
+    * @author dmunoz | 24/10/2024 
+    * @param leadOpportunity : oferta a comprobar
+    **/
+    private Boolean isZEOffer(Opportunity leadOpportunity) {
+        return !OFFER_SCOPE_VENTAS.equals(leadOpportunity.Scope__c) && String.isNotBlank(leadOpportunity.BusinessCode__c);
+    }
 
-        List<Account> result = new List<Account>();
-
-        for (Account acc : scope)
-        {
-            if(acc.Opportunities.size() == 1)
-            {
-                result.add(acc);
-            }
-        }
-        return result;
+    /**
+    * @description : compruebo si la oferta está en etapa distinta a legit lead -> no eliminar el lead
+    * @author dmunoz | 24/10/2024 
+    * @param leadOpportunity : oferta a comprobar
+    **/
+    private Boolean isNotLegitLead(Opportunity leadOpportunity) {
+        return !OFFER_STATUS_LEGIT_LEAD.equals(leadOpportunity.StageName);
     }
 
 

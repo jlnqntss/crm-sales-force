@@ -925,7 +925,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         
         String query = this.baseQuery
                        .selectFields(opportunityFieldsToRetrieve)
-                       .addConditionEq(Account.RecordtypeId, new AccountsSelector().rtLeadId)
+                       .addConditionEq('Account.RecordtypeId', new AccountsSelector().rtLeadId)
                        .addConditionEq(Opportunity.StageName, stage)
                        .addConditionLt( Opportunity.CreatedDate, Query.LAST_N_DAYS(numDays))
                        .addCondition(

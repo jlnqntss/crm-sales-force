@@ -1234,7 +1234,8 @@ public with sharing class AccountsSelector extends RecordsSelector
         {
             Opportunity.StageName,
             Opportunity.BusinessCode__c,
-            Opportunity.Scope__c
+            Opportunity.Scope__c,
+            Opportunity.CreatedDate
         };
         Set<Schema.SObjectField> caseFieldsToRetrieve = new Set<Schema.SObjectField>
         {
