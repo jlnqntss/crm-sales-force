@@ -4,6 +4,10 @@
     <label>Tipo de asignación</label>
     <name>AssignmentType__c</name>
     <picklistValues>
+        <masterLabel>Contact Center</masterLabel>
+        <translation><!-- Contact Center --></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Direct</masterLabel>
         <translation>Directa</translation>
     </picklistValues>
