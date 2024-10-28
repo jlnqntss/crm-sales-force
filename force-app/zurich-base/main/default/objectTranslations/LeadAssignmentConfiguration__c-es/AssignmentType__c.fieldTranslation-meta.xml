@@ -5,7 +5,7 @@
     <name>AssignmentType__c</name>
     <picklistValues>
         <masterLabel>Contact Center</masterLabel>
-        <translation><!-- Contact Center --></translation>
+        <translation>Contact Center</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Direct</masterLabel>
