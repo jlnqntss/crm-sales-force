@@ -54,7 +54,6 @@
     </objectPermissions>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>LeadAssignmentConfiguration__c.ForumOriginAssignment</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
