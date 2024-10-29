@@ -11633,6 +11633,27 @@
         <recordType>PlanComercial__c.MensualPlan</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
+        <recordType>LeadAssignmentConfiguration__c.ForumOriginAssignment</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>LeadAssignmentConfiguration__c.LanguageAssignment</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>LeadAssignmentConfiguration__c.MunicipalityAssignment</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>LeadAssignmentConfiguration__c.ProvinceAssignment</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
     <tabVisibilities>
         <tab>RPAProposal__c</tab>
         <visibility>DefaultOn</visibility>

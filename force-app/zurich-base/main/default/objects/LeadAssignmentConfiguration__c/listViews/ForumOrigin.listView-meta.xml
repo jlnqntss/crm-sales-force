@@ -11,5 +11,5 @@
         <operation>equals</operation>
         <value>LeadAssignmentConfiguration__c.ForumOriginAssignment</value>
     </filters>
-    <label>Forum Origin</label>
+    <label>Formulario de origen</label>
 </ListView>

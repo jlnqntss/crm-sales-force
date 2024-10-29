@@ -3,7 +3,8 @@
     <fullName>ProvinceAssignment</fullName>
     <active>true</active>
     <compactLayoutAssignment>ProvinceAssignmentCompactLayout</compactLayoutAssignment>
-    <label>ProvinceAssignment</label>
+    <description>Se utiliza para indicar a qué mediador se deben asignar los leads de cada provincia.</description>
+    <label>Province Assignment</label>
     <picklistValues>
         <picklist>AssignmentType__c</picklist>
         <values>
