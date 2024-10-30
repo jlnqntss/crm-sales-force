@@ -50,7 +50,6 @@ public with sharing class DynamicSelector extends RecordsSelector {
         List<SObject> result = new List<SObject>();
         if (fieldsQuery != null && String.isNotEmpty(fieldsQuery) && objetExportName != null && String.isNotEmpty(objetExportName) && flowInputs!=null ){
             String query= 'SELECT '+ fieldsQuery +' '+'FROM '+ objetExportName +' WHERE Id IN: flowInputs';
-            System.debug('query: '+query);
             result = Database.query(query);
         }
         return result;
