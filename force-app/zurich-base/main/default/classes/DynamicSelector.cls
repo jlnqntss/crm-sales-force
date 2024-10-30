@@ -1,9 +1,8 @@
 /**
  * @description       : 
- * @author            : aberuete
+ * @author            : lrodriguez
  * @group             : 
- * @last modified on  : 16-07-2024
- * @last modified by  : lgonzalez
+ * @last modified on  : 30-10-2024
 **/
 public with sharing class DynamicSelector extends RecordsSelector {
 

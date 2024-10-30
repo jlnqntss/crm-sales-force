@@ -42,8 +42,6 @@ private with sharing class DynamicSelectorTest {
         String fieldsQuery='Id,CaseNumber';
         String objetExportName='Case';
 
-
-            
         // Test
         Test.startTest();
         objectsExport= new DynamicSelector(cases[0].getsobjectType()).getListSobjectToExport(fieldsQuery,objetExportName,listIdsRecordsExports);
