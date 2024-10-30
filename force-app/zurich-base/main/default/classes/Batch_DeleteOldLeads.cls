@@ -62,7 +62,7 @@ global with sharing class Batch_DeleteOldLeads implements Database.Batchable<sOb
     }
 
     global void execute(SchedulableContext sc) {
-        Database.executeBatch(new Batch_DeleteOldLeads(), 1000);               
+        Database.executeBatch(new Batch_DeleteOldLeads(), 200);               
     }
 
     global void finish(Database.BatchableContext bc)
