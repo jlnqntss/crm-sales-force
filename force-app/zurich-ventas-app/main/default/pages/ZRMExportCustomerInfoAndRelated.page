@@ -1,0 +1,10 @@
+<apex:page 
+    standardController="Account"  
+    renderAs="pdf"
+>
+<!-- Begin Default Content REMOVE THIS -->
+
+Nombre: {!Account.Name}
+
+<!-- End Default Content REMOVE THIS -->
+</apex:page>
