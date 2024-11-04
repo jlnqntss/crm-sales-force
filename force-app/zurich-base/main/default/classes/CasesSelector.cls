@@ -623,7 +623,7 @@ public with sharing class CasesSelector extends RecordsSelector
 
     /**
      * Método selector que devuelve una query que obtiene los casos ordenados por mayor prioridad y menor fecha de modificación
-     * cuyo campo WithoutBestAgent__c sea verdadero, que el caso no esté cerrado y que el owner sea una cola o el usuario integrador 
+     * cuyo campo WithoutBestAgent__c sea verdadero, que el caso no esté cerrado y que el owner sea una de las colas de enrutamiento por equipos
      * @author aberuete
      * @date 27/06/2024
      * @change 
@@ -634,11 +634,7 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public String selectCasesWithoutBestAgent()
     {
-        //Construimos la query
-        Query.Condition andCondition = Query.doOr(
-        Query.conditionIn(CASE_OWNER_NAME, RoutingTeamQueueConfigUtil.getRoutingTeamQueueConfigValues().keySet()),
-        Query.conditionEq(CASE_OWNER_PROFILE_NAME, profileIntegrator));
-        
+        //Construimos la query    
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{
             Case.Id,
             Case.OwnerId
@@ -646,7 +642,7 @@ public with sharing class CasesSelector extends RecordsSelector
         .selectFields(CASE_OWNER_NAME)
         .addConditionEq(Case.WithoutBestAgent__c , true)
         .addConditionEq(Case.isClosed, false)
-        .addCondition(andCondition)
+        .addConditionIn(CASE_OWNER_NAME, RoutingTeamQueueConfigUtil.getRoutingTeamQueueConfigValues().keySet())
         .orderBy('Case.Priority__c', 'DESC')
         .orderBy('Case.LastModifiedDate', 'ASC');
 
