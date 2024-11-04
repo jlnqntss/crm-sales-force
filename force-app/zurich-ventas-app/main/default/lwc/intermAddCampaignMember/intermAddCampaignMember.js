@@ -161,6 +161,15 @@ export default class IntermAddCampaignMember extends LightningElement {
     }
   }
 
+  queryTerm;
+
+  handleKeyUp(evt) {
+    const isEnterKey = evt.keyCode === 13; //*
+    if (isEnterKey) {
+      this.queryTerm = evt.target.value;
+    }
+  }
+
   /**
    * Función que se encarga de controlar el evento al pulsar el check de cualquier
    * fila de la tabla. Al pulsar una fila, se actualiza la propiedad que contiene

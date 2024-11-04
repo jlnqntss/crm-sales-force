@@ -38,6 +38,19 @@
           class="slds-modal__content slds-is-relative slds-theme_shade"
           style="min-height: 350px; display: flex; flex-direction: column"
         >
+          <lightning-layout horizontal-align="spread">
+            <lightning-layout-item padding="around-small">
+              <div onkeyup={handleKeyUp}>
+                <lightning-input
+                  name="enter-search"
+                  label="Pulsa 'intro' para buscar"
+                  type="search"
+                  placeholder="Buscar cliente"
+                ></lightning-input>
+              </div>
+              <p if:true={queryTerm}>Resultados para '{queryTerm}'</p>
+            </lightning-layout-item>
+          </lightning-layout>
           <!--Tabla que muestra las cuentas disponibles para añadir como miembros de campaña.-->
           <lightning-datatable
             key-field="Id"
