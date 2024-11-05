@@ -161,12 +161,38 @@ export default class IntermAddCampaignMember extends LightningElement {
     }
   }
 
-  queryTerm;
-
   handleKeyUp(evt) {
-    const isEnterKey = evt.keyCode === 13; //*
+    const isEnterKey = evt.keyCode === 13; // Detect Enter key
     if (isEnterKey) {
-      this.queryTerm = evt.target.value;
+      this.queryTerm = evt.target.value.toLowerCase(); // Convertir a minúsculas para comparación
+      this.filterAccounts();
+    }
+  }
+
+  filterAccounts() {
+    if (this.queryTerm) {
+      this.accounts = this._wiredContacts.data
+        .map((field) => ({
+          Id: field.Id,
+          AccountName: field.Account.Name,
+          IntermediaryCode: field.Account.INFOCustomerNumber__c,
+          NationalId: field.Account.NationalId__c,
+          RecordTypeName: field.Account.RecordType__c
+        }))
+        .filter(
+          (account) =>
+            account.AccountName.toLowerCase().includes(this.queryTerm) ||
+            account.NationalId.toLowerCase().includes(this.queryTerm)
+        );
+    } else {
+      // Si no hay término de búsqueda, mostrar todos los resultados
+      this.accounts = this._wiredContacts.data.map((field) => ({
+        Id: field.Id,
+        AccountName: field.Account.Name,
+        IntermediaryCode: field.Account.INFOCustomerNumber__c,
+        NationalId: field.Account.NationalId__c,
+        RecordTypeName: field.Account.RecordType__c
+      }));
     }
   }
 
