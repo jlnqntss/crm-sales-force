@@ -125,10 +125,6 @@ export default class IntermAddCampaignMember extends LightningElement {
         NationalId: field.Account.NationalId__c,
         RecordTypeName: field.Account.RecordType__c
       }));
-      /*/
-      if(this.filteredAccounts.length == 0){
-        this.filteredAccounts = this.accounts;
-      }/**/
       this.filteredAccounts = this.accounts;
       this.hideSpinner();
     } else if (error) {
@@ -189,7 +185,24 @@ export default class IntermAddCampaignMember extends LightningElement {
    * @date 18/10/2023
    */
   handleRowSelection(event) {
-    this.selectedRows = event.detail.selectedRows;
+    // Registros seleccionados en la vista actual
+    const selectedRowsInView = event.detail.selectedRows;
+
+    // Mapa para mantener los seleccionados únicos, clave basada en el Id
+    const selectedRowsMap = new Map(
+      this.selectedRows.map((row) => [row.Id, row])
+    );
+
+    // Agregar o actualizar registros seleccionados de la vista actual
+    selectedRowsInView.forEach((row) => {
+      selectedRowsMap.set(row.Id, row);
+    });
+
+    // Actualiza this.selectedRows con los valores únicos
+    this.selectedRows = Array.from(selectedRowsMap.values());
+
+    // Depurar los registros seleccionados para verificación
+    console.debug(this.selectedRows);
   }
 
   async handleAddCampaignMembers() {
