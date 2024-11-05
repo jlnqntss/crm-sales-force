@@ -40,12 +40,14 @@
         >
           <lightning-layout horizontal-align="spread">
             <lightning-layout-item padding="around-small">
-              <div onkeyup={handleKeyUp}>
+              <div onkeyup={handleSearchChange}>
                 <lightning-input
                   name="enter-search"
                   label="Pulsa 'intro' para buscar"
                   type="search"
                   placeholder="Buscar cliente"
+                  onchange={handleSearchChange}
+                  oninput={handleSearchChange}
                 ></lightning-input>
               </div>
               <p if:true={queryTerm}>Resultados para '{queryTerm}'</p>

@@ -168,17 +168,20 @@ export default class IntermAddCampaignMember extends LightningElement {
   }
 
   queryTerm;
-
-  handleKeyUp(evt) {
-    const isEnterKey = evt.keyCode === 13; //*
-    if (isEnterKey) {
-      this.queryTerm = evt.target.value.toLowerCase();
-      this.filteredAccounts = this.accounts.filter((account) =>
-        (account.AccountName + account.NationalId)
-          .toLowerCase()
-          .includes(this.queryTerm)
-      );
-    }
+  /**
+   * Función que se encarga de controlar el evento teclear en el campo input de búsqueda.
+   * Coteja el texto incluido con el nombre de cuenta y el documento de identidad.
+   *
+   * @author jlnavarroq
+   * @date 05/11/2024
+   */
+  handleSearchChange(evt) {
+    this.queryTerm = evt.target.value.toLowerCase();
+    this.filteredAccounts = this.accounts.filter((account) =>
+      (account.AccountName + account.NationalId)
+        .toLowerCase()
+        .includes(this.queryTerm)
+    );
   }
 
   /**
