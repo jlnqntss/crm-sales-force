@@ -54,7 +54,7 @@
           <!--Tabla que muestra las cuentas disponibles para añadir como miembros de campaña.-->
           <lightning-datatable
             key-field="Id"
-            data={accounts}
+            data={filteredAccounts}
             columns={columns}
             onrowselection={handleRowSelection}
             style="height: 350px"

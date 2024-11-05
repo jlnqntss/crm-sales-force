@@ -125,6 +125,11 @@ export default class IntermAddCampaignMember extends LightningElement {
         NationalId: field.Account.NationalId__c,
         RecordTypeName: field.Account.RecordType__c
       }));
+      /*/
+      if(this.filteredAccounts.length == 0){
+        this.filteredAccounts = this.accounts;
+      }/**/
+      this.filteredAccounts = this.accounts;
       this.hideSpinner();
     } else if (error) {
       this.error = error;
@@ -161,38 +166,15 @@ export default class IntermAddCampaignMember extends LightningElement {
     }
   }
 
-  handleKeyUp(evt) {
-    const isEnterKey = evt.keyCode === 13; // Detect Enter key
-    if (isEnterKey) {
-      this.queryTerm = evt.target.value.toLowerCase(); // Convertir a minúsculas para comparación
-      this.filterAccounts();
-    }
-  }
+  queryTerm;
 
-  filterAccounts() {
-    if (this.queryTerm) {
-      this.accounts = this._wiredContacts.data
-        .map((field) => ({
-          Id: field.Id,
-          AccountName: field.Account.Name,
-          IntermediaryCode: field.Account.INFOCustomerNumber__c,
-          NationalId: field.Account.NationalId__c,
-          RecordTypeName: field.Account.RecordType__c
-        }))
-        .filter(
-          (account) =>
-            account.AccountName.toLowerCase().includes(this.queryTerm) ||
-            account.NationalId.toLowerCase().includes(this.queryTerm)
-        );
-    } else {
-      // Si no hay término de búsqueda, mostrar todos los resultados
-      this.accounts = this._wiredContacts.data.map((field) => ({
-        Id: field.Id,
-        AccountName: field.Account.Name,
-        IntermediaryCode: field.Account.INFOCustomerNumber__c,
-        NationalId: field.Account.NationalId__c,
-        RecordTypeName: field.Account.RecordType__c
-      }));
+  handleKeyUp(evt) {
+    const isEnterKey = evt.keyCode === 13; //*
+    if (isEnterKey) {
+      this.queryTerm = evt.target.value.toLowerCase();
+      this.filteredAccounts = this.accounts.filter((account) =>
+        account.AccountName.toLowerCase().includes(this.queryTerm)
+      );
     }
   }
 
