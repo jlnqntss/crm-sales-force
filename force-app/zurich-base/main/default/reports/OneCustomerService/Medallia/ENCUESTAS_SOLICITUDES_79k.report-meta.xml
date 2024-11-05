@@ -241,14 +241,14 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>notEqual</operator>
-            <value>Transferencia</value>
+            <value>Saneamiento,Transferencia</value>
         </criteriaItems>
         <criteriaItems>
             <column>Survey__c$CaseId__c.TypeN3__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>notEqual</operator>
-            <value>Otras áreas</value>
+            <value>Otras áreas,Saneamiento</value>
         </criteriaItems>
         <criteriaItems>
             <column>Survey__c$CaseId__c.CloseDetail__c</column>
