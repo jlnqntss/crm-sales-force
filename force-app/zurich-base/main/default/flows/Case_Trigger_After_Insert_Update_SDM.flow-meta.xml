@@ -4,7 +4,7 @@
         <name>Notificar_asignacion_de_caso</name>
         <label>Notificar asignación de caso</label>
         <locationX>116</locationX>
-        <locationY>431</locationY>
+        <locationY>731</locationY>
         <actionName>Case.Caso_asignado_SDM</actionName>
         <actionType>emailAlert</actionType>
         <connector>
@@ -28,7 +28,7 @@
         <name>Es_mediador</name>
         <label>¿Es mediador?</label>
         <locationX>182</locationX>
-        <locationY>971</locationY>
+        <locationY>1271</locationY>
         <defaultConnector>
             <targetReference>Set_Account</targetReference>
         </defaultConnector>
@@ -53,7 +53,7 @@
         <name>Owner_ha_cambiado_a_un_usuario_de_SDM</name>
         <label>Owner ha cambiado a un usuario de SDM</label>
         <locationX>380</locationX>
-        <locationY>323</locationY>
+        <locationY>623</locationY>
         <defaultConnector>
             <targetReference>Tiene_Account</targetReference>
         </defaultConnector>
@@ -82,10 +82,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Se_ha_informado_la_oferta</name>
+        <label>Se ha informado la oferta</label>
+        <locationX>380</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Owner_ha_cambiado_a_un_usuario_de_SDM</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.OfferId__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Actualizar_fecha_estimada_de_la_oferta</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Tiene_Account</name>
         <label>¿Tiene Account?</label>
         <locationX>380</locationX>
-        <locationY>863</locationY>
+        <locationY>1163</locationY>
         <defaultConnector>
             <targetReference>Delete_Intermediary_Group</targetReference>
         </defaultConnector>
@@ -115,7 +140,7 @@ IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.I
 IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Staging_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Staging_Value__c}, 
 {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Dev_Value__c})))</expression>
     </formulas>
-    <interviewLabel>Case Trigger - Before Insert/Update - Informar Intermediary Group {!$Flow.CurrentDateTime}</interviewLabel>
+    <interviewLabel>Case Trigger - After Insert/Update - SDM {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert/Update - SDM</label>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -140,7 +165,7 @@ IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.I
         <name>Generar_Error_Log_Envio_Email</name>
         <label>Generar Error Log Envio Email</label>
         <locationX>380</locationX>
-        <locationY>539</locationY>
+        <locationY>839</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -169,10 +194,26 @@ IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.I
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordUpdates>
+        <name>Actualizar_fecha_estimada_de_la_oferta</name>
+        <label>Actualizar fecha estimada de la oferta</label>
+        <locationX>248</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Owner_ha_cambiado_a_un_usuario_de_SDM</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>EstimatedDate__c</field>
+            <value>
+                <elementReference>$Record.EstimatedEndDate__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.OfferId__r</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Delete_Intermediary_Group</name>
         <label>Delete Intermediary Group</label>
         <locationX>578</locationX>
-        <locationY>971</locationY>
+        <locationY>1271</locationY>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
         </inputAssignments>
@@ -182,7 +223,7 @@ IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.I
         <name>Set_Account</name>
         <label>Set Account</label>
         <locationX>314</locationX>
-        <locationY>1079</locationY>
+        <locationY>1379</locationY>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
             <value>
@@ -195,7 +236,7 @@ IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.I
         <name>Set_Parent_Account</name>
         <label>Set Parent Account</label>
         <locationX>50</locationX>
-        <locationY>1079</locationY>
+        <locationY>1379</locationY>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
             <value>
@@ -208,9 +249,9 @@ IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.I
         <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Owner_ha_cambiado_a_un_usuario_de_SDM</targetReference>
+            <targetReference>Se_ha_informado_la_oferta</targetReference>
         </connector>
-        <filterLogic>((1 AND 2) OR 3 OR 4) AND 5 AND 6 AND 7 AND 8</filterLogic>
+        <filterLogic>((1 AND 2) OR 3 OR 4 OR (9 AND 10)) AND 5 AND 6 AND 7 AND 8</filterLogic>
         <filters>
             <field>Intermediary_Group__c</field>
             <operator>IsNull</operator>
@@ -265,6 +306,20 @@ IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.I
             <operator>NotEqualTo</operator>
             <value>
                 <stringValue>Cerrado Perdido</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>OfferId__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>OfferId__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <object>Case</object>
