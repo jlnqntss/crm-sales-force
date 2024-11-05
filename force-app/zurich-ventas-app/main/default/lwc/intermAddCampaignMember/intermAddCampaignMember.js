@@ -97,6 +97,11 @@ export default class IntermAddCampaignMember extends LightningElement {
     return this.error;
   }
 
+  // Devuelve un array de Ids de las filas seleccionadas
+  get selectedRowIds() {
+    return this.selectedRows.map((row) => row.Id);
+  }
+
   // #endregion
 
   // #region Wire functions
@@ -185,23 +190,21 @@ export default class IntermAddCampaignMember extends LightningElement {
    * @date 18/10/2023
    */
   handleRowSelection(event) {
-    // Registros seleccionados en la vista actual
     const selectedRowsInView = event.detail.selectedRows;
-
-    // Mapa para mantener los seleccionados únicos, clave basada en el Id
     const selectedRowsMap = new Map(
       this.selectedRows.map((row) => [row.Id, row])
     );
+    const selectedIdsInView = new Set(selectedRowsInView.map((row) => row.Id));
 
-    // Agregar o actualizar registros seleccionados de la vista actual
-    selectedRowsInView.forEach((row) => {
-      selectedRowsMap.set(row.Id, row);
+    this.filteredAccounts.forEach((row) => {
+      if (selectedIdsInView.has(row.Id)) {
+        selectedRowsMap.set(row.Id, row); // Mantener seleccionadas
+      } else {
+        selectedRowsMap.delete(row.Id); // Quitar desmarcadas
+      }
     });
 
-    // Actualiza this.selectedRows con los valores únicos
     this.selectedRows = Array.from(selectedRowsMap.values());
-
-    // Depurar los registros seleccionados para verificación
     console.debug(this.selectedRows);
   }
 
