@@ -173,7 +173,9 @@ export default class IntermAddCampaignMember extends LightningElement {
     if (isEnterKey) {
       this.queryTerm = evt.target.value.toLowerCase();
       this.filteredAccounts = this.accounts.filter((account) =>
-        account.AccountName.toLowerCase().includes(this.queryTerm)
+        (account.AccountName + account.NationalId)
+          .toLowerCase()
+          .includes(this.queryTerm)
       );
     }
   }
