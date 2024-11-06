@@ -848,6 +848,28 @@
         </rules>
     </decisions>
     <decisions>
+        <name>ModifiedByAdminDecision</name>
+        <label>Modified By Admin?</label>
+        <locationX>1172</locationX>
+        <locationY>276</locationY>
+        <defaultConnectorLabel>Admin User</defaultConnectorLabel>
+        <rules>
+            <name>NoAdminOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.LastModifiedBy.Profile.Name</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Administrador del sistema</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>update_date_modified</targetReference>
+            </connector>
+            <label>No Admin</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>SeHaExcluidoElDominioYCasoVentaDecision</name>
         <label>Se ha excluido el dominio y el caso es tipo Venta?</label>
         <locationX>1678</locationX>
@@ -1424,6 +1446,28 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>update_date_modified</name>
+        <label>update date modified</label>
+        <locationX>710</locationX>
+        <locationY>384</locationY>
+        <connector>
+            <targetReference>GrandesPymesUSPDecision</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>DatePendingNotifications__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>DateTimePendingNotifications__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>UpdateCerrarCaso</name>
         <label>Actualizar Cerrar Caso</label>
         <locationX>336</locationX>
@@ -1514,7 +1558,7 @@
         <locationX>1794</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>GrandesPymesUSPDecision</targetReference>
+            <targetReference>ModifiedByAdminDecision</targetReference>
         </connector>
         <filterLogic>1 AND 2  AND (3 OR 4) AND 5 AND 6</filterLogic>
         <filters>
@@ -1569,7 +1613,7 @@
             <label>PrimerEmail5Dias</label>
             <offsetNumber>5</offsetNumber>
             <offsetUnit>Days</offsetUnit>
-            <recordField>LastModifiedDate</recordField>
+            <recordField>DateTimePendingNotifications__c</recordField>
             <timeSource>RecordField</timeSource>
         </scheduledPaths>
         <scheduledPaths>
@@ -1580,7 +1624,7 @@
             <label>SegundoEmail10Dias</label>
             <offsetNumber>10</offsetNumber>
             <offsetUnit>Days</offsetUnit>
-            <recordField>LastModifiedDate</recordField>
+            <recordField>DateTimePendingNotifications__c</recordField>
             <timeSource>RecordField</timeSource>
         </scheduledPaths>
         <scheduledPaths>
@@ -1591,7 +1635,7 @@
             <label>CerrarCaso15Dias</label>
             <offsetNumber>15</offsetNumber>
             <offsetUnit>Days</offsetUnit>
-            <recordField>LastModifiedDate</recordField>
+            <recordField>DateTimePendingNotifications__c</recordField>
             <timeSource>RecordField</timeSource>
         </scheduledPaths>
         <scheduledPaths>
@@ -1602,7 +1646,7 @@
             <label>CerrarCaso90dias</label>
             <offsetNumber>90</offsetNumber>
             <offsetUnit>Days</offsetUnit>
-            <recordField>LastModifiedDate</recordField>
+            <recordField>DateTimePendingNotifications__c</recordField>
             <timeSource>RecordField</timeSource>
         </scheduledPaths>
         <scheduledPaths>
