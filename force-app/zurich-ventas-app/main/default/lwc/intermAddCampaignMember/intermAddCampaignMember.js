@@ -56,6 +56,7 @@ export default class IntermAddCampaignMember extends LightningElement {
   selectedRows = [];
   isLoading = true;
   showModal;
+  queryTerm;
 
   get addCampaignMembersButtonDisabled() {
     return !this.selectedRows?.length;
@@ -90,7 +91,7 @@ export default class IntermAddCampaignMember extends LightningElement {
   }
 
   get recordsToDisplay() {
-    return !this.accounts?.length;
+    return !this.filteredAccounts?.length;
   }
 
   get wiredErrors() {
@@ -167,7 +168,6 @@ export default class IntermAddCampaignMember extends LightningElement {
     }
   }
 
-  queryTerm;
   /**
    * Función que se encarga de controlar el evento teclear en el campo input de búsqueda.
    * Coteja el texto incluido con el nombre de cuenta y el documento de identidad.
