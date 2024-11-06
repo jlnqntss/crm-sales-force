@@ -53,7 +53,7 @@ global with sharing class ZRMExportCustomerInfoController {
 
         // obtengo el registro de email (solo deberia haber uno)
         for(ContactPointPhone phonePrimary: account.ContactPointPhones)  {
-            email = phonePrimary.TelephoneNumber;
+            phone = phonePrimary.TelephoneNumber;
             break;
         }
 

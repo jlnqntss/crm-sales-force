@@ -76,9 +76,9 @@
                     <apex:column headerValue="{!$Label.ZRM_ExportClientData_ClaimStatus}">
                         <apex:outputField value="{!claim.Status__c}"/>
                     </apex:column>
-                    <!--apex:column headerValue="{!$Label.ZRM_ExportClientData_ClaimProductBranch}">
+                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_ClaimProductBranch}">
                         <apex:outputField value="{!claim.ProductBranch__c}"/>
-                    </apex:column-->
+                    </apex:column>
                     <apex:column headerValue="{!$Label.ZRM_ExportClientData_ClaimIdentifier}">
                         <apex:outputField value="{!claim.AssetIdentifier__c}"/>
                     </apex:column>

@@ -1393,7 +1393,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         List<Schema.SObjectField> claimsFields = new List<Schema.SObjectField> {
             Claim__c.Name,
             Claim__c.Status__c,
-            //Claim__c.ProductBranch__c,
+            Claim__c.ProductBranch__c,
             Claim__c.AssetIdentifier__c,
             Claim__c.DateOfOccurrence__c,
             Claim__c.OpenDate__c,
