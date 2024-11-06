@@ -7,12 +7,13 @@
     <body>
 
         <apex:outputPanel styleClass="no-page-break" layout="block">
-            <apex:panelGrid columns="2" cellspacing="30px" id="header">
-                <apex:outputText value="{!$Label.ZRM_ExportClientData_CustomerSummary}"/>
-                <apex:outputText value="{0,date,dd/MM/yyyy}">
-                   <apex:param value="{! TODAY()}" />
+            <apex:panelGrid columns="3" id="customerSummaryHeader" styleClass="customerSummaryHeader">
+                <apex:image id="zurichLogo" value="{!$Resource.ZRMExportCustomerInfoAndRelatedLogo}" width="40" height="40" styleClass="customerSummarySpacing" alt="logo"/> 
+                <apex:outputText id="customerSummaryText" styleClass="customerSummarySpacing" value="{!$Label.ZRM_ExportClientData_CustomerSummary}"/>
+                <apex:outputText id="today" value="{0,date,dd/MM/yyyy}">
+                   <apex:param value="{!TODAY()}" />
                 </apex:outputText>
-            </apex:panelGrid>    
+            </apex:panelGrid>   
         
             <!-- Información de la cuenta -->
             <apex:panelGrid columns="2" id="customerSummary">
