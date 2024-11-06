@@ -1351,4 +1351,97 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         return (List<Account>) this.baseQuery.run();
     }
+
+    /**
+     * @description Método que obtiene los scopes de una cuenta
+     * @author dmunoz
+     * @date 15-05-2024
+     * @param List<String> accountIds : Conjunto de ids de cuentas
+     **/
+    public List<Account> selectAccountAndRelatedInfo(List<String> accountIds)
+    {
+
+        List<Account> result = new List<Account>();
+        
+        // Cargo en listas los campos a consultar de cada entidad
+        List<Schema.SObjectField> contactpointPhonesFields = new List<Schema.SObjectField> {
+            ContactPointPhone.TelephoneNumber
+        };
+
+        List<Schema.SObjectField> contactpointEmailsFields = new List<Schema.SObjectField> {
+            ContactPointEmail.EmailAddress
+        };
+
+        List<Schema.SObjectField> opportunitiesFields = new List<Schema.SObjectField> {
+            Opportunity.Name,
+            Opportunity.StageName,
+            Opportunity.ProductBranch__c,
+            Opportunity.InfoQuoteNumber__c,
+            Opportunity.CreatedDate__c
+        };
+
+        List<Schema.SObjectField> policiesFields = new List<Schema.SObjectField> {
+            Policy__c.Name,
+            Policy__c.PolicyStatus__c,
+            Policy__c.ProductBranch__c,
+            Policy__c.AssetIdentifier__c,
+            Policy__c.EndDate__c,
+            Policy__c.TotalPremium__c,
+            Policy__c.AccidentRate__c
+        };
+
+        List<Schema.SObjectField> claimsFields = new List<Schema.SObjectField> {
+            Claim__c.Name,
+            Claim__c.Status__c,
+            //Claim__c.ProductBranch__c,
+            Claim__c.AssetIdentifier__c,
+            Claim__c.DateOfOccurrence__c,
+            Claim__c.OpenDate__c,
+            Claim__c.FaultFactor__c
+        };
+
+        List<Schema.SObjectField> propensitiesFields = new List<Schema.SObjectField> {
+            Propensity__c.Name,
+            Propensity__c.ProductBranch__c,
+            Propensity__c.ProductBranchDetail__c,
+            Propensity__c.Propensity__c
+        };
+
+        List<Schema.SObjectField> competitorsFields = new List<Schema.SObjectField> {
+            Competitor__c.Name,
+            Competitor__c.ProductBranch__c,
+            Competitor__c.ExpirationDate__c,
+            Competitor__c.Premium__c,
+            Competitor__c.InsuranceCompany__c
+        };
+
+        List<Schema.SObjectField> accountRelationshipsFields = new List<Schema.SObjectField> {
+            AccountRelationship__c.Name,            
+            AccountRelationship__c.RelationshipType__c
+        };
+
+        if ( accountIds != null && !accountIds.isEmpty())
+        {
+            result = this.baseQuery.selectFields(new Set<Schema.SObjectField> {
+                Account.Id
+            })
+            .addSubQuery(Query.subquery('ContactPointPhones').selectFields(contactpointPhonesFields)
+                .addConditionEq(ContactPointPhone.IsPrimary, true)
+            )
+            .addSubQuery(Query.subquery('ContactPointEmails').selectFields(contactpointEmailsFields)
+                .addConditionEq(ContactPointEmail.IsPrimary, true)
+            )
+            .addSubQuery(Query.subquery('Opportunities').selectFields(opportunitiesFields))
+            .addSubQuery(Query.subquery('PoliciesHolder__r').selectFields(policiesFields))
+            .addSubQuery(Query.subquery('Claims__r').selectFields(claimsFields))
+            .addSubQuery(Query.subquery('Propensiones__r').selectFields(propensitiesFields))
+            .addSubQuery(Query.subquery('Competitors__r').selectFields(competitorsFields))
+            .addSubQuery(Query.subquery('Accounts_Relationships__r').selectFields(accountRelationshipsFields).selectField('AccountRelationship__c.RelatedAccount__r.Name'))
+            .addConditionIn(Account.Id, accountIds)
+            .enforceSecurity()
+            .run();
+
+        }
+        return result;
+    }
 }
