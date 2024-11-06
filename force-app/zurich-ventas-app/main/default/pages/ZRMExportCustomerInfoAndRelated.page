@@ -17,21 +17,21 @@
         
             <!-- Información de la cuenta -->
             <apex:panelGrid columns="2" id="customerSummary">
-                <apex:outputText value="{!Account.Name}" style="font-weight: bold" styleClass="cellPadding" id="name"/>
-                <apex:outputText value="{!$Label.ZRM_ExportClientData_Segment}: {!Account.DescriptionCustomerSegment__c}" styleClass="cellPadding" id="segment"/>
-                <apex:outputText value="{!Account.NationalId__c}" styleClass="cellPadding" id="nationalId"/>
-                <apex:outputText value="{!$Label.ZRM_ExportClientData_CustomeValue}: {!Account.CustomerValue__c}/5" styleClass="cellPadding" id="value"/>
-                <apex:outputField value="{!Account.BirthDate__c}" styleClass="cellPadding" id="birthdate"/>
+                <apex:outputText value="{!Account.Name}" style="font-weight: bold" styleClass="customerCellPadding" id="name"/>
+                <apex:outputText value="{!$Label.ZRM_ExportClientData_Segment}: {!Account.DescriptionCustomerSegment__c}" styleClass="customerCellPadding" id="segment"/>
+                <apex:outputText value="{!Account.NationalId__c}" styleClass="customerCellPadding" id="nationalId"/>
+                <apex:outputText value="{!$Label.ZRM_ExportClientData_CustomeValue}: {!Account.CustomerValue__c}/5" styleClass="customerCellPadding" id="value"/>
+                <apex:outputField value="{!Account.BirthDate__c}" styleClass="customerCellPadding" id="birthdate"/>
                 <apex:outputText value="" id="empty1"/>
         
                 <!-- Dirección la cuenta -->
                 <apex:outputText value="{!$Label.ZRM_ExportClientData_Address}" styleClass="customerAddressHeader" id="addressHeader"/>
                 <apex:outputText value="{!$Label.ZRM_ExportClientData_ContactData}" styleClass="customerAddressHeader" id="contactData"/>
-                <apex:outputField value="{!Account.BillingStreet}" styleClass="cellPadding" id="street"/>
-                <apex:outputText value="{!accountPhone}" styleClass="cellPadding" id="phone"/>
-                <apex:outputText value="{!Account.BillingPostalCode} {!Account.BillingCity}" styleClass="cellPadding" id="postalCodeCity"/>
-                <apex:outputText value="{!accountEmail}" styleClass="cellPadding" id="email"/>
-                <apex:outputField value="{!Account.BillingCountry}" styleClass="cellPadding" id="country"/>
+                <apex:outputField value="{!Account.BillingStreet}" styleClass="customerCellPadding" id="street"/>
+                <apex:outputText value="{!accountPhone}" styleClass="customerCellPadding" id="phone"/>
+                <apex:outputText value="{!Account.BillingPostalCode} {!Account.BillingCity}" styleClass="customerCellPadding" id="postalCodeCity"/>
+                <apex:outputText value="{!accountEmail}" styleClass="customerCellPadding" id="email"/>
+                <apex:outputField value="{!Account.BillingCountry}" styleClass="customerCellPadding" id="country"/>
             
             </apex:panelGrid>
         </apex:outputPanel>

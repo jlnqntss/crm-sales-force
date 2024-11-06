@@ -27,6 +27,24 @@ th, td {
 th {
     background-color: #e3f2fd;
 }*/
+
+
+/*Evitar que se corten las tablas*/
+.no-page-break {
+    page-break-inside: avoid;
+}
+
+/*Estilo Logo y Resumen del cliente*/
+.customerSummaryHeader {
+    
+    padding-bottom: 20px;
+}
+
+.customerSummarySpacing {
+    padding-right: 10px;
+}
+
+
 .customerAddressHeader {
     background-color: #0070d2;
     font-weight: bold;
@@ -37,11 +55,6 @@ th {
     padding-right: 30px;
 }
 
-.cellPadding {
+.customerCellPadding {
     padding-right: 30px;
-}
-
-/*Evitar que se corten las tablas*/
-.no-page-break {
-    page-break-inside: avoid;
 }
