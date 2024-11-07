@@ -34,10 +34,9 @@ describe("c-interm-add-campaign-member", () => {
       is: IntermAddCampaignMember
     });
     element.campaignId = mockCampaingsData.Id;
-    console.log("element: " + element.outerHTML);
+
     // Añadir el componente al DOM
     document.body.appendChild(element);
-    console.log("element2: " + element.outerHTML);
 
     getRecord.emit(mockCampaingsData);
 
@@ -69,10 +68,9 @@ describe("c-interm-add-campaign-member", () => {
       is: IntermAddCampaignMember
     });
     element.campaignId = mockCampaingsData.Id;
-    console.log("element: " + element.outerHTML);
+
     // Añadir el componente al DOM
     document.body.appendChild(element);
-    console.log("element2: " + element.outerHTML);
 
     getRecord.emit(mockCampaingsData);
 

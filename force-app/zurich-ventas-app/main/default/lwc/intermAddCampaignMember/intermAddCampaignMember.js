@@ -209,7 +209,6 @@ export default class IntermAddCampaignMember extends LightningElement {
     });
 
     this.selectedRows = Array.from(selectedRowsMap.values());
-    console.debug(this.selectedRows);
   }
 
   async handleAddCampaignMembers() {
