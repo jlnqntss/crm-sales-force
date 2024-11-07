@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>TerritorialDirection__c</fullName>
+    <fullName>NameAndIntermediaryCode__c</fullName>
+    <description>Campo que se utiliza en el lookup del formulario de peticiones de mercado</description>
     <externalId>false</externalId>
-    <formula>IF(ISBLANK(Account.TerritorialDirection__c), $User.CompanyName, Account.TerritorialDirection__c)</formula>
+    <formula>Name + &apos; - &apos; + INFOIntermediaryCode__c</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-    <label>Territorial Direction</label>
+    <label>Nombre y código de intermediario</label>
     <required>false</required>
     <trackHistory>false</trackHistory>
-    <trackTrending>false</trackTrending>
     <type>Text</type>
     <unique>false</unique>
 </CustomField>
