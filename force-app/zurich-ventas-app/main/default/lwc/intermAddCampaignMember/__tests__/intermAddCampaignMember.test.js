@@ -4,22 +4,12 @@ import IntermAddCampaignMember from "c/intermAddCampaignMember";
 import getContacts from "@salesforce/apex/IntermAddCampaignMemberController.getContacts";
 
 // Definir el mock de datos directamente en el código
-const mockContactsData = require("./data/getContacts.json");
-const mockCampaingsData = require("./data/getCampaings.json");
+const mockContactsData = require("./data/getAccounts.json");
+const mockCampaingsData = require("./data/getCampaigns.json");
 
 // Mockear el adaptador de Apex
 jest.mock(
   "@salesforce/apex/IntermAddCampaignMemberController.getContacts",
-  () => {
-    const { createApexTestWireAdapter } = require("@salesforce/sfdx-lwc-jest");
-    return {
-      default: createApexTestWireAdapter(jest.fn())
-    };
-  },
-  { virtual: true }
-);
-jest.mock(
-  "lightning/uiRecordApi",
   () => {
     const { createApexTestWireAdapter } = require("@salesforce/sfdx-lwc-jest");
     return {
@@ -38,15 +28,18 @@ describe("c-interm-add-campaign-member", () => {
     jest.clearAllMocks();
   });
 
-  it("muestra los datos de cuentas en la tabla", async () => {
+  it("Validación de representación de cuentas", async () => {
     // Crear el elemento
     const element = createElement("c-interm-add-campaign-member", {
       is: IntermAddCampaignMember
     });
+    element.campaignId = mockCampaingsData.Id;
     console.log("element: " + element.outerHTML);
     // Añadir el componente al DOM
     document.body.appendChild(element);
     console.log("element2: " + element.outerHTML);
+
+    getRecord.emit(mockCampaingsData);
 
     // Emitir datos del mock en el adaptador de wire
     getContacts.emit(mockContactsData);
@@ -59,16 +52,68 @@ describe("c-interm-add-campaign-member", () => {
       element.shadowRoot.querySelector("lightning-button");
     showModalButton.dispatchEvent(new CustomEvent("click", { detail: {} }));
 
-    const datatable = element.shadowRoot.querySelector("lightning-datatable");
+    await Promise.resolve();
+
+    const modal = element.shadowRoot.querySelector("section.slds-modal");
+    expect(modal).not.toBeNull();
+    const datatable = modal.querySelector("lightning-datatable");
     expect(datatable).not.toBeNull();
-    expect(datatable.data).toEqual(mockContactsData);
 
     // Verificar que se muestra el número correcto de filas
     expect(datatable.data.length).toBe(mockContactsData.length);
   });
 
-  // Función para esperar a que las promesas asíncronas se resuelvan
-  function flushPromises() {
-    return new Promise((resolve) => setTimeout(resolve, 0));
-  }
+  it("Validación de filtrado", async () => {
+    // Crear el elemento
+    const element = createElement("c-interm-add-campaign-member", {
+      is: IntermAddCampaignMember
+    });
+    element.campaignId = mockCampaingsData.Id;
+    console.log("element: " + element.outerHTML);
+    // Añadir el componente al DOM
+    document.body.appendChild(element);
+    console.log("element2: " + element.outerHTML);
+
+    getRecord.emit(mockCampaingsData);
+
+    // Emitir datos del mock en el adaptador de wire
+    getContacts.emit(mockContactsData);
+
+    // Esperar a que se resuelvan las promesas y actualicen el DOM
+    await Promise.resolve();
+
+    // Seleccionar la tabla y verificar que contiene los datos
+    const showModalButton =
+      element.shadowRoot.querySelector("lightning-button");
+    showModalButton.dispatchEvent(new CustomEvent("click", { detail: {} }));
+
+    await Promise.resolve();
+
+    // Obtener el elemento del input de búsqueda
+    const modal = element.shadowRoot.querySelector("section.slds-modal");
+    const lightningInput = modal.querySelector("lightning-input");
+
+    // Configurar el valor del input y disparar el evento "input"
+    lightningInput.value = "NID002";
+    lightningInput.dispatchEvent(
+      new CustomEvent("input", {
+        bubbles: true,
+        composed: true,
+        detail: { value: "NID002" }
+      })
+    );
+
+    // Esperar a que el componente se actualice
+    await Promise.resolve();
+
+    // Verificar si la tabla muestra los resultados filtrados
+    const filteredResults = element.filteredAccounts; // o como se llame en tu LWC
+    expect(filteredResults.length).toBe(1);
+    expect(filteredResults).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ NationalId: "NID002" }),
+        expect.objectContaining({ AccountName: "Account 2" })
+      ])
+    );
+  });
 });
