@@ -1454,12 +1454,6 @@
             <targetReference>GrandesPymesUSPDecision</targetReference>
         </connector>
         <inputAssignments>
-            <field>DatePendingNotifications__c</field>
-            <value>
-                <elementReference>$Flow.CurrentDate</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>DateTimePendingNotifications__c</field>
             <value>
                 <elementReference>$Flow.CurrentDateTime</elementReference>
