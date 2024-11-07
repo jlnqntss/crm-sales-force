@@ -1,37 +1,17 @@
-/* Estilos para ajustar el PDF y mejorar la visualización */
-/*body {
-    font-family: Arial, sans-serif;
-    font-size: 12px;
+@page {
+    font-family: Verdana, sans-serif;
 }
-.section {
-    border: 1px solid #0070d2;
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 5px;
-}
-.section h3 {
-    color: #0070d2;
-    font-weight: bold;
-    margin-top: 0;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 5px;
-}
-th, td {
-    border: 1px solid #0070d2;
-    padding: 5px;
-    text-align: left;
-}
-th {
-    background-color: #e3f2fd;
-}*/
 
+@page {
+    @bottom-right {
+        content: "Página " counter(page) " de " counter(pages);
+      }
+}
 
 /*Evitar que se corten las tablas*/
 .no-page-break {
     page-break-inside: avoid;
+    margin-bottom: 20px;
 }
 
 /*Estilo Logo y Resumen del cliente*/
@@ -57,4 +37,30 @@ th {
 
 .customerCellPadding {
     padding-right: 30px;
+}
+
+/*Tabla objetos relacionados*/
+.relatedHeaderTable {
+    vertical-align: middle;
+    text-align: center;
+    border-bottom: 2px solid #0070d2;
+}
+
+.relatedColumnTable {
+    width: 20%;
+    border-bottom: 1px solid #0070d2;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.relatedTableTitle {
+    background-color: #0070d2;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;     
+    width: 100%;   
+    padding-left: 30px;  
+    padding-top: 5px;
+    padding-bottom: 5px;
+    box-sizing: border-box;
 }

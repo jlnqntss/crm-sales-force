@@ -1423,7 +1423,9 @@ public with sharing class AccountsSelector extends RecordsSelector
         if ( accountIds != null && !accountIds.isEmpty())
         {
             result = this.baseQuery.selectFields(new Set<Schema.SObjectField> {
-                Account.Id
+                Account.Id,
+                Account.DescriptionCustomerSegment__c,
+                Account.ScoreCLTV_NoLife__c
             })
             .addSubQuery(Query.subquery('ContactPointPhones').selectFields(contactpointPhonesFields)
                 .addConditionEq(ContactPointPhone.IsPrimary, true)

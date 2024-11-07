@@ -196,6 +196,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.DescriptionCustomerSegment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Expert__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -587,6 +592,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.SubscriptionEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.ScoreCLTV_NoLife__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

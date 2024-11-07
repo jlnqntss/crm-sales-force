@@ -1,3 +1,9 @@
+/**
+ * @description       : Controlador visualforce page ZRMExportCustomerInfoAndRelated
+ * @author            : dmunoz
+ * @group             :
+ * @last modified on  : 05-11-2024
+ **/
 global with sharing class ZRMExportCustomerInfoController {
     public Account account { get; set; }
     public List<Opportunity> opportunities { get; set; }
@@ -9,14 +15,22 @@ global with sharing class ZRMExportCustomerInfoController {
     public List<CampaignMember> campaignMembers { get; set; }
     public String accountPhone { get; set; }
     public String accountEmail { get; set; }
+    public String accountCustomerSegment { get; set; }
+    public String accountCustomerValue { get; set; }
 
     public ZRMExportCustomerInfoController(ApexPages.StandardController controller) {
         account = (Account)controller.getRecord();
         loadRelatedData();
     }
 
-    public void loadRelatedData() {
 
+    /**
+     * Recupera la informacion necesaria a mostrar
+     * @author dmunoz
+     * @date 05/11/2024
+     */
+    @TestVisible
+    private void loadRelatedData() {
 
         // Obtenemos los datos que cuelgan del cliente directamente
         List<Account> accountRelatedData = (new AccountsSelector()).selectAccountAndRelatedInfo(new List<String>{account.Id});
@@ -34,13 +48,23 @@ global with sharing class ZRMExportCustomerInfoController {
         Map<String, String> contactData = getAccountContactData(accountRelatedData.get(0));
         accountPhone = contactData.get('phone');
         accountEmail = contactData.get('email');
+
+        // Obtengo la informacion de segmento
+        accountCustomerSegment = getAccounCustomerSegment(accountRelatedData.get(0));
+
+        // Obtengo la informacion de valor cliente
+        accountCustomerValue = getAccounCustomerValue(accountRelatedData.get(0));
     }
 
 
 
 
-
-    public Map<String, String> getAccountContactData(Account account) {
+    /**
+     * Recupera la informacion de contacto
+     * @author dmunoz
+     * @date 05/11/2024
+     */
+    private Map<String, String> getAccountContactData(Account account) {
         Map<String, String> result = new Map<String, String>();
         String phone = '';
         String email = '';
@@ -63,7 +87,13 @@ global with sharing class ZRMExportCustomerInfoController {
         return result;
     }
 
-    public List<CampaignMember> getAccountCampaignsData(Account account) {
+
+    /**
+     * Recupera la informacion de miembro de campaña
+     * @author dmunoz
+     * @date 05/11/2024
+     */
+    private List<CampaignMember> getAccountCampaignsData(Account account) {
         List<CampaignMember> result = new List<CampaignMember>();
         List<String> accountIdsList = new List<String>();
         CampaignMembersSelector.ProperCampaignMembersSelector selector = new CampaignMembersSelector.ProperCampaignMembersSelector();
@@ -71,6 +101,36 @@ global with sharing class ZRMExportCustomerInfoController {
         accountIdsList.add(account.Id);
 
         result = selector.selectCrossSellingCampaingsFromAccount(accountIdsList);
+
+        return result;
+    }
+
+    /**
+     * Recupera la informacion de segmento cliente, si está vacio devuelve el valor "No Informado"
+     * @author dmunoz
+     * @date 05/11/2024
+     */
+    private String getAccounCustomerSegment(Account account) {
+
+        String result = Label.ZRM_CustomerSegment_NoValue;
+        if (String.isNotEmpty(account.DescriptionCustomerSegment__c)) {
+            result = account.DescriptionCustomerSegment__c;
+        }
+
+        return result;
+    }
+
+    /**
+     * Recupera la informacion de segmento cliente, si está vacio devuelve el valor "No Informado"
+     * @author dmunoz
+     * @date 05/11/2024
+     */
+    private string getAccounCustomerValue(Account account) {
+
+        String result = Label.ZRM_CustomerSegment_NoValue;
+        if (String.isNotEmpty(account.ScoreCLTV_NoLife__c)) {
+            result = account.ScoreCLTV_NoLife__c + '/5';
+        }
 
         return result;
     }
