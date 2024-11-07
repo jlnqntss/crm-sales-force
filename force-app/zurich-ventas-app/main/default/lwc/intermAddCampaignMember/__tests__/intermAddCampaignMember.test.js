@@ -3,6 +3,12 @@ import { getRecord } from "lightning/uiRecordApi";
 import IntermAddCampaignMember from "c/intermAddCampaignMember";
 import getContacts from "@salesforce/apex/IntermAddCampaignMemberController.getContacts";
 
+// Importa el adaptador de wire de prueba desde `@salesforce/sfdx-lwc-jest`
+import { registerLdsTestWireAdapter } from "@salesforce/sfdx-lwc-jest";
+
+// Registra un adaptador de wire simulado para `getRecord`
+const getRecordWireAdapter = registerLdsTestWireAdapter(getRecord);
+
 // Definir el mock de datos directamente en el código
 const mockContactsData = require("./data/getAccounts.json");
 const mockCampaingsData = require("./data/getCampaigns.json");
@@ -38,7 +44,7 @@ describe("c-interm-add-campaign-member", () => {
     // Añadir el componente al DOM
     document.body.appendChild(element);
 
-    getRecord.emit(mockCampaingsData);
+    getRecordWireAdapter.emit(mockCampaingsData);
 
     // Emitir datos del mock en el adaptador de wire
     getContacts.emit(mockContactsData);
@@ -72,7 +78,7 @@ describe("c-interm-add-campaign-member", () => {
     // Añadir el componente al DOM
     document.body.appendChild(element);
 
-    getRecord.emit(mockCampaingsData);
+    getRecordWireAdapter.emit(mockCampaingsData);
 
     // Emitir datos del mock en el adaptador de wire
     getContacts.emit(mockContactsData);
