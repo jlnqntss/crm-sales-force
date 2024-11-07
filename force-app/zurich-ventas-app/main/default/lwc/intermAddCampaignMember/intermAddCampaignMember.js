@@ -42,6 +42,8 @@ export default class IntermAddCampaignMember extends LightningElement {
   // #region Exposed properties using the @api decorator
   @api campaignId;
   @api intermediaryCode;
+  @api accounts;
+  @api filteredAccounts;
 
   // #endregion
 
@@ -51,7 +53,6 @@ export default class IntermAddCampaignMember extends LightningElement {
   campaign;
   userInfo;
   _wiredContacts;
-  accounts;
   error;
   selectedRows = [];
   isLoading = true;
