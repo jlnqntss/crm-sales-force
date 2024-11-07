@@ -1701,11 +1701,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>SoyManager__c</field>
-            <table>Account</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>ZVGODecission__c</field>
             <table>Account</table>
         </columns>
