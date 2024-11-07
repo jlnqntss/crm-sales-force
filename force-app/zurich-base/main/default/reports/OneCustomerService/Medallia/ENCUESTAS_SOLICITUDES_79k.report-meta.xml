@@ -248,7 +248,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>notEqual</operator>
-            <value>Otras áreas,Saneamiento</value>
+            <value>Otras áreas</value>
         </criteriaItems>
         <criteriaItems>
             <column>Survey__c$CaseId__c.CloseDetail__c</column>
