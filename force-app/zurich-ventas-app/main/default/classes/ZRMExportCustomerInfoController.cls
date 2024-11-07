@@ -20,6 +20,7 @@ global with sharing class ZRMExportCustomerInfoController {
 
     public ZRMExportCustomerInfoController(ApexPages.StandardController controller) {
         account = (Account)controller.getRecord();
+        Apexpages.currentPage().getHeaders().put('content-disposition',  'inline; filename='+ account.Name + '.pdf');
         loadRelatedData();
     }
 
