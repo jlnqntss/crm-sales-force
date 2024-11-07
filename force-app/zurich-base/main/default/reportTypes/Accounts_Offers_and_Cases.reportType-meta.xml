@@ -1741,11 +1741,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Recertification2024Img__c</field>
-            <table>Account</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>ExpatsSegment__c</field>
             <table>Account</table>
         </columns>
