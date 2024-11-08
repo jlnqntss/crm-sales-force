@@ -79,7 +79,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>notEqual</operator>
-            <value>Supervisor,Deferred</value>
+            <value>Other areas Zurich,Intermediary,Technical Direction,Territorial Direction,Others,Consultant</value>
         </criteriaItems>
         <criteriaItems>
             <column>Case.DisplayCaseMiCentro__c</column>
