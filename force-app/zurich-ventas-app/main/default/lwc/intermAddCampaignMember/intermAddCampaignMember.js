@@ -42,7 +42,6 @@ export default class IntermAddCampaignMember extends LightningElement {
   // #region Exposed properties using the @api decorator
   @api campaignId;
   @api intermediaryCode;
-  @api accounts;
 
   // #endregion
 
@@ -58,6 +57,7 @@ export default class IntermAddCampaignMember extends LightningElement {
   showModal;
   queryTerm;
   filteredAccounts;
+  accounts;
 
   get addCampaignMembersButtonDisabled() {
     return !this.selectedRows?.length;
