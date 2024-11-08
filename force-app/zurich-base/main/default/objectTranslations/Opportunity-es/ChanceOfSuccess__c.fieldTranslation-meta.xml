@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>Posibilidad éxito</label>
+    <label>Situación</label>
     <name>ChanceOfSuccess__c</name>
     <picklistValues>
-        <masterLabel>Caliente</masterLabel>
-        <translation><!-- Caliente --></translation>
+        <masterLabel>Caso repetido</masterLabel>
+        <translation><!-- Caso repetido --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Emitido</masterLabel>
@@ -15,15 +15,27 @@
         <translation><!-- Emitido diferido --></translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>En marcha</masterLabel>
+        <translation><!-- En marcha --></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Escalar/SOS</masterLabel>
         <translation><!-- Escalar/SOS --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Rechazado</masterLabel>
-        <translation><!-- Rechazado --></translation>
+        <masterLabel>Perdida - Mediador</masterLabel>
+        <translation><!-- Perdida - Mediador --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Rechazado - Zurich</masterLabel>
+        <translation><!-- Rechazado - Zurich --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Sin feedback</masterLabel>
         <translation><!-- Sin feedback --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Solicitado feedback</masterLabel>
+        <translation><!-- Solicitado feedback --></translation>
     </picklistValues>
 </CustomFieldTranslation>

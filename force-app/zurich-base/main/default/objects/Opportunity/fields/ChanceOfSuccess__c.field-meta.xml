@@ -13,6 +13,31 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
+                <fullName>En marcha</fullName>
+                <default>false</default>
+                <label>En marcha</label>
+            </value>
+            <value>
+                <fullName>Caso repetido</fullName>
+                <default>false</default>
+                <label>Caso repetido</label>
+            </value>
+            <value>
+                <fullName>Sin feedback</fullName>
+                <default>false</default>
+                <label>Sin feedback</label>
+            </value>
+            <value>
+                <fullName>Solicitado feedback</fullName>
+                <default>false</default>
+                <label>Solicitado feedback</label>
+            </value>
+            <value>
+                <fullName>Escalar/SOS</fullName>
+                <default>false</default>
+                <label>Escalar/SOS</label>
+            </value>
+            <value>
                 <fullName>Emitido</fullName>
                 <default>false</default>
                 <label>Emitido</label>
@@ -23,24 +48,14 @@
                 <label>Emitido diferido</label>
             </value>
             <value>
-                <fullName>Rechazado</fullName>
+                <fullName>Perdida - Mediador</fullName>
                 <default>false</default>
-                <label>Rechazado</label>
+                <label>Perdida - Mediador</label>
             </value>
             <value>
-                <fullName>Caliente</fullName>
+                <fullName>Rechazado - Zurich</fullName>
                 <default>false</default>
-                <label>Caliente</label>
-            </value>
-            <value>
-                <fullName>Sin feedback</fullName>
-                <default>false</default>
-                <label>Sin feedback</label>
-            </value>
-            <value>
-                <fullName>Escalar/SOS</fullName>
-                <default>false</default>
-                <label>Escalar/SOS</label>
+                <label>Rechazado - Zurich</label>
             </value>
         </valueSetDefinition>
     </valueSet>
