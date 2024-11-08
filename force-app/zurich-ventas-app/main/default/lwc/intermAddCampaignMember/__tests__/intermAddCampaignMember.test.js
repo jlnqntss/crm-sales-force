@@ -111,7 +111,7 @@ describe("c-interm-add-campaign-member", () => {
     await Promise.resolve();
 
     // Verificar si la tabla muestra los resultados filtrados
-    const filteredResults = element.filteredAccounts; // o como se llame en tu LWC
+    const filteredResults = element.getFilteredAccounts();
     expect(filteredResults.length).toBe(1);
     expect(filteredResults).toEqual(
       expect.arrayContaining([

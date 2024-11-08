@@ -43,7 +43,6 @@ export default class IntermAddCampaignMember extends LightningElement {
   @api campaignId;
   @api intermediaryCode;
   @api accounts;
-  @api filteredAccounts;
 
   // #endregion
 
@@ -58,6 +57,7 @@ export default class IntermAddCampaignMember extends LightningElement {
   isLoading = true;
   showModal;
   queryTerm;
+  filteredAccounts;
 
   get addCampaignMembersButtonDisabled() {
     return !this.selectedRows?.length;
@@ -102,6 +102,11 @@ export default class IntermAddCampaignMember extends LightningElement {
   // Devuelve un array de Ids de las filas seleccionadas
   get selectedRowIds() {
     return this.selectedRows.map((row) => row.Id);
+  }
+
+  @api
+  getFilteredAccounts() {
+    return this.filteredAccounts;
   }
 
   // #endregion
