@@ -21,7 +21,7 @@ public with sharing class RoutingTeamQueueConfigUtil {
         // Agregar los valores al mapa
         for (RoutingTeamQueueConfig__mdt config : mConfigs.values()) {
             mConfigValues.put(config.Queue__c, config.RoutingTeam__c);
-        }
+        } 
         return mConfigValues;
     }
 }
