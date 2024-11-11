@@ -5,22 +5,22 @@
  * @date 24/10/2024
  */
 public with sharing class RoutingTeamQueueConfigUtil {
-
+ 
     /**
-     * Devuelve en forma de mapa todas las colas con su correspondiente equipo de enrutamiento 
+     * Devuelve en forma de mapa todas las colas con su correspondiente equipo de enrutamiento
      * @author fjbelmonte
      * @date 24/10/2024
      * @return  Mapa con los valores de la mdt
      */
-    public static Map<String, String> getRoutingTeamQueueConfigValues() 
-    {
+    public static Map<String, String> getRoutingTeamQueueConfigValues() {
         try {
             Map<String, String> mConfigValues = new Map<String, String>();
-            if (Schema.getGlobalDescribe().get('RoutingTeamQueueConfig__mdt').getDescribe().isQueryable()) {
-                // El objeto existe y se puede consultar
-                for(RoutingTeamQueueConfig__mdt config : [SELECT Queue__c, RoutingTeam__c FROM RoutingTeamQueueConfig__mdt]){
-                    mConfigValues.put(config.Queue__c, config.RoutingTeam__c);
-                }
+           
+            //Get de todos los registros del CMT
+            Map<String, RoutingTeamQueueConfig__mdt> mConfigs = RoutingTeamQueueConfig__mdt.getAll();
+            // Agregar los valores al mapa
+            for (RoutingTeamQueueConfig__mdt config : mConfigs.values()) {
+                mConfigValues.put(config.Queue__c, config.RoutingTeam__c);
             }
             return mConfigValues;
         } catch (Exception ex) {
