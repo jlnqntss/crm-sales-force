@@ -40,7 +40,7 @@
         >
           <lightning-layout horizontal-align="spread">
             <lightning-layout-item padding="around-small">
-              <div onkeyup={handleSearchChange}>
+              <div role="search" tabindex="0" onkeyup={handleSearchChange}>
                 <lightning-input
                   name="enter-search"
                   label="Escribe para buscar"
