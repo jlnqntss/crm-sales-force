@@ -634,15 +634,19 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public String selectCasesWithoutBestAgent()
     {
-        //Construimos la query    
+        //Construimos la query 
+        Query.Condition andCondition = Query.doOr(
+                Query.conditionIn(CASE_OWNER_NAME, RoutingTeamQueueConfigUtil.getRoutingTeamQueueConfigValues().keySet()),
+                Query.conditionEq(CASE_OWNER_PROFILE_NAME, profileIntegrator));   
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{
             Case.Id,
             Case.OwnerId
         })
         .selectFields(CASE_OWNER_NAME)
+        .selectFields(CASE_OWNER_PROFILE_NAME)
         .addConditionEq(Case.WithoutBestAgent__c , true)
         .addConditionEq(Case.isClosed, false)
-        .addConditionIn(CASE_OWNER_NAME, RoutingTeamQueueConfigUtil.getRoutingTeamQueueConfigValues().keySet())
+        .addCondition(andCondition)
         .orderBy('Case.Priority__c', 'DESC')
         .orderBy('Case.LastModifiedDate', 'ASC');
 

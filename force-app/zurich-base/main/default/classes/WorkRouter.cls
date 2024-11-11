@@ -6,6 +6,7 @@
 public with sharing class WorkRouter 
 {
     private static final string NB_DAMAGES_RC_ROUTING_TEAM_NAME = 'NB Damages RC';
+    private static final string INTEGRATOR_PROFILE_NAME = 'Profile_Name_Integrator';
     /**
      * Método que calcula y actualiza el número de casos asignados para los usuarios que son gestores activos (ActiveAgent__c a true)
      * @author: aberuete
@@ -49,9 +50,16 @@ public with sharing class WorkRouter
             //Almacenamos los casos al mapa de mRoutingTeamWrapper separados por equipos de enrutamiento
             allocateAssignCasesByRoutingTeam(casesToAssign, mRoutingTeamWrapper);
             //Obtenemos los usuarios que son agentes activos y pertenecen a los equipos necesarios para distribuir los casos
-            List<User> usersWithAgentActive = new UsersSelector().selectUsersWithAgentActiveOrderByAssignedCases(mRoutingTeamWrapper.keySet());
+            List<User> usersWithAgentActive = new UsersSelector().selectUsersWithAgentActiveOrderByAssignedCases();
             //Asignamos los usuarios al mapa separados por el equipo al que pertenecen
             allocateActiveAgentsByRoutingTeam(usersWithAgentActive, mRoutingTeamWrapper);
+            //Si se han recuperado casos cuyo Owner es un usuario Integrador, entonces se añaden a esos casos todos los agentes activos (da igual el equipo)
+            String profileIntegrator = GlobalConfigUtil.getGlobalConfigurationValue(INTEGRATOR_PROFILE_NAME);
+            if(mRoutingTeamWrapper.get(profileIntegrator) != null){
+                RoutingTeamWrapper integratorWrapper = mRoutingTeamWrapper.get(profileIntegrator);
+                integratorWrapper.lUsersWithAgentActive.addAll(usersWithAgentActive);
+                mRoutingTeamWrapper.put(profileIntegrator, integratorWrapper);
+            }
             //Se recorre el mapa  (Equipo de enrutamiento, RoutingTeamWrapper ) y se llama a la lógica (ya existente) de reparto por cada entrada del mapa, proporcionando su lista de casos y  de usuarios. 
             for (RoutingTeamWrapper routingTeamWrapperItem : mRoutingTeamWrapper.values()) {
                 assignCasesWithoutBestAgentToActiveAgent(routingTeamWrapperItem.lCasesToAssign, routingTeamWrapperItem.lUsersWithAgentActive);
@@ -81,8 +89,12 @@ public with sharing class WorkRouter
             RoutingTeamWrapper routingTeamWpp;
             for (Case caseItem : lCases) {
                 if(!Test.isRunningTest()){
-                    //Recuperamos a que equipo corresponde el caso en base a la tabla mRoutingTeamQueueConfig
-                    routingTeam = mRoutingTeamQueueConfig.get(caseItem.Owner.Name);
+                    if(caseItem.Owner.Profile.Name == GlobalConfigUtil.getGlobalConfigurationValue('Profile_Name_Integrator')){
+                        routingTeam = caseItem.Owner.Profile.Name;
+                    }else{
+                        //Recuperamos a que equipo corresponde el caso en base a la tabla mRoutingTeamQueueConfig
+                        routingTeam = mRoutingTeamQueueConfig.get(caseItem.Owner.Name);
+                    }
                 }else{
                     routingTeam = NB_DAMAGES_RC_ROUTING_TEAM_NAME;
                 }

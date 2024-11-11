@@ -446,42 +446,17 @@ public with sharing class UsersSelector extends RecordsSelector
         {
             User.Id,
             User.AssignedCases__c,
-            User.Capacity__c
-        }
-        )
-        .addConditionEq(User.ActiveAgent__c, true)
-        .addConditionEq(User.IsActive, true)
-        .orderBy('User.AssignedCases__c', 'ASC');
-
-        return (List<User>) this.baseQuery.run();
-    }
-
-    /**
-     * Método selector sobrecargado que devuelve los ids de usuarios, los casos asignados y la capacidad 
-     * de aquellos usuarios que tengan el campo gestor activo a true y que su equipo de enrutamiento se encuentre en el conjunto pasado por parámetro
-     * ordenados por menos número de casos asignados
-     * @author fjbelmonte
-     * @date 25/10/2024
-     */
-    public List<User> selectUsersWithAgentActiveOrderByAssignedCases(Set<String> sRoutingTeams)
-    {
-        this.baseQuery.selectFields
-        (
-            new List<Schema.SObjectField>
-        {
-            User.Id,
-            User.AssignedCases__c,
             User.Capacity__c,
             User.RoutingTeam__c
         }
         )
-        .addConditionIn(User.RoutingTeam__c, sRoutingTeams)
         .addConditionEq(User.ActiveAgent__c, true)
         .addConditionEq(User.IsActive, true)
         .orderBy('User.AssignedCases__c', 'ASC');
+
         return (List<User>) this.baseQuery.run();
     }
-
+    
     /**
      * Método selector que devuelve el número de agentes activos que no tienen una capacidad
      * @author aberuete
