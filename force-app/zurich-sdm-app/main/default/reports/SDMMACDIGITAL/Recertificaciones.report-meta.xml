@@ -47,7 +47,7 @@
         <field>Account.ZRMPermisionDecission__c</field>
     </columns>
     <columns>
-        <field>Account.Recertification2024__c</field>
+        <field>Account.Recertification2024Img__c</field>
     </columns>
     <filter>
         <criteriaItems>
