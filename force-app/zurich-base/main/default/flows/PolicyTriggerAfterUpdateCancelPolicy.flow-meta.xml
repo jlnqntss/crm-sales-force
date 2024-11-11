@@ -11,7 +11,7 @@
             <assignToReference>GetRelatedOfferAction.Sales_Loss_Reason__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Canceled Policy</stringValue>
+                <elementReference>Opportunity_Sales_Loss_Reason_Canceled_Policy</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -117,21 +117,21 @@
                 <leftValueReference>GetRelatedOfferAction.Owner.Profile.Name</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Ventas User</stringValue>
+                    <elementReference>User_Profile_Name_Ventas_User</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>GetRelatedOfferAction.CreatedBy.Profile.Name</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Agente Ventas</stringValue>
+                    <elementReference>User_Profile_Name_Agente_Ventas</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>GetRelatedOfferAction.CreatedBy.Profile.Name</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Agente Ventas - AGR</stringValue>
+                    <elementReference>User_Profile_Name_Agente_Ventas_AGR</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -142,6 +142,11 @@
     </decisions>
     <description>Se añade el seteo de campos de oferta desde la póliza por el match de ofertas huérfanas cuando llega una póliza anulada (proceso batch) y corrección visibilidad</description>
     <environments>Default</environments>
+    <formulas>
+        <name>Opportunity_Sales_Loss_Reason_Canceled_Policy</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Opportunity_Sales_Loss_Reason_Canceled_P.Value__c}</expression>
+    </formulas>
     <formulas>
         <name>Opportunity_StageName_Close_Lost</name>
         <dataType>String</dataType>
@@ -156,6 +161,21 @@
         <name>Policy_PolicyStatus_V</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Policy_PolicyStatus_V.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>User_Profile_Name_Agente_Ventas</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Agente_Ventas.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>User_Profile_Name_Agente_Ventas_AGR</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Agente_Ventas_AGR.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>User_Profile_Name_Ventas_User</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Ventas_User.Value__c}</expression>
     </formulas>
     <interviewLabel>Póliza Trigger - After update - Anular Póliza {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Póliza Trigger - After update - Anular Póliza</label>
@@ -291,6 +311,6 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <triggerOrder>1700</triggerOrder>
 </Flow>
