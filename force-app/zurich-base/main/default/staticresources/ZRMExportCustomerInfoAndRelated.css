@@ -44,6 +44,7 @@
     vertical-align: middle;
     text-align: center;
     border-bottom: 2px solid #0070d2;
+    font-size: 12px; 
 }
 
 .relatedColumnTable {
@@ -51,12 +52,13 @@
     border-bottom: 1px solid #0070d2;
     vertical-align: middle;
     text-align: center;
+    font-size: 10px;
 }
 
 .relatedTableTitle {
     background-color: #0070d2;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 15px;
     color: white;     
     width: 100%;   
     padding-left: 30px;  
