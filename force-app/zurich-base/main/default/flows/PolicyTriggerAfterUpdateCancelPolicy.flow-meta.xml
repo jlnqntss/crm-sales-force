@@ -49,6 +49,36 @@
         </connector>
     </assignments>
     <decisions>
+        <description>Compara la fecha de inicio de póliza con la de movimiento</description>
+        <name>Anulada_sin_efecto</name>
+        <label>Anulada sin efecto</label>
+        <locationX>941</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Si</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StartDate__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.MovementStartDate__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.MovementType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Policy_MovementType_3</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CheckPreviousStatusDecision</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>CheckPreviousStatusDecision</name>
         <label>Verificar si antes estaba en vigor</label>
         <locationX>600</locationX>
@@ -75,36 +105,6 @@
                 <targetReference>GetRelatedOfferAction</targetReference>
             </connector>
             <label>Estaba en vigor</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <description>Compara la fecha de inicio de póliza con la de movimiento</description>
-        <name>Compare_Dates</name>
-        <label>Compare Dates</label>
-        <locationX>941</locationX>
-        <locationY>323</locationY>
-        <defaultConnectorLabel>Not equals</defaultConnectorLabel>
-        <rules>
-            <name>Iguales</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.StartDate__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>$Record.MovementStartDate__c</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.MovementType__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>Policy_MovementType_3</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>CheckPreviousStatusDecision</targetReference>
-            </connector>
-            <label>Equals</label>
         </rules>
     </decisions>
     <decisions>
@@ -294,7 +294,7 @@
         <locationX>815</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Compare_Dates</targetReference>
+            <targetReference>Anulada_sin_efecto</targetReference>
         </connector>
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
@@ -310,13 +310,6 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>A</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>MovementType__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>3</stringValue>
             </value>
         </filters>
         <object>Policy__c</object>
