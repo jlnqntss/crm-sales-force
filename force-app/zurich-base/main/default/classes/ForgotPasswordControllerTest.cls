@@ -4,12 +4,13 @@
 @IsTest
 public with sharing class ForgotPasswordControllerTest
 {
-    @IsTest(SeeAllData = true)
+    @IsTest
     public static void testForgotPasswordController()
     {
+        String username = TestDataFactory.getRandomUsername();
         // Instantiate a new controller with all parameters in the page
         ForgotPasswordController controller = new ForgotPasswordController();
-        controller.username = 'test@salesforce.com';
+        controller.username = username;
 
         System.assertEquals(controller.forgotPassword(), null);
     }
