@@ -4,7 +4,8 @@
  * @author fjbelmonte
  * @date 24/10/2024
  */
-public with sharing class RoutingTeamQueueConfigUtil {
+public with sharing class RoutingTeamQueueConfigUtil 
+{
  
     /**
      * Devuelve en forma de mapa todas las colas con su correspondiente equipo de enrutamiento
@@ -12,18 +13,22 @@ public with sharing class RoutingTeamQueueConfigUtil {
      * @date 24/10/2024
      * @return  Mapa con los valores de la mdt
      */
-    public static Map<String, String> getRoutingTeamQueueConfigValues() {
-        try {
+    public static Map<String, String> getRoutingTeamQueueConfigValues()
+    {
+        try 
+        {
             Map<String, String> mConfigValues = new Map<String, String>();
            
             //Get de todos los registros del CMT
             Map<String, RoutingTeamQueueConfig__mdt> mConfigs = RoutingTeamQueueConfig__mdt.getAll();
             // Agregar los valores al mapa
-            for (RoutingTeamQueueConfig__mdt config : mConfigs.values()) {
+            for (RoutingTeamQueueConfig__mdt config : mConfigs.values()) 
+            {
                 mConfigValues.put(config.Queue__c, config.RoutingTeam__c);
             }
             return mConfigValues;
-        } catch (Exception ex) {
+        } catch (Exception ex) 
+        {
             ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, ex.getMessage() + ' LineNumber: ' + ex.getLineNumber(), 'RoutingTeamQueueConfigUtil - getRoutingTeamQueueConfigValues');
             throw ex;
         }
