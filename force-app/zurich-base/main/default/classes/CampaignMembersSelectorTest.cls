@@ -19,6 +19,7 @@ private with sharing class CampaignMembersSelectorTest
         List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 10);
         campaigns.get(0).Type = 'Cross Selling';
         campaigns.get(0).IsActive = TRUE;
+        campaigns.get(0).EndDate = Date.today() + 1;
         insert campaigns;
 
         // hotfix: obtener cuentas de tipo personales con el campo PersonContactId relleno

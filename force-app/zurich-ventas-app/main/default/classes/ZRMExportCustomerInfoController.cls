@@ -69,18 +69,30 @@ global with sharing class ZRMExportCustomerInfoController {
         Map<String, String> result = new Map<String, String>();
         String phone = '';
         String email = '';
-        
-        // obtengo el registro de email (solo deberia haber uno)
-        for(ContactPointEmail emailPrimary: account.ContactPointEmails)  {
-            email = emailPrimary.EmailAddress;
-            break;
-        }
 
-        // obtengo el registro de email (solo deberia haber uno)
-        for(ContactPointPhone phonePrimary: account.ContactPointPhones)  {
-            phone = phonePrimary.TelephoneNumber;
-            break;
+        // Compruebo en primer lugar si el cliente tiene scope de ventas, si es así obtengo de ahí el telefono y el email
+        if (account.Scope__r.size() > 0) {
+            phone = account.Scope__r.get(0).PrimaryPhone__c;
+            email = account.Scope__r.get(0).PrimaryEmail__c;
+
+        // si el email sigue siendo vacio lo obtengo de contact point    
+        } if (String.isEmpty(email)) {
+            // obtengo el registro de email (solo deberia haber uno)
+            for(ContactPointEmail emailPrimary: account.ContactPointEmails)  {
+                email = emailPrimary.EmailAddress;
+                break;
+            }
+
+        // si el telefono sigue siendo vacio lo obtengo de contact point   
+        } if (String.isEmpty(phone)) {
+            // obtengo el registro de email (solo deberia haber uno)
+            for(ContactPointPhone phonePrimary: account.ContactPointPhones)  {
+                phone = phonePrimary.TelephoneNumber;
+                break;
+            }
+
         }
+        
 
         result.put('phone', phone);
         result.put('email', email);

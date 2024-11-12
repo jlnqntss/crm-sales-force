@@ -303,6 +303,7 @@ public with sharing class CampaignMembersSelector extends BaseSelector
                                   .addConditionIn('Contact.AccountId', accountIdList)
                                   .addConditionEq('Campaign.Type', CAMPAIGN_CROSS_SELLING_TYPE)
                                   .addConditionEq('Campaign.IsActive', TRUE)
+                                  .addConditionGe('Campaign.EndDate', Date.today())
                                   .enforceSecurity()
                                   .run();
             }

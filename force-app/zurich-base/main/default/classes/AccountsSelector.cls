@@ -1354,6 +1354,20 @@ public with sharing class AccountsSelector extends RecordsSelector
 
     /**
      * @description Método que obtiene los scopes de una cuenta
+     * 
+     * SELECT id, descriptioncustomersegment__c, scorecltv_nolife__c, 
+     * (SELECT PrimaryPhone__c, PrimaryEmail__c FROM Scopes__r WHERE (Name = 'Zurich Ventas')), 
+        (SELECT telephonenumber FROM ContactPointPhones WHERE (IsPrimary = TRUE)), 
+        (SELECT emailaddress FROM ContactPointEmails WHERE (IsPrimary = TRUE)), 
+        (SELECT name, stagename, productbranch__c, infoquotenumber__c, createddate__c FROM Opportunities ORDER BY CreatedDate__c DESC NULLS LAST LIMIT 10), 
+        (SELECT name, policystatus__c, productbranch__c, assetidentifier__c, enddate__c, totalpremium__c, accidentrate__c FROM PoliciesHolder__r WHERE (PolicyStatus__c = 'V')), 
+        (SELECT name, status__c, productbranch__c, assetidentifier__c, dateofoccurrence__c, opendate__c, faultfactor__c FROM Claims__r ORDER BY DateOfOccurrence__c DESC NULLS LAST LIMIT 10), 
+        (SELECT name, productbranch__c, productbranchdetail__c, propensity__c FROM Propensiones__r), 
+        (SELECT name, productbranch__c, expirationdate__c, premium__c, insurancecompany__c FROM Competitors__r WHERE (OfferWon__c = TRUE)), 
+        (SELECT name, relationshiptype__c, accountrelationship__c.relatedaccount__r.name FROM Accounts_Relationships__r) 
+        FROM Account WHERE (Id IN :conditionArgs4) 
+        WITH SECURITY_ENFORCED
+     * 
      * @author dmunoz
      * @date 15-05-2024
      * @param List<String> accountIds : Conjunto de ids de cuentas
@@ -1364,6 +1378,10 @@ public with sharing class AccountsSelector extends RecordsSelector
         List<Account> result = new List<Account>();
         
         // Cargo en listas los campos a consultar de cada entidad
+        List<Schema.SObjectField> scopeFields = new List<Schema.SObjectField> {
+            Scope__c.PrimaryPhone__c,
+            Scope__c.PrimaryEmail__c
+        };
         List<Schema.SObjectField> contactpointPhonesFields = new List<Schema.SObjectField> {
             ContactPointPhone.TelephoneNumber
         };
@@ -1427,17 +1445,30 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.DescriptionCustomerSegment__c,
                 Account.ScoreCLTV_NoLife__c
             })
+            .addSubQuery(Query.subquery('Scope__r').selectFields(scopeFields)
+                .addConditionEq(Scope__c.Name, GlobalConfigUtil.getGlobalConfigurationValue('Scope_Name_Zurich_Ventas'))
+            )
             .addSubQuery(Query.subquery('ContactPointPhones').selectFields(contactpointPhonesFields)
                 .addConditionEq(ContactPointPhone.IsPrimary, true)
             )
             .addSubQuery(Query.subquery('ContactPointEmails').selectFields(contactpointEmailsFields)
                 .addConditionEq(ContactPointEmail.IsPrimary, true)
             )
-            .addSubQuery(Query.subquery('Opportunities').selectFields(opportunitiesFields))
-            .addSubQuery(Query.subquery('PoliciesHolder__r').selectFields(policiesFields))
-            .addSubQuery(Query.subquery('Claims__r').selectFields(claimsFields))
+            .addSubQuery(Query.subquery('Opportunities').selectFields(opportunitiesFields)
+                .orderBy('CreatedDate__c', 'DESC', FALSE)
+                .setLimit(10) 
+            )
+            .addSubQuery(Query.subquery('PoliciesHolder__r').selectFields(policiesFields)
+                .addConditionEq(Policy__c.PolicyStatus__c, GlobalConfigUtil.getGlobalConfigurationValue('Policy_PolicyStatus_V'))
+            )
+            .addSubQuery(Query.subquery('Claims__r').selectFields(claimsFields)
+                .orderBy('DateOfOccurrence__c', 'DESC', FALSE)
+                .setLimit(10) 
+            )
             .addSubQuery(Query.subquery('Propensiones__r').selectFields(propensitiesFields))
-            .addSubQuery(Query.subquery('Competitors__r').selectFields(competitorsFields))
+            .addSubQuery(Query.subquery('Competitors__r').selectFields(competitorsFields)
+                .addConditionEq(Competitor__c.OfferWon__c, FALSE)
+            )
             .addSubQuery(Query.subquery('Accounts_Relationships__r').selectFields(accountRelationshipsFields).selectField('AccountRelationship__c.RelatedAccount__r.Name'))
             .addConditionIn(Account.Id, accountIds)
             .enforceSecurity()
