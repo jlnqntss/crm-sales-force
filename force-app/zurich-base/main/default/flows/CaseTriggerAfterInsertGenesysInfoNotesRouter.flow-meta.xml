@@ -177,7 +177,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Necesita_calcular_prioridad_a_Genesys</targetReference>
+            <targetReference>Necesita_Calcular_Prioridad</targetReference>
         </connector>
     </assignments>
     <constants>
@@ -194,7 +194,7 @@
         <locationX>2065</locationX>
         <locationY>1524</locationY>
         <defaultConnector>
-            <targetReference>Necesita_calcular_prioridad_a_Genesys</targetReference>
+            <targetReference>Necesita_Calcular_Prioridad</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -252,7 +252,7 @@
             <label>Sin Gestor Preferente</label>
         </rules>
         <rules>
-            <name>Tiene_Gestor_No_Enruta_a_Genesys</name>
+            <name>Tiene_gestor_y_no_Enruta_a_Genesys</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>EsPorEquipos</leftValueReference>
@@ -264,7 +264,7 @@
             <connector>
                 <targetReference>Check_Origin</targetReference>
             </connector>
-            <label>Tiene Gestor No Enruta a Genesys</label>
+            <label>Tiene gestor pero no Enruta a Genesys</label>
         </rules>
     </decisions>
     <decisions>
@@ -276,6 +276,18 @@
             <targetReference>CreateTaskAction</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No_genera_interacciones</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EsPorEquipos</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>No genera interacciones</label>
+        </rules>
         <rules>
             <name>Sin_gestor_preferente</name>
             <conditionLogic>and</conditionLogic>
@@ -293,29 +305,10 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>EsPorEquipos</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
             <connector>
                 <targetReference>Crear_Tarea</targetReference>
             </connector>
             <label>Sin gestor preferente</label>
-        </rules>
-        <rules>
-            <name>No_genera_interacciones</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>EsPorEquipos</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <label>No genera interacciones</label>
         </rules>
     </decisions>
     <decisions>
@@ -529,8 +522,8 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Necesita_calcular_prioridad_a_Genesys</name>
-        <label>¿Necesita calcular prioridad a Genesys?</label>
+        <name>Necesita_Calcular_Prioridad</name>
+        <label>¿Necesita Calcular Prioridad?</label>
         <locationX>2065</locationX>
         <locationY>1824</locationY>
         <defaultConnector>
@@ -538,13 +531,13 @@
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>No_es_por_equipos</name>
+            <name>No_CalculaPrioridad</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>EsPorEquipos</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -711,7 +704,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <recordCreates>
         <name>Crear_Tarea</name>
         <label>Crear Tarea</label>
-        <locationX>547</locationX>
+        <locationX>811</locationX>
         <locationY>3504</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -1337,7 +1330,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>GestorPreferenteSearchFromEmailSubflow</name>
         <label>Buscar Gestor Preferente</label>
