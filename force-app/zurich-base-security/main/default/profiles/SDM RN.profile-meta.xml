@@ -58,7 +58,6 @@
         <apexClass>TriggerBypassUtilityTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
-    
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.AMTecnicalIssues__c</field>
