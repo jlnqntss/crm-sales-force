@@ -152,13 +152,6 @@
             <value></value>
         </criteriaItems>
         <criteriaItems>
-            <column>Account.Opportunities__r.Cases__r$Status</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>,Asignado,En Gestión,En espera,No Iniciado,Nuevo,New,Pendiente,Reabierto,Respondido,Respuesta recibida,Resuelto</value>
-        </criteriaItems>
-        <criteriaItems>
             <column>Account.Opportunities__r$NetPremium__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
