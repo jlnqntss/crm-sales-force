@@ -18,11 +18,6 @@
                 <label>En marcha</label>
             </value>
             <value>
-                <fullName>Caso repetido</fullName>
-                <default>false</default>
-                <label>Caso repetido</label>
-            </value>
-            <value>
                 <fullName>Sin feedback</fullName>
                 <default>false</default>
                 <label>Sin feedback</label>

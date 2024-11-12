@@ -3,10 +3,6 @@
     <label>Situación</label>
     <name>ChanceOfSuccess__c</name>
     <picklistValues>
-        <masterLabel>Caso repetido</masterLabel>
-        <translation><!-- Caso repetido --></translation>
-    </picklistValues>
-    <picklistValues>
         <masterLabel>Emitido</masterLabel>
         <translation><!-- Emitido --></translation>
     </picklistValues>

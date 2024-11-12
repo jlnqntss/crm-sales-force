@@ -5,6 +5,41 @@
     <businessProcess>Offer - Vida</businessProcess>
     <label>Life</label>
     <picklistValues>
+        <picklist>ChanceOfSuccess__c</picklist>
+        <values>
+            <fullName>Emitido</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Emitido diferido</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>En marcha</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Escalar%2FSOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perdida - Mediador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rechazado - Zurich</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sin feedback</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitado feedback</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Company__c</picklist>
         <values>
             <fullName>01</fullName>
