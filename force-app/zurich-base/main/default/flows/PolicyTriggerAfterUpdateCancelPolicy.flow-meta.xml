@@ -94,6 +94,13 @@
                     <elementReference>$Record.MovementStartDate__c</elementReference>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.MovementType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Policy_MovementType_3</elementReference>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>CheckPreviousStatusDecision</targetReference>
             </connector>
@@ -151,6 +158,11 @@
         <name>Opportunity_StageName_Close_Lost</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Opportunity_Stage_Name_Closed_Lost.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Policy_MovementType_3</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Policy_MovementType_3.Value__c}</expression>
     </formulas>
     <formulas>
         <name>Policy_PolicyStatus_A</name>
