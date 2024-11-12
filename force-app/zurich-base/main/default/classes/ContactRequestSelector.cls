@@ -113,4 +113,26 @@ public with sharing class ContactRequestSelector extends RecordsSelector
             return (new List<ContactRequest>());
         }
     }
+
+    /**
+     * Busca ContactRequest por Id de interacción de la plataforma Genesys Cloud y revuelve una colección con las coincidencias.
+     * 
+     * @author pitt.olvera@seidor.com
+     * @date 12/11/2024
+     * @param interactionIds Conjunto de Ids de las interacciones de la plataforma Genesys Cloud a buscar.
+     * @return Lista de ContactRequest encontrados en el sistema.
+     */
+    public List<ContactRequest> findByGenesysInteractionIds(Set<String> interactionIds)
+    {
+        List<ContactRequest> contactRequests = new List<ContactRequest>();
+
+        if (interactionIds != null && !interactionIds.isEmpty())
+        {
+            this.baseQuery.selectReadableFields()
+                .addConditionIncludes(ContactRequest.GenesysInteractionId__c, interactionIds);
+                
+            contactRequests = (List<ContactRequest>) this.baseQuery.run();
+        }
+        return contactRequests;
+    }
 }

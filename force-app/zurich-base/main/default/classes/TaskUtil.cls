@@ -167,4 +167,31 @@ public with sharing class TaskUtil
 
         
     }
+
+    /**
+     * Vincula una tarea con un elemento padre de tipología ContactRequest.
+     * La solicitud de contacto desencadena el alta de un registro de Tarea que agrupa la información sobre la llamada o comunicación saliente.
+     * Las comunicaciones salientes se emiten desde el CRM.
+     * Se utiliza el id de interacción de la plataforma Genesys Cloud para identificar la relación entre la solicitud de contacto y la llamada realizada por un agente.
+     * 
+     * @author pitt.olvera@seidor.com
+     * @date 12/11/2024
+     * @param tasksByInterationId Nuevos registros de la tabla de tareas insertados en la BBDD agrupados por id de interacción Genesys Cloud.
+     * @param contactRequestsByInterationId Registros de ContactRequest existentes en la BBDD agrupados por id de la interacción Genesys Cloud
+     */
+    public static void linkContactRequestsWithTasks(Map<String, List<Task>> tasksByInterationId, Map<String, List<ContactRequest>> contactRequestsByInterationId)
+    {   
+        if (tasksByInterationId == null || contactRequestsByInterationId == null) return;
+
+        for (String interationId : tasksByInterationId.keySet())
+        {
+            if (String.isBlank(interationId)) continue;
+
+            Task newTask  = tasksByInterationId.get(interationId)?.get(0);
+            ContactRequest existingContactRequest = contactRequestsByInterationId.get(interationId)?.get(0);
+            
+            if (newTask == null || existingContactRequest == null) continue;
+            // REMPLAZAR CON NUEVO ATRIBUTO DE TASK Lookup anewTask.WhatId = contactRequest.Id;
+        }
+    }
 }
