@@ -48,6 +48,11 @@
                 <label>Perdida - Mediador</label>
             </value>
             <value>
+                <fullName>Perdida - Zurich</fullName>
+                <default>false</default>
+                <label>Perdida - Zurich</label>
+            </value>
+            <value>
                 <fullName>Rechazado - Zurich</fullName>
                 <default>false</default>
                 <label>Rechazado - Zurich</label>

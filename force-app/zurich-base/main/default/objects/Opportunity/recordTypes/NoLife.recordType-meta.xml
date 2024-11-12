@@ -27,6 +27,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Perdida - Zurich</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Rechazado - Zurich</fullName>
             <default>false</default>
         </values>
@@ -505,11 +509,19 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Already take a policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Automatic - Agent removes from the campaign</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Already take a policy</fullName>
+            <fullName>Automatic - Campaign completed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Automatic - Not managed by the Agent</fullName>
             <default>false</default>
         </values>
         <values>
@@ -521,7 +533,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Automatic - Campaign completed</fullName>
+            <fullName>CC - Interested contact agent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CC - Interested%2C managed by my agent</fullName>
             <default>false</default>
         </values>
         <values>
@@ -561,15 +577,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>CC - Interested contact agent</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Interested later on</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>CC - Interested, managed by my agent</fullName>
             <default>false</default>
         </values>
         <values>
@@ -602,10 +610,6 @@
         </values>
         <values>
             <fullName>Not interested Policy - Revocation Consents</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Automatic - Not managed by the Agent</fullName>
             <default>false</default>
         </values>
         <values>
