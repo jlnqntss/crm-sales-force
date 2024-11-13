@@ -2,8 +2,8 @@
  * @description       : Clase de test para la clase AccountsSelector
  * @author            :
  * @group             :
- * @last modified on  : 08-22-2023
- * @last modified by  : aberuete
+ * @last modified on  : 11-11-2024
+ * @last modified by  : mfernandezcarrera
  **/
 @isTest
 private with sharing class AccountsSelectorTest
@@ -844,7 +844,9 @@ private with sharing class AccountsSelectorTest
     @IsTest
     static void test_getAccountsToDelete()
     {
-        String accToDelete = AccountsSelector.getAccountsToDelete();
+        List<Id> accToDelete = AccountsSelector.getAccountsToDelete();
+        // Puedes agregar aserciones aquí para validar los resultados en un test
+        System.assertNotEquals(null, accToDelete, 'La lista de cuentas a eliminar no debe ser nula.');
     }
 
     @isTest
@@ -994,7 +996,7 @@ private with sharing class AccountsSelectorTest
     private static void test_selectByIdAndAccountZDA()
     {
         List<Account> listAccounts = [SELECT Id, IsAccountZDA__c FROM Account limit 2];
-        Assert.isFalse( listAccounts.isEmpty() ); 
+        Assert.isFalse( listAccounts.isEmpty() );
 
         Set<String> accountsIds = new Set<String>();
         accountsIds.add(listAccounts[0].Id);
@@ -1019,12 +1021,12 @@ private with sharing class AccountsSelectorTest
     private static void test_findZRMOldLeads()
     {
 
-        Scope_Setting__mdt ventasScopeMdt = Scope_Setting__mdt.getInstance(Batch_DeleteOldLeads.VENTAS_SCOPE_NAME); 
+        Scope_Setting__mdt ventasScopeMdt = Scope_Setting__mdt.getInstance(Batch_DeleteOldLeads.VENTAS_SCOPE_NAME);
 
         Test.startTest();
         String zrmOldLeadsQuery = new AccountsSelector().findZRMOldLeads(Batch_DeleteOldLeads.DAYS, Batch_DeleteOldLeads.LEGIT_LEAD_OFFER_STATUS, ventasScopeMdt.BusinessCode__c);
         Test.stopTest();
 
-        Assert.isTrue(String.isNotEmpty(zrmOldLeadsQuery), 'Debe no ser nulo'); 
+        Assert.isTrue(String.isNotEmpty(zrmOldLeadsQuery), 'Debe no ser nulo');
     }
 }

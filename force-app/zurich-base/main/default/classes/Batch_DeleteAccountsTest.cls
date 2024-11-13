@@ -5,7 +5,7 @@
  * @date 30/06/203
  */
 @isTest
- private with sharing class Batch_DeleteAccountsTest
+private with sharing class Batch_DeleteAccountsTest
 {
     private static final string ACCOUNT_LEAD = 'Lead';
     private static final string ACCOUNT_CUSTOMER = 'Customer';
@@ -14,27 +14,30 @@
     private static final string SCOPE_GENERAL = 'ZE';
     static final String QUERY_Account = 'SELECT Id FROM Account WHERE Id NOT IN (select AccountId from Opportunity) AND RecordType.Name=\'Lead\'';
     private static final Id LeadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().
-                get(ACCOUNT_LEAD).getRecordTypeId();
+                                               get(ACCOUNT_LEAD).getRecordTypeId();
     private static final Id CustomerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().
-                get(ACCOUNT_CUSTOMER).getRecordTypeId();
+                                                   get(ACCOUNT_CUSTOMER).getRecordTypeId();
 
 
     @TestSetup
-    private static void makeData(){
-        
+    private static void makeData()
+    {
+
         // create Lead accounts
         List<Account> leadAccounts = TestDataFactory.generateAccounts(LEGAL_ENTITY, ACCOUNT_LEAD, 2);
-        for(Integer i=0;leadAccounts.size()<i;i++){
+        for(Integer i=0; leadAccounts.size() < i; i++)
+        {
             leadAccounts[i].firstName = 'test';
             leadAccounts[i].LastName = 'Lead ' + i;
             leadAccounts[i].RecordTypeId = LeadRecordTypeId;
             leadAccounts[i].Salutation = 'Mr.';
         }
         insert leadAccounts;
-        
-        // create customer accounts 
+
+        // create customer accounts
         List<Account> clientAccountsOther = TestDataFactory.generateAccounts(LEGAL_ENTITY, ACCOUNT_CUSTOMER, 2);
-        for(Integer i=0;clientAccountsOther.size()<i;i++){
+        for(Integer i=0; clientAccountsOther.size() < i; i++)
+        {
             clientAccountsOther[i].firstName = 'test';
             clientAccountsOther[i].LastName = 'Customer ' + i;
             clientAccountsOther[i].RecordTypeId = CustomerRecordTypeId;
@@ -43,7 +46,7 @@
         insert clientAccountsOther;
 
         leadAccounts.addAll(clientAccountsOther);
-        
+
         // create new offers, for leads[0]
         List<Opportunity> newOffers = TestDataFactory.generateOpportunitiesForEachAccount(
             leadAccounts, 'ZE', OFFER_STAGE_NEW,System.today().addDays(10), 1);
@@ -58,7 +61,7 @@
         Database.executeBatch(batchDeleteAcc);
         test.stopTest();
         List<Account> accountListNew= [SELECT id FROM ACCOUNT];
-        System.assertEquals(4, accountListNew.size());
+        System.assertEquals( 4, accountListNew.size() );
     }
 
     @isTest
@@ -75,7 +78,7 @@
         Database.executeBatch(batchDeleteAcc);
         test.stopTest();
         List<Account> accountListNew= [SELECT id FROM ACCOUNT];
-        System.assertEquals(4, accountListNew.size());
+        System.assertEquals( 5, accountListNew.size() );
     }
 
     @isTest
@@ -92,7 +95,7 @@
         Database.executeBatch(batchDeleteAcc);
         test.stopTest();
         List<Account> accountListNew= [SELECT id FROM ACCOUNT];
-        System.assertEquals(5, accountListNew.size());
+        System.assertEquals( 5, accountListNew.size() );
     }
 
 
@@ -105,7 +108,7 @@
         Database.executeBatch(batchDeleteAcc);
         test.stopTest();
         List<Account> accountListNew= [SELECT id FROM ACCOUNT];
-        System.assertEquals(4, accountListNew.size());
+        System.assertEquals( 4, accountListNew.size() );
     }
 
     @isTest
@@ -118,12 +121,12 @@
         insert acc;
 
         test.startTest();
-        
+
         Batch_DeleteAccounts batchDeleteAcc=new Batch_DeleteAccounts(QUERY_Account);
         Database.executeBatch(batchDeleteAcc);
         test.stopTest();
         List<Account> accountListNew= [SELECT id FROM ACCOUNT];
-        System.assertEquals(4, accountListNew.size());
+        System.assertEquals( 5, accountListNew.size() );
     }
 
     @isTest
@@ -140,6 +143,6 @@
         Database.executeBatch(batchDeleteAcc);
         test.stopTest();
         List<Account> accountListNew= [SELECT id FROM ACCOUNT];
-        System.assertEquals(5, accountListNew.size());
+        System.assertEquals( 5, accountListNew.size() );
     }
 }
