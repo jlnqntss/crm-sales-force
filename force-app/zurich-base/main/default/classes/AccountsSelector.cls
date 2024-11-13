@@ -2,8 +2,8 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 29/04/2024
- * @last modified by  : rserrano
+ * @last modified on  : 11-11-2024
+ * @last modified by  : mfernandezcarrera
  **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -20,7 +20,7 @@ public with sharing class AccountsSelector extends RecordsSelector
     public static final String SDM_MAINEMAIL_FIELD = 'MainEmail__c';
     public static final String SDM_MAINMOBILEPHONE_FIELD = 'MainMobilePhone__c';
     public static final String SDM_RN_FIELD = 'TerritorialDirection__c';
-    
+
     private static final Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
     //#region Contructores
 
@@ -870,14 +870,25 @@ public with sharing class AccountsSelector extends RecordsSelector
     /**
      * Método que obtiene los cuentas tipo Lead que no tengan ofertas asociadas para borrarlas
      **
-     * @author mfernandezcarrera
+     * @autor mfernandezcarrera
      * @date 28/06/2023
      **/
-    public static String getAccountsToDelete()
+    public static List<Id> getAccountsToDelete()
     {
-        String query =
-            'SELECT Id from Account WHERE Id NOT IN (select AccountId from Opportunity) AND RecordType.Name=\'Lead\'';
-        return query;
+        // Realizamos la consulta SOQL directamente y obtenemos los AccountId__c
+        List<Scope__c> scopeRecords = [SELECT AccountId__c
+                                       FROM Scope__c
+                                       WHERE Scope__c = 'ZE'
+                                                        AND AccountId__r.RecordType.Name = 'Lead'
+                                                                                           AND AccountId__c NOT IN (SELECT AccountId FROM Opportunity)];
+
+        // Añadimos los AccountId__c obtenidos a la lista de ids
+        List<Id> ids = new List<Id>();
+        for (Scope__c scope : scopeRecords)
+        {
+            ids.add(scope.AccountId__c);
+        }
+        return ids;
     }
 
     /**
@@ -1217,7 +1228,7 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @param stageName    : Etapa en la que se tiene que encontrar la oportunidad del lead para ser borrado
      * @param businessCode : Código de negocio de la oportunidad del lead para ser borrado
      * @return String
-     * update igarcia 25/06/2024: Se ha añadido la condición para que se recoga las oportunidades que no sean de Vida 
+     * update igarcia 25/06/2024: Se ha añadido la condición para que se recoga las oportunidades que no sean de Vida
      **/
     public String findZRMOldLeads(Integer days, String stageName, String businessCode)
     {
