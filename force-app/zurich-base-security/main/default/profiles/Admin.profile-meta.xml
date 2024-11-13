@@ -6605,6 +6605,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.CasePendingBy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>FollowUp__c.CIF__c</field>
         <readable>true</readable>
@@ -10211,6 +10216,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Type</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.CasePendingBy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
