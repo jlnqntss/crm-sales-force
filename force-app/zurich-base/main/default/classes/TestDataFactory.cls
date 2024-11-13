@@ -3705,7 +3705,7 @@ public with sharing class TestDataFactory
         insert testProvinceAssignmentMetadata;
     }
     
-    /**
+     /**
     * @description Método que genera un string aleatorio con
     * la longitud especificada en el parámetro
     *
@@ -3725,6 +3725,18 @@ public with sharing class TestDataFactory
         return randomString;
     }
     
-    
-
+    /**
+    * @description Método que genera un nombre 
+    * de usuario aleatorio
+    *
+    * @author mcasanova
+    * @date 31-10-2024 
+    * @return String
+    **/
+    public static String getRandomUsername() {
+        return string.format('{0}@{1}.com', new string[] {
+            TestDataFactory.getRandomString(4), 
+            UserInfo.getOrganizationId()}
+        );
+    }
 }
