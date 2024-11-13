@@ -73,7 +73,7 @@
         <locationX>176</locationX>
         <locationY>398</locationY>
         <connector>
-            <targetReference>OpenNewTaskAction</targetReference>
+            <targetReference>UpdateCaseRelated</targetReference>
         </connector>
         <inputReference>TaskToClone</inputReference>
     </recordCreates>
@@ -98,6 +98,36 @@
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>UpdateCaseRelated</name>
+        <label>Update Case Related</label>
+        <locationX>176</locationX>
+        <locationY>458</locationY>
+        <connector>
+            <targetReference>OpenNewTaskAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetOriginalTaskAction.WhatId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>PendingBy__c</field>
+            <value>
+                <elementReference>PendienteDe</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Pendiente</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
@@ -106,6 +136,16 @@
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>PendienteDe</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>GetOriginalTaskAction.CasePendingBy__c</elementReference>
+        </value>
+    </variables>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>

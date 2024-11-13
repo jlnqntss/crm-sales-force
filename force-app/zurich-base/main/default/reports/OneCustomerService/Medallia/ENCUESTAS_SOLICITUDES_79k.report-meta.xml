@@ -241,7 +241,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>notEqual</operator>
-            <value>Transferencia</value>
+            <value>Saneamiento,Transferencia</value>
         </criteriaItems>
         <criteriaItems>
             <column>Survey__c$CaseId__c.TypeN3__c</column>
