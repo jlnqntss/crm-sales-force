@@ -552,6 +552,20 @@
         <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>ZDAVisionForUSP</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>ZDA Vision For USP</label>
+        <sharedTo>
+            <group>Write_Z_ES_USP</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>ZDA Inquiry</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>ZRM_Inquiry_Ventas_CC</fullName>
         <accessLevel>Edit</accessLevel>
         <description>Regla de validación para que los usuarios de CC puedan ver los registros de casos de retención</description>
