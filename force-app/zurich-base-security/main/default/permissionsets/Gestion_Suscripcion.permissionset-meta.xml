@@ -76,6 +76,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.AreaOwner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.AssetId</field>
         <readable>true</readable>
@@ -88,6 +93,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.AutomaticNotifications__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.BusinessManagerName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -266,6 +276,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SMEConsultantAccount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.SourceArea__c</field>
         <readable>true</readable>
@@ -308,6 +323,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.TypeN3__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.ZoneAccount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -418,6 +438,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Event.CaseMediator__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.CasePendingBy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -536,7 +561,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>RPAProposal__c.CommentsSubscriber__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1102,6 +1127,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.CasePendingBy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.Channel__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1158,6 +1188,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>User.OnVacation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.RPAProposal__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1242,7 +1277,7 @@
     <objectPermissions>
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
+        <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>RPAProposal__c</object>

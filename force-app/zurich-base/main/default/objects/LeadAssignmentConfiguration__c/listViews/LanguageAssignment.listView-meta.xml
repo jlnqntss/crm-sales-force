@@ -10,5 +10,5 @@
         <operation>equals</operation>
         <value>LeadAssignmentConfiguration__c.LanguageAssignment</value>
     </filters>
-    <label>Language Assignment</label>
+    <label>Asignación por idioma</label>
 </ListView>

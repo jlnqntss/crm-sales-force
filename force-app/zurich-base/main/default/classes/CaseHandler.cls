@@ -75,6 +75,7 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.setSprinklrCaseSubject(newList);
         CaseUtil.shortDescriptionNeeded(newList);
         CaseUtil.setSprinklrCaseCallCenterAndGroup(newList);
+        CaseUtil.extractFieldsFromZDABody(newList);
         CaseUtil.applyFormatToZDABody(newList);
         CaseUtil.relateCasesByTicketId(newList);
         CaseUtil.relateCaseToCustomerByNifCif(newList);

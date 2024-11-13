@@ -1475,6 +1475,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.NameAndIntermediaryCode__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.NameLink__c</field>
         <readable>true</readable>
@@ -2347,6 +2352,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Recertification2024__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Recertification2024Img__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3731,6 +3741,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.AreaOwner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.Association__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3775,6 +3790,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.BusinessManagerName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.CallCenter__c</field>
         <readable>true</readable>
@@ -3802,6 +3822,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.CIFNIF__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.CancellationReason__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3926,6 +3951,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.DateTimePendingNotifications__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.Description</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4041,7 +4071,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.InterlocutorRole__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.IsCampaignCase__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4540,6 +4580,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SMEConsultantAccount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.SourceAreaDetail__c</field>
         <readable>true</readable>
@@ -4926,6 +4971,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.WorkUnit__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
         <field>Case.ZoneDirector__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5025,6 +5075,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Claim__c.ProductBranch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Claim__c.Scope__c</field>
         <readable>true</readable>
@@ -5047,6 +5102,26 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Claim__c.CloseDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.ClaimDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.ClaimNotificationDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.ClaimReinstatementDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.ClaimTypeDescription__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6477,6 +6552,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ExternalRequest__c.TimeStamp__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.CasePendingBy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8814,6 +8894,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Policy__c.IntermediaryNameForm__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.IntermediaryVisibilityAcc__c</field>
         <readable>true</readable>
@@ -9700,6 +9785,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.CasePendingBy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Tipificacion_NLU_Field_Mapping__mdt.Nombre_etiqueta_NLU__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10249,11 +10339,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>LeadAssignmentConfiguration__c.ActionName__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>LeadAssignmentConfiguration__c.AssignmentType__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10279,27 +10364,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>LeadAssignmentConfiguration__c.Property__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>LeadAssignmentConfiguration__c.Province__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>LeadAssignmentConfiguration__c.ProvinceCode__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>LeadAssignmentConfiguration__c.Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>LeadAssignmentConfiguration__c.Value__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11608,6 +11678,27 @@
         <recordType>PlanComercial__c.MensualPlan</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
+        <recordType>LeadAssignmentConfiguration__c.ForumOriginAssignment</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>LeadAssignmentConfiguration__c.LanguageAssignment</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>LeadAssignmentConfiguration__c.MunicipalityAssignment</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>LeadAssignmentConfiguration__c.ProvinceAssignment</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
     <tabVisibilities>
         <tab>RPAProposal__c</tab>
         <visibility>DefaultOn</visibility>
@@ -11685,4 +11776,4 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <userLicense>Salesforce</userLicense>
-</Profile>
+</Profile> 
