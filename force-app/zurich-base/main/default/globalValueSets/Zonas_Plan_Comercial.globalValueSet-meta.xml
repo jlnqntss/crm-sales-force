@@ -75,12 +75,6 @@
         <default>false</default>
         <label>Todos</label>
     </customValue>
-    <customValue>
-        <fullName>21 LEVANTE</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>21 LEVANTE</label>
-    </customValue>
     <description>Valores de zona a usar como eje para planes comerciales</description>
     <masterLabel>Zonas Plan Comercial</masterLabel>
     <sorted>false</sorted>

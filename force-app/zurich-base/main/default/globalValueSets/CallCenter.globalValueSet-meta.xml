@@ -66,6 +66,12 @@
         <label>SAM</label>
     </customValue>
     <customValue>
+        <fullName>Sprinklr</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Sprinklr</label>
+    </customValue>
+    <customValue>
         <fullName>ZDA</fullName>
         <default>false</default>
         <label>ZDA</label>
@@ -74,30 +80,6 @@
         <fullName>Departamento de Calidad</fullName>
         <default>false</default>
         <label>CTL</label>
-    </customValue>
-    <customValue>
-        <fullName>ZDA_Soporte_Red</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>ZDA_Soporte_Red</label>
-    </customValue>
-    <customValue>
-        <fullName>ZDA_Gestion_Cartera</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>ZDA_Gestion_Cartera</label>
-    </customValue>
-    <customValue>
-        <fullName>Sprinklr</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>Sprinklr</label>
-    </customValue>
-    <customValue>
-        <fullName>ZDA_MU_s</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>ZDA_MU_s</label>
     </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
