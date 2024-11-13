@@ -593,11 +593,6 @@
             <field>GenesysQueue__c</field>
             <table>PlanComercial__c.Activities</table>
         </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
-            <field>ContactRequest__c</field>
-            <table>PlanComercial__c.Activities</table>
-        </columns>
         <masterLabel>Activities</masterLabel>
     </sections>
 </ReportType>

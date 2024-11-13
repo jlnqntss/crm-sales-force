@@ -36,8 +36,11 @@ private with sharing class TaskUtilTest
         List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(personAccounts, campaigns, 'Subscribed');
         insert campaignMembers;
 
+        purecloud__PureCloud_Queue__c genesysCloudItem = new purecloud__PureCloud_Queue__c( Name = 'Cola de test 1' );
+        insert genesysCloudItem;
+
         List<ContactRequest> contactRequests = new List<ContactRequest>();
-        contactRequests.add( new ContactRequest(GenesysCloudQueueId__r.Name = 'Cola de test 1') );
+        contactRequests.add( new ContactRequest(GenesysCloudQueueId__c = genesysCloudItem.Id ) );
         insert contactRequests;
     }
 
