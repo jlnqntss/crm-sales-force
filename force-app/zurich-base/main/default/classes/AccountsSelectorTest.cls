@@ -1035,4 +1035,25 @@ private with sharing class AccountsSelectorTest
 
         Assert.isTrue(accountsQuery.size() > 0, 'Debe recuperar al menos una cuenta'); 
     }
+
+
+    /**
+     * Test del método que recupera las cuentas filtradas por id y el campo isAccountZDA
+     * @author dmunoz
+     * @date 07/11/2024
+     */
+    @isTest
+    private static void test_selectAccountAndRelatedInfo()
+    {   
+        List<Account> accounts = new List<Account>([SELECT Id FROM Account LIMIT 1]);
+        List<String> accountsIds = new List<String>();
+
+        accountsIds.add(accounts.get(0).Id);
+
+        Test.startTest();
+        List<Account> result = new AccountsSelector().selectAccountAndRelatedInfo(accountsIds);
+        Test.stopTest();
+
+        Assert.isTrue(result.size() > 0, 'Debe no ser nulo'); 
+    }
 }

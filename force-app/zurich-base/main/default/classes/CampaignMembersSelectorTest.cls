@@ -17,6 +17,9 @@ private with sharing class CampaignMembersSelectorTest
         insert accounts;
 
         List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 10);
+        campaigns.get(0).Type = 'Cross Selling';
+        campaigns.get(0).IsActive = TRUE;
+        campaigns.get(0).EndDate = Date.today() + 1;
         insert campaigns;
 
         // hotfix: obtener cuentas de tipo personales con el campo PersonContactId relleno
@@ -351,5 +354,31 @@ private with sharing class CampaignMembersSelectorTest
         Test.stopTest();
 
         Assert.isTrue(campaignMembers.isEmpty(), 'The list of Campaign Members should be empty');
+    }
+
+
+    /**
+    * @description Métod que comprueba que no se recupera ningún miembro de campaña
+    * cuando el código pasado al selector no corresponde a ningún código contenido
+    * en el campo 'OfferAssignedCode__c'
+    *
+    * @author amiranda
+    * @date 21-03-2024
+    **/
+    @IsTest
+    private static void test_selectCrossSellingCampaingsFromAccount()
+    {
+        
+
+        List<CampaignMember> campaignMembersQuery = new List<CampaignMember>([SELECT Id, Contact.AccountId FROM CampaignMember LIMIT 1]);
+        List<String> accountsIds = new List<String>();
+
+        accountsIds.add(campaignMembersQuery.get(0).Contact.AccountId);
+
+        Test.startTest();
+        List<CampaignMember> campaignMembers = new CampaignMembersSelector.ProperCampaignMembersSelector().selectCrossSellingCampaingsFromAccount(accountsIds);
+        Test.stopTest();
+
+        Assert.isTrue(campaignMembers.size() > 0, 'Debe encontrar algun elemento');
     }
 }
