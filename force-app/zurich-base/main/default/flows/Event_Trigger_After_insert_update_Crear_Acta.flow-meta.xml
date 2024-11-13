@@ -495,7 +495,7 @@
     <formulas>
         <name>accountIsIntermediary</name>
         <dataType>Boolean</dataType>
-        <expression>{!Buscar_Contactos.Account.RecordType.DeveloperName} = {!intermediaryRcDeveloperName} || TEXT({!$Record.RelatedToIntermediary__c}) = {!$CustomMetadata.Global_Configuration__mdt.Activity_RelatedToIntermediary_Yes.Value__c}</expression>
+        <expression>({!Buscar_Contactos.Account.RecordType.DeveloperName} = {!intermediaryRcDeveloperName} &amp;&amp; {!Buscar_Contactos.Account.StatusIntermediary__c} ={!$CustomMetadata.Global_Configuration__mdt.Account_StatusIntermediary_Active.Value__c}) || TEXT({!$Record.RelatedToIntermediary__c}) = {!$CustomMetadata.Global_Configuration__mdt.Activity_RelatedToIntermediary_Yes.Value__c}</expression>
     </formulas>
     <formulas>
         <name>intermediaryRcDeveloperName</name>
