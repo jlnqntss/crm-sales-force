@@ -35,6 +35,10 @@ private with sharing class TaskUtilTest
         List<Account> personAccounts = new List<Account>([SELECT Id, PersonContactId FROM Account WHERE PersonContactId != null AND Name != 'TestAccount']);
         List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(personAccounts, campaigns, 'Subscribed');
         insert campaignMembers;
+
+        List<ContactRequest> contactRequests = new List<ContactRequest>();
+        contactRequests.add( new ContactRequest(GenesysCloudQueueId__r.Name = 'Cola de test 1') );
+        insert contactRequests;
     }
 
     /*
@@ -122,7 +126,7 @@ private with sharing class TaskUtilTest
         List<Case> casesList = TestDataFactory.generateZDACases(2);
         Case sprinklrCase = new Case (
             RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR
-        );
+            );
         casesList.add(sprinklrCase);
 
         insert casesList;
@@ -149,10 +153,10 @@ private with sharing class TaskUtilTest
         taskNoAnswerClosed.WhatId = casesList[2].Id;
         taskNoAnswerClosed.Type = TaskUtil.TYPE_ESCALADO;
         tasksToProcess.add(taskNoAnswerClosed);
-        
+
         insert tasksToProcess;
-        List<Task> insertedTasks = [SELECT Id FROM Task WHERE Id IN :tasksToProcess];
-        Assert.isFalse(insertedTasks.isEmpty());
+        List<Task> insertedTasks = [SELECT Id FROM Task WHERE Id IN : tasksToProcess];
+        Assert.isFalse( insertedTasks.isEmpty() );
 
         taskNoAnswerNotClosed.Status = TaskUtil.STATUS_CERRADA;
         taskWithAnswerClosed.Status = TaskUtil.STATUS_CERRADA;
@@ -164,9 +168,9 @@ private with sharing class TaskUtilTest
         Database.update(tasksToProcess, false);
         Test.stopTest();
 
-        Task taskNoAnswerNotClosedPostUpdate = [SELECT Status FROM Task WHERE Id = :taskNoAnswerNotClosed.Id];
-        Task taskWithAnswerClosedPostUpdate = [SELECT Status FROM Task WHERE Id = :taskWithAnswerClosed.Id];
-        Task taskNoAnswerClosedPostUpdate = [SELECT Status FROM Task WHERE Id = :taskNoAnswerClosed.Id];
+        Task taskNoAnswerNotClosedPostUpdate = [SELECT Status FROM Task WHERE Id = : taskNoAnswerNotClosed.Id];
+        Task taskWithAnswerClosedPostUpdate = [SELECT Status FROM Task WHERE Id = : taskWithAnswerClosed.Id];
+        Task taskNoAnswerClosedPostUpdate = [SELECT Status FROM Task WHERE Id = : taskNoAnswerClosed.Id];
 
         Assert.areEqual(TaskUtil.STATUS_ASIGNADA, taskNoAnswerNotClosedPostUpdate.Status);
         Assert.areEqual(TaskUtil.STATUS_CERRADA, taskWithAnswerClosedPostUpdate.Status);
@@ -174,7 +178,7 @@ private with sharing class TaskUtilTest
     }
 
     /*
-     * Test que comprueba la id de Genesys en caso 
+     * Test que comprueba la id de Genesys en caso
      * @author lrodriguez
      * @date 21/05/2024
      */
@@ -190,8 +194,8 @@ private with sharing class TaskUtilTest
         taskToCreate.Priority = 'Normal';
         taskToCreate.CallObject = 'd7faf2ef-aadc-4001-85a4-17633fcfe492';
         taskToCreate.WhatId = casoToEmailMessage.id;
-        
-      
+
+
 
         Test.startTest();
         insert taskToCreate;
@@ -199,7 +203,24 @@ private with sharing class TaskUtilTest
 
         Case casesEmailDefault = [SELECT Id,GenesysID__c,LinkIdGenesys__c FROM Case WHERE Subject = 'prueba Genesys'];
         System.assertEquals(casesEmailDefault.GenesysID__c,'d7faf2ef-aadc-4001-85a4-17633fcfe492','Debe estar informado con id Genesys');
-        System.assertEquals(casesEmailDefault.LinkIdGenesys__c,'https://apps.mypurecloud.ie/directory/#/engage/admin/interactions/d7faf2ef-aadc-4001-85a4-17633fcfe492','Debe estar informado con link id Genesys');    
+        System.assertEquals(casesEmailDefault.LinkIdGenesys__c,'https://apps.mypurecloud.ie/directory/#/engage/admin/interactions/d7faf2ef-aadc-4001-85a4-17633fcfe492','Debe estar informado con link id Genesys');
     }
 
+    /*
+     * Test que comprueba la id de Genesys en caso
+     * @author jlnavarroq
+     * @date 12/11/2024
+     */
+    @isTest
+    private static void test_linkContactRequestsWithTasks()
+    {
+
+        // Task taskToCreate = new Task();
+
+        // Test.startTest();
+        // insert taskToCreate;
+        // Test.stopTest();
+
+        // System.assertEquals(taskToCreate.GenesysQueue__c,'Cola de test 1','Debe estar informado con Cola de test 1');
+    }
 }

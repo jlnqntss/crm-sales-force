@@ -199,7 +199,7 @@ public with sharing class TaskUtil
             if (newTask == null || existingContactRequest == null)
                 continue;
 
-            newTask.GenesysQueue__c = contactRequest.GenesysCloudQueueId__r.Name;
+            newTask.GenesysQueue__c = existingContactRequest.GenesysCloudQueueId__r.Name;
         }
     }
 }
