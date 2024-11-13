@@ -423,6 +423,11 @@
                 <label>Gestión negocio</label>
             </value>
             <value>
+                <fullName>IAM</fullName>
+                <default>false</default>
+                <label>IAM</label>
+            </value>
+            <value>
                 <fullName>Incidencia</fullName>
                 <default>false</default>
                 <label>Incidencia</label>
@@ -613,6 +618,11 @@
                 <label>Password</label>
             </value>
             <value>
+                <fullName>PPVV</fullName>
+                <default>false</default>
+                <label>PPVV</label>
+            </value>
+            <value>
                 <fullName>Precio de mi seguro</fullName>
                 <default>false</default>
                 <label>Precio de mi seguro</label>
@@ -631,6 +641,11 @@
                 <fullName>Problemas con el transportista Movilidad</fullName>
                 <default>false</default>
                 <label>Problemas con el transportista Movilidad</label>
+            </value>
+            <value>
+                <fullName>Proveedor</fullName>
+                <default>false</default>
+                <label>Proveedor</label>
             </value>
             <value>
                 <fullName>Queja</fullName>
@@ -763,6 +778,11 @@
                 <label>Solicitud factura</label>
             </value>
             <value>
+                <fullName>Soporte Producción</fullName>
+                <default>false</default>
+                <label>Soporte Producción</label>
+            </value>
+            <value>
                 <fullName>Spam</fullName>
                 <default>false</default>
                 <label>Spam</label>
@@ -816,6 +836,11 @@
                 <fullName>Webservices</fullName>
                 <default>false</default>
                 <label>Webservices</label>
+            </value>
+            <value>
+                <fullName>WS</fullName>
+                <default>false</default>
+                <label>WS</label>
             </value>
             <value>
                 <fullName>Zona Zurich</fullName>
@@ -916,15 +941,18 @@
             <controllingFieldValue>Agente</controllingFieldValue>
             <controllingFieldValue>Corredor</controllingFieldValue>
             <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>Catálogo virtual</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>Correo Corporativo</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Agente</controllingFieldValue>
             <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>CSM/Comercial</valueName>
         </valueSettings>
         <valueSettings>
@@ -933,6 +961,7 @@
             <controllingFieldValue>Corredor</controllingFieldValue>
             <controllingFieldValue>Partner</controllingFieldValue>
             <controllingFieldValue>Proveedor</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>Descargas / Descargas EIAC</valueName>
         </valueSettings>
         <valueSettings>
@@ -943,12 +972,23 @@
             <controllingFieldValue>Proveedor</controllingFieldValue>
             <controllingFieldValue>TPA</controllingFieldValue>
             <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>Documentación</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Agente</controllingFieldValue>
             <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>Genious Bar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Banca seguros</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>TPA</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
+            <valueName>IAM</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Agente</controllingFieldValue>
@@ -957,6 +997,7 @@
             <controllingFieldValue>Partner</controllingFieldValue>
             <controllingFieldValue>Proveedor</controllingFieldValue>
             <controllingFieldValue>TPA</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>Incidencia Service Now</valueName>
         </valueSettings>
         <valueSettings>
@@ -965,10 +1006,12 @@
             <controllingFieldValue>Corredor</controllingFieldValue>
             <controllingFieldValue>Partner</controllingFieldValue>
             <controllingFieldValue>TPA</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>INFO</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>MFA (Okta)</valueName>
         </valueSettings>
         <valueSettings>
@@ -981,6 +1024,7 @@
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
             <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <controllingFieldValue>Incidencia</controllingFieldValue>
             <controllingFieldValue>Validar mi seguro</controllingFieldValue>
             <controllingFieldValue>Pago de mi seguro</controllingFieldValue>
@@ -993,7 +1037,14 @@
             <controllingFieldValue>Partner</controllingFieldValue>
             <controllingFieldValue>Proveedor</controllingFieldValue>
             <controllingFieldValue>TPA</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>Password</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
+            <valueName>Proveedor</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Agente</controllingFieldValue>
@@ -1001,11 +1052,13 @@
             <controllingFieldValue>Corredor</controllingFieldValue>
             <controllingFieldValue>Partner</controllingFieldValue>
             <controllingFieldValue>TPA</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>Recertificación Usuarios</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Agente</controllingFieldValue>
             <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>Software Obsoleto</valueName>
         </valueSettings>
         <valueSettings>
@@ -1014,6 +1067,7 @@
             <controllingFieldValue>Corredor</controllingFieldValue>
             <controllingFieldValue>Partner</controllingFieldValue>
             <controllingFieldValue>Proveedor</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>Webservices</valueName>
         </valueSettings>
         <valueSettings>
@@ -1022,10 +1076,13 @@
             <controllingFieldValue>Corredor</controllingFieldValue>
             <controllingFieldValue>Partner</controllingFieldValue>
             <controllingFieldValue>TPA</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>Zona Zurich</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Gestión Usuarios</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>ZRM</valueName>
         </valueSettings>
         <valueSettings>
@@ -1033,13 +1090,16 @@
             <controllingFieldValue>Banca seguros</controllingFieldValue>
             <controllingFieldValue>Corredor</controllingFieldValue>
             <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>Zurich Empresas</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Agente</controllingFieldValue>
             <controllingFieldValue>Banca seguros</controllingFieldValue>
             <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Gestión Usuarios</controllingFieldValue>
             <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>Interno</controllingFieldValue>
             <valueName>ZVGO</valueName>
         </valueSettings>
         <valueSettings>
@@ -1061,12 +1121,24 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Usuarios</controllingFieldValue>
+            <valueName>PPVV</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Usuarios</controllingFieldValue>
             <valueName>TPA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Usuarios</controllingFieldValue>
+            <valueName>WS</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Cartera</controllingFieldValue>
             <controllingFieldValue>TPA</controllingFieldValue>
             <valueName>Siniestros</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>TPA</controllingFieldValue>
+            <valueName>Soporte Producción</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Petición mercado</controllingFieldValue>
@@ -1507,6 +1579,7 @@
             <valueName>Mención marca</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>SPAM</controllingFieldValue>
             <controllingFieldValue>Marca (No info provided)</controllingFieldValue>
             <valueName>Spam</valueName>
         </valueSettings>

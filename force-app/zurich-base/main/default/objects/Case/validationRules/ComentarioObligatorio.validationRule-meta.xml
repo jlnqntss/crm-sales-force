@@ -3,11 +3,21 @@
     <fullName>ComentarioObligatorio</fullName>
     <active>true</active>
     <description>Indica error si no se comentan las tipificaciones indicadas</description>
-    <errorConditionFormula>RecordType.DeveloperName == &quot;SAMInquiry&quot; &amp;&amp;
-$Profile.Name == &apos;SAM User&apos; &amp;&amp;((ISBLANK( Comentario__c )  &amp;&amp; (ISPICKVAL(Subtype__c , &apos;Otros&apos;) ||ISPICKVAL(Subtype__c , &apos;Software Obsoleto&apos;) ||ISPICKVAL(Subtype__c , &apos;Genious Bar&apos;)
-||ISPICKVAL(Subtype__c , &apos;Incidencia Service Now&apos;) ))
-||
-(ISBLANK( Comentario__c ) &amp;&amp; ISPICKVAL( Subtype__c , &apos;Recertificación Usuarios&apos;)&amp;&amp; (ISPICKVAL( TypeN3__c , &apos;Otros&apos;) || ISPICKVAL( TypeN3__c , &apos;Modificación Correo electrónico&apos;))))</errorConditionFormula>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;SAMInquiry&quot; &amp;&amp; $Profile.Name == &apos;SAM User&apos; &amp;&amp; ISBLANK(Comentario__c) &amp;&amp;
+(
+ ISPICKVAL(Subtype__c , &apos;Incidencia Service Now&apos;) || 
+ ISPICKVAL(Subtype__c , &apos;Genious Bar&apos;) ||
+ ISPICKVAL(Subtype__c , &apos;Otros&apos;) ||
+ ISPICKVAL(Subtype__c , &apos;Software Obsoleto&apos;) ||
+ ISPICKVAL(Subtype__c , &apos;PPVV&apos;) ||
+ ISPICKVAL(TypeN3__c , &apos;Modificación Correo electrónico&apos;) ||
+ (ISPICKVAL(TypeN3__c , &apos;Revisar trazas&apos;) &amp;&amp; (ISPICKVAL(Type , &apos;Partner&apos;) || ISPICKVAL(Type , &apos;Proveedor&apos;))) ||
+ (ISPICKVAL(TypeN3__c , &apos;Solicitar trazas&apos;) &amp;&amp; (ISPICKVAL(Type , &apos;Partner&apos;) || ISPICKVAL(Type , &apos;Proveedor&apos;))) ||
+ (ISPICKVAL(TypeN3__c , &apos;Otros&apos;) &amp;&amp; (ISPICKVAL(Subtype__c , &apos;Zona Zurich&apos;) || ISPICKVAL(Subtype__c , &apos;Recertificación Usuarios&apos;))) ||
+ (ISPICKVAL(TypeN3__c , &apos;Alta&apos;) &amp;&amp; (ISPICKVAL(Subtype__c , &apos;ZRM&apos;) || ISPICKVAL(Subtype__c , &apos;ZVGO&apos;))) ||
+ (ISPICKVAL(TypeN3__c , &apos;Baja&apos;) &amp;&amp; (ISPICKVAL(Subtype__c , &apos;ZRM&apos;) || ISPICKVAL(Subtype__c , &apos;ZVGO&apos;))) ||
+ (ISPICKVAL(TypeN3__c , &apos;Modificación&apos;) &amp;&amp; (ISPICKVAL(Subtype__c , &apos;ZRM&apos;) || ISPICKVAL(Subtype__c , &apos;ZVGO&apos;)))
+)</errorConditionFormula>
     <errorDisplayField>Comentario__c</errorDisplayField>
     <errorMessage>Es obligatorio agregar un comentario</errorMessage>
 </ValidationRule>
