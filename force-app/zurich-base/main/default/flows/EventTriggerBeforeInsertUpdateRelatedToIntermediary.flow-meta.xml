@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>56.0</apiVersion>
+    <apiVersion>59.0</apiVersion>
     <decisions>
         <description>Se comprueba tanto si la cuenta relacionada con el contacto como la cuenta relacionada, ambos casos relacionados con el evento, son de tipo Mediador o Agrupación Mediador.</description>
         <name>AreAccountsIntermediaryOrIntermediaryGroupType</name>
@@ -13,33 +13,61 @@
         <defaultConnectorLabel>Resultado predeterminado</defaultConnectorLabel>
         <rules>
             <name>SomeAreIntermediaryOrIntermediaryGroupTypeOutcome</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>(1 OR 2 OR 3 OR 4) AND (5 OR 6 OR 7 OR 8)</conditionLogic>
             <conditions>
                 <leftValueReference>GetRelatedAccountAction.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Intermediary</stringValue>
+                    <elementReference>Intermediary_RecordType</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>GetRelatedContactAction.Account.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Intermediary</stringValue>
+                    <elementReference>Intermediary_RecordType</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>GetRelatedAccountAction.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>AgrupacionMediador</stringValue>
+                    <elementReference>AgrupacionMediador_RecordType</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>GetRelatedContactAction.Account.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>AgrupacionMediador</stringValue>
+                    <elementReference>AgrupacionMediador_RecordType</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetRelatedAccountAction.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>001</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetRelatedAccountAction.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>002</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetRelatedContactAction.Account.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>001</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetRelatedContactAction.Account.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>002</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -82,6 +110,16 @@
     </decisions>
     <description>Flujo que se encarga de informar el campo &quot;¿Relacionado con un intermediario?&quot; del objeto Evento con el valor &quot;Sí&quot;, en el caso de que la cuenta relacionada con el contacto o la cuenta, ambos casos relacionados con el evento, sean de tipo &quot;Intermediario&quot;.</description>
     <environments>Default</environments>
+    <formulas>
+        <name>AgrupacionMediador_RecordType</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_AgrupacionMediador.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Intermediary_RecordType</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary.Value__c}</expression>
+    </formulas>
     <interviewLabel>Event Trigger - Before insert/update RelatedToIntermediary {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Event Trigger - Before insert/update RelatedToIntermediary</label>
     <processMetadataValues>

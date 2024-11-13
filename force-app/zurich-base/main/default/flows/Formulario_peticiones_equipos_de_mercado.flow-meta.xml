@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <apiVersion>59.0</apiVersion>
+    <apiVersion>61.0</apiVersion>
     <assignments>
         <name>Asignar_mediador</name>
         <label>Asignar mediador</label>
@@ -10,7 +10,7 @@
             <assignToReference>recordId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>MediadorManual.recordId</elementReference>
+                <elementReference>Mediadores_Activos.selectedChoiceValues</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -831,6 +831,28 @@
         <picklistObject>Case</picklistObject>
     </dynamicChoiceSets>
     <dynamicChoiceSets>
+        <name>MediadoresActivos</name>
+        <dataType>String</dataType>
+        <displayField>NameAndIntermediaryCode__c</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>IntermediaryRecordTypeId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StatusIntermediary__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>AccountStatusIntermediaryActive</elementReference>
+            </value>
+        </filters>
+        <object>Account</object>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
         <name>MesCarteraPicklist</name>
         <dataType>Picklist</dataType>
         <displayField xsi:nil="true"/>
@@ -891,6 +913,11 @@
     </dynamicChoiceSets>
     <environments>Default</environments>
     <formulas>
+        <name>AccountStatusIntermediaryActive</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Account_StatusIntermediary_Active.Value__c}</expression>
+    </formulas>
+    <formulas>
         <name>CurrentYear</name>
         <dataType>Date</dataType>
         <expression>DATE(YEAR(TODAY()),01,01)</expression>
@@ -899,6 +926,11 @@
         <name>DescripcionCaso</name>
         <dataType>String</dataType>
         <expression>IF(!ISBLANK({!Descripcion}), {!Descripcion}, {!Descripci_n_propuesta_mejora})</expression>
+    </formulas>
+    <formulas>
+        <name>IntermediaryRecordTypeId</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Value__c}</expression>
     </formulas>
     <formulas>
         <name>Nuevo_caso_link_formula</name>
@@ -1291,6 +1323,12 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
                 <name>recordId</name>
                 <value>
                     <elementReference>Crear_caso</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>multiple</name>
+                <value>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -1789,25 +1827,15 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
             <targetReference>Asignar_mediador</targetReference>
         </connector>
         <fields>
-            <name>MediadorManual</name>
-            <extensionName>flowruntime:lookup</extensionName>
-            <fieldType>ComponentInstance</fieldType>
+            <name>Mediadores_Activos</name>
+            <choiceReferences>MediadoresActivos</choiceReferences>
+            <extensionName>flowruntime:choiceLookup</extensionName>
+            <fieldText>Mediador</fieldText>
+            <fieldType>ComponentChoice</fieldType>
             <inputParameters>
-                <name>fieldApiName</name>
+                <name>placeholder</name>
                 <value>
-                    <stringValue>AccountId</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Mediador</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>objectApiName</name>
-                <value>
-                    <stringValue>Case</stringValue>
+                    <stringValue>Buscar Cuentas...</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
