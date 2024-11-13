@@ -200,6 +200,7 @@ public with sharing class TaskUtil
                 continue;
 
             newTask.GenesysQueue__c = existingContactRequest.GenesysCloudQueueId__r.Name;
+            System.debug('newTask.GenesysQueue__c: ' + newTask.GenesysQueue__c);
         }
     }
 }
