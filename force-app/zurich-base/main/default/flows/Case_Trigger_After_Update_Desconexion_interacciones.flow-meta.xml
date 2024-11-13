@@ -5,7 +5,7 @@
         <name>GenesysCloudBatchPatchInteractionAction</name>
         <label>Solicitud Patch Interacción</label>
         <locationX>380</locationX>
-        <locationY>2400</locationY>
+        <locationY>2700</locationY>
         <actionName>GenesysCloudBatchPatchInteractionAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -29,7 +29,7 @@
         <name>GenesysCloudEmailStatusAction</name>
         <label>Solicitud Status Email</label>
         <locationX>446</locationX>
-        <locationY>1692</locationY>
+        <locationY>1992</locationY>
         <actionName>GenesysCloudEmailStatusAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -56,7 +56,7 @@
         <name>GenesysCloudTaskStatusAction</name>
         <label>Solicitud Status Task</label>
         <locationX>50</locationX>
-        <locationY>900</locationY>
+        <locationY>1200</locationY>
         <actionName>GenesysCloudTaskStatusAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -84,7 +84,7 @@
         <name>AddEmailToCombinedListAssignment</name>
         <label>Añadir Email a Lista Combinada</label>
         <locationX>534</locationX>
-        <locationY>1908</locationY>
+        <locationY>2208</locationY>
         <assignmentItems>
             <assignToReference>ListaCombinadaTaskYMails</assignToReference>
             <operator>Add</operator>
@@ -100,7 +100,7 @@
         <name>AddTaskToCombinedListAssignment</name>
         <label>Añadir Tarea a Lista Combinada</label>
         <locationX>138</locationX>
-        <locationY>1116</locationY>
+        <locationY>1416</locationY>
         <assignmentItems>
             <assignToReference>ListaCombinadaTaskYMails</assignToReference>
             <operator>Add</operator>
@@ -116,7 +116,7 @@
         <name>ComprobarCantidadListaGetAssignment</name>
         <label>Comprobar Cantidad Lista Get</label>
         <locationX>710</locationX>
-        <locationY>2184</locationY>
+        <locationY>2484</locationY>
         <assignmentItems>
             <assignToReference>ListaGetConInteraccionSize</assignToReference>
             <operator>AssignCount</operator>
@@ -132,7 +132,7 @@
         <name>CasoUspInteractionDecision</name>
         <label>¿El caso es Usp?</label>
         <locationX>380</locationX>
-        <locationY>2508</locationY>
+        <locationY>2808</locationY>
         <defaultConnectorLabel>No Caso USP</defaultConnectorLabel>
         <rules>
             <name>USPInteractionOutcome</name>
@@ -161,7 +161,7 @@
         <name>IsListEmptyDecision</name>
         <label>¿Lista Email vacía?</label>
         <locationX>710</locationX>
-        <locationY>1584</locationY>
+        <locationY>1884</locationY>
         <defaultConnector>
             <targetReference>ComprobarCantidadListaGetAssignment</targetReference>
         </defaultConnector>
@@ -186,7 +186,7 @@
         <name>IsNoteINFOorWebDecision</name>
         <label>¿Es Nota INFO o Web o Canal Unico?</label>
         <locationX>710</locationX>
-        <locationY>576</locationY>
+        <locationY>876</locationY>
         <defaultConnector>
             <targetReference>GetEmailByCaseIdAction</targetReference>
         </defaultConnector>
@@ -225,7 +225,7 @@
         <name>IsStatusListEmptyDecision</name>
         <label>¿Lista estados vacía?</label>
         <locationX>710</locationX>
-        <locationY>2292</locationY>
+        <locationY>2592</locationY>
         <defaultConnectorLabel>Si</defaultConnectorLabel>
         <rules>
             <name>OneResultOutcome</name>
@@ -247,7 +247,7 @@
         <name>IsTaskListEmptyDecision</name>
         <label>¿Lista Task Vacía?</label>
         <locationX>314</locationX>
-        <locationY>792</locationY>
+        <locationY>1092</locationY>
         <defaultConnectorLabel>Si</defaultConnectorLabel>
         <rules>
             <name>NoOutcome</name>
@@ -310,7 +310,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>IsNoteINFOorWebDecision</targetReference>
+                <targetReference>Obtener_metadata_Cola_USP_de_Enrutado</targetReference>
             </connector>
             <label>USP</label>
         </rules>
@@ -402,6 +402,28 @@
             <label>ZDA</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Pertenece_a_una_cola_de_enrutamiento_USP_por_equipos</name>
+        <label>¿Pertenece a una cola de enrutamiento USP por equipos?</label>
+        <locationX>292</locationX>
+        <locationY>492</locationY>
+        <defaultConnector>
+            <targetReference>IsNoteINFOorWebDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_es_usp_Si_es_usp_por_equipospor_equipos</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Obtener_metadata_Cola_USP_de_Enrutado.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Si</label>
+        </rules>
+    </decisions>
     <description>Flujo encargado de, cuando se cierra un caso, desconectar todas aquellas interacciones que estén pendientes de ser distribuidas por Genesys. 
 Se establece un orden de ejecución tardío al ser una llamada a un sistema externo.</description>
     <environments>Default</environments>
@@ -426,7 +448,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>IncluirEmailsRelacionadosLoop</name>
         <label>Incluir Emails Relacionados</label>
         <locationX>446</locationX>
-        <locationY>1800</locationY>
+        <locationY>2100</locationY>
         <collectionReference>ListaGetConInteraccionEmail</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -440,7 +462,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>IncluirTaskRelacionadasLoop</name>
         <label>Incluir Task Relacionadas</label>
         <locationX>50</locationX>
-        <locationY>1008</locationY>
+        <locationY>1308</locationY>
         <collectionReference>ListaGetConInteraccionTask</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -473,7 +495,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>Crear_Error_Log_Desconexion_Interaccion</name>
         <label>Crear Error Log Desconexión Interacción</label>
         <locationX>776</locationX>
-        <locationY>2508</locationY>
+        <locationY>2808</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -511,7 +533,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>Crear_Error_Log_Solicitud_Tareas</name>
         <label>Crear Error Log Solicitud Tareas</label>
         <locationX>314</locationX>
-        <locationY>1008</locationY>
+        <locationY>1308</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -549,7 +571,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>CreateErrorLogStatusRequestAction</name>
         <label>Crear Error Log Solicitud Estado</label>
         <locationX>710</locationX>
-        <locationY>1800</locationY>
+        <locationY>2100</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -587,7 +609,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>CreateErrorLogTaskInquiryAction</name>
         <label>Crear Error Log Consulta Tareas</label>
         <locationX>842</locationX>
-        <locationY>792</locationY>
+        <locationY>1092</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -626,7 +648,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>GetEmailByCaseIdAction</name>
         <label>Obtener Email Messages por Caso</label>
         <locationX>710</locationX>
-        <locationY>1476</locationY>
+        <locationY>1776</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsListEmptyDecision</targetReference>
@@ -661,7 +683,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>GetTaskByCaseId</name>
         <label>Obtener tareas por CaseId</label>
         <locationX>314</locationX>
-        <locationY>684</locationY>
+        <locationY>984</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsTaskListEmptyDecision</targetReference>
@@ -718,11 +740,32 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <queriedFields>CallObject</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>Obtener_metadata_Cola_USP_de_Enrutado</name>
+        <label>Obtener metadata Cola USP de Enrutado</label>
+        <locationX>292</locationX>
+        <locationY>384</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Pertenece_a_una_cola_de_enrutamiento_USP_por_equipos</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Owner:Group.DeveloperName</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RoutingTeamQueueConfig__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>ActualizarCampoInteraccionCerrada</name>
         <label>Actualizar Campo Interaccion Cerrada</label>
         <locationX>248</locationX>
-        <locationY>2616</locationY>
+        <locationY>2916</locationY>
         <inputAssignments>
             <field>InteractionStatus__c</field>
             <value>
