@@ -46,7 +46,8 @@ public with sharing class WorkRouter
     public void assignCasesAndAgentsByRoutingTeam(List<sObject> lScope)
     {   //Creamos un mapa que asocie el equipo con un objeto RoutingTeamWrapper
         Map<String, RoutingTeamWrapper> mRoutingTeamWrapper = new Map<String, RoutingTeamWrapper>();
-        try {
+        try 
+        {
             List<Case> casesToAssign = (List<Case>) lScope;
             //Almacenamos los casos al mapa de mRoutingTeamWrapper separados por equipos de enrutamiento
             allocateAssignCasesByRoutingTeam(casesToAssign, mRoutingTeamWrapper);
@@ -68,7 +69,8 @@ public with sharing class WorkRouter
                 assignCasesWithoutBestAgentToActiveAgent(routingTeamWrapperItem.lCasesToAssign, routingTeamWrapperItem.lUsersWithAgentActive);
             }
 
-        } catch (Exception ex) 
+        } 
+        catch (Exception ex) 
         {
             ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, ex.getMessage() + ' LineNumber: ' + ex.getLineNumber(), 'WorkRouter - assignCasesAndAgentsByRoutingTeam');
             throw new IllegalArgumentException(ex);
@@ -99,12 +101,14 @@ public with sharing class WorkRouter
                     if(caseItem.Owner.Profile.Name == GlobalConfigUtil.getGlobalConfigurationValue('Profile_Name_Integrator'))
                     {
                         routingTeam = caseItem.Owner.Profile.Name;
-                    }else
+                    }
+                    else
                     {
                         //Recuperamos a que equipo corresponde el caso en base a la tabla mRoutingTeamQueueConfig
                         routingTeam = mRoutingTeamQueueConfig.get(caseItem.Owner.Name);
                     }
-                }else
+                }
+                else
                 {
                     routingTeam = NB_DAMAGES_RC_ROUTING_TEAM_NAME;
                 }
@@ -115,7 +119,8 @@ public with sharing class WorkRouter
                 //Añadimos el objeto wrapper actualzado al mapa
                 mRoutingTeamWrapper.put(routingTeam, routingteamWpp);
             }
-        } catch (Exception ex) 
+        } 
+        catch (Exception ex) 
         {
             ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, ex.getMessage() + ' LineNumber: ' + ex.getLineNumber(), 'WorkRouter - allocateAssignCasesByRoutingTeam');
             throw ex;
@@ -150,7 +155,8 @@ public with sharing class WorkRouter
                     mRoutingTeamWrapper.put(userItem.RoutingTeam__c, routingteamWpp);
                 }
             }
-        } catch (Exception ex) 
+        } 
+        catch (Exception ex) 
         {
             ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, ex.getMessage() + ' LineNumber: ' + ex.getLineNumber(), 'WorkRouter - allocateActiveAgentsByRoutingTeam');
             throw ex;
@@ -205,7 +211,8 @@ public with sharing class WorkRouter
                     numberOfUsersWithInfiniteCapacity ++;
                 }
             }
-        } catch (Exception ex) 
+        } 
+        catch (Exception ex) 
         {
             ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, ex.getMessage() + ' LineNumber: ' + ex.getLineNumber(), 'WorkRouter - getNumberOfUsersActiveWithInfiniteCapacity');
             throw ex;

@@ -4,7 +4,8 @@
 * @date: 24/10/2024
 */
 @isTest
-private with sharing class RoutingTeamQueueConfigUtilTest {
+private with sharing class RoutingTeamQueueConfigUtilTest 
+{
     /**
      * Devuelve en forma de mapa todas las colas con su correspondiente equipo de enrutamiento
      * @author fjbelmonte
