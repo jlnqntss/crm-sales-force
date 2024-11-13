@@ -312,10 +312,17 @@
                 <stringValue>A</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>MovementType__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>3</stringValue>
+            </value>
+        </filters>
         <object>Policy__c</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <triggerOrder>1700</triggerOrder>
 </Flow>
