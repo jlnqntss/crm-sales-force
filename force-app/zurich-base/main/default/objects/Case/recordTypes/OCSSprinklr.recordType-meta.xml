@@ -1159,6 +1159,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Micromobility</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Motor%2Ffleet</fullName>
             <default>false</default>
         </values>

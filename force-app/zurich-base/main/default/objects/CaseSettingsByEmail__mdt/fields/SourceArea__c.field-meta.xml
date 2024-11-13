@@ -21,6 +21,61 @@
                 <default>false</default>
                 <label>Mediator</label>
             </value>
+            <value>
+                <fullName>Generic end customer</fullName>
+                <default>false</default>
+                <label>Generic end customer</label>
+            </value>
+            <value>
+                <fullName>End customer partner</fullName>
+                <default>false</default>
+                <label>End customer partner</label>
+            </value>
+            <value>
+                <fullName>Partner dome</fullName>
+                <default>false</default>
+                <label>Partner dome</label>
+            </value>
+            <value>
+                <fullName>Zurich Business Client</fullName>
+                <default>false</default>
+                <label>Zurich Business Client</label>
+            </value>
+            <value>
+                <fullName>Generic Internal</fullName>
+                <default>false</default>
+                <label>Generic Internal</label>
+            </value>
+            <value>
+                <fullName>SDC (Customer Defense Service)</fullName>
+                <default>false</default>
+                <label>SDC (Customer Defense Service)</label>
+            </value>
+            <value>
+                <fullName>INFO note</fullName>
+                <default>false</default>
+                <label>INFO note</label>
+            </value>
+            <value>
+                <fullName>TNPS Customer Survey</fullName>
+                <default>false</default>
+                <label>TNPS Customer Survey</label>
+            </value>
+            <value>
+                <fullName>Insurance Banking</fullName>
+                <default>false</default>
+                <label>Insurance Banking</label>
+            </value>
+            <value>
+                <fullName>TPA&apos;s</fullName>
+                <default>false</default>
+                <label>TPA&apos;s</label>
+            </value>
+            <value>
+                <fullName>KLINK end customer</fullName>
+                <default>false</default>
+                <label>KLINK end customer</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
