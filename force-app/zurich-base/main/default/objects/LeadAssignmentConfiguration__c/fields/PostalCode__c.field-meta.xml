@@ -2,7 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>PostalCode__c</fullName>
     <caseSensitive>true</caseSensitive>
+    <description>Código de provincia</description>
     <externalId>false</externalId>
+    <inlineHelpText>Coincide con los dos primeros dígitos del código postal. Si el código postal comienza por 0, el código de provincia también deberá comenzar por cero.</inlineHelpText>
     <label>PostalCode</label>
     <length>2</length>
     <required>false</required>

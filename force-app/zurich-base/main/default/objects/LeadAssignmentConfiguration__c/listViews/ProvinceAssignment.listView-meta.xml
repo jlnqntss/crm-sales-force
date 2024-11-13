@@ -11,5 +11,5 @@
         <operation>equals</operation>
         <value>LeadAssignmentConfiguration__c.ProvinceAssignment</value>
     </filters>
-    <label>Province Assignment</label>
+    <label>Asignación por provincia</label>
 </ListView>

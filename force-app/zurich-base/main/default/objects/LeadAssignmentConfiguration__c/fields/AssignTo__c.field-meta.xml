@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>AssignTo__c</fullName>
+    <description>Código del mediador a que se asignarán los leads</description>
     <externalId>false</externalId>
+    <inlineHelpText>Código de mediador receptor de los leads que cumplan la condición de asignación.</inlineHelpText>
     <label>Assign to</label>
     <length>50</length>
     <required>false</required>

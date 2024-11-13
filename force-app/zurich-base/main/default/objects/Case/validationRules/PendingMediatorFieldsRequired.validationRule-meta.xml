@@ -7,6 +7,7 @@ ISPICKVAL(TypeN3__c,&quot;Cotización&quot;) &amp;&amp;
 ISBLANK(TEXT(RiskAppetite__c))   &amp;&amp; 
 ISPICKVAL(Status,&quot;Pendiente&quot;) &amp;&amp; 
 ISPICKVAL(PendingBy__c,&quot;Intermediary&quot;) &amp;&amp; 
-$Permission.USPTriggerCaseValidationRules</errorConditionFormula>
+$Permission.USPTriggerCaseValidationRules &amp;&amp;
+NOT(CONTAINS($UserRole.Name,&quot;SDM&quot;))</errorConditionFormula>
     <errorMessage>[VR Caso] Es obligatorio informar el Apetito de Riesgo antes de pasar a estado Pendiente de Mediador</errorMessage>
 </ValidationRule>

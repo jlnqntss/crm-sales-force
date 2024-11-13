@@ -3,7 +3,8 @@
     <fullName>MunicipalityAssignment</fullName>
     <active>true</active>
     <compactLayoutAssignment>MunicipalityAssignmentCompactLayout</compactLayoutAssignment>
-    <label>MunicipalityAssignment</label>
+    <description>Se utiliza para indicar a qué mediador se deben asignar los leads de un determinado rango de códigos postales.</description>
+    <label>Municipality Assignment</label>
     <picklistValues>
         <picklist>AssignmentType__c</picklist>
         <values>

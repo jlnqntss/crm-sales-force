@@ -9,7 +9,7 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-    <restricted>false</restricted>
+        <restricted>false</restricted>
         <valueSetDefinition>
             <sorted>true</sorted>
             <value>
@@ -41,6 +41,11 @@
                 <fullName>Life</fullName>
                 <default>false</default>
                 <label>Life</label>
+            </value>
+            <value>
+                <fullName>Micromobility</fullName>
+                <default>false</default>
+                <label>Micromobility</label>
             </value>
             <value>
                 <fullName>Motor/fleet</fullName>
