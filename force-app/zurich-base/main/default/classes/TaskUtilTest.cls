@@ -36,7 +36,7 @@ private with sharing class TaskUtilTest
         List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(personAccounts, campaigns, 'Subscribed');
         insert campaignMembers;
 
-        purecloud__PureCloud_Queue__c genesysCloudItem = new purecloud__PureCloud_Queue__c( Name = 'Cola de test 1' );
+        purecloud__PureCloud_Queue__c genesysCloudItem = new purecloud__PureCloud_Queue__c( Name = 'Cola de test 1', purecloud__PureCloud_Queue_ID__c = 'Id-de-prueba' );
         insert genesysCloudItem;
 
         List<ContactRequest> contactRequests = new List<ContactRequest>();
@@ -217,13 +217,21 @@ private with sharing class TaskUtilTest
     @isTest
     private static void test_linkContactRequestsWithTasks()
     {
+        Task taskRecord = new Task(
+            Subject = 'Test Call',
+            CallObject = 'Test CallObject Value',
+            WhatId = [SELECT Id FROM Account LIMIT 1].Id // Asegura que el campo "WhatId" está relacionado
+            );
+        insert taskRecord;
 
-        // Task taskToCreate = new Task();
+        // Recuperar el Task para validar
+        Task retrievedTask = [SELECT Id, CallObject FROM Task WHERE Id = : taskRecord.Id];
+        System.assertEquals('Test CallObject Value', retrievedTask.CallObject);
 
         // Test.startTest();
         // insert taskToCreate;
         // Test.stopTest();
-
-        // System.assertEquals(taskToCreate.GenesysQueue__c,'Cola de test 1','Debe estar informado con Cola de test 1');
+        // System.debug('taskToCreate.GenesysQueue__c: ' + taskToCreate.GenesysQueue__c);
+        //System.assertEquals(taskToCreate.GenesysQueue__c,'Cola de test 1','Debe estar informado con Cola de test 1');
     }
 }

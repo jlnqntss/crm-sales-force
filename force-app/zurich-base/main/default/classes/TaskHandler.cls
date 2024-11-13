@@ -7,8 +7,8 @@
  **/
 public class TaskHandler implements ITrigger
 {
-    private Map<String, List<ContactRequest>> contactRequestsByInterationId;
-    private Map<String, List<Task>> tasksByInterationId;
+    private Map<String, List<ContactRequest> > contactRequestsByInterationId;
+    private Map<String, List<Task> > tasksByInterationId;
 
     public TaskHandler()
     {}
@@ -22,9 +22,9 @@ public class TaskHandler implements ITrigger
     public void bulkBefore(List<SObject> newList, Map<Id, SObject> oldMap)
     {
         List<ContactRequest> contactRequestsRelatedWithTasks;
-        tasksByInterationId = (Map<String, List<Task>>) CollectionUtil.groupListBy(newList, Task.CallObject.getDescribe().getName());
-        contactRequestsRelatedWithTasks = new ContactRequestSelector().findByGenesysInteractionIds(tasksByInterationId.keySet());
-        contactRequestsByInterationId = (Map<String, List<ContactRequest>>) CollectionUtil.groupListBy(contactRequestsRelatedWithTasks, ContactRequest.GenesysInteractionId__c.getDescribe().getName());
+        tasksByInterationId = (Map<String, List<Task> >) CollectionUtil.groupListBy( newList, Task.CallObject.getDescribe().getName() );
+        contactRequestsRelatedWithTasks = new ContactRequestSelector().findByGenesysInteractionIds( tasksByInterationId.keySet() );
+        contactRequestsByInterationId = (Map<String, List<ContactRequest> >) CollectionUtil.groupListBy( contactRequestsRelatedWithTasks, ContactRequest.GenesysInteractionId__c.getDescribe().getName() );
     }
 
     /**
