@@ -411,15 +411,18 @@ public with sharing class TestGDPRDataFactory
 
         public JerarquiaGDPR addContactPointAddress(String addressName, String relatedScopeName)
         {
+            
             validateBlankValue(addressName, 'Hace falta un nombre para un ContactPointAddress');
-
+        	Test_Data__mdt contactPointTestData = [SELECT Data_Field_1__c FROM Test_Data__mdt WHERE DeveloperName = 'ContactPointAddress' LIMIT 1];
+        	Map<String, Object> mapInfo = (Map<String, Object>) JSON.deserializeUntyped(contactPointTestData.Data_Field_1__c);
+            
             contactPointAddresses.put(new ContactPointAddress(
                 Name = addressName,
-                street = '111 John Street',
-                city = 'San Francisco',
-                state = 'CA',
-                postalCode = '94111',
-                country = 'United States'
+                street = (String)contactPointTestData.get('street'),
+                city = (String)contactPointTestData.get('city'),
+                state = (String)contactPointTestData.get('state'),
+                postalCode = (String)contactPointTestData.get('postalCode'),
+                country = (String)contactPointTestData.get('country')
             ), relatedScopeName);
 
             return this;
@@ -658,8 +661,8 @@ public with sharing class TestGDPRDataFactory
         {
             caseEmails.put(caseName, new EmailMessage(
                 Subject = emailSubject,
-                FromAddress = 'madeup@emaildoesntwork.com',
-                ToAddress = 'particulares.dtsev@zurich.com.invalid'
+                FromAddress = TestDataFactory.getRandomUsername(),
+                ToAddress = TestDataFactory.getRandomUsername()
             ));
 
             return this;
