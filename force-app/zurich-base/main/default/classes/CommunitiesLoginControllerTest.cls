@@ -3,10 +3,24 @@
  */
 @IsTest global with sharing class CommunitiesLoginControllerTest
 {
-    @IsTest(SeeAllData=true)
+    @IsTest
     global static void testCommunitiesLoginController ()
     {
+        PageReference page = Page.CommunitiesLogin;
+        page.getParameters().put('startURL', TestDataFactory.getRandomString(4));
+        
+        Test.startTest();
         CommunitiesLoginController controller = new CommunitiesLoginController();
-        System.assertEquals( null, controller.forwardToAuthPage() );
+        
+        PageReference result1 = controller.forwardToAuthPage();
+        
+        Test.setCurrentPage(page);
+        
+        PageReference result2 = controller.forwardToAuthPage();
+        
+        Test.stopTest();
+        
+        System.assertEquals( null, result1 );
+        System.assertEquals( null, result2 );
     }
 }

@@ -408,6 +408,11 @@
     </quickActions>
     <quickActions>
         <aspect>Master</aspect>
+        <label>Exportar Información del Cliente</label> 
+        <name>Export_Client_Information</name>
+    </quickActions>
+    <quickActions>
+        <aspect>Master</aspect>
         <label>Nueva Oferta</label>
         <name>NewOffer</name>
     </quickActions>

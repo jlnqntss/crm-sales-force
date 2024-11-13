@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ClaimReinstatementDate__c</fullName>
+    <description>Fecha en la que se reactiva el siniestro después de haber sido cerrado o inactivo.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Fecha en la que se rehabilita el siniestro para su seguimiento.</inlineHelpText>
+    <label>Reinstatement Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>
