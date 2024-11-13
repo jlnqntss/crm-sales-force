@@ -6717,6 +6717,202 @@ Cree el acta y vuelva a intentarlo.</label>
         <label>No informado</label>
         <name>ZRM_CustomerSegment_NoValue</name>
     </customLabels>
+    <customLabels>
+        <label>Resumen de Cliente</label>
+        <name>ZRM_ExportClientData_CustomerSummary</name>
+    </customLabels>
+    <customLabels>
+        <label>Segmento</label>
+        <name>ZRM_ExportClientData_Segment</name>
+    </customLabels>
+    <customLabels>
+        <label>Valor Cliente</label>
+        <name>ZRM_ExportClientData_CustomeValue</name>
+    </customLabels>
+    <customLabels>
+        <label>Dirección</label>
+        <name>ZRM_ExportClientData_Address</name>
+    </customLabels>
+    <customLabels>
+        <label>Datos de Contacto</label>
+        <name>ZRM_ExportClientData_ContactData</name>
+    </customLabels>
+    <customLabels>
+        <label>Pólizas</label>
+        <name>ZRM_ExportClientData_PolicyTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Número de Póliza</label>
+        <name>ZRM_ExportClientData_PolicyNumber</name>
+    </customLabels>
+    <customLabels>
+        <label>Estado de la Póliza</label>
+        <name>ZRM_ExportClientData_PolicyStatus</name>
+    </customLabels>
+    <customLabels>
+        <label>Ramo</label>
+        <name>ZRM_ExportClientData_PolicyProductBranch</name>
+    </customLabels>
+    <customLabels>
+        <label>Identificador</label>
+        <name>ZRM_ExportClientData_PolicyIdentifier</name>
+    </customLabels>
+    <customLabels>
+        <label>Fecha de Vencimiento Natural</label>
+        <name>ZRM_ExportClientData_PolicyEndDate</name>
+    </customLabels>
+    <customLabels>
+        <label>Prima Total</label>
+        <name>ZRM_ExportClientData_PolicyTotalPremium</name>
+    </customLabels>
+    <customLabels>
+        <label>Siniestralidad (%)</label>
+        <name>ZRM_ExportClientData_PolicyAccidentRate</name>
+    </customLabels>
+    <customLabels>
+        <label>Siniestros</label>
+        <name>ZRM_ExportClientData_ClaimTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Número del Siniestro</label>
+        <name>ZRM_ExportClientData_ClaimNumber</name>
+    </customLabels>
+    <customLabels>
+        <label>Estado</label>
+        <name>ZRM_ExportClientData_ClaimStatus</name>
+    </customLabels>
+    <customLabels>
+        <label>Ramo</label>
+        <name>ZRM_ExportClientData_ClaimProductBranch</name>
+    </customLabels>
+    <customLabels>
+        <label>Identificador</label>
+        <name>ZRM_ExportClientData_ClaimIdentifier</name>
+    </customLabels>
+    <customLabels>
+        <label>Fecha Ocurrencia</label>
+        <name>ZRM_ExportClientData_ClaimDateOfOccurence</name>
+    </customLabels>
+    <customLabels>
+        <label>Fecha Apertura</label>
+        <name>ZRM_ExportClientData_ClaimOpenDate</name>
+    </customLabels>
+    <customLabels>
+        <label>Factor Culpa</label>
+        <name>ZRM_ExportClientData_ClaimFaultFactor</name>
+    </customLabels>
+    <customLabels>
+        <label>Ofertas</label>
+        <name>ZRM_ExportClientData_OfferTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Número de Oferta</label>
+        <name>ZRM_ExportClientData_OfferNumber</name>
+    </customLabels>
+    <customLabels>
+        <label>Etapa</label>
+        <name>ZRM_ExportClientData_OfferStage</name>
+    </customLabels>
+    <customLabels>
+        <label>Ramo</label>
+        <name>ZRM_ExportClientData_OfferProductBranch</name>
+    </customLabels>
+    <customLabels>
+        <label>Número Oferta INFO</label>
+        <name>ZRM_ExportClientData_OfferNumberINFO</name>
+    </customLabels>
+    <customLabels>
+        <label>Fecha Creación INFO</label>
+        <name>ZRM_ExportClientData_OfferCreatedDateINFO</name>
+    </customLabels>
+    <customLabels>
+        <label>Campañas</label>
+        <name>ZRM_ExportClientData_CampaignTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Nombre de la Campaña</label>
+        <name>ZRM_ExportClientData_CampaignName</name>
+    </customLabels>
+    <customLabels>
+        <label>Ramo</label>
+        <name>ZRM_ExportClientData_CampaignProductBranch</name>
+    </customLabels>
+    <customLabels>
+        <label>Tipo</label>
+        <name>ZRM_ExportClientData_CampaignType</name>
+    </customLabels>
+    <customLabels>
+        <label>Fecha de Inicio Campaña</label>
+        <name>ZRM_ExportClientData_CampaignStartDate</name>
+    </customLabels>
+    <customLabels>
+        <label>Fecha de Finalización</label>
+        <name>ZRM_ExportClientData_CampaignEndDate</name>
+    </customLabels>
+    <customLabels>
+        <label>Estado</label>
+        <name>ZRM_ExportClientData_CampaignStatus</name>
+    </customLabels>
+    <customLabels>
+        <label>Propensiones</label>
+        <name>ZRM_ExportClientData_PropensityTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Identificador</label>
+        <name>ZRM_ExportClientData_PropensityIdentifier</name>
+    </customLabels>
+    <customLabels>
+        <label>Ramo</label>
+        <name>ZRM_ExportClientData_PropensityProductBranch</name>
+    </customLabels>
+    <customLabels>
+        <label>Detalle Ramo</label>
+        <name>ZRM_ExportClientData_PropensityProductBranchDetail</name>
+    </customLabels>
+    <customLabels>
+        <label>Propensión</label>
+        <name>ZRM_ExportClientData_PropensityValue</name>
+    </customLabels>
+    <customLabels>
+        <label>Competencias</label>
+        <name>ZRM_ExportClientData_CompetitorTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Identificador</label>
+        <name>ZRM_ExportClientData_CompetitorIdentifier</name>
+    </customLabels>
+    <customLabels>
+        <label>Ramo</label>
+        <name>ZRM_ExportClientData_CompetitorProductBranch</name>
+    </customLabels>
+    <customLabels>
+        <label>Fecha Vencimiento Póliza</label>
+        <name>ZRM_ExportClientData_CompetitorExpirationDate</name>
+    </customLabels>
+    <customLabels>
+        <label>Prima Competencia</label>
+        <name>ZRM_ExportClientData_CompetitorPremium</name>
+    </customLabels>
+    <customLabels>
+        <label>Empresa</label>
+        <name>ZRM_ExportClientData_CompetitorCompany</name>
+    </customLabels>
+    <customLabels>
+        <label>Cuentas Relacionadas</label>
+        <name>ZRM_ExportClientData_AccountRelationshipTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Identificador</label>
+        <name>ZRM_ExportClientData_AccountRelationshipIdentifier</name>
+    </customLabels>
+    <customLabels>
+        <label>Cuenta Relacionada</label>
+        <name>ZRM_ExportClientData_RelatedAccountName</name>
+    </customLabels>
+    <customLabels>
+        <label>Tipo de Relación</label>
+        <name>ZRM_ExportClientData_RelationshipType</name>
+    </customLabels>    
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>
         <name>Configure_Call_Center_Settings</name>

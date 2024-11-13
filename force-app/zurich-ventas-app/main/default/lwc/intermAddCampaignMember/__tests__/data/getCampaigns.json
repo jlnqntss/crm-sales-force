@@ -1,0 +1,10 @@
+{
+  "Name": "Campaign",
+  "id": "701xx0000000001AAA",
+  "fields": {
+    "Name": { "value": "My Campaign Name" },
+    "Type": { "value": "Cross Selling" },
+    "IsActive": { "value": true },
+    "EndDate": { "value": "3024-12-31" }
+  }
+}

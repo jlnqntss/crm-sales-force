@@ -3,8 +3,8 @@
     <actionCalls>
         <name>GetGroupId</name>
         <label>GetGroupId</label>
-        <locationX>1865</locationX>
-        <locationY>2450</locationY>
+        <locationX>3449</locationX>
+        <locationY>2642</locationY>
         <actionName>FindGroupIdByEmailAndGroupNameAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -35,9 +35,151 @@
     </actionCalls>
     <apiVersion>54.0</apiVersion>
     <assignments>
+        <name>Asignar_Construccion</name>
+        <label>Asignar Construccion</label>
+        <locationX>2690</locationX>
+        <locationY>1898</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NombreConstruccionVenta</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ColaSuscriptorUno</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>QueueEmailConstruction</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>EsMediadorPanelizadoVenta</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Owner_usuario</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignar_Construccion_Cartera</name>
+        <label>Asignar Construcción Cartera</label>
+        <locationX>5594</locationX>
+        <locationY>1382</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NombreConstruccionCartera</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Asignar_Construccion_Cartera_flujo_normal</name>
+        <label>Asignar Specialties Cartera flujo normal</label>
+        <locationX>5066</locationX>
+        <locationY>1274</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NombreSpecialtiesCartera</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ColaSuscriptorUno</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FilterQueueSpecialties</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Owner_usuario</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignar_Construccion_Construccion_flujo_normal</name>
+        <label>Asignar Construccion Cartera flujo normal</label>
+        <locationX>5858</locationX>
+        <locationY>1274</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NombreConstruccionCartera</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ColaSuscriptorUno</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FilterQueueSuscripcionConstruccion</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Owner_usuario</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignar_Construccion_Venta_flujo_normal</name>
+        <label>Asignar Construccion Venta flujo normal</label>
+        <locationX>3746</locationX>
+        <locationY>1274</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NombreConstruccionVenta</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ColaSuscriptorUno</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FilterQueueSuscripcionVenta</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Owner_usuario</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignar_Construccion_Venta_Suscripcion</name>
+        <label>Asignar Construccion Venta Suscripcion</label>
+        <locationX>2954</locationX>
+        <locationY>1898</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NombreConstruccionVenta</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ColaSuscriptorUno</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EmailSuscripcionConstruccion</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>EsMediadorPanelizadoVenta</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Owner_usuario</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Asignar_Gestor_Preferente_Como_Usuario</name>
         <label>Asignar Gestor Preferente Como Usuario</label>
-        <locationX>1898</locationX>
+        <locationX>4010</locationX>
         <locationY>1274</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -50,8 +192,8 @@
     <assignments>
         <name>Asignar_Gestor_Preferente_Usuario</name>
         <label>Asignar Gestor Preferente Usuario</label>
-        <locationX>1997</locationX>
-        <locationY>2258</locationY>
+        <locationX>3581</locationX>
+        <locationY>2450</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -66,7 +208,7 @@
     <assignments>
         <name>Asignar_Gestor_Preferente_Usuario_ZDA</name>
         <label>Asignar Gestor Preferente Usuario ZDA</label>
-        <locationX>5066</locationX>
+        <locationX>8234</locationX>
         <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -84,12 +226,28 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>Asignar_id_usuario_construccion_venta</name>
+        <label>Asignar id usuario construccion venta</label>
+        <locationX>3086</locationX>
+        <locationY>1598</locationY>
+        <assignmentItems>
+            <assignToReference>idUsuarioPanelizadoVenta</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Buscar_Si_Existe_Gestor_Preferente_Construccion.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Que_ramo_es_construccion</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Asignar_id_usuario_da_os_rc_venta</name>
         <label>Asignar id usuario daños rc venta</label>
         <locationX>446</locationX>
         <locationY>1490</locationY>
         <assignmentItems>
-            <assignToReference>idUsuarioDanosRcVenta</assignToReference>
+            <assignToReference>idUsuarioPanelizadoVenta</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>Buscar_Si_Existe_Gestor_Preferente.Id</elementReference>
@@ -100,10 +258,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Asignar_id_usuario_specialties_venta</name>
+        <label>Asignar id usuario specialties venta</label>
+        <locationX>1766</locationX>
+        <locationY>1598</locationY>
+        <assignmentItems>
+            <assignToReference>idUsuarioPanelizadoVenta</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Buscar_Si_Existe_Gestor_Preferente_Specialties.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Que_ramo_es_specialties</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>Asigna como gestor preferente el del caso padre</description>
         <name>Asignar_propietario_parent</name>
         <label>Asignar propietario parent</label>
-        <locationX>3482</locationX>
+        <locationX>6650</locationX>
         <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -137,9 +311,137 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Asignar_Sin_Gestor_Preferente_Construccion</name>
+        <label>Asignar Sin Gestor Preferente</label>
+        <locationX>2822</locationX>
+        <locationY>1598</locationY>
+        <assignmentItems>
+            <assignToReference>SinGestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Que_ramo_es_construccion</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignar_Sin_Gestor_Preferente_Specialties</name>
+        <label>Asignar Sin Gestor Preferente</label>
+        <locationX>1502</locationX>
+        <locationY>1598</locationY>
+        <assignmentItems>
+            <assignToReference>SinGestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Que_ramo_es_specialties</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignar_Specialties_Cartera</name>
+        <label>Asignar Specialties Cartera</label>
+        <locationX>4802</locationX>
+        <locationY>1382</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NombreSpecialtiesCartera</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Asignar_Specialties_Venta</name>
+        <label>Asignar Specialties Venta</label>
+        <locationX>1370</locationX>
+        <locationY>1898</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NombreSpecialtiesVenta</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ColaSuscriptorUno</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>QueueEmailSpecialties</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>EsMediadorPanelizadoVenta</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Owner_usuario</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignar_Specialties_Venta_flujo_normal</name>
+        <label>Asignar Specialties Venta flujo normal</label>
+        <locationX>2426</locationX>
+        <locationY>1274</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NombreSpecialtiesVenta</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ColaSuscriptorUno</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FilterQueueSpecialties</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Owner_usuario</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignar_Specialties_Venta_Suscripcion</name>
+        <label>Asignar Specialties Venta Suscripcion</label>
+        <locationX>1634</locationX>
+        <locationY>1898</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NombreSpecialtiesVenta</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ColaSuscriptorUno</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EmailSuscripcionSpecialties</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>EsMediadorPanelizadoVenta</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Owner_usuario</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Asignar_Suscriptor_DyO</name>
         <label>Asignar Suscriptor DyO</label>
-        <locationX>4010</locationX>
+        <locationX>7178</locationX>
         <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -159,7 +461,7 @@
     <assignments>
         <name>Asignar_Suscriptor_Pymes</name>
         <label>Asignar Suscriptor Pymes</label>
-        <locationX>4274</locationX>
+        <locationX>7442</locationX>
         <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -179,7 +481,7 @@
     <assignments>
         <name>Asignar_Suscriptor_RC</name>
         <label>Asignar Suscriptor RC</label>
-        <locationX>4538</locationX>
+        <locationX>7706</locationX>
         <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -199,8 +501,8 @@
     <assignments>
         <name>Asignar_variables_cola</name>
         <label>Asignar variables cola</label>
-        <locationX>1733</locationX>
-        <locationY>2774</locationY>
+        <locationX>3317</locationX>
+        <locationY>2966</locationY>
         <assignmentItems>
             <assignToReference>genesysFlowId</assignToReference>
             <operator>Assign</operator>
@@ -233,8 +535,8 @@
     <assignments>
         <name>AsignarGestorPreferente</name>
         <label>Asignar Gestor Preferente</label>
-        <locationX>1733</locationX>
-        <locationY>2258</locationY>
+        <locationX>3317</locationX>
+        <locationY>2450</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -262,7 +564,7 @@
     <assignments>
         <name>AsignarGestorPreferenteOwner</name>
         <label>Asignar Gestor Preferente Owner</label>
-        <locationX>3218</locationX>
+        <locationX>6386</locationX>
         <locationY>1274</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -275,7 +577,7 @@
     <assignments>
         <name>AsignarVariableResponsableNegocioSalida</name>
         <label>Asignar Variable Responsable Negocio salida</label>
-        <locationX>1579</locationX>
+        <locationX>3163</locationX>
         <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>usuarioResponsableNegocio</assignToReference>
@@ -288,7 +590,7 @@
     <assignments>
         <name>CaseOwnerAssignment</name>
         <label>Asignar propietario caso</label>
-        <locationX>5330</locationX>
+        <locationX>8498</locationX>
         <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -304,8 +606,8 @@
     <assignments>
         <name>CCServiceClosedCaseAgentAssignment</name>
         <label>Asignar Gestor Caso Cerrado CCService</label>
-        <locationX>3927</locationX>
-        <locationY>3806</locationY>
+        <locationX>6303</locationX>
+        <locationY>3998</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -317,8 +619,8 @@
     <assignments>
         <name>CCServiceOpenCaseAgentAssignment</name>
         <label>Asignar Gestor Caso Abierto CCService</label>
-        <locationX>3663</locationX>
-        <locationY>3590</locationY>
+        <locationX>6039</locationX>
+        <locationY>3782</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -328,56 +630,10 @@
         </assignmentItems>
     </assignments>
     <assignments>
-        <name>ConstruccionCarteraAssignment</name>
-        <label>Asignar Construcción Cartera</label>
-        <locationX>2690</locationX>
-        <locationY>1166</locationY>
-        <assignmentItems>
-            <assignToReference>GestorPreferente</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>NombreConstruccionCartera</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>ColaSuscriptorUno</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>FilterQueueSuscripcionConstruccion</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Owner_usuario</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>ConstruccionVentaAssignment</name>
-        <label>Asignar Construcción Venta</label>
-        <locationX>1634</locationX>
-        <locationY>1166</locationY>
-        <assignmentItems>
-            <assignToReference>GestorPreferente</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>NombreConstruccionVenta</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>ColaSuscriptorUno</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>FilterQueueSuscripcionVenta</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Owner_usuario</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>CSMAdmManagerAssignment</name>
         <label>Asignar CSM Administración Manager</label>
-        <locationX>3135</locationX>
-        <locationY>3374</locationY>
+        <locationX>5511</locationX>
+        <locationY>3566</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -389,8 +645,8 @@
     <assignments>
         <name>CSMIndividualManagerAssignment</name>
         <label>Asignar CSM Individual Manager</label>
-        <locationX>2607</locationX>
-        <locationY>3374</locationY>
+        <locationX>4983</locationX>
+        <locationY>3566</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -402,7 +658,7 @@
     <assignments>
         <name>DanosRCCarteraAssignment</name>
         <label>Asignar Daños RC Cartera</label>
-        <locationX>2162</locationX>
+        <locationX>4274</locationX>
         <locationY>1274</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -432,7 +688,7 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>EsMediadorPanelizadoVentaDanosRC</assignToReference>
+            <assignToReference>EsMediadorPanelizadoVenta</assignToReference>
             <operator>Assign</operator>
             <value>
                 <booleanValue>true</booleanValue>
@@ -462,7 +718,7 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>EsMediadorPanelizadoVentaDanosRC</assignToReference>
+            <assignToReference>EsMediadorPanelizadoVenta</assignToReference>
             <operator>Assign</operator>
             <value>
                 <booleanValue>true</booleanValue>
@@ -485,57 +741,11 @@
             </value>
         </assignmentItems>
     </assignments>
-    <assignments>
-        <name>SpecialtiesCarteraAssignment</name>
-        <label>Asignar Specialties Cartera</label>
-        <locationX>2426</locationX>
-        <locationY>1166</locationY>
-        <assignmentItems>
-            <assignToReference>GestorPreferente</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>NombreSpecialtiesCartera</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>ColaSuscriptorUno</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>FilterQueueSpecialties</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Owner_usuario</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>SpecialtiesVentaAssignment</name>
-        <label>Asignar Specialties Venta</label>
-        <locationX>1370</locationX>
-        <locationY>1166</locationY>
-        <assignmentItems>
-            <assignToReference>GestorPreferente</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>NombreSpecialtiesVenta</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>ColaSuscriptorUno</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>FilterQueueSpecialties</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Owner_usuario</targetReference>
-        </connector>
-    </assignments>
     <decisions>
         <name>Administration_manager_encontrado</name>
         <label>¿Administration manager encontrado?</label>
-        <locationX>3267</locationX>
-        <locationY>3266</locationY>
+        <locationX>5643</locationX>
+        <locationY>3458</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>AdminManagerEncontrado</name>
@@ -556,8 +766,8 @@
     <decisions>
         <name>CallCenterDecision</name>
         <label>¿Qué Call Center es?</label>
-        <locationX>3729</locationX>
-        <locationY>3158</locationY>
+        <locationX>6105</locationX>
+        <locationY>3350</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>CSMParticularesOutcome</name>
@@ -615,8 +825,8 @@
     <decisions>
         <name>CaseAccountIdDecision</name>
         <label>¿Existe el Id de la Cuenta asociada al Caso?</label>
-        <locationX>4158</locationX>
-        <locationY>3266</locationY>
+        <locationX>6534</locationX>
+        <locationY>3458</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
@@ -637,7 +847,7 @@
     <decisions>
         <name>CaseAssignedToUserDecision</name>
         <label>¿Caso asignado a usuario?</label>
-        <locationX>3729</locationX>
+        <locationX>6105</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>CallCenterDecision</targetReference>
@@ -692,7 +902,7 @@
     <decisions>
         <name>CaseOrOpportunityDecision</name>
         <label>¿Caso u oportunidad?</label>
-        <locationX>4881</locationX>
+        <locationX>7653</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -726,7 +936,7 @@
     <decisions>
         <name>Caso_asignado_a_usuario_ZDA</name>
         <label>¿Caso asignado a usuario ZDA?</label>
-        <locationX>4505</locationX>
+        <locationX>7673</locationX>
         <locationY>350</locationY>
         <defaultConnector>
             <targetReference>Asignar_Gestor_Preferente_Usuario_ZDA</targetReference>
@@ -779,8 +989,8 @@
     <decisions>
         <name>ClosedCasesFoundDecision</name>
         <label>¿Casos cerrados encontrados?</label>
-        <locationX>4059</locationX>
-        <locationY>3698</locationY>
+        <locationX>6435</locationX>
+        <locationY>3890</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>ClosedCasesFoundOutcome</name>
@@ -801,8 +1011,8 @@
     <decisions>
         <name>El_mediador_panelizado_es_sucriptor_uno</name>
         <label>¿El mediador panelizado es sucriptor uno?</label>
-        <locationX>1865</locationX>
-        <locationY>2558</locationY>
+        <locationX>3449</locationX>
+        <locationY>2750</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>SuscriptorUno</name>
@@ -823,7 +1033,7 @@
     <decisions>
         <name>El_owner_es_un_usuario</name>
         <label>¿El owner es un usuario?</label>
-        <locationX>2030</locationX>
+        <locationX>4142</locationX>
         <locationY>1166</locationY>
         <defaultConnector>
             <targetReference>DanosRCCarteraAssignment</targetReference>
@@ -860,6 +1070,86 @@
         </rules>
     </decisions>
     <decisions>
+        <name>El_owner_es_un_usuario_Construccion</name>
+        <label>¿El owner es un usuario?</label>
+        <locationX>5462</locationX>
+        <locationY>1274</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_Construccion_Cartera</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Es_usuario_construccion</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IDPropietarioCaso</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <elementReference>IdUser</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>Profile_Name_Integrator</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>Profile_Name_SystemAdministrator</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Asignar_Gestor_Preferente_Como_Usuario</targetReference>
+            </connector>
+            <label>Es usuario</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>El_owner_es_un_usuario_Specialties</name>
+        <label>¿El owner es un usuario?</label>
+        <locationX>4670</locationX>
+        <locationY>1274</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_Specialties_Cartera</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Es_usuario_specialties</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IDPropietarioCaso</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <elementReference>IdUser</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>Profile_Name_Integrator</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>Profile_Name_SystemAdministrator</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Asignar_Gestor_Preferente_Como_Usuario</targetReference>
+            </connector>
+            <label>Es usuario</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Email_informado</name>
         <label>¿Email informado?</label>
         <locationX>644</locationX>
@@ -888,7 +1178,7 @@
         <description>Si nos llega informado el email del caso padre, es un recotizar o un contactar, el agente preferente debe ser el del caso padre. En caso de que la cola esté configurada para que no enrute a suscriptor, no se devuelve best agent</description>
         <name>Es_caso_hijo_con_propietario_o_cola_sin_suscriptor</name>
         <label>Es caso hijo con propietario o cola sin suscriptor</label>
-        <locationX>3944</locationX>
+        <locationX>7112</locationX>
         <locationY>458</locationY>
         <defaultConnector>
             <targetReference>Gestor_preferente_suscriptor</targetReference>
@@ -920,7 +1210,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>GenesysDanosQueue</leftValueReference>
+                <leftValueReference>GenesysUSPQueue</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>ZDAQueueWithoutSuscriptor</elementReference>
@@ -955,9 +1245,59 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Gestor_preferente_encontrado_construccion</name>
+        <label>¿Gestor preferente encontrado?</label>
+        <locationX>2954</locationX>
+        <locationY>1490</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_id_usuario_construccion_venta</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No_encontrado_gestor_preferente_construccion</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Buscar_Si_Existe_Gestor_Preferente_Construccion.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Sin_Gestor_Preferente_Construccion</targetReference>
+            </connector>
+            <label>No encontrado gestor preferente</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Gestor_preferente_Specialties_encontrado</name>
+        <label>¿Gestor preferente Specialties encontrado?</label>
+        <locationX>1634</locationX>
+        <locationY>1490</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_id_usuario_specialties_venta</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No_encontrado_gestor_preferente_specialties</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Buscar_Si_Existe_Gestor_Preferente_Specialties.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Sin_Gestor_Preferente_Specialties</targetReference>
+            </connector>
+            <label>No encontrado gestor preferente</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Gestor_preferente_suscriptor</name>
         <label>¿Gestor preferente suscriptor?</label>
-        <locationX>4406</locationX>
+        <locationX>7574</locationX>
         <locationY>566</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -1030,8 +1370,8 @@
     <decisions>
         <name>Individual_manager_encontrado</name>
         <label>¿Individual manager encontrado?</label>
-        <locationX>2739</locationX>
-        <locationY>3266</locationY>
+        <locationX>5115</locationX>
+        <locationY>3458</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>IndividualManagerEncontrado</name>
@@ -1052,7 +1392,7 @@
     <decisions>
         <name>Mediador_Panelizado</name>
         <label>¿Mediador Panelizado?</label>
-        <locationX>1865</locationX>
+        <locationX>3449</locationX>
         <locationY>1058</locationY>
         <defaultConnector>
             <targetReference>NoMediadorPanelizadoOwnerUsuario</targetReference>
@@ -1119,7 +1459,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>SpecialtiesVentaAssignment</targetReference>
+                <targetReference>Pertenece_a_una_cola_de_enrutamiento_USP_por_equipos</targetReference>
             </connector>
             <label>Venta Specialties</label>
         </rules>
@@ -1148,7 +1488,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>ConstruccionVentaAssignment</targetReference>
+                <targetReference>Pertenece_a_una_cola_de_enrutamiento_USP_por_equipos_Construccion</targetReference>
             </connector>
             <label>Venta Construcción</label>
         </rules>
@@ -1220,7 +1560,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>SpecialtiesCarteraAssignment</targetReference>
+                <targetReference>Pertenece_a_una_cola_de_enrutamiento_USP_por_equipos_Cartera_Specialties</targetReference>
             </connector>
             <label>Cartera Specialties</label>
         </rules>
@@ -1249,7 +1589,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>ConstruccionCarteraAssignment</targetReference>
+                <targetReference>Pertenece_a_una_cola_de_enrutamiento_USP_por_equipos_Cartera_Construccion</targetReference>
             </connector>
             <label>Cartera Construccion</label>
         </rules>
@@ -1257,7 +1597,7 @@
     <decisions>
         <name>NoMediadorPanelizadoOwnerUsuario</name>
         <label>¿No mediador panelizado y Owner usuario?</label>
-        <locationX>3086</locationX>
+        <locationX>6254</locationX>
         <locationY>1166</locationY>
         <defaultConnector>
             <targetReference>AsignarGestorPreferenteOwner</targetReference>
@@ -1307,8 +1647,8 @@
     <decisions>
         <name>OpenCasesFoundDecision</name>
         <label>¿Casos abiertos encontrados?</label>
-        <locationX>3861</locationX>
-        <locationY>3482</locationY>
+        <locationX>6237</locationX>
+        <locationY>3674</locationY>
         <defaultConnector>
             <targetReference>GetClosedCasesAction</targetReference>
         </defaultConnector>
@@ -1332,8 +1672,8 @@
     <decisions>
         <name>Owner_usuario</name>
         <label>¿Owner usuario?</label>
-        <locationX>1865</locationX>
-        <locationY>2150</locationY>
+        <locationX>3449</locationX>
+        <locationY>2342</locationY>
         <defaultConnector>
             <targetReference>Asignar_Gestor_Preferente_Usuario</targetReference>
         </defaultConnector>
@@ -1429,6 +1769,110 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Comprueba si la cola asociada al caso es una cola de enrutamiento por equipos de USP</description>
+        <name>Pertenece_a_una_cola_de_enrutamiento_USP_por_equipos</name>
+        <label>¿Pertenece a una cola de enrutamiento USP por equipos?</label>
+        <locationX>2162</locationX>
+        <locationY>1166</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_Specialties_Venta_flujo_normal</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_es_usp_por_equipos_specialties</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EsPorEquipos</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Venta_Specialties_Email_informado</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Comprueba si la cola asociada al caso es una cola de enrutamiento por equipos de USP</description>
+        <name>Pertenece_a_una_cola_de_enrutamiento_USP_por_equipos_Cartera_Construccion</name>
+        <label>¿Pertenece a una cola de enrutamiento USP por equipos?</label>
+        <locationX>5660</locationX>
+        <locationY>1166</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_Construccion_Construccion_flujo_normal</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_construccion_cartera</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EsPorEquipos</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>El_owner_es_un_usuario_Construccion</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Comprueba si la cola asociada al caso es una cola de enrutamiento por equipos de USP</description>
+        <name>Pertenece_a_una_cola_de_enrutamiento_USP_por_equipos_Cartera_Specialties</name>
+        <label>¿Pertenece a una cola de enrutamiento USP por equipos?</label>
+        <locationX>4868</locationX>
+        <locationY>1166</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_Construccion_Cartera_flujo_normal</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_specialties_cartera</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EsPorEquipos</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>El_owner_es_un_usuario_Specialties</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Comprueba si la cola asociada al caso es una cola de enrutamiento por equipos de USP</description>
+        <name>Pertenece_a_una_cola_de_enrutamiento_USP_por_equipos_Construccion</name>
+        <label>¿Pertenece a una cola de enrutamiento USP por equipos?</label>
+        <locationX>3482</locationX>
+        <locationY>1166</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_Construccion_Venta_flujo_normal</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_es_usp_por_equipos_construccion</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EsPorEquipos</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Venta_Construccion_Email_informado</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Que_ramo_es</name>
         <label>¿Que ramo es?</label>
         <locationX>314</locationX>
@@ -1494,9 +1938,139 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Que_ramo_es_construccion</name>
+        <label>¿Que ramo es?</label>
+        <locationX>2954</locationX>
+        <locationY>1790</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Asignar_cola_Construccion</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>RamoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>RamoComercios</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>RamoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>RamoPatrimoniales</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Construccion</targetReference>
+            </connector>
+            <label>Asignar cola Construccion</label>
+        </rules>
+        <rules>
+            <name>Asignar_cola_Suscripci_n_Construccion</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>RamoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>ACCIDENTES</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>RamoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>RESP. CIVIL</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>RamoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>ACCIDENTES-COLECTIVOS</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>RamoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>RCPRO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Construccion_Venta_Suscripcion</targetReference>
+            </connector>
+            <label>Asignar cola Suscripción Construccion</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Que_ramo_es_specialties</name>
+        <label>¿Que ramo es?</label>
+        <locationX>1634</locationX>
+        <locationY>1790</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Asignar_cola_Specialties</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>RamoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>RamoComercios</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>RamoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>RamoPatrimoniales</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Specialties_Venta</targetReference>
+            </connector>
+            <label>Asignar cola Specialties</label>
+        </rules>
+        <rules>
+            <name>Asignar_cola_Suscripcion_Specialties</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>RamoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>ACCIDENTES</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>RamoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>RESP. CIVIL</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>RamoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>ACCIDENTES-COLECTIVOS</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>RamoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>RCPRO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Specialties_Venta_Suscripcion</targetReference>
+            </connector>
+            <label>Asignar cola Suscripción Specialties</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>RedireccionComerciosDecision</name>
         <label>Redirección comercios</label>
-        <locationX>1865</locationX>
+        <locationX>3449</locationX>
         <locationY>350</locationY>
         <defaultConnector>
             <targetReference>Mediador_Panelizado</targetReference>
@@ -1531,10 +2105,10 @@
                 <operator>NotEqualTo</operator>
             </conditions>
             <conditions>
-                <leftValueReference>GenesysDanosQueue</leftValueReference>
+                <leftValueReference>EsPorEquipos</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>ColaDanosUSP</elementReference>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1546,7 +2120,7 @@
     <decisions>
         <name>ResponsableNegocioEncontrado</name>
         <label>Responsable Negocio Encontrado</label>
-        <locationX>1711</locationX>
+        <locationX>3295</locationX>
         <locationY>566</locationY>
         <defaultConnector>
             <targetReference>Mediador_Panelizado</targetReference>
@@ -1566,6 +2140,58 @@
                 <targetReference>AsignarVariableResponsableNegocioSalida</targetReference>
             </connector>
             <label>Encontrado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Venta_Construccion_Email_informado</name>
+        <label>¿Email informado?</label>
+        <locationX>3218</locationX>
+        <locationY>1274</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>OwnerUsuarioEmailInformado</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Construccion_Email_informado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreConstruccionVenta</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Buscar_Si_Existe_Gestor_Preferente_Construccion</targetReference>
+            </connector>
+            <label>Construccion Email informado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Venta_Specialties_Email_informado</name>
+        <label>¿Email informado?</label>
+        <locationX>1898</locationX>
+        <locationY>1274</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>OwnerUsuarioEmailInformado</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Venta_Specialties_Email_esta_informado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreSpecialtiesVenta</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Buscar_Si_Existe_Gestor_Preferente_Specialties</targetReference>
+            </connector>
+            <label>Venta Specialties Email informado</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -1610,9 +2236,19 @@
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_USP_Dano.Value__c}</expression>
     </formulas>
     <formulas>
+        <name>EmailSuscripcionConstruccion</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Filter_Queue_Suscripcion_Construccion.Value__c}</expression>
+    </formulas>
+    <formulas>
         <name>EmailSuscripcionRC</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Filter_Queue_Suscripcion_RC.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>EmailSuscripcionSpecialties</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Filter_Queue_Specialties.Value__c}</expression>
     </formulas>
     <formulas>
         <name>FilterQueueSpecialties</name>
@@ -1656,9 +2292,19 @@
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Admin.Value__c}</expression>
     </formulas>
     <formulas>
+        <name>QueueEmailConstruction</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_USP_Construccion.Value__c}</expression>
+    </formulas>
+    <formulas>
         <name>QueueEmailDano</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_USP_Dano.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>QueueEmailSpecialties</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_USP_Specialties.Value__c}</expression>
     </formulas>
     <formulas>
         <name>RamoComercios</name>
@@ -1741,10 +2387,66 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Buscar_Si_Existe_Gestor_Preferente_Construccion</name>
+        <label>Buscar Si Existe Gestor Preferente</label>
+        <locationX>2954</locationX>
+        <locationY>1382</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Gestor_preferente_encontrado_construccion</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Email</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>NombreConstruccionVenta</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Buscar_Si_Existe_Gestor_Preferente_Specialties</name>
+        <label>Buscar Si Existe Gestor Preferente</label>
+        <locationX>1634</locationX>
+        <locationY>1382</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Gestor_preferente_Specialties_encontrado</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Email</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>NombreSpecialtiesVenta</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>GetClosedCasesAction</name>
         <label>Obtener Casos Cerrados</label>
-        <locationX>4059</locationX>
-        <locationY>3590</locationY>
+        <locationX>6435</locationX>
+        <locationY>3782</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ClosedCasesFoundDecision</targetReference>
@@ -1773,8 +2475,8 @@
     <recordLookups>
         <name>GetOpenCasesAction</name>
         <label>Obtener Casos Abiertos</label>
-        <locationX>3861</locationX>
-        <locationY>3374</locationY>
+        <locationX>6237</locationX>
+        <locationY>3566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>OpenCasesFoundDecision</targetReference>
@@ -1810,7 +2512,7 @@
     <recordLookups>
         <name>GetResponsableNegocio</name>
         <label>Get Responsable Negocio</label>
-        <locationX>1711</locationX>
+        <locationX>3295</locationX>
         <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1831,8 +2533,8 @@
     <recordLookups>
         <name>Obtener_cola_Genesys</name>
         <label>Obtener cola Genesys</label>
-        <locationX>1733</locationX>
-        <locationY>2666</locationY>
+        <locationX>3317</locationX>
+        <locationY>2858</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Asignar_variables_cola</targetReference>
@@ -1850,7 +2552,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>4755</locationX>
+        <locationX>7527</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CaseOrOpportunityDecision</targetReference>
@@ -1909,6 +2611,16 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>EsMediadorPanelizadoVenta</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
         <name>EsMediadorPanelizadoVentaDanosRC</name>
         <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
@@ -1919,17 +2631,20 @@
         </value>
     </variables>
     <variables>
+        <name>EsPorEquipos</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
         <name>FechaMasCercana</name>
         <dataType>DateTime</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>GenesysDanosQueue</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
@@ -1961,6 +2676,13 @@
         <value>
             <stringValue></stringValue>
         </value>
+    </variables>
+    <variables>
+        <name>GenesysUSPQueue</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>GestorPreferente</name>
@@ -2016,6 +2738,14 @@
     </variables>
     <variables>
         <name>idUsuarioDanosRcVenta</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Variable que guarda el id del Usuario si encuentra un gestor preferente panelizado</description>
+        <name>idUsuarioPanelizadoVenta</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -2164,6 +2894,14 @@
         <isInput>false</isInput>
         <isOutput>true</isOutput>
         <objectType>User</objectType>
+    </variables>
+    <variables>
+        <description>Nombre del UW</description>
+        <name>UWNombre</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>VerticalCaso</name>
