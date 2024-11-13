@@ -5975,6 +5975,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Claim__c.ProductBranch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Claim__c.Scope__c</field>
         <readable>true</readable>
@@ -12431,6 +12436,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>UploadCaseDocumentation</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ZRMExportCustomerInfoAndRelated</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <recordTypeVisibilities>
