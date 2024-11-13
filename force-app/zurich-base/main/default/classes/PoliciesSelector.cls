@@ -481,6 +481,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
 
             result = this.baseQuery
                             .selectFields(fieldsToRetrieve)
+                            .selectfields('IntermediaryId__r.IntermediaryGroup__c')
                             .addConditionIn(Policy__c.PolicyHolder__c, policyHolderIdSet)
                             .addConditionEq(POLICY_INTERMEDIARY_GROUP, intermediaryGroupId)
                             .addConditionEq(Policy__c.PolicyHolder__r.Blocked__c, false)
