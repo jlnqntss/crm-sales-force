@@ -140,7 +140,7 @@ IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.
 )
 )</expression>
     </formulas>
-    <interviewLabel>Offer Trigger - Before Insert/Update - Informar Intermediary Group {!$Flow.CurrentDateTime}</interviewLabel>
+    <interviewLabel>Offer Trigger - After Insert/Update - SDM {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Offer Trigger - After Insert/Update - SDM</label>
     <loops>
         <name>ATMs</name>
@@ -381,7 +381,7 @@ IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
     <variables>
         <name>OpportunityTeamMembers</name>
         <dataType>SObject</dataType>

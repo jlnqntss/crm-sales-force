@@ -140,7 +140,7 @@ IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.I
 IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Staging_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Staging_Value__c}, 
 {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Dev_Value__c})))</expression>
     </formulas>
-    <interviewLabel>Case Trigger - Before Insert/Update - Informar Intermediary Group {!$Flow.CurrentDateTime}</interviewLabel>
+    <interviewLabel>Case Trigger - After Insert/Update - SDM {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert/Update - SDM</label>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -326,5 +326,5 @@ IF(CASESAFEID({!$Organization.Id})={!$CustomMetadata.Global_Configuration__mdt.I
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
 </Flow>
