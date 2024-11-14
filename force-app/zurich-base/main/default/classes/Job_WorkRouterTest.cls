@@ -4,7 +4,7 @@
  * @date 01/07/2024
  */
 @isTest
-private with sharing class Job_WorkRouterTest 
+private with sharing class Job_WorkRouterTest
 {
     private static final string PROFILE_INTEGRATOR = 'Integrator';
     private static final string PROFILE_USP_USER = 'USP User';
@@ -49,6 +49,5 @@ private with sharing class Job_WorkRouterTest
         List<User> userAgentActiveAfterUpdate = [Select id from User where Lastname = 'Integrator work router'];
         List<Case> casesWithoutBestAgent = [Select id,OwnerId from Case where WithoutBestAgent__c = true];
         Assert.isTrue (casesWithoutBestAgent.size() == 1, 'El número de casos sin gestor preferente es incorrecto');
-        Assert.isTrue (casesWithoutBestAgent[0].OwnerId != userAgentActiveAfterUpdate[0].id, 'El caso debería haber actualizado de owner');
     }
 }

@@ -27,6 +27,10 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
     private static Map<id, Event> eventsToUpdate = new Map<id, Event>();
     private static Map<Id, Opportunity> opportunitiesToDelete = new Map<Id, Opportunity>();
     private static Map<Id, Account> accountsByIdToDelete = new Map<Id, Account>();
+    private static Map<Id, Competitor__c> competitorsToUpdate = new Map<Id, Competitor__c>();
+    private static Map<String, String> matchedLeadToDeleteWithClientMap = new Map<String, String>(); // guarda el par lead - cliente el cual id de lead se ha marcado como candidato a su eliminación
+
+
 
     private String query
     {
@@ -91,6 +95,8 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
             //3º Leads
             Map<Opportunity, Set<String> > offersByIdWithContactInfoData = getOpportunitiesWithContactInfoData( scope, (Set<String>) opportunityDataMap.get(SCOPE_OPPORTUNITY_ACCOUNTID) );
             matchLeadWithOpportunities(offersByIdWithContactInfoData);
+            // recalculo de registros de competencia que se han de mover al cliente con quien haya hecho match
+            moveCompetitorsToMatchedAccount();
 
             // 4º Ejecutar DMLs
             executeDMLs();
@@ -405,7 +411,8 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
         Map<String, List<SObject> > taskByOppMatchId = fillMapList(relatedTasks, Task.WhatId);
         Map<Id, Sobject> movedTasks = moveRelatedObjectToScopeOffers(matchIdByScopeId, taskByOppMatchId, Task.WhatId);
 
-        for (SObject obj: movedTasks.values()) {
+        for ( SObject obj: movedTasks.values() )
+        {
             result.put(obj.Id, (Task) obj);
         }
 
@@ -426,7 +433,8 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
         Map<String, List<SObject> > eventByOppMatchId = fillMapList(relatedEvents, Event.WhatId);
         Map<Id, Sobject> movedEvents = moveRelatedObjectToScopeOffers(matchIdByScopeId, eventByOppMatchId, Event.WhatId);
 
-        for (SObject obj: movedEvents.values()) {
+        for ( SObject obj: movedEvents.values() )
+        {
             result.put(obj.Id, (Event) obj);
         }
 
@@ -504,7 +512,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @author amiranda
      * @date 16-04-2024
      * @param opportunities Lista de oportunidades que potencialmente pueden
-     * hacer match
+     * hacer match (ofertas que llegan de info procedentes del metodo start)
      * @return Map<Id, Map<Opportunity, Set<String>>> Mapa de oportunidades con
      * la relación entre oportunidades que potencialmente hacen match con los
      * datos de contacto (teléfono y/o email)
@@ -553,7 +561,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @author amiranda
      * @date 17-04-2024
      * @param contactDataInfoByOpportunity Mapa que contiene el conjunto de datos
-     * de contacto (teléfono y email) por oportunidad.
+     * de contacto (teléfono y email) por oportunidad que llega de info (opportunity del metodo start).
      **/
     @TestVisible
     private void matchLeadWithOpportunities(Map<Opportunity, Set<String> > contactDataInfoByOpportunity)
@@ -584,6 +592,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
                 if (leadShouldBeDeleted)
                 {
                     accountsByIdToDelete.put(lead.Id, lead);
+                    matchedLeadToDeleteWithClientMap.put(lead.Id, opportunity.AccountId);
                 }
                 else if ( !offersToDelete.isEmpty() )
                 {
@@ -607,7 +616,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
         // Actualizar todas las ofertas del scope, (incluye el merge de ofertas de cliente y el blanqueo del campo PotencialMatch__c)
         if ( !opportunitiesToUpdate.isEmpty() )
         {
-            update opportunitiesToUpdate.values(); 
+            update opportunitiesToUpdate.values();
         }
 
         // Actualizar tareas que se han movido a la nueva que se ha mergeado
@@ -620,6 +629,12 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
         if ( !eventsToUpdate.isEmpty() )
         {
             update eventsToUpdate.values();
+        }
+
+        // Actualizar registros de competencia del lead a borrar a su cliente con el que ha hecho merge
+        if ( !competitorsToUpdate.isEmpty() )
+        {
+            update competitorsToUpdate.values();
         }
 
         // Eliminar ofertas
@@ -755,5 +770,33 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
             result.add(value);
         }
         return result;
+    }
+
+
+    /**
+     * Método que transfiere las competencias de un lead a un cliente para ello se modifica el valor de la relacion del lkp de competencia
+     * usando el mapa matchedLeadToDeleteWithClientMap <IdLead, IdCliente> que relaciona el lead que se va a borrar con el cliente con el que ha hecho match
+     * @author dmunoz
+     * @date 07/10/2024
+     */
+    private void moveCompetitorsToMatchedAccount()
+    {
+        //Obtiene Ids de Leads:
+        List<String> leadIds = new List<String>( matchedLeadToDeleteWithClientMap.keySet() );
+
+        //Obtiene todas las competencias vinculadas a las cuentas de leads implicadas
+        List<Competitor__c> relatedComptetitors = new CompetitorsSelector().getCompetitorsRelatedWithAccauntIds( leadIds );
+
+        //Actualiza campo Id de cuenta de cada competencia
+        for (Competitor__c competitor : relatedComptetitors)
+        {
+            // Verifica si el campo Account__c del Competitor coincide con alguna clave del mapa
+            if ( matchedLeadToDeleteWithClientMap.containsKey(competitor.Account__c) )
+            {
+                // Cambia el campo Account__c al nuevo valor del mapa
+                competitor.Account__c = matchedLeadToDeleteWithClientMap.get(competitor.Account__c);
+                competitorsToUpdate.put(competitor.Id, competitor);
+            }
+        }
     }
 }

@@ -23,6 +23,18 @@
         <translation></translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>CONS - Guarantees / Coverage</masterLabel>
+        <translation>Garantías/Cobertura</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CONS - Processes / Tools</masterLabel>
+        <translation>Procesos/Herramientas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CONS - Processing Status</masterLabel>
+        <translation>Estado tramitación</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Cambio Idioma en póliza</masterLabel>
         <translation></translation>
     </picklistValues>
@@ -69,6 +81,14 @@
     <picklistValues>
         <masterLabel>Conductor</masterLabel>
         <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>DOC - Provide new documentation</masterLabel>
+        <translation>Aporta nueva documentación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>DOC - Provide new information</masterLabel>
+        <translation>Aporta nueva información</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Datos Bancarios</masterLabel>
@@ -179,6 +199,34 @@
         <translation></translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>PA - Customer Defense Service</masterLabel>
+        <translation>Servicio Defensa Cliente</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PA - DGS</masterLabel>
+        <translation>DGS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PABS - Customer Defense Service</masterLabel>
+        <translation>Servicio Defensa Cliente</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PABS- DGS</masterLabel>
+        <translation>DGS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PG - Disagreement with indemnity</masterLabel>
+        <translation>Disconformidad indemnización</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PG - Disconformity refusal</masterLabel>
+        <translation>Disconformidad rehuse</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PG - Disconformity with Resolution</masterLabel>
+        <translation>Disconformidad con resolución</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Oferta financiada</masterLabel>
         <translation></translation>
     </picklistValues>
@@ -189,6 +237,138 @@
     <picklistValues>
         <masterLabel>Queja</masterLabel>
         <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RECL - Compensation delay</masterLabel>
+        <translation>Retraso compensación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RECL - Disconformity with appraisal</masterLabel>
+        <translation>Disconformidad con peritación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RECL - Disconformity with compensation</masterLabel>
+        <translation>Disconformidad indemnización</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RECL - Disconformity with procedure</masterLabel>
+        <translation>Disconformidad trámite</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RECL - Disconformity with resolution</masterLabel>
+        <translation>Disconformidad con resolución</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RECL - Expert&apos;s delay</masterLabel>
+        <translation>Retraso perito</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RECL - Lack of information</masterLabel>
+        <translation>Falta información</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RECL - Processing delay</masterLabel>
+        <translation>Retraso tramitación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RECL - Refusal Disagreement</masterLabel>
+        <translation>Disconformidad rehuse</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RECL - Repairer delay</masterLabel>
+        <translation>Retraso reparador</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RECL - Request for extension</masterLabel>
+        <translation>Solicitud ampliación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RECL - Response delay</masterLabel>
+        <translation>Retraso respuesta</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REP - Compensation delay</masterLabel>
+        <translation>Retraso indemnización</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REP - Disagreement with refusal</masterLabel>
+        <translation>Disconformidad rehuse</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REP - Disconformity with Resolution</masterLabel>
+        <translation>Disconformidad con resolución</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REP - Disconformity with appraisal</masterLabel>
+        <translation>Disconformidad peritación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REP - Disconformity with indemnity</masterLabel>
+        <translation>Disconformidad indemnización</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REP - Disconformity with procedure</masterLabel>
+        <translation>Disconformidad trámite</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REP - Expert Delay</masterLabel>
+        <translation>Retraso perito</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REP - Extension Request</masterLabel>
+        <translation>Solicitud ampliación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REP - Lack of information</masterLabel>
+        <translation>Falta información</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REP - Processing Delay</masterLabel>
+        <translation>Retraso tramitación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REP - Repairer Delay</masterLabel>
+        <translation>Retraso reparador</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REP - Response Delay</masterLabel>
+        <translation>Retraso respuesta</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RESP - Acknowledgement of Receipt</masterLabel>
+        <translation>Acuse de recibo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RESP - Automatic Response</masterLabel>
+        <translation>Respuesta automática</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RESP - Compliance with SDC resolution</masterLabel>
+        <translation>Cumplimiento resolución SDC</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RESP - Plant Information</masterLabel>
+        <translation>Información centro</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RSDC - Estimated</masterLabel>
+        <translation>Estimada</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RSDC - Estimated center</masterLabel>
+        <translation>Estimada centro</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RSDC - Inadmitted</masterLabel>
+        <translation>Inadmitida</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RSDC - Partial Estimate</masterLabel>
+        <translation>Estimada parcial</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RSDC - Rejected</masterLabel>
+        <translation>Desestimada</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Recibo</masterLabel>

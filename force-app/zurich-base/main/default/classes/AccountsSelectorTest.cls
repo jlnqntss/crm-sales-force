@@ -1021,13 +1021,20 @@ private with sharing class AccountsSelectorTest
     private static void test_findZRMOldLeads()
     {
 
-        Scope_Setting__mdt ventasScopeMdt = Scope_Setting__mdt.getInstance(Batch_DeleteOldLeads.VENTAS_SCOPE_NAME);
+        List<Account> accounts = new List<Account>([SELECT Id FROM Account LIMIT 1]);
+        List<Id> accountsIds = new List<Id>();
+        List<Opportunity> opportunities = new List<Opportunity>();
+
+        for (Account acc: accounts)
+        {
+            accountsIds.add(acc.Id);
+        }
 
         Test.startTest();
-        String zrmOldLeadsQuery = new AccountsSelector().findZRMOldLeads(Batch_DeleteOldLeads.DAYS, Batch_DeleteOldLeads.LEGIT_LEAD_OFFER_STATUS, ventasScopeMdt.BusinessCode__c);
+        List<Account> accountsQuery = new AccountsSelector().findLeadsWithOpportunitiesAndCaseFiltered(accountsIds, opportunities);
         Test.stopTest();
 
-        Assert.isTrue(String.isNotEmpty(zrmOldLeadsQuery), 'Debe no ser nulo');
+        Assert.isTrue(accountsQuery.size() > 0, 'Debe recuperar al menos una cuenta');
     }
 
 
@@ -1038,7 +1045,7 @@ private with sharing class AccountsSelectorTest
      */
     @isTest
     private static void test_selectAccountAndRelatedInfo()
-    {   
+    {
         List<Account> accounts = new List<Account>([SELECT Id FROM Account LIMIT 1]);
         List<String> accountsIds = new List<String>();
 
@@ -1048,6 +1055,6 @@ private with sharing class AccountsSelectorTest
         List<Account> result = new AccountsSelector().selectAccountAndRelatedInfo(accountsIds);
         Test.stopTest();
 
-        Assert.isTrue(result.size() > 0, 'Debe no ser nulo'); 
+        Assert.isTrue(result.size() > 0, 'Debe no ser nulo');
     }
 }

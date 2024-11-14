@@ -4,8 +4,9 @@
  * @author fjbelmonte
  * @date 24/10/2024
  */
-public with sharing class RoutingTeamQueueConfigUtil {
- 
+public with sharing class RoutingTeamQueueConfigUtil
+{
+
     /**
      * Devuelve en forma de mapa todas las colas con su correspondiente equipo de enrutamiento
      * @author fjbelmonte
@@ -15,11 +16,12 @@ public with sharing class RoutingTeamQueueConfigUtil {
     public static Map<String, String> getRoutingTeamQueueConfigValues()
     {
         Map<String, String> mConfigValues = new Map<String, String>();
-        
+
         //Get de todos los registros del CMT
         Map<String, RoutingTeamQueueConfig__mdt> mConfigs = RoutingTeamQueueConfig__mdt.getAll();
         // Agregar los valores al mapa
-        for (RoutingTeamQueueConfig__mdt config : mConfigs.values()) {
+        for ( RoutingTeamQueueConfig__mdt config : mConfigs.values() )
+        {
             mConfigValues.put(config.Queue__c, config.RoutingTeam__c);
         }
         return mConfigValues;
