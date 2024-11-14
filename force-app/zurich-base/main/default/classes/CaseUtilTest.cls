@@ -1868,7 +1868,7 @@ private with sharing class CaseUtilTest
     private static void test_setOwnerIdPrior()
     {
         List<purecloud__PureCloud_Queue__c> listaQueues = TestDataFactory.generateGenesysQueues(2);
-        listaQueues[0].Name = CaseUtil.ZDA_QUEUE_SOPORTE_ESPECIALISTAS;
+        listaQueues[0].Name = 'Soporte a Especialistas';
         listaQueues[0].CallCenter__c = GlobalConfigUtil.getGlobalConfigurationValue('Call_Center_ZDA');
 
         listaQueues[1].Name = 'Email_USP_Cartera';
@@ -1878,7 +1878,7 @@ private with sharing class CaseUtilTest
         List<purecloud__PureCloud_Queue__c> listaInsertadas = [SELECT Id, Name FROM purecloud__PureCloud_Queue__c];
         Assert.isFalse( listaInsertadas.isEmpty() );
 
-        String zdaQueueName = CaseUtil.ZDA_QUEUE_SOPORTE_ESPECIALISTAS;
+        String zdaQueueName = 'Soporte a Especialistas';
         List<Group> queueZda = new GroupSelector().findByName(zdaQueueName);
         Assert.isFalse( queueZda.isEmpty() );
 
