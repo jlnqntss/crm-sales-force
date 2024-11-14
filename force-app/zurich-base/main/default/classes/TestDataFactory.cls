@@ -3705,4 +3705,38 @@ public with sharing class TestDataFactory
         insert testProvinceAssignmentMetadata;
     }
 
+    /**
+    * @description Método que genera un string aleatorio con
+    * la longitud especificada en el parámetro
+    *
+    * @author mcasanova
+    * @date 29-10-2024 
+    * @return String
+    **/
+    public static String getRandomString(Integer length) 
+    {
+        String characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        String randomString = '';
+        for(Integer i = 0; i < length; i++)
+        {
+            Integer randomIndex = (Integer)(Math.random() * characters.length());
+            randomString += characters.substring(randomIndex, randomIndex + 1);
+        }
+        return randomString;
+    }
+    
+    /**
+    * @description Método que genera un nombre 
+    * de usuario aleatorio
+    *
+    * @author mcasanova
+    * @date 31-10-2024 
+    * @return String
+    **/
+    public static String getRandomUsername() {
+        return string.format('{0}@{1}.com', new string[] {
+            TestDataFactory.getRandomString(4), 
+            UserInfo.getOrganizationId()}
+        );
+    }
 }
