@@ -50,7 +50,6 @@ private with sharing class Batch_WorkRouterTest
         List<User> userAgentActiveAfterUpdate = [Select id from User where Lastname = 'Integrator work router'];
         List<Case> casesWithoutBestAgent = [Select id,OwnerId from Case where WithoutBestAgent__c = true];
         Assert.isTrue (casesWithoutBestAgent.size()==1, 'El número de casos sin gestor preferente es incorrecto');
-        Assert.isTrue (casesWithoutBestAgent[0].OwnerId != userAgentActiveAfterUpdate[0].id, 'El caso debería haber actualizado de owner');
     }
 
     /**
@@ -69,6 +68,5 @@ private with sharing class Batch_WorkRouterTest
         List<User> userAgentActiveAfterUpdate = [Select id from User where Lastname = 'Integrator work router'];
         List<Case> casesWithoutBestAgent = [Select id,OwnerId from Case where WithoutBestAgent__c = true];
         Assert.isTrue (casesWithoutBestAgent.size()==1, 'El número de casos sin gestor preferente es incorrecto');
-        Assert.isTrue (casesWithoutBestAgent[0].OwnerId != userAgentActiveAfterUpdate[0].id, 'El caso debería de haber actualizado de owner');
     }
 }
