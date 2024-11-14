@@ -12,16 +12,17 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
     
     private static final String CLASS_NAME = 'Batch_CampaignMemberToOpportunity';
-    private static final Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
-    private static final String PRODUCT_BRANCH_VIDA_CODE = configValues.get('Product_Branch_Vida_Code');
-    private static final Id OFFER_RECORD_TYPE_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(configValues.get('Opportunity_RecordTypeDevName_Life')).getRecordTypeId();
-    private static final Id OFFER_RECORD_TYPE_NO_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(configValues.get('Opportunity_RecordTypeDevName_NoLife')).getRecordTypeId();
-    private static final String LEGAL_ENTITY_LIFE_INSURANCE = configValues.get('Legal_Entity_Life_Insurance');
+    private static final Map<String, String> CONFIG_VALUES = GlobalConfigUtil.getGlobalConfigurationValues();
+    private static final String PRODUCT_BRANCH_VIDA_CODE = CONFIG_VALUES.get('Product_Branch_Vida_Code');
+    private static final Id OFFER_RECORD_TYPE_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(CONFIG_VALUES.get('Opportunity_RecordTypeDevName_Life')).getRecordTypeId();
+    private static final Id OFFER_RECORD_TYPE_NO_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(CONFIG_VALUES.get('Opportunity_RecordTypeDevName_NoLife')).getRecordTypeId();
+    private static final String LEGAL_ENTITY_LIFE_INSURANCE = CONFIG_VALUES.get('Legal_Entity_Life_Insurance');
 
     private Set<Id> campMemberIdSet = new Set<Id>();
     private List<Opportunity> oppsToInsert = new List <Opportunity>();
     private static UsersSelector usersSelector = new UsersSelector();
 
+    private static User loggedUser;
     private static Boolean isAGRUser;
 
     // #endregion Atributos
@@ -62,7 +63,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
             // 0. Obtengo el usuario logueado
             // Obtengo el usuario logueado
-            User loggedUser = ( new UsersSelector() ).findUserIntermediaryByUserId( UserInfo.getUserId() );
+            loggedUser = ( new UsersSelector() ).findUserIntermediaryByUserId( UserInfo.getUserId() );
             isAGRUser = ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR.equals(loggedUser.Profile.Name) && String.isNotBlank(loggedUser.Contact.Account.IntermediaryGroup__c);
 
             Set<Id> accountList = new Set<Id>();
@@ -122,7 +123,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         // recorro los miembros de campaña y los clasifico en validos o no
         String parAux;
         for (CampaignMember cm : campaignMembers) {
-            parAux = cm.Contact.AccountId + '-' + cm.OfferAssignedCode__c;
+            parAux = isAGRUser ? cm.Contact.AccountId + '-' + loggedUser.Contact.Account.IntermediaryGroup__c :cm.Contact.AccountId + '-' + cm.OfferAssignedCode__c;
             if (campaignMembersPoliciesSet.contains(parAux) || campaignMembersOpportunitiesSet.contains(parAux)) {
                 validCampaignMembers.add(cm);
             } else {
@@ -150,13 +151,19 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
         Set<String> result = new Set<String>();
 
-        List<Policy__c> policyQuery = new List<Policy__c>();
+        List<Policy__c> policyQuery = new List<Policy__c>(); 
         
 
         // Obtenemos las pólizas si el usuario es agente de ventas AGR
         if (isAGRUser)
         {
-            policyQuery = ( new PoliciesSelector() ).policiesHoldersFromIntermediaryGroup(new Set<String> {accountList}, new Set<String> { loggedUser.Contact.Account.IntermediaryGroup__c });
+            Set<String> accountIdStringList = new Set<String>();
+
+            for (Id accountId: accountList) {
+                accountIdStringList.add(String.valueOf(accountId));
+            }
+
+            policyQuery = ( new PoliciesSelector() ).policiesHoldersFromIntermediaryGroup(accountIdStringList, loggedUser.Contact.Account.IntermediaryGroup__c );
 
             for (Policy__c policy: policyQuery) {
                 result.add(policy.PolicyHolder__c + '-' + policy.IntermediaryId__r.IntermediaryGroup__c);
@@ -228,7 +235,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
             Opportunity opp = new Opportunity();
 
             opp.Name = ('OF' + cm.Campaign.ExternalId__c + cm.Contact.Account.INFOCustomerNumber__c).left(120);
-            opp.StageName = GlobalConfigUtil.getGlobalConfigurationValueId('Opportunity_Stage_Name_Legit_Lead');
+            opp.StageName = GlobalConfigUtil.getGlobalConfigurationValue('Opportunity_Stage_Name_Legit_Lead');
             opp.CloseDate = cm.Campaign.EndDate;
             opp.AccountId = cm.Contact.AccountId;
             opp.ProductBranch__c = cm.Campaign.ProductBranch__c;
@@ -254,7 +261,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
             {
                 opp.LegalEntity__c = '001';
                 opp.BusinessCode__c = cm.Campaign.BusinessCode__c;
-                opp.Scope__c = GlobalConfigUtil.getGlobalConfigurationValueId('Opportunity_Scope_Ventas');
+                opp.Scope__c = GlobalConfigUtil.getGlobalConfigurationValue('Opportunity_Scope_Ventas');
                 opp.ZRM__c = false;
             }
 
@@ -294,7 +301,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
             for (CampaignMember cm : campaignMembers)
             {                
-                cm.Status = GlobalConfigUtil.getGlobalConfigurationValueId('CampaignMemberStatusMediadorSinVisibilid');             
+                cm.Status = GlobalConfigUtil.getGlobalConfigurationValue('CampaignMemberStatusMediadorSinVisibilid');             
             }
 
             update campaignMembers;
@@ -373,71 +380,4 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
         return defaultUserId;
     }
-
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Devuelve la lista de CampaignMembers que recibe como parámetro, filtrada para eliminar todos aquellos para los que el mediador no tenga visibilidad
-     *
-     * @author fpalomo
-     * @date 04/04/2024
-     *
-     * @return List<Opportunities>
-     */
-    /*private List<CampaignMember> getFilteredCampaignMembers(Map<Id, CampaignMember> campaignMembersAccountMap, Set<String> intermediaryCodes)
-    {
-        List<CampaignMember> filteredCampaignMembers = new List<CampaignMember>();
-        List<Policy__c> campaignMembersPolicies = new List<Policy__c>();
-        User loggedUser = ( new UsersSelector() ).findUserIntermediaryByUserId( UserInfo.getUserId() );
-
-        // Obtenemos las pólizas
-        if ( ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR.equals(loggedUser.Profile.Name) && String.isNotBlank(loggedUser.Contact.Account.IntermediaryGroup__c) )
-        {
-            campaignMembersPolicies = ( new PoliciesSelector() ).selectByIntermediaryGroupId(new Set<String> { loggedUser.Contact.Account.IntermediaryGroup__c });
-        }
-        else
-        {
-            campaignMembersPolicies = ( new PoliciesSelector() ).findPoliciesByAccountId(campaignMembersAccountMap.keySet(), intermediaryCodes);
-        }
-
-        // Lista con las IDs de cuenta para las que se van a generar ofertas
-        Set<String> toOfferAccountIDs = new Set<String>();
-
-        // Añadimos los clientes de las pólizas a la lista de cuentas
-        for(Policy__c policy : campaignMembersPolicies)
-        {
-            toOfferAccountIDs.add(policy.PolicyHolder__c);
-        }
-
-        Set<String> campaignIDsToExcludeMembers = new Set<String>();
-        for ( CampaignMember cm : campaignMembersAccountMap.values() )
-        {
-            campaignIDsToExcludeMembers.add(cm.CampaignId);
-        }
-
-        // Recuperamos las ofertas, excluyendo las que pertenezcan a clientes que ya estén en la lista
-        List<Opportunity> campaignMembersOffers = ( new OpportunitiesSelector() ).getIntermediaryOtherOffersByCampaignMembers(campaignIDsToExcludeMembers, toOfferAccountIDs, loggedUser.Contact.AccountId);
-
-        // Añadimos los clientes de las ofertas recuperadas a la lista de cuentas a las que se le van a generar ofertas
-        for(Opportunity offer : campaignMembersOffers)
-        {
-            toOfferAccountIDs.add(offer.AccountId);
-        }
-
-        // Añadimos a la lista los miembros de campaña que cumplan el filtro
-        for ( CampaignMember campaignMember : campaignMembersAccountMap.values() )
-        {
-            if ( toOfferAccountIDs.contains(campaignMember.Contact.AccountId) )
-            {
-                filteredCampaignMembers.add(campaignMember);
-            }
-        }
-
-        return filteredCampaignMembers;
-    }*/
-
-    
-
 }

@@ -570,7 +570,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             {
                 Opportunity.AccountId
             }).selectfields('IntermediaryId__r.IntermediaryGroup__r.INFOIntermediaryGroupCode__c')
-            .addConditionIn('ntermediaryId__r.IntermediaryGroup__r.INFOIntermediaryGroupCode__c', intermediaryGroupCodes)
+            .addConditionIn('IntermediaryId__r.IntermediaryGroup__r.INFOIntermediaryGroupCode__c', intermediaryGroupCodes)
             .addConditionIn(Opportunity.AccountId, accountIds)
             .addConditionEq(Account.Blocked__c, false)
             .addConditionEq(Account.Anonymized__c, false)
@@ -578,7 +578,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             .addConditionEq(Opportunity.Anonymized__c, false)
             .addConditionNotEq(Opportunity.AccountId, null);
     
-            result = (List<Opportunity>) this.baseQuery.enforceSecurity().run();
+            result = (List<Opportunity>) this.baseQuery.run();
 
         }
 
