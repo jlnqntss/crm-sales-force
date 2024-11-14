@@ -229,7 +229,7 @@
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingColumn>Case.Activities$Owner</groupingColumn>
+                <groupingColumn>Case.Activities$CreatedBy</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
@@ -383,12 +383,18 @@
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingSortProperties/>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
                 <header>Evolución casos abiertos mi equipo (U14D)</header>
+                <legendPosition>Bottom</legendPosition>
                 <report>PanelesdeinicioUSP/Evolucin_casos_mi_equipo_U14D_USP</report>
                 <showPercentage>false</showPercentage>
                 <showPicturesOnCharts>false</showPicturesOnCharts>
-                <showValues>false</showValues>
+                <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
                 <useReportChart>true</useReportChart>
             </dashboardComponent>
@@ -410,12 +416,18 @@
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingSortProperties/>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
                 <header>Evolución casos cerrados mi equipo U14D</header>
+                <legendPosition>Bottom</legendPosition>
                 <report>PanelesdeinicioUSP/Evolucin_casos_cerrados_mi_equipo_U14D_7lk</report>
                 <showPercentage>false</showPercentage>
                 <showPicturesOnCharts>false</showPicturesOnCharts>
-                <showValues>false</showValues>
+                <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
                 <useReportChart>true</useReportChart>
             </dashboardComponent>
