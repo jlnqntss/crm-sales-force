@@ -1,0 +1,2156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CDEXInquiry</fullName>
+    <active>true</active>
+    <businessProcess>CDEX</businessProcess>
+    <description>Tipo de registro para los casos de CDEX.</description>
+    <label>CDEX Inquiry</label>
+    <picklistValues>
+        <picklist>Action__c</picklist>
+        <values>
+            <fullName>1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CallCenter__c</picklist>
+        <values>
+            <fullName>CC Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CSM Administración</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CSM Particulares</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Centro Excelencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Departamento de Calidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GSS CSM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TWW Retención</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CauseOfLoss__c</picklist>
+        <values>
+            <fullName>Absolute and permanent disability</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Accidental Damage</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Death</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Robbery</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Screen Damage</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TBD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Terminal Illness</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Theft Cover Do Not Use</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Water Damage</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CentroTramitador__c</picklist>
+        <values>
+            <fullName>BASICOS AAPP LESIONES 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS AAPP LESIONES 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS AAPP LESIONES 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS AAPP MATERIALES 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS AAPP MATERIALES 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS AAPP MATERIALES 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS ACC 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS ACC 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS DAÑOS EXPRESS 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS FINANCIAL LINES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS LC %26 CORP%2E BARCELONA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS LC %26 CORP%2E MADRID</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS LESIONES MOTOR 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS LESIONES REC%2E 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS LESIONES REC%2E 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS PARTNERS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS RC LESIONES 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS RC LESIONES 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS RC LESIONES 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS RC MATERIALES 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS RC MATERIALES 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS RC MATERIALES 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS RC REC%2E 4</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS RECLAMACIÓN DAÑOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Básicos Líneas Personales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CAUCION</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CAUCION - SACRE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CS TECNICO DAÑOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT AAPP LESIONES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT AAPP MATERIALES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT ACCIDENTES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT COMPLEJOS FINANCIAL LINES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT FINANCIAL LINES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT PROFESIONAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT RC LESIONES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT RC MATERIALES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT RC PLUS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT RC Y AAPP COMPLEJOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT RECOBRO INDEMNIZABLES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA AUTO CONVENIOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA DAÑOS PROPIOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA INTERNACIONAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA JURIDICO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA LESIONES RECLAMACION</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA MOTOR EXPRESS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA RECLAMACION LESIONES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA%2E CONVENCIONAL AUTO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD BCN 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD BCN 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD BCN 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD BCN 4</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD COMPLEJOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD EXPRESS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD LC %26 CORP%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD LINEAS PERSONALES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD MARINE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD PYMES 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD PYMES 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LESIONES FLOTAS CI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LESIONES GRAVES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LESIONES INTERNACIONAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LESIONES ZONA 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LESIONES ZONA 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LESIONES ZONA 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MIXTOS EXPRESS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PROPERTY MIDDLE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZURICH ASISTENCIA SH BASICOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZURICH LUNAS %28NO DISPONIBLE%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zurich Asistencia Auto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zurich Asistencia Diversos</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ClaimHandlingType__c</picklist>
+        <values>
+            <fullName>Manual</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ClaimStatusTPA__c</picklist>
+        <values>
+            <fullName>0%2E1 Under Analysis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E0 Submitted to ICP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E1 Pending excess payment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E10 Delivered</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E13 Delivered new device</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E14 Claim expired for the client</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E16 Object not coincident</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E2 Documentation pending</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E21 Rejected offer best object</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E26 Incorrect send documentation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E27 Pending to make an appointment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E29 No coverage</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E3 Pending to pick up device</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E30 Reminder to make an appointment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E4 Repair%2FReplace in progress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E5 Find my mobile active</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E6 Repaired</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E7 Replaced</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E8 Can not be repaired</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1%2E9 Pending to be delivered</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2%2E1 Closed covered</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2%2E2 Claim expired</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2%2E3 Reopen claim accepted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2%2E5 Fraud</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2%2E7 Closed%2E Device still on warranty period</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3%2E1 Rejected</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4%2E13 Delivered new device</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4%2E29 No coverage</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4%2E3 Pending to pick up device</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4%2E31 Potencial bounce received</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4%2E4 Repair%2FReplace in progress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4%2E5 Find my mobile active</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4%2E9 Pending to be delivered</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Successfully sent to ICP</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ClientHasContacted__c</picklist>
+        <values>
+            <fullName>NA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Si</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CloseDetail__c</picklist>
+        <values>
+            <fullName>Agravación riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Anulación no tramitada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aplicativo web</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Atención empleado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Atención mediador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Baja en tráfico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bonificación %28Sinco%2FInbonus%E2%80%A6%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cambio de Condiciones</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cambio personas %28Tomador%2Fprop%2E%2Fconductor%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Caída sistema</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Coberturas %2F Servicio %E2%80%93 Mejor oferta competencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cobro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Corregida</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Datos erróneos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegación anulación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desacuerdo en indemnización</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desaparición riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desbloqueo registro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Descuentos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Envío mail</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Error FIVA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Error fecha de efecto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estado firma digital</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fallecimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Falta aviso</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Falta de datos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Garantías%2Fcapitales %28franquicias%2C robo en motos%2C RC Hogar%E2%80%A6%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gestión Competencias</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gestión incorrecta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Impago</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Información</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Insatisfacción Atención CC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Insatisfacción mediador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Insatisfacción siniestros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Llegada a término</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mail activación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mal rendimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Matrícula %28anteriormente asegurada%2Fmal rendimiento%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Matrícula asegurada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NIF bloqueado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No autoservicio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No procede</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta no accesible</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Precio - Mejor oferta competencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Promo %2F Regalo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recepción datos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resolución SDC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retraso en tramitación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retroactividad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sin motivo %2F No informado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Siniestro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitud extorno</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tiempo de espera</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Usos %2F Actividad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vehículo %28Valor%2Faccesorios%2Fantigüedad%E2%80%A6%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Venta-Extorno</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Venta-Reserva de prima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vida</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CloseResult__c</picklist>
+        <values>
+            <fullName>Allegations with formalities</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Allegations without formalities</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Archived</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Change of criterion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Completed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Does not correspond to us and referred to competent center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Follow-up carried out</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Index documentation%2Fnote</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Maintains criteria</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Managed by the center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Referred to other areas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resolved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Returned lack of documentation %2F does not comply with regulations</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Returned to mediator for management with center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Transfer to center with indications for action</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Transfer to processing center</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CommercialProductCode__c</picklist>
+        <values>
+            <fullName>PRD0020</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0027</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0028</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0029</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0032</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0035</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0038</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0901</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Protección Comercios y Oficinas BSSG %28OFERTABLE%29</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CustomerFoundBy__c</picklist>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Phone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy Number</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CustomerOrigin__c</picklist>
+        <values>
+            <fullName>Life Fitbit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Motor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SPAM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Xiaomi</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Form_type__c</picklist>
+        <values>
+            <fullName>Review</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Guarantees__c</picklist>
+        <values>
+            <fullName>Atmospheric phenomena</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Brico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Car window</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Civil liability</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Defence and claims</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Electrical damage</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Extensive</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fire</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Glass</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Own damage</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Refrigerated goods</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Theft</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Travel assistance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Water damage</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>IntermediaryOwner__c</picklist>
+        <values>
+            <fullName>Agente mediador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Call Center</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>LegalEntity__c</picklist>
+        <values>
+            <fullName>000</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>001</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>002</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>003</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>004</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>005</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>006</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>007</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>008</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>999</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>General Insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Life Insurance</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Object__c</picklist>
+        <values>
+            <fullName>Bono</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Carta verde</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Certificados</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comisiones</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentación mediadores</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documento seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Duplicado de Cartera</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estado gestión</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Factura mediador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GDPR</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Garantías%2Fcapitales asegurados</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Informe de Comisiones</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mi Zurich</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Modelo 347 %2F DEC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>N57 %2F Asesoría Jurídica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Normativa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Parte DDA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Peritación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Precio renovación póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Productos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Póliza Viaje</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recibo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recibo %E2%80%93 Importe</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recibo - Fecha</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recibo -Estado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Riesgo asegurado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Siniestros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Soporte navegación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Suplemento póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vida</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>OneTimeOrRecurring__c</picklist>
+        <values>
+            <fullName>Puntual</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recurrente</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Origin</picklist>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Phone</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>PendingBy__c</picklist>
+        <values>
+            <fullName>Expert</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Intermediary</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other areas Zurich</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other professionals</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Processing center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tracking</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>PortfolioMonth__c</picklist>
+        <values>
+            <fullName>01</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>09</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Priority</picklist>
+        <values>
+            <fullName>High</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Low</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medium</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ProductGroup__c</picklist>
+        <values>
+            <fullName>1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>14</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>16</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>17</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>6</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>7</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>9</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>QuotationStage__c</picklist>
+        <values>
+            <fullName>Info request</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lost</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prospect</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Quoted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Won</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Work in Progress</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Range__c</picklist>
+        <values>
+            <fullName>Motor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PYMEs</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Reason</picklist>
+        <values>
+            <fullName>Complex functionality</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Existing problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Instructions not clear</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>User didn%27t attend training</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ReasonId__c</picklist>
+        <values>
+            <fullName>1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>RiskAppetite__c</picklist>
+        <values>
+            <fullName>Excluido</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Moderado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Preferente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Restringido</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Scope__c</picklist>
+        <values>
+            <fullName>Z</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>ZE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZEB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZEO</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SourceAreaDetail__c</picklist>
+        <values>
+            <fullName>CRM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Centro tramitador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Responsable de negocio</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SourceArea__c</picklist>
+        <values>
+            <fullName>CRM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commercial Team</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mediator</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Processing Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SDC %28Customer Defense Service%29</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SprinklrFinalSentiment__c</picklist>
+        <values>
+            <fullName>Negative</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Neutral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Positive</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SprinklrInitialCaseSentiment__c</picklist>
+        <values>
+            <fullName>Negative</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Neutral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Positive</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SprinklrManagedBy__c</picklist>
+        <values>
+            <fullName>Assigned Group Comm%E2%80%99s</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Assigned Via Sprinklr to BU</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Flagged via email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Global team</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Local team</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SprinklrPostType__c</picklist>
+        <values>
+            <fullName>Alert %28brand Reputation Related%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Career</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Community%2FDialog</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Company Mention</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Complaint%2FEscalation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Compliment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer Request</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>General Query</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Spam</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SprinklrProduct__c</picklist>
+        <values>
+            <fullName>App</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commercial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Electronics</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Health</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Home%2Fproperty</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Life</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No info provided</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pension%2FInvestment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pets</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Travel</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SprinklrRequestType__c</picklist>
+        <values>
+            <fullName>Complaint%2FEscalation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Compliment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>General Query</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Sub_status__c</picklist>
+        <values>
+            <fullName>BIT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Siniestros</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Subtype__c</picklist>
+        <values>
+            <fullName>CONS - Guarantees %2F Coverage</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CONS - Processes %2F Tools</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CONS - Processing Status</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DOC - Provide new documentation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DOC - Provide new information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PA - Customer Defense Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PA - DGS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PABS - Customer Defense Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PABS- DGS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PG - Disagreement with indemnity</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PG - Disconformity refusal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PG - Disconformity with Resolution</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Compensation delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Disconformity with appraisal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Disconformity with compensation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Disconformity with procedure</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Disconformity with resolution</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Expert%27s delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Lack of information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Processing delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Refusal Disagreement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Repairer delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Request for extension</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Response delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Compensation delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Disagreement with refusal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Disconformity with Resolution</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Disconformity with appraisal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Disconformity with indemnity</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Disconformity with procedure</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Expert Delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Extension Request</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Lack of information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Processing Delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Repairer Delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Response Delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RESP - Acknowledgement of Receipt</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RESP - Automatic Response</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RESP - Compliance with SDC resolution</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RESP - Plant Information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RSDC - Estimated</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RSDC - Estimated center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RSDC - Inadmitted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RSDC - Partial Estimate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RSDC - Rejected</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TaskExecutionTime__c</picklist>
+        <values>
+            <fullName>Entre 1 y 10 min</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Entre 10 y 30 min</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Entre 30 y 60 min</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Más de 60 min</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TaskFrequency__c</picklist>
+        <values>
+            <fullName>Diariamente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mensualmente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Semanalmente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Trimestralmente</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Additional Documentation%2FInformation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Allegations request</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Center response</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Complaint</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Consultation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ex gratia payment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reply</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request for BS allegations</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SDC Resolution</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TypeN3__c</picklist>
+        <values>
+            <fullName>CONS - Guarantees %2F Coverage</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CONS - Processes %2F Tools</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CONS - Processing Status</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DOC - Provide new documentation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DOC - Provide new information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PA - Customer Defense Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PA - DGS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PABS - Customer Defense Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PABS- DGS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PG - Disagreement with indemnity</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PG - Disconformity refusal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PG - Disconformity with Resolution</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Compensation delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Disconformity with appraisal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Disconformity with compensation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Disconformity with procedure</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Disconformity with resolution</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Expert%27s delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Lack of information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Processing delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Refusal Disagreement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Repairer delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Request for extension</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RECL - Response delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Compensation delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Disagreement with refusal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Disconformity with Resolution</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Disconformity with appraisal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Disconformity with indemnity</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Disconformity with procedure</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Expert Delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Extension Request</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Lack of information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Processing Delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Repairer Delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REP - Response Delay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RESP - Acknowledgement of Receipt</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RESP - Automatic Response</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RESP - Compliance with SDC resolution</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RESP - Plant Information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RSDC - Estimated</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RSDC - Estimated center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RSDC - Inadmitted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RSDC - Partial Estimate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RSDC - Rejected</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>UsedTools__c</picklist>
+        <values>
+            <fullName>Correo electrónico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Otros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZRM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zona Zurich</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>
