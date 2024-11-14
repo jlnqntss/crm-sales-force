@@ -51,11 +51,13 @@ export default class IntermAddCampaignMember extends LightningElement {
   campaign;
   userInfo;
   _wiredContacts;
-  accounts;
   error;
   selectedRows = [];
   isLoading = true;
   showModal;
+  queryTerm;
+  filteredAccounts;
+  accounts;
 
   get addCampaignMembersButtonDisabled() {
     return !this.selectedRows?.length;
@@ -90,11 +92,21 @@ export default class IntermAddCampaignMember extends LightningElement {
   }
 
   get recordsToDisplay() {
-    return !this.accounts?.length;
+    return !this.filteredAccounts?.length;
   }
 
   get wiredErrors() {
     return this.error;
+  }
+
+  // Devuelve un array de Ids de las filas seleccionadas
+  get selectedRowIds() {
+    return this.selectedRows.map((row) => row.Id);
+  }
+
+  @api
+  getFilteredAccounts() {
+    return this.filteredAccounts;
   }
 
   // #endregion
@@ -125,6 +137,7 @@ export default class IntermAddCampaignMember extends LightningElement {
         NationalId: field.Account.NationalId__c,
         RecordTypeName: field.Account.RecordType__c
       }));
+      this.filteredAccounts = this.accounts;
       this.hideSpinner();
     } else if (error) {
       this.error = error;
@@ -162,6 +175,22 @@ export default class IntermAddCampaignMember extends LightningElement {
   }
 
   /**
+   * Función que se encarga de controlar el evento teclear en el campo input de búsqueda.
+   * Coteja el texto incluido con el nombre de cuenta y el documento de identidad.
+   *
+   * @author jlnavarroq
+   * @date 05/11/2024
+   */
+  handleSearchChange(evt) {
+    this.queryTerm = evt.target.value.toLowerCase();
+    this.filteredAccounts = this.accounts.filter((account) =>
+      (account.AccountName + account.NationalId)
+        .toLowerCase()
+        .includes(this.queryTerm)
+    );
+  }
+
+  /**
    * Función que se encarga de controlar el evento al pulsar el check de cualquier
    * fila de la tabla. Al pulsar una fila, se actualiza la propiedad que contiene
    * las filas seleccionadas de la tabla.
@@ -170,7 +199,21 @@ export default class IntermAddCampaignMember extends LightningElement {
    * @date 18/10/2023
    */
   handleRowSelection(event) {
-    this.selectedRows = event.detail.selectedRows;
+    const selectedRowsInView = event.detail.selectedRows;
+    const selectedRowsMap = new Map(
+      this.selectedRows.map((row) => [row.Id, row])
+    );
+    const selectedIdsInView = new Set(selectedRowsInView.map((row) => row.Id));
+
+    this.filteredAccounts.forEach((row) => {
+      if (selectedIdsInView.has(row.Id)) {
+        selectedRowsMap.set(row.Id, row); // Mantener seleccionadas
+      } else {
+        selectedRowsMap.delete(row.Id); // Quitar desmarcadas
+      }
+    });
+
+    this.selectedRows = Array.from(selectedRowsMap.values());
   }
 
   async handleAddCampaignMembers() {
