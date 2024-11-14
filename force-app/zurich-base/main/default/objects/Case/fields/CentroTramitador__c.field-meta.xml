@@ -217,6 +217,181 @@
                 <default>false</default>
                 <label>PROPERTY MIDDLE</label>
             </value>
+            <value>
+                <fullName>BASICOS AAPP LESIONES 1</fullName>
+                <default>false</default>
+                <label>BASICOS AAPP LESIONES 1</label>
+            </value>
+            <value>
+                <fullName>BASICOS AAPP LESIONES 2</fullName>
+                <default>false</default>
+                <label>BASICOS AAPP LESIONES 2</label>
+            </value>
+            <value>
+                <fullName>BASICOS AAPP LESIONES 3</fullName>
+                <default>false</default>
+                <label>BASICOS AAPP LESIONES 3</label>
+            </value>
+            <value>
+                <fullName>BASICOS AAPP MATERIALES 1</fullName>
+                <default>false</default>
+                <label>BASICOS AAPP MATERIALES 1</label>
+            </value>
+            <value>
+                <fullName>BASICOS AAPP MATERIALES 2</fullName>
+                <default>false</default>
+                <label>BASICOS AAPP MATERIALES 2</label>
+            </value>
+            <value>
+                <fullName>BASICOS AAPP MATERIALES 3</fullName>
+                <default>false</default>
+                <label>BASICOS AAPP MATERIALES 3</label>
+            </value>
+            <value>
+                <fullName>BASICOS ACC 1</fullName>
+                <default>false</default>
+                <label>BASICOS ACC 1</label>
+            </value>
+            <value>
+                <fullName>BASICOS ACC 2</fullName>
+                <default>false</default>
+                <label>BASICOS ACC 2</label>
+            </value>
+            <value>
+                <fullName>BASICOS FINANCIAL LINES</fullName>
+                <default>false</default>
+                <label>BASICOS FINANCIAL LINES</label>
+            </value>
+            <value>
+                <fullName>BASICOS LESIONES MOTOR 1</fullName>
+                <default>false</default>
+                <label>BASICOS LESIONES MOTOR 1</label>
+            </value>
+            <value>
+                <fullName>BASICOS LESIONES REC. 1</fullName>
+                <default>false</default>
+                <label>BASICOS LESIONES REC. 1</label>
+            </value>
+            <value>
+                <fullName>BASICOS LESIONES REC. 2</fullName>
+                <default>false</default>
+                <label>BASICOS LESIONES REC. 2</label>
+            </value>
+            <value>
+                <fullName>BASICOS PARTNERS</fullName>
+                <default>false</default>
+                <label>BASICOS PARTNERS</label>
+            </value>
+            <value>
+                <fullName>BASICOS RC LESIONES 1</fullName>
+                <default>false</default>
+                <label>BASICOS RC LESIONES 1</label>
+            </value>
+            <value>
+                <fullName>BASICOS RC LESIONES 2</fullName>
+                <default>false</default>
+                <label>BASICOS RC LESIONES 2</label>
+            </value>
+            <value>
+                <fullName>BASICOS RC LESIONES 3</fullName>
+                <default>false</default>
+                <label>BASICOS RC LESIONES 3</label>
+            </value>
+            <value>
+                <fullName>BASICOS RC REC. 4</fullName>
+                <default>false</default>
+                <label>BASICOS RC REC. 4</label>
+            </value>
+            <value>
+                <fullName>CAUCION</fullName>
+                <default>false</default>
+                <label>CAUCION</label>
+            </value>
+            <value>
+                <fullName>CAUCION - SACRE</fullName>
+                <default>false</default>
+                <label>CAUCION - SACRE</label>
+            </value>
+            <value>
+                <fullName>CT AAPP LESIONES</fullName>
+                <default>false</default>
+                <label>CT AAPP LESIONES</label>
+            </value>
+            <value>
+                <fullName>CT AAPP MATERIALES</fullName>
+                <default>false</default>
+                <label>CT AAPP MATERIALES</label>
+            </value>
+            <value>
+                <fullName>CT COMPLEJOS FINANCIAL LINES</fullName>
+                <default>false</default>
+                <label>CT COMPLEJOS FINANCIAL LINES</label>
+            </value>
+            <value>
+                <fullName>CT FINANCIAL LINES</fullName>
+                <default>false</default>
+                <label>CT FINANCIAL LINES</label>
+            </value>
+            <value>
+                <fullName>CT PROFESIONAL</fullName>
+                <default>false</default>
+                <label>CT PROFESIONAL</label>
+            </value>
+            <value>
+                <fullName>CT RC LESIONES</fullName>
+                <default>false</default>
+                <label>CT RC LESIONES</label>
+            </value>
+            <value>
+                <fullName>CT RC PLUS</fullName>
+                <default>false</default>
+                <label>CT RC PLUS</label>
+            </value>
+            <value>
+                <fullName>CT RC Y AAPP COMPLEJOS</fullName>
+                <default>false</default>
+                <label>CT RC Y AAPP COMPLEJOS</label>
+            </value>
+            <value>
+                <fullName>CTD COMPLEJOS</fullName>
+                <default>false</default>
+                <label>CTD COMPLEJOS</label>
+            </value>
+            <value>
+                <fullName>CTD EXPRESS</fullName>
+                <default>false</default>
+                <label>CTD EXPRESS</label>
+            </value>
+            <value>
+                <fullName>CTD MARINE</fullName>
+                <default>false</default>
+                <label>CTD MARINE</label>
+            </value>
+            <value>
+                <fullName>LESIONES FLOTAS CI</fullName>
+                <default>false</default>
+                <label>LESIONES FLOTAS CI</label>
+            </value>
+            <value>
+                <fullName>LESIONES INTERNACIONAL</fullName>
+                <default>false</default>
+                <label>LESIONES INTERNACIONAL</label>
+            </value>
+            <value>
+                <fullName>LESIONES ZONA 2</fullName>
+                <default>false</default>
+                <label>LESIONES ZONA 2</label>
+            </value>
+            <value>
+                <fullName>LESIONES ZONA 3</fullName>
+                <default>false</default>
+                <label>LESIONES ZONA 3</label>
+            </value>
+            <value>
+                <fullName>Zurich Asistencia Diversos</fullName>
+                <default>false</default>
+                <label>Zurich Asistencia Diversos</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

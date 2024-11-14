@@ -2,9 +2,19 @@
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <sorted>true</sorted>
     <standardValue>
+        <fullName>Additional Documentation/Information</fullName>
+        <default>false</default>
+        <label>Additional Documentation/Information</label>
+    </standardValue>
+    <standardValue>
         <fullName>Agente</fullName>
         <default>false</default>
         <label>Agente</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Allegations request</fullName>
+        <default>false</default>
+        <label>Allegations request</label>
     </standardValue>
     <standardValue>
         <fullName>Asistencia (Information/ Contact)</fullName>
@@ -22,6 +32,21 @@
         <label>Campañas</label>
     </standardValue>
     <standardValue>
+        <fullName>Center response</fullName>
+        <default>false</default>
+        <label>Center response</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Complaint</fullName>
+        <default>false</default>
+        <label>Complaint</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Consultation</fullName>
+        <default>false</default>
+        <label>Consultation</label>
+    </standardValue>
+    <standardValue>
         <fullName>Contratar mi seguro</fullName>
         <default>false</default>
         <label>Contratar mi seguro</label>
@@ -35,6 +60,11 @@
         <fullName>Cotización</fullName>
         <default>false</default>
         <label>Cotización</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Ex gratia payment</fullName>
+        <default>false</default>
+        <label>Ex gratia payment</label>
     </standardValue>
     <standardValue>
         <fullName>Gestión Cartera</fullName>
@@ -122,9 +152,24 @@
         <label>Renovar mi seguro</label>
     </standardValue>
     <standardValue>
+        <fullName>Reply</fullName>
+        <default>false</default>
+        <label>Reply</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Request for BS allegations</fullName>
+        <default>false</default>
+        <label>Request for BS allegations</label>
+    </standardValue>
+    <standardValue>
         <fullName>Retención (Renew/ Cancel)</fullName>
         <default>false</default>
         <label>Retención (Renew/ Cancel)</label>
+    </standardValue>
+    <standardValue>
+        <fullName>SDC Resolution</fullName>
+        <default>false</default>
+        <label>SDC Resolution</label>
     </standardValue>
     <standardValue>
         <fullName>Siniestro</fullName>

@@ -1222,16 +1222,21 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
     /**
-     * @description        : Método que devuelve cuentas tipo lead en base a una serie de criterios
+     * @description        : Método que devuelve cuentas a partir de una lista de identificadores con sus ofertas (filtradas por opportunityList que no las buscará) 
+     * y recupera si lo tuviera un único caso
      * @author rserrano    | 24/04/2024
-     * @param days         : Antigüedad mínima del lead para ser borrado
-     * @param stageName    : Etapa en la que se tiene que encontrar la oportunidad del lead para ser borrado
-     * @param businessCode : Código de negocio de la oportunidad del lead para ser borrado
-     * @return String
-     * update igarcia 25/06/2024: Se ha añadido la condición para que se recoga las oportunidades que no sean de Vida
+     * @param accountsIds  : Lista de ids de cuentas
+     * @param opportunityList    : Lista de ofertas que no hemos de traer en la consulta
+     * @return List<Account> SELECT Id, (SELECT StageName, BusinessCode__c, Scope__c FROM Opportunities WHERE Id NOT IN :opportunityList), 
+     *                                  (SELECT Id FROM Cases LIMIT 1)
+     *                                  FROM Account
+     *                                  WHERE Id IN: accountsIds
      **/
-    public String findZRMOldLeads(Integer days, String stageName, String businessCode)
+    public List<Account> findLeadsWithOpportunitiesAndCaseFiltered(List<Id> accountsIds, List<Opportunity> opportunityList)
     {
+
+        List<Account> result = new List<Account>();
+
         Set<Schema.SObjectField> accountfieldsToRetrieve = new Set<Schema.SObjectField>
         {
             Account.Id
@@ -1239,29 +1244,33 @@ public with sharing class AccountsSelector extends RecordsSelector
         Set<Schema.SObjectField> opportunityFieldsToRetrieve = new Set<Schema.SObjectField>
         {
             Opportunity.StageName,
-            Opportunity.BusinessCode__c
+            Opportunity.BusinessCode__c,
+            Opportunity.Scope__c,
+            Opportunity.CreatedDate
+        };
+        Set<Schema.SObjectField> caseFieldsToRetrieve = new Set<Schema.SObjectField>
+        {
+            Case.Id
         };
 
-        String query = this.baseQuery
+        result = this.baseQuery
                        .selectFields(accountfieldsToRetrieve)
-                       .addConditionEq(Account.RecordtypeId, rtLeadId)
-                       .addConditionLt( Account.CreatedDate, Query.LAST_N_DAYS(days) )
+                       .addConditionIn(Account.Id, accountsIds)                       
                        .addSubquery
                        (
-            Query.subquery('Opportunities')
-            .selectFields(opportunityFieldsToRetrieve)
-            .addConditionEq(Opportunity.StageName, stageName)
-            .addConditionNotEq(Opportunity.RecordTypeId, rtOpportunityLifeId)
-            .addCondition(
-                query.doOr
-                (
-                    Query.conditionEq('BusinessCode__c', businessCode),
-                    Query.conditionEq('BusinessCode__c', null)
-                ) )
-            .setlimit(2)
+                        Query.subquery('Opportunities')
+                        .selectFields(opportunityFieldsToRetrieve) 
+                        .addConditionNotIn(Opportunity.Id, opportunityList)                       
                        )
-                       .toQueryString();
-        return query;
+                       .addSubquery
+                       (
+                        Query.subquery('Cases')
+                        .selectFields(caseFieldsToRetrieve)
+                        .setlimit(1)                     
+                       )
+                       .enforceSecurity()
+                       .run();
+        return result;
     }
 
     /**
