@@ -1868,7 +1868,7 @@ private with sharing class CaseUtilTest
     private static void test_setOwnerIdPrior()
     {
         List<purecloud__PureCloud_Queue__c> listaQueues = TestDataFactory.generateGenesysQueues(2);
-        listaQueues[0].Name = 'Email_ZDA_Cotizacion';
+        listaQueues[0].Name = CaseUtil.ZDA_QUEUE_SOPORTE_ESPECIALISTAS;
         listaQueues[0].CallCenter__c = GlobalConfigUtil.getGlobalConfigurationValue('Call_Center_ZDA');
 
         listaQueues[1].Name = 'Email_USP_Cartera';
@@ -1878,7 +1878,7 @@ private with sharing class CaseUtilTest
         List<purecloud__PureCloud_Queue__c> listaInsertadas = [SELECT Id, Name FROM purecloud__PureCloud_Queue__c];
         Assert.isFalse( listaInsertadas.isEmpty() );
 
-        String zdaQueueName = 'Email_ZDA_Cotizacion';
+        String zdaQueueName = CaseUtil.ZDA_QUEUE_SOPORTE_ESPECIALISTAS;
         List<Group> queueZda = new GroupSelector().findByName(zdaQueueName);
         Assert.isFalse( queueZda.isEmpty() );
 
@@ -2267,27 +2267,46 @@ private with sharing class CaseUtilTest
      * y se carga la cola a enrutar el caso en el campo industry
      * @author aberuete
      * @date 04/06/2024
+     * lastModifiedBy jfherrero
+     * @date 12/11/2024
      */
     @isTest
     private static void test_setCaseZDAQueue()
     {
-        String valor = 'TPE0714_PRD0029';
+        String valorEspecialistas = 'TPE0714_PRD0029';
+        String valorNoEspecialistas = 'Cotizacion_fuera_del_estandard22';
     
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Intermediary', 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Intermediary', 2);
+        accounts[0].IsSpecialist__c = true;
         insert accounts;
 
         List<Case> casesZDA = TestDataFactory.generateCasesForEachAccount(accounts, 1);
         casesZDA[0].RecordTypeId = Caseutil.RT_ID_ZDA;
+        casesZDA[0].Origin = 'CanalUnico';
+        casesZDA[0].CuTicketId__c = '000001';
         casesZDA[0].Status = 'Nuevo';
-        casesZDA[0].IdTipologiaBs__c = valor;
+        casesZDA[0].IdTipologiaBs__c = valorEspecialistas;
+        casesZDA[0].AccountId = accounts[0].Id;
+
+        casesZDA[1].RecordTypeId = Caseutil.RT_ID_ZDA;
+        casesZDA[1].Origin = 'CanalUnico';
+        casesZDA[1].CuTicketId__c = '000002';
+        casesZDA[1].Status = 'Nuevo';
+        casesZDA[1].IdTipologiaBs__c = valorNoEspecialistas;
+        casesZDA[1].AccountId = accounts[1].Id;
 
         Test.startTest();
         insert casesZDA;
         Test.stopTest();
 
-        List<Robot_Hegeo_Field_Mapping__mdt> tipologia = [SELECT id, GenesysQueue__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c = :valor];
-        List<Case> casos = [SELECT Id,Industry__c  FROM Case WHERE id =:casesZDA[0].id];
-        Assert.areEqual(tipologia[0].GenesysQueue__c , casos[0].Industry__c);
+        List<Robot_Hegeo_Field_Mapping__mdt> tipologyEsp = [SELECT id, GenesysQueue__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c = :valorEspecialistas];
+        List<Case> casesWithSameIndustry = [SELECT Id, Industry__c FROM Case WHERE id =:casesZDA[0].id];
+        Assert.areNotEqual(tipologyEsp[0].GenesysQueue__c , casesWithSameIndustry[0].Industry__c);
+        
+		List<Robot_Hegeo_Field_Mapping__mdt> tipologyNonEsp = [SELECT id, GenesysQueue__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c = :valorNoEspecialistas];
+        List<Case> casesRedirectedNonSpecialist = [SELECT Id,Industry__c  FROM Case WHERE id =:casesZDA[1].id];
+        Assert.areEqual(tipologyNonEsp[0].GenesysQueue__c , casesRedirectedNonSpecialist[0].Industry__c);
+        
     }
 
     /**
