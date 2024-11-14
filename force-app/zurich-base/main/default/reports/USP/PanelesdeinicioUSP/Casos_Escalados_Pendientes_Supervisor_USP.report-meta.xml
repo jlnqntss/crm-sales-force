@@ -73,7 +73,7 @@
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Case.Activities$Owner</field>
+        <field>Case.Activities$CreatedBy</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>Casos Escalados por mi equipo</name>
