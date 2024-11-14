@@ -45,7 +45,7 @@ private with sharing class TaskUtilTest
         insert genesysQueue;
 
         // Crear registros de ContactRequest
-        List<ContactRequest> contactRequests = TestDataFactory.generateContactRequest(personAccounts[0].PersonContactId, 1);
+        List<ContactRequest> contactRequests = TestDataFactory.generateContactRequest(accounts[0].PersonContactId, 1);
         contactRequests[0].GenesysCloudQueueId__c = genesysQueue.Id;
         insert contactRequests;
     }
@@ -233,19 +233,24 @@ private with sharing class TaskUtilTest
     {
         // Obtener ContactRequest de prueba
         ContactRequest contactRequest = [
-            SELECT Id, GenesysCloudQueueId__c, GenesysCloudQueueId__r.Name, GenesysInteractionId__c
+            SELECT Id, GenesysCloudQueueId__c, GenesysInteractionId__c
             FROM ContactRequest
             WHERE GenesysInteractionId__c != null AND GenesysCloudQueueId__c != null
             LIMIT 1
         ];
         Assert.isNotNull(contactRequest,'Los campos campo GenesysCloudQueueId__c y GenesysInteractionId__c no deben ser nulos');
+        purecloud__PureCloud_Queue__c genesysCloudQueue = [
+            SELECT Id, Name
+            FROM purecloud__PureCloud_Queue__c
+            WHERE Id = : contactRequest.GenesysCloudQueueId__c
+                       LIMIT 1
+        ];
 
         // Crear una tareas relacionadas con el ContactRequest
         List<Task> tasksToCreate = TestDataFactory.generateInteractionTasks(1);
         tasksToCreate[0].CallObject = contactRequest.GenesysInteractionId__c;
 
         // Iniciar el contexto de prueba
-        System.debug('tasksToCreate: ' + tasksToCreate);
         Test.startTest();
         insert tasksToCreate; // Insertamos la tarea
         Test.stopTest();
@@ -255,10 +260,8 @@ private with sharing class TaskUtilTest
 
         // Verificar que el campo GenesysQueue__c se ha asignado correctamente
 
-        System.debug('taskAfterInsert.GenesysQueue__c: ' + taskAfterInsert.GenesysQueue__c);
         Assert.areNotEqual(NULL, taskAfterInsert.GenesysQueue__c);
-        Assert.areEqual(contactRequest.GenesysCloudQueueId__r.Name, taskAfterInsert.GenesysQueue__c);
-        // System.assertNotEquals(null, taskAfterInsert.GenesysQueue__c, 'El campo GenesysQueue__c en la tarea debería estar asignado');
+        Assert.areEqual(genesysCloudQueue.Name, taskAfterInsert.GenesysQueue__c);
 
     }
 }

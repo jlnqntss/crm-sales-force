@@ -125,15 +125,20 @@ public with sharing class ContactRequestSelector extends RecordsSelector
     public List<ContactRequest> findByGenesysInteractionIds(Set<String> interactionIds)
     {
         List<ContactRequest> contactRequests = new List<ContactRequest>();
-
+        List<String> relatedFields = new list<String> {
+            'GenesysCloudQueueId__r.Name'
+        };
+        List<Schema.SObjectField> fields = new list<Schema.SObjectField> {
+            ContactRequest.field.GenesysInteractionId__c
+        };
         if ( interactionIds != null && !interactionIds.isEmpty() )
         {
-            this.baseQuery.selectReadableFields('GenesysCloudQueueId__r.Name')
+            this.baseQuery.selectFields(relatedFields)
+            .selectFields(fields)
             .addConditionIn(ContactRequest.GenesysInteractionId__c, interactionIds);
 
             contactRequests = (List<ContactRequest>) this.baseQuery.run();
         }
-        System.debug('contactRequests: ' + contactRequests);
         return contactRequests;
     }
 }
