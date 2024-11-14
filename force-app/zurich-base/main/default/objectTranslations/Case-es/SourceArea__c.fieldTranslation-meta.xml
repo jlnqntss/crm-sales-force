@@ -3,6 +3,18 @@
     <label>Área de origen</label>
     <name>SourceArea__c</name>
     <picklistValues>
+        <masterLabel>CRM</masterLabel>
+        <translation>CRM</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Commercial Team</masterLabel>
+        <translation>Equipo comercial</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Customer</masterLabel>
+        <translation>Cliente</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>End customer partner</masterLabel>
         <translation>Cliente final partner</translation>
     </picklistValues>
@@ -37,6 +49,10 @@
     <picklistValues>
         <masterLabel>Partner dome</masterLabel>
         <translation>Cúpula de partner</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Processing Center</masterLabel>
+        <translation>Centro tramitador</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>SDC (Customer Defense Service)</masterLabel>
