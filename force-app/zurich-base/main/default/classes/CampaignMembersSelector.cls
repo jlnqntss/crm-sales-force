@@ -263,5 +263,52 @@ public with sharing class CampaignMembersSelector extends BaseSelector
 
             return campaignMembers;
         }
+
+        /**
+        * @description Método que recupera los miembros de campaña pertenecientes
+        * a una campaña de cross selling y a unos ids de cuenta
+
+        SELECT Campaign.Name, Campaign.ProductBranch__c, Campaign.Type, Campaign.StartDate,
+        Campaign.EndDate, Status FROM CampaignMember WHERE Contact.accountId in :accountIdList AND Campaign.Type = 'Cross Selling'
+        *
+        * @author dmunoz
+        * @date 05-11-2024 
+        * @param accountIdList Id de la campaña sobre la que recuperar los miembros de campaña
+        * @return List<CampaignMember> Miembros de campaña
+        **/
+        public List<CampaignMember> selectCrossSellingCampaingsFromAccount(List<String> accountIdList)
+        {
+            List<CampaignMember> campaignMembers = new List<CampaignMember>();
+
+            /*
+             * Se crea un conjunto de Strings porque algunos campos dan error al
+             * tratar de pasarlos como 'Schema.sObjectField'
+             * https://salesforce.stackexchange.com/questions/118597/schema-sobjectfield-inconsistency-with-relationship-fields
+             */
+            Set<String> fieldsToRetrieve = new Set<String>
+            {
+                'Campaign.Name',
+                'Campaign.ProductBranch__c',
+                'Campaign.Type',
+                'Campaign.StartDate',
+                'Campaign.EndDate',
+                'Status'
+            }; 
+
+            if (accountIdList != null && !accountIdList.isEmpty())
+            {
+                
+                campaignMembers = this.baseQuery
+                                  .selectFields(fieldsToRetrieve)
+                                  .addConditionIn('Contact.AccountId', accountIdList)
+                                  .addConditionEq('Campaign.Type', CAMPAIGN_CROSS_SELLING_TYPE)
+                                  .addConditionEq('Campaign.IsActive', TRUE)
+                                  .addConditionGe('Campaign.EndDate', Date.today())
+                                  .enforceSecurity()
+                                  .run();
+            }
+
+            return campaignMembers;
+        }
     }
 }

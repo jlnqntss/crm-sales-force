@@ -1,0 +1,47 @@
+[
+  {
+    "Account": {
+      "Id": "0011t00000ZKw9xAAD",
+      "Name": "Account 1",
+      "INFOCustomerNumber__c": "ICN001",
+      "NationalId__c": "NID001",
+      "RecordType__c": "Lead"
+    }
+  },
+  {
+    "Account": {
+      "Id": "0011t00000ZKw9yAAD",
+      "Name": "Account 2",
+      "INFOCustomerNumber__c": "ICN002",
+      "NationalId__c": "NID002",
+      "RecordType__c": "Lead"
+    }
+  },
+  {
+    "Account": {
+      "Id": "0011t00000ZKw9zAAD",
+      "Name": "Account 3",
+      "INFOCustomerNumber__c": "ICN003",
+      "NationalId__c": "NID003",
+      "RecordType__c": "Lead"
+    }
+  },
+  {
+    "Account": {
+      "Id": "0011t00000ZKw90AAD",
+      "Name": "Account 4",
+      "INFOCustomerNumber__c": "ICN004",
+      "NationalId__c": "NID004",
+      "RecordType__c": "Lead"
+    }
+  },
+  {
+    "Account": {
+      "Id": "0011t00000ZKw91AAD",
+      "Name": "Account 5",
+      "INFOCustomerNumber__c": "ICN005",
+      "NationalId__c": "NID005",
+      "RecordType__c": "Lead"
+    }
+  }
+]

@@ -114,6 +114,26 @@
                 <default>false</default>
                 <label>SAM</label>
             </value>
+            <value>
+                <fullName>Expert</fullName>
+                <default>false</default>
+                <label>Expert</label>
+            </value>
+            <value>
+                <fullName>Processing center</fullName>
+                <default>false</default>
+                <label>Processing center</label>
+            </value>
+            <value>
+                <fullName>Tracking</fullName>
+                <default>false</default>
+                <label>Tracking</label>
+            </value>
+            <value>
+                <fullName>Other professionals</fullName>
+                <default>false</default>
+                <label>Other professionals</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Pendiente</controllingFieldValue>
@@ -194,6 +214,22 @@
         <valueSettings>
             <controllingFieldValue>Pendiente</controllingFieldValue>
             <valueName>SAM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pendiente</controllingFieldValue>
+            <valueName>Expert</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pendiente</controllingFieldValue>
+            <valueName>Processing center</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pendiente</controllingFieldValue>
+            <valueName>Tracking</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pendiente</controllingFieldValue>
+            <valueName>Other professionals</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

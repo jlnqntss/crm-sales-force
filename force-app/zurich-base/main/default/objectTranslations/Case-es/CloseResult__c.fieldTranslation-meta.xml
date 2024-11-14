@@ -3,8 +3,28 @@
     <label>Resultado de Cierre</label>
     <name>CloseResult__c</name>
     <picklistValues>
+        <masterLabel>Allegations with formalities</masterLabel>
+        <translation>Alegaciones con trámite</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Allegations without formalities</masterLabel>
+        <translation>Alegaciones sin trámite</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Archived</masterLabel>
+        <translation>Archivado</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Caducada</masterLabel>
         <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Change of criterion</masterLabel>
+        <translation>Cambio de criterio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Completed</masterLabel>
+        <translation>Relizado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Declinada - Actividad</masterLabel>
@@ -27,8 +47,28 @@
         <translation></translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Does not correspond to us and referred to competent center</masterLabel>
+        <translation>No nos corresponde y remito a centro competente</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Follow-up carried out</masterLabel>
+        <translation>Realizado seguimiento</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Ganada</masterLabel>
         <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Index documentation/note</masterLabel>
+        <translation>Indexar documentación/nota</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Maintains criteria</masterLabel>
+        <translation>Mantiene criterio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Managed by the center</masterLabel>
+        <translation>Gestionado por el centro</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>No Realizado</masterLabel>
@@ -131,7 +171,31 @@
         <translation>Realizado</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Referred to other areas</masterLabel>
+        <translation>Derivado a otras áreas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Resolved</masterLabel>
+        <translation>Resuelto</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Retenido</masterLabel>
         <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Returned lack of documentation / does not comply with regulations</masterLabel>
+        <translation>Devuelto falta documentación/ no cumple normativa</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Returned to mediator for management with center</masterLabel>
+        <translation>Devuelto mediador para gestion con centro</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Transfer to center with indications for action</masterLabel>
+        <translation>Traslado al centro con indicaciones de actuación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Transfer to processing center</masterLabel>
+        <translation>Traslado a centro tramitador</translation>
     </picklistValues>
 </CustomFieldTranslation>
