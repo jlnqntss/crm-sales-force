@@ -78,6 +78,26 @@
                 <default>false</default>
                 <label>KLINK end customer</label>
             </value>
+            <value>
+                <fullName>Processing Center</fullName>
+                <default>false</default>
+                <label>Processing Center</label>
+            </value>
+            <value>
+                <fullName>Commercial Team</fullName>
+                <default>false</default>
+                <label>Commercial Team</label>
+            </value>
+            <value>
+                <fullName>CRM</fullName>
+                <default>false</default>
+                <label>CRM</label>
+            </value>
+            <value>
+                <fullName>Customer</fullName>
+                <default>false</default>
+                <label>Customer</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

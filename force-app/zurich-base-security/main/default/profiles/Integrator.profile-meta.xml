@@ -3986,6 +3986,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.Guarantees__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.EconomicImpact__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4812,6 +4817,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.CreatedDateInfo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.ClaimCreatedDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
