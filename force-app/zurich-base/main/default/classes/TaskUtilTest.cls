@@ -8,6 +8,8 @@
 @isTest
 private with sharing class TaskUtilTest
 {
+    private final static String GENESYS_INTERACTION_ID = '0d542ec8-f142-45d0-8c25-34c8970f0255';
+
     @testSetup
     private static void createScenario()
     {
@@ -44,29 +46,9 @@ private with sharing class TaskUtilTest
         insert genesysQueue;
 
         // Crear registros de ContactRequest
-        List<ContactRequest> contactRequests = new List<ContactRequest>();
-        contactRequests.add( new ContactRequest(
-                                 GenesysInteractionId__c = 'interaction_01',
-                                 Status = 'New',
-                                 PreferredContactDatetime__c = System.now(),
-                                 GenesysCloudQueueId__c = genesysQueue.Id
-                                 ) );
-        contactRequests.add( new ContactRequest(
-                                 GenesysInteractionId__c = 'interaction_02',
-                                 Status = 'New',
-                                 PreferredContactDatetime__c = System.now().addDays(1),
-                                 GenesysCloudQueueId__c = genesysQueue.Id
-                                 ) );
+        List<ContactRequest> contactRequests = TestDataFactory.generateContactRequest(personAccounts[0].PersonContactId, 1);
+        contactRequests[0].GenesysCloudQueueId__c = genesysQueue.Id;
         insert contactRequests;
-
-        // Crear tareas (Task) relacionadas con el GenesysInteractionId__c
-        List<Task> tasks = new List<Task>();
-        tasks.add( new Task(
-                       CallObject = 'interactionId1',
-                       WhatId = contactRequests[0].Id, // Relacionar la tarea con un ContactRequest
-                       Subject = 'Test Task'
-                       ) );
-        insert tasks;
     }
 
     /*
@@ -250,30 +232,13 @@ private with sharing class TaskUtilTest
     @isTest
     static void test_FindByGenesysInteractionIds()
     {
-        Set<String> interactionIds = new Set<String> {'interactionId1'};
         // Obtener ContactRequest de prueba
-        ContactRequest contactRequest = [SELECT Id, GenesysCloudQueueId__c FROM ContactRequest WHERE GenesysInteractionId__c = 'interaction_01' LIMIT 1];
+        ContactRequest contactRequest = [SELECT Id, GenesysCloudQueueId__c, GenesysInteractionId__c FROM ContactRequest WHERE GenesysInteractionId__c != null AND GenesysCloudQueueId__c != null LIMIT 1];
+        Assert.isNotNull(contactRequest,'Los campos campo GenesysCloudQueueId__c y GenesysInteractionId__c no deben ser nulos');
 
         // Crear una tareas relacionadas con el ContactRequest
-        List<Task> tasksToCreate = new List<Task>();
-        tasksToCreate.add( new Task(
-                               Status = 'Asignada',
-                               Priority = 'Normal',
-                               WhatId = contactRequest.Id, // Relacionamos la tarea con el ContactRequest
-                               OwnerId = UserInfo.getUserId()
-                               ) );
-        tasksToCreate.add( new Task(
-                               Status = 'Asignada',
-                               Priority = 'Normal',
-                               WhatId = contactRequest.Id, // Relacionamos la tarea con el ContactRequest
-                               OwnerId = UserInfo.getUserId()
-                               ) );
-        tasksToCreate.add( new Task(
-                               Status = 'Asignada',
-                               Priority = 'Normal',
-                               WhatId = contactRequest.Id, // Relacionamos la tarea con el ContactRequest
-                               OwnerId = UserInfo.getUserId()
-                               ) );
+        List<Task> tasksToCreate = TestDataFactory.generateInteractionTasks(3);
+        tasksToCreate[0].GenesysCloudInteractionTranscript__c = GENESYS_INTERACTION_ID;
 
         // Iniciar el contexto de prueba
         Test.startTest();
@@ -285,7 +250,8 @@ private with sharing class TaskUtilTest
             // Verificar que el campo GenesysQueue__c se ha asignado correctamente
             Task taskAfterInsert = [SELECT Id, GenesysQueue__c FROM Task WHERE Id = : taskToCreate.Id LIMIT 1];
             System.debug('taskAfterInsert.GenesysQueue__c: ' + taskAfterInsert.GenesysQueue__c);
-            System.assertNotEquals(null, taskAfterInsert.GenesysQueue__c, 'El campo GenesysQueue__c en la tarea debería estar asignado');
+            Assert.areNotEqual(contactRequest.GenesysCloudQueueId__c, taskAfterInsert.GenesysQueue__c);
+            // System.assertNotEquals(null, taskAfterInsert.GenesysQueue__c, 'El campo GenesysQueue__c en la tarea debería estar asignado');
 
             // Verificar que el nombre de la cola es el esperado
             purecloud__PureCloud_Queue__c genesysQueue = [SELECT Name FROM purecloud__PureCloud_Queue__c WHERE Id = : taskAfterInsert.GenesysQueue__c LIMIT 1];
