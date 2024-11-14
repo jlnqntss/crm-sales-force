@@ -4,7 +4,8 @@
  * @author fjbelmonte
  * @date 24/10/2024
  */
-public with sharing class RoutingTeamQueueConfigUtil {
+public with sharing class RoutingTeamQueueConfigUtil
+{
  
     /**
      * Devuelve en forma de mapa todas las colas con su correspondiente equipo de enrutamiento
