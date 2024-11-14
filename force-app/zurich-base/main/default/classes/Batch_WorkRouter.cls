@@ -31,7 +31,7 @@ public with sharing class Batch_WorkRouter implements Database.Batchable<sObject
 
     public void execute (Database.BatchableContext bc, List<sObject> scope)
     {
-        new WorkRouter().assignCasesWithoutBestAgentToActiveAgent(scope);
+        new WorkRouter().assignCasesAndAgentsByRoutingTeam(scope);
     }
 
     public void finish(Database.BatchableContext bc)

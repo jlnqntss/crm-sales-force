@@ -7,6 +7,33 @@
     <colorPalette>unity</colorPalette>
     <dashboardChartTheme>light</dashboardChartTheme>
     <dashboardColorPalette>unity</dashboardColorPalette>
+    <dashboardFilters>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>NB Damages RC</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Portfolio</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Specialties</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Construction</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Administration</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Generic</values>
+        </dashboardFilterOptions>
+        <name>Equipo de Enrutamiento</name>
+    </dashboardFilters>
     <dashboardGridLayout>
         <dashboardGridComponents>
             <colSpan>2</colSpan>
@@ -18,6 +45,9 @@
                 </chartSummary>
                 <componentChartTheme>dark</componentChartTheme>
                 <componentType>Metric</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
@@ -44,6 +74,9 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Column</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -80,6 +113,9 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Bar</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -116,6 +152,9 @@
                 </chartSummary>
                 <componentChartTheme>dark</componentChartTheme>
                 <componentType>Metric</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
@@ -142,6 +181,9 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Column</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -178,13 +220,16 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Bar</componentType>
+                <dashboardFilterColumns>
+                    <column>Case$CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingColumn>Case.Activities$Owner</groupingColumn>
+                <groupingColumn>Case.Activities$CreatedBy</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
@@ -215,6 +260,9 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Bar</componentType>
+                <dashboardFilterColumns>
+                    <column>Case$CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -242,7 +290,7 @@
             <rowSpan>8</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
-            <colSpan>4</colSpan>
+            <colSpan>6</colSpan>
             <columnIndex>0</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
@@ -252,6 +300,9 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Column</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -278,44 +329,8 @@
             <rowSpan>8</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
-            <colSpan>4</colSpan>
-            <columnIndex>4</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartAxisRange>Auto</chartAxisRange>
-                <chartSummary>
-                    <axisBinding>y</axisBinding>
-                    <column>RowCount</column>
-                </chartSummary>
-                <componentType>Line</componentType>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <drillEnabled>false</drillEnabled>
-                <drillToDetailEnabled>false</drillToDetailEnabled>
-                <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingColumn>DUE_DATE</groupingColumn>
-                <groupingSortProperties>
-                    <groupingSorts>
-                        <groupingLevel>g1</groupingLevel>
-                        <sortColumn>RowCount</sortColumn>
-                        <sortOrder>d</sortOrder>
-                    </groupingSorts>
-                </groupingSortProperties>
-                <header>Evolución llamadas atendidas (U14D)</header>
-                <legendPosition>Bottom</legendPosition>
-                <report>PanelesdeinicioUSP/Evolucin_llamadas_entrantes_U14D_USP</report>
-                <showPercentage>false</showPercentage>
-                <showValues>true</showValues>
-                <sortBy>RowLabelAscending</sortBy>
-                <useReportChart>false</useReportChart>
-            </dashboardComponent>
-            <rowIndex>16</rowIndex>
-            <rowSpan>8</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>4</colSpan>
-            <columnIndex>8</columnIndex>
+            <colSpan>6</colSpan>
+            <columnIndex>6</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <chartAxisRange>Auto</chartAxisRange>
@@ -324,6 +339,9 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Bar</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -357,17 +375,26 @@
                 <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
                 <chartAxisRange>Auto</chartAxisRange>
                 <componentType>Bar</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingSortProperties/>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
                 <header>Evolución casos abiertos mi equipo (U14D)</header>
+                <legendPosition>Bottom</legendPosition>
                 <report>PanelesdeinicioUSP/Evolucin_casos_mi_equipo_U14D_USP</report>
                 <showPercentage>false</showPercentage>
                 <showPicturesOnCharts>false</showPicturesOnCharts>
-                <showValues>false</showValues>
+                <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
                 <useReportChart>true</useReportChart>
             </dashboardComponent>
@@ -381,17 +408,26 @@
                 <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
                 <chartAxisRange>Auto</chartAxisRange>
                 <componentType>Bar</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingSortProperties/>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
                 <header>Evolución casos cerrados mi equipo U14D</header>
+                <legendPosition>Bottom</legendPosition>
                 <report>PanelesdeinicioUSP/Evolucin_casos_cerrados_mi_equipo_U14D_7lk</report>
                 <showPercentage>false</showPercentage>
                 <showPicturesOnCharts>false</showPicturesOnCharts>
-                <showValues>false</showValues>
+                <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
                 <useReportChart>true</useReportChart>
             </dashboardComponent>
@@ -410,6 +446,9 @@
                 </chartSummary>
                 <componentChartTheme>dark</componentChartTheme>
                 <componentType>Bar</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Integer</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -449,6 +488,9 @@
                 </chartSummary>
                 <componentChartTheme>dark</componentChartTheme>
                 <componentType>Bar</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -488,6 +530,9 @@
                 </chartSummary>
                 <componentChartTheme>dark</componentChartTheme>
                 <componentType>Bar</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -516,46 +561,66 @@
             <rowSpan>8</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
-            <colSpan>6</colSpan>
+            <colSpan>4</colSpan>
             <columnIndex>0</columnIndex>
             <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
                 <chartAxisRange>Auto</chartAxisRange>
-                <chartSummary>
-                    <axisBinding>y</axisBinding>
-                    <column>RowCount</column>
-                </chartSummary>
                 <componentChartTheme>dark</componentChartTheme>
-                <componentType>Line</componentType>
-                <decimalPrecision>-1</decimalPrecision>
+                <componentType>Bar</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingColumn>DUE_DATE</groupingColumn>
-                <groupingSortProperties>
-                    <groupingSorts>
-                        <groupingLevel>g1</groupingLevel>
-                        <sortColumn>RowCount</sortColumn>
-                        <sortOrder>d</sortOrder>
-                    </groupingSorts>
-                </groupingSortProperties>
-                <header>Evol. llamadas atendidas centro (U14D)</header>
-                <legendPosition>Bottom</legendPosition>
-                <report>PanelesdeinicioUSP/Evol_llamadas_entrantes_centro_U14D_USP</report>
+                <groupingSortProperties/>
+                <header>Evolución casos abiertos (U14D)</header>
+                <report>PanelesdeinicioUSP/USP_Evolucin_casos_abiertos_U14D_V0m</report>
                 <showPercentage>false</showPercentage>
-                <showValues>true</showValues>
+                <showPicturesOnCharts>false</showPicturesOnCharts>
+                <showValues>false</showValues>
                 <sortBy>RowLabelAscending</sortBy>
                 <title>MI CENTRO</title>
-                <useReportChart>false</useReportChart>
+                <useReportChart>true</useReportChart>
             </dashboardComponent>
             <rowIndex>40</rowIndex>
             <rowSpan>8</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
-            <colSpan>6</colSpan>
-            <columnIndex>6</columnIndex>
+            <colSpan>4</colSpan>
+            <columnIndex>4</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+                <chartAxisRange>Auto</chartAxisRange>
+                <componentChartTheme>dark</componentChartTheme>
+                <componentType>Bar</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
+                <displayUnits>Auto</displayUnits>
+                <drillEnabled>false</drillEnabled>
+                <drillToDetailEnabled>false</drillToDetailEnabled>
+                <enableHover>false</enableHover>
+                <expandOthers>false</expandOthers>
+                <groupingSortProperties/>
+                <header>Evolución casos cerrados (U14D)</header>
+                <report>PanelesdeinicioUSP/USP_Evolucin_casos_cerrados_U14D_0NC</report>
+                <showPercentage>false</showPercentage>
+                <showPicturesOnCharts>false</showPicturesOnCharts>
+                <showValues>false</showValues>
+                <sortBy>RowLabelAscending</sortBy>
+                <title>MI CENTRO</title>
+                <useReportChart>true</useReportChart>
+            </dashboardComponent>
+            <rowIndex>40</rowIndex>
+            <rowSpan>8</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>4</colSpan>
+            <columnIndex>8</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <chartAxisRange>Auto</chartAxisRange>
@@ -565,6 +630,9 @@
                 </chartSummary>
                 <componentChartTheme>dark</componentChartTheme>
                 <componentType>Column</componentType>
+                <dashboardFilterColumns>
+                    <column>Case.CaseOwnerRoutingTeam__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -588,58 +656,6 @@
                 <useReportChart>false</useReportChart>
             </dashboardComponent>
             <rowIndex>40</rowIndex>
-            <rowSpan>8</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>6</colSpan>
-            <columnIndex>0</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
-                <chartAxisRange>Auto</chartAxisRange>
-                <componentChartTheme>dark</componentChartTheme>
-                <componentType>Bar</componentType>
-                <displayUnits>Auto</displayUnits>
-                <drillEnabled>false</drillEnabled>
-                <drillToDetailEnabled>false</drillToDetailEnabled>
-                <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingSortProperties/>
-                <header>Evolución casos abiertos (U14D)</header>
-                <report>PanelesdeinicioUSP/USP_Evolucin_casos_abiertos_U14D_V0m</report>
-                <showPercentage>false</showPercentage>
-                <showPicturesOnCharts>false</showPicturesOnCharts>
-                <showValues>false</showValues>
-                <sortBy>RowLabelAscending</sortBy>
-                <title>MI CENTRO</title>
-                <useReportChart>true</useReportChart>
-            </dashboardComponent>
-            <rowIndex>48</rowIndex>
-            <rowSpan>8</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>6</colSpan>
-            <columnIndex>6</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
-                <chartAxisRange>Auto</chartAxisRange>
-                <componentChartTheme>dark</componentChartTheme>
-                <componentType>Bar</componentType>
-                <displayUnits>Auto</displayUnits>
-                <drillEnabled>false</drillEnabled>
-                <drillToDetailEnabled>false</drillToDetailEnabled>
-                <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingSortProperties/>
-                <header>Evolución casos cerrados (U14D)</header>
-                <report>PanelesdeinicioUSP/USP_Evolucin_casos_cerrados_U14D_0NC</report>
-                <showPercentage>false</showPercentage>
-                <showPicturesOnCharts>false</showPicturesOnCharts>
-                <showValues>false</showValues>
-                <sortBy>RowLabelAscending</sortBy>
-                <title>MI CENTRO</title>
-                <useReportChart>true</useReportChart>
-            </dashboardComponent>
-            <rowIndex>48</rowIndex>
             <rowSpan>8</rowSpan>
         </dashboardGridComponents>
         <numberOfColumns>12</numberOfColumns>

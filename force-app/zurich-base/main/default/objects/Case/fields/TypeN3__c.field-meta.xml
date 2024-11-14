@@ -864,6 +864,231 @@
                 <label>Petición Alegaciones SDC</label>
             </value>
             <value>
+                <fullName>PG - Disconformity refusal</fullName>
+                <default>false</default>
+                <label>PG - Disconformity refusal</label>
+            </value>
+            <value>
+                <fullName>PG - Disagreement with indemnity</fullName>
+                <default>false</default>
+                <label>PG - Disagreement with indemnity</label>
+            </value>
+            <value>
+                <fullName>PG - Disconformity with Resolution</fullName>
+                <default>false</default>
+                <label>PG - Disconformity with Resolution</label>
+            </value>
+            <value>
+                <fullName>PA - Customer Defense Service</fullName>
+                <default>false</default>
+                <label>PA - Customer Defense Service</label>
+            </value>
+            <value>
+                <fullName>PA - DGS</fullName>
+                <default>false</default>
+                <label>PA - DGS</label>
+            </value>
+            <value>
+                <fullName>PABS - Customer Defense Service</fullName>
+                <default>false</default>
+                <label>PABS - Customer Defense Service</label>
+            </value>
+            <value>
+                <fullName>PABS- DGS</fullName>
+                <default>false</default>
+                <label>PABS- DGS</label>
+            </value>
+            <value>
+                <fullName>REP - Disconformity with Resolution</fullName>
+                <default>false</default>
+                <label>REP - Disconformity with Resolution</label>
+            </value>
+            <value>
+                <fullName>REP - Disconformity with indemnity</fullName>
+                <default>false</default>
+                <label>REP - Disconformity with indemnity</label>
+            </value>
+            <value>
+                <fullName>REP - Disconformity with appraisal</fullName>
+                <default>false</default>
+                <label>REP - Disconformity with appraisal</label>
+            </value>
+            <value>
+                <fullName>REP - Disagreement with refusal</fullName>
+                <default>false</default>
+                <label>REP - Disagreement with refusal</label>
+            </value>
+            <value>
+                <fullName>REP - Disconformity with procedure</fullName>
+                <default>false</default>
+                <label>REP - Disconformity with procedure</label>
+            </value>
+            <value>
+                <fullName>REP - Lack of information</fullName>
+                <default>false</default>
+                <label>REP - Lack of information</label>
+            </value>
+            <value>
+                <fullName>REP - Compensation delay</fullName>
+                <default>false</default>
+                <label>REP - Compensation delay</label>
+            </value>
+            <value>
+                <fullName>REP - Expert Delay</fullName>
+                <default>false</default>
+                <label>REP - Expert Delay</label>
+            </value>
+            <value>
+                <fullName>REP - Repairer Delay</fullName>
+                <default>false</default>
+                <label>REP - Repairer Delay</label>
+            </value>
+            <value>
+                <fullName>REP - Response Delay</fullName>
+                <default>false</default>
+                <label>REP - Response Delay</label>
+            </value>
+            <value>
+                <fullName>REP - Processing Delay</fullName>
+                <default>false</default>
+                <label>REP - Processing Delay</label>
+            </value>
+            <value>
+                <fullName>REP - Extension Request</fullName>
+                <default>false</default>
+                <label>REP - Extension Request</label>
+            </value>
+            <value>
+                <fullName>DOC - Provide new documentation</fullName>
+                <default>false</default>
+                <label>DOC - Provide new documentation</label>
+            </value>
+            <value>
+                <fullName>DOC - Provide new information</fullName>
+                <default>false</default>
+                <label>DOC - Provide new information</label>
+            </value>
+            <value>
+                <fullName>RESP - Acknowledgement of Receipt</fullName>
+                <default>false</default>
+                <label>RESP - Acknowledgement of Receipt</label>
+            </value>
+            <value>
+                <fullName>RESP - Automatic Response</fullName>
+                <default>false</default>
+                <label>RESP - Automatic Response</label>
+            </value>
+            <value>
+                <fullName>RESP - Plant Information</fullName>
+                <default>false</default>
+                <label>RESP - Plant Information</label>
+            </value>
+            <value>
+                <fullName>RESP - Compliance with SDC resolution</fullName>
+                <default>false</default>
+                <label>RESP - Compliance with SDC resolution</label>
+            </value>
+            <value>
+                <fullName>RECL - Disconformity with resolution</fullName>
+                <default>false</default>
+                <label>RECL - Disconformity with resolution</label>
+            </value>
+            <value>
+                <fullName>RECL - Disconformity with compensation</fullName>
+                <default>false</default>
+                <label>RECL - Disconformity with compensation</label>
+            </value>
+            <value>
+                <fullName>RECL - Disconformity with appraisal</fullName>
+                <default>false</default>
+                <label>RECL - Disconformity with appraisal</label>
+            </value>
+            <value>
+                <fullName>RECL - Refusal Disagreement</fullName>
+                <default>false</default>
+                <label>RECL - Refusal Disagreement</label>
+            </value>
+            <value>
+                <fullName>RECL - Disconformity with procedure</fullName>
+                <default>false</default>
+                <label>RECL - Disconformity with procedure</label>
+            </value>
+            <value>
+                <fullName>RECL - Lack of information</fullName>
+                <default>false</default>
+                <label>RECL - Lack of information</label>
+            </value>
+            <value>
+                <fullName>RECL - Compensation delay</fullName>
+                <default>false</default>
+                <label>RECL - Compensation delay</label>
+            </value>
+            <value>
+                <fullName>RECL - Expert&apos;s delay</fullName>
+                <default>false</default>
+                <label>RECL - Expert&apos;s delay</label>
+            </value>
+            <value>
+                <fullName>RECL - Repairer delay</fullName>
+                <default>false</default>
+                <label>RECL - Repairer delay</label>
+            </value>
+            <value>
+                <fullName>RECL - Response delay</fullName>
+                <default>false</default>
+                <label>RECL - Response delay</label>
+            </value>
+            <value>
+                <fullName>RECL - Processing delay</fullName>
+                <default>false</default>
+                <label>RECL - Processing delay</label>
+            </value>
+            <value>
+                <fullName>RECL - Request for extension</fullName>
+                <default>false</default>
+                <label>RECL - Request for extension</label>
+            </value>
+            <value>
+                <fullName>RSDC - Estimated</fullName>
+                <default>false</default>
+                <label>RSDC - Estimated</label>
+            </value>
+            <value>
+                <fullName>RSDC - Estimated center</fullName>
+                <default>false</default>
+                <label>RSDC - Estimated center</label>
+            </value>
+            <value>
+                <fullName>RSDC - Partial Estimate</fullName>
+                <default>false</default>
+                <label>RSDC - Partial Estimate</label>
+            </value>
+            <value>
+                <fullName>RSDC - Rejected</fullName>
+                <default>false</default>
+                <label>RSDC - Rejected</label>
+            </value>
+            <value>
+                <fullName>RSDC - Inadmitted</fullName>
+                <default>false</default>
+                <label>RSDC - Inadmitted</label>
+            </value>
+            <value>
+                <fullName>CONS - Guarantees / Coverage</fullName>
+                <default>false</default>
+                <label>CONS - Guarantees / Coverage</label>
+            </value>
+            <value>
+                <fullName>CONS - Processes / Tools</fullName>
+                <default>false</default>
+                <label>CONS - Processes / Tools</label>
+            </value>
+            <value>
+                <fullName>CONS - Processing Status</fullName>
+                <default>false</default>
+                <label>CONS - Processing Status</label>
+            </value>
+            <value>
                 <fullName>Policy</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -1381,6 +1606,186 @@
         <valueSettings>
             <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
             <valueName>Resolución SDC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PG - Disconformity refusal</controllingFieldValue>
+            <valueName>PG - Disconformity refusal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PG - Disagreement with indemnity</controllingFieldValue>
+            <valueName>PG - Disagreement with indemnity</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PG - Disconformity with Resolution</controllingFieldValue>
+            <valueName>PG - Disconformity with Resolution</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PA - Customer Defense Service</controllingFieldValue>
+            <valueName>PA - Customer Defense Service</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PA - DGS</controllingFieldValue>
+            <valueName>PA - DGS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PABS - Customer Defense Service</controllingFieldValue>
+            <valueName>PABS - Customer Defense Service</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PABS- DGS</controllingFieldValue>
+            <valueName>PABS- DGS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Disconformity with Resolution</controllingFieldValue>
+            <valueName>REP - Disconformity with Resolution</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Disconformity with indemnity</controllingFieldValue>
+            <valueName>REP - Disconformity with indemnity</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Disconformity with appraisal</controllingFieldValue>
+            <valueName>REP - Disconformity with appraisal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Disagreement with refusal</controllingFieldValue>
+            <valueName>REP - Disagreement with refusal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Disconformity with procedure</controllingFieldValue>
+            <valueName>REP - Disconformity with procedure</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Lack of information</controllingFieldValue>
+            <valueName>REP - Lack of information</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Compensation delay</controllingFieldValue>
+            <valueName>REP - Compensation delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Expert Delay</controllingFieldValue>
+            <valueName>REP - Expert Delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Repairer Delay</controllingFieldValue>
+            <valueName>REP - Repairer Delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Response Delay</controllingFieldValue>
+            <valueName>REP - Response Delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Processing Delay</controllingFieldValue>
+            <valueName>REP - Processing Delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Extension Request</controllingFieldValue>
+            <valueName>REP - Extension Request</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>DOC - Provide new documentation</controllingFieldValue>
+            <valueName>DOC - Provide new documentation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>DOC - Provide new information</controllingFieldValue>
+            <valueName>DOC - Provide new information</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RESP - Acknowledgement of Receipt</controllingFieldValue>
+            <valueName>RESP - Acknowledgement of Receipt</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RESP - Automatic Response</controllingFieldValue>
+            <valueName>RESP - Automatic Response</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RESP - Plant Information</controllingFieldValue>
+            <valueName>RESP - Plant Information</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RESP - Compliance with SDC resolution</controllingFieldValue>
+            <valueName>RESP - Compliance with SDC resolution</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RECL - Disconformity with resolution</controllingFieldValue>
+            <valueName>RECL - Disconformity with resolution</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RECL - Disconformity with compensation</controllingFieldValue>
+            <valueName>RECL - Disconformity with compensation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RECL - Disconformity with appraisal</controllingFieldValue>
+            <valueName>RECL - Disconformity with appraisal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RECL - Refusal Disagreement</controllingFieldValue>
+            <valueName>RECL - Refusal Disagreement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RECL - Disconformity with procedure</controllingFieldValue>
+            <valueName>RECL - Disconformity with procedure</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RECL - Lack of information</controllingFieldValue>
+            <valueName>RECL - Lack of information</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RECL - Compensation delay</controllingFieldValue>
+            <valueName>RECL - Compensation delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RECL - Expert&apos;s delay</controllingFieldValue>
+            <valueName>RECL - Expert&apos;s delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RECL - Repairer delay</controllingFieldValue>
+            <valueName>RECL - Repairer delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RECL - Response delay</controllingFieldValue>
+            <valueName>RECL - Response delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RECL - Processing delay</controllingFieldValue>
+            <valueName>RECL - Processing delay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RECL - Request for extension</controllingFieldValue>
+            <valueName>RECL - Request for extension</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RSDC - Estimated</controllingFieldValue>
+            <valueName>RSDC - Estimated</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RSDC - Estimated center</controllingFieldValue>
+            <valueName>RSDC - Estimated center</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RSDC - Partial Estimate</controllingFieldValue>
+            <valueName>RSDC - Partial Estimate</valueName>
+        </valueSettings>
+		 <valueSettings>
+            <controllingFieldValue>RSDC - Rejected</controllingFieldValue>
+            <valueName>RSDC - Rejected</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RSDC - Inadmitted</controllingFieldValue>
+            <valueName>RSDC - Inadmitted</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CONS - Guarantees / Coverage</controllingFieldValue>
+            <valueName>CONS - Guarantees / Coverage</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CONS - Processes / Tools</controllingFieldValue>
+            <valueName>CONS - Processes / Tools</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CONS - Processing Status</controllingFieldValue>
+            <valueName>CONS - Processing Status</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>ZRM</controllingFieldValue>
