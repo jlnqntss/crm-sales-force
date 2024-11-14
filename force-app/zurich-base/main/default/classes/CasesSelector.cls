@@ -28,7 +28,7 @@ public with sharing class CasesSelector extends RecordsSelector
     public static final String CASE_OWNER_TYPE = 'Case.Owner.Type';
     public static final String CASE_OWNER_PROFILE_NAME = 'Case.Owner.Profile.Name';
     public static final String CASE_OWNER_NAME = 'Case.Owner.Name';
-
+    
     String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
     String filterCallCenter = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Call_Center_USP');
     String filterStatusCerrado = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Status_Cerrado');
@@ -623,7 +623,7 @@ public with sharing class CasesSelector extends RecordsSelector
 
     /**
      * Método selector que devuelve una query que obtiene los casos ordenados por mayor prioridad y menor fecha de modificación
-     * cuyo campo WithoutBestAgent__c sea verdadero, que el caso no esté cerrado y que el owner sea una cola o el usuario integrador 
+     * cuyo campo WithoutBestAgent__c sea verdadero, que el caso no esté cerrado y que el owner sea una de las colas de enrutamiento por equipos
      * @author aberuete
      * @date 27/06/2024
      * @change 
@@ -634,15 +634,16 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public String selectCasesWithoutBestAgent()
     {
-        String nameQueueRC = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_DanosRC');
+        //Construimos la query 
         Query.Condition andCondition = Query.doOr(
-                Query.conditionEq(CASE_OWNER_NAME, nameQueueRC),
-                Query.conditionEq(CASE_OWNER_PROFILE_NAME, profileIntegrator));
-                
+                Query.conditionIn(CASE_OWNER_NAME, RoutingTeamQueueConfigUtil.getRoutingTeamQueueConfigValues().keySet()),
+                Query.conditionEq(CASE_OWNER_PROFILE_NAME, profileIntegrator));   
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{
             Case.Id,
             Case.OwnerId
         })
+        .selectFields(CASE_OWNER_NAME)
+        .selectFields(CASE_OWNER_PROFILE_NAME)
         .addConditionEq(Case.WithoutBestAgent__c , true)
         .addConditionEq(Case.isClosed, false)
         .addCondition(andCondition)
