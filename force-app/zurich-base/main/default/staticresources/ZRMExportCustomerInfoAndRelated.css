@@ -1,0 +1,66 @@
+@page {
+  font-family: Verdana, sans-serif;
+}
+
+@page {
+  @bottom-right {
+    content: "Página " counter(page) " de " counter(pages);
+  }
+}
+
+/*Evitar que se corten las tablas*/
+.no-page-break {
+  page-break-inside: avoid;
+  margin-bottom: 20px;
+}
+
+/*Estilo Logo y Resumen del cliente*/
+.customerSummaryHeader {
+  padding-bottom: 20px;
+}
+
+.customerSummarySpacing {
+  padding-right: 10px;
+}
+
+.customerAddressHeader {
+  background-color: #0070d2;
+  font-weight: bold;
+  margin-top: 0;
+  color: white;
+  text-align: right;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.customerCellPadding {
+  padding-right: 30px;
+}
+
+/*Tabla objetos relacionados*/
+.relatedHeaderTable {
+  vertical-align: middle;
+  text-align: center;
+  border-bottom: 2px solid #0070d2;
+  font-size: 12px;
+}
+
+.relatedColumnTable {
+  width: 20%;
+  border-bottom: 1px solid #0070d2;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 10px;
+}
+
+.relatedTableTitle {
+  background-color: #0070d2;
+  font-weight: bold;
+  font-size: 15px;
+  color: white;
+  width: 100%;
+  padding-left: 30px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  box-sizing: border-box;
+}

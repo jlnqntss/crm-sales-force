@@ -3,7 +3,9 @@
     <fullName>CloseCaseBlocked</fullName>
     <active>true</active>
     <description>[VR Caso] No se pueden editar los casos cerrados o combinados</description>
-    <errorConditionFormula>OR(
+    <errorConditionFormula>AND(
+
+OR(
 
 RecordType.DeveloperName == &quot;OCSInquiry&quot;&amp;&amp;
 
@@ -11,13 +13,7 @@ RecordType.DeveloperName == &quot;OCSInquiry&quot;&amp;&amp;
 
 IsClosed &amp;&amp;
 
-ClosedBy__r.ProfileId &lt;&gt;&apos;00e5I000000Hu97&apos; &amp;&amp;
-
-$Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
-
-$Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
-
-$Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos;
+ClosedBy__r.ProfileId &lt;&gt;&apos;00e5I000000Hu97&apos;
 
 &amp;&amp; NOT ISCHANGED(Status)
 
@@ -29,11 +25,19 @@ IsClosed &amp;&amp;
 
 ( NOT( OR(ISCHANGED(InteractionStatus__c),ISCHANGED(AccountId),ISCHANGED(PolicyId__c),ISCHANGED(MediatedCustomer__c),ISCHANGED(OfferId__c)))) &amp;&amp;
 
-NOT ISCHANGED(Status) &amp;&amp; $Permission.USPTriggerCaseValidationRules
+NOT ISCHANGED(Status) 
 
 ,
-$RecordType.Name == "OCS Sprinklr" && ( NOT( OR(ISCHANGED(AccountId),ISCHANGED(PolicyId__c),ISCHANGED(OfferId__c),ISCHANGED(ClaimId__c)))) && IsClosed && $Profile.Name == 'OCS User Sprinklr'
 
+$RecordType.Name == &quot;OCS Sprinklr&quot; &amp;&amp; ( NOT( OR(ISCHANGED(AccountId),ISCHANGED(PolicyId__c),ISCHANGED(OfferId__c),ISCHANGED(ClaimId__c)))) &amp;&amp; IsClosed 
+
+), 
+
+$Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
+
+$Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
+
+$Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos;
 )</errorConditionFormula>
     <errorMessage>[VR Caso] No se pueden editar los casos cerrados o combinados</errorMessage>
 </ValidationRule>

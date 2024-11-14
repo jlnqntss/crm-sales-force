@@ -3055,6 +3055,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.NameAndIntermediaryCode__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.NatAdvisoryCouncil__c</field>
         <readable>true</readable>
@@ -3232,6 +3237,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Recertification2024__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Recertification2024Img__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3624,7 +3634,7 @@
         <field>Account.ZRMPermission__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.ZRMPermisionDecission__c</field>
         <readable>true</readable>
@@ -4566,6 +4576,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.AreaOwner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.Association__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4647,6 +4662,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.CancellationReason__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.ClaimCreatedDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4795,6 +4815,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.DateTimePendingNotifications__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.Days_Open__c</field>
         <readable>true</readable>
@@ -4852,6 +4877,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.GoogleAddress__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Guarantees__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5480,6 +5510,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SMEConsultantAccount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.SourceArea__c</field>
         <readable>true</readable>
@@ -5824,7 +5859,7 @@
         <field>Case.WorkUnit__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.ZoneDirector__c</field>
         <readable>true</readable>
@@ -5950,6 +5985,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Claim__c.ProductBranch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Claim__c.Scope__c</field>
         <readable>true</readable>
@@ -5962,6 +6002,26 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Claim__c.CloseDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.ClaimDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.ClaimNotificationDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.ClaimReinstatementDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.ClaimTypeDescription__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7367,6 +7427,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ExternalRequest__c.TimeStamp__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.CasePendingBy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10490,6 +10555,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.CasePendingBy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Tipificacion_NLU_Field_Mapping__mdt.Nombre_etiqueta_NLU__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -12396,6 +12466,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>UploadCaseDocumentation</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ZRMExportCustomerInfoAndRelated</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <recordTypeVisibilities>

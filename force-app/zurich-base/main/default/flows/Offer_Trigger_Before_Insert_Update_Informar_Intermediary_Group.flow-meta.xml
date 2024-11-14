@@ -1,11 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
+    <assignments>
+        <name>A_adir_OTM_a_lista</name>
+        <label>Añadir OTM a lista</label>
+        <locationX>270</locationX>
+        <locationY>1571</locationY>
+        <assignmentItems>
+            <assignToReference>OpportunityTeamMembers</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>OTM</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>ATMs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Crear_OTM</name>
+        <label>Crear OTM</label>
+        <locationX>270</locationX>
+        <locationY>1463</locationY>
+        <assignmentItems>
+            <assignToReference>OTM.OpportunityAccessLevel</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Edit</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>OTM.TeamMemberRole</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ATMs.TeamMemberRole</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>OTM.UserId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ATMs.UserId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>OTM.OpportunityId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>A_adir_OTM_a_lista</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Es_mediador</name>
         <label>¿Es mediador?</label>
         <locationX>182</locationX>
-        <locationY>503</locationY>
+        <locationY>947</locationY>
         <defaultConnector>
             <targetReference>Set_Account</targetReference>
         </defaultConnector>
@@ -17,7 +70,7 @@
                 <leftValueReference>$Record.IntermediaryId__r.RecordTypeId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Get_Intermediary_Record_Type_Id.Id</elementReference>
+                    <elementReference>idRecordTypeIntermediary</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -27,10 +80,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Existen_OTMs</name>
+        <label>¿Existen OTMs?</label>
+        <locationX>380</locationX>
+        <locationY>539</locationY>
+        <defaultConnector>
+            <targetReference>Tiene_Intermediary</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Obtener_OTMs</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Eliminar_Opportunity_Team</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Tiene_Intermediary</name>
         <label>¿Tiene Intermediary?</label>
         <locationX>380</locationX>
-        <locationY>395</locationY>
+        <locationY>839</locationY>
         <defaultConnector>
             <targetReference>Delete_Intermediary_Group</targetReference>
         </defaultConnector>
@@ -51,11 +129,33 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <description>V2
-GDPR Bypass</description>
     <environments>Default</environments>
+    <formulas>
+        <name>idRecordTypeIntermediary</name>
+        <dataType>String</dataType>
+        <expression>IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Value__c},{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Value__c}, 
+IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Uat_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Uat_Value__c}, 
+IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Staging_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Staging_Value__c}, 
+{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary_Id.Dev_Value__c})
+)
+)</expression>
+    </formulas>
     <interviewLabel>Offer Trigger - Before Insert/Update - Informar Intermediary Group {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Offer Trigger - Before Insert/Update - Informar Intermediary Group</label>
+    <label>Offer Trigger - After Insert/Update - SDM</label>
+    <loops>
+        <name>ATMs</name>
+        <label>ATMs</label>
+        <locationX>182</locationX>
+        <locationY>1355</locationY>
+        <collectionReference>Obtener_ATMs</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Crear_OTM</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Crear_Opportunity_Team_Members</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -75,34 +175,103 @@ GDPR Bypass</description>
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordLookups>
-        <name>Get_Intermediary_Record_Type_Id</name>
-        <label>Get Intermediary Record Type Id</label>
-        <locationX>380</locationX>
-        <locationY>287</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+    <recordCreates>
+        <name>Crear_Opportunity_Team_Members</name>
+        <label>Crear Opportunity Team Members</label>
+        <locationX>182</locationX>
+        <locationY>1763</locationY>
+        <inputReference>OpportunityTeamMembers</inputReference>
+    </recordCreates>
+    <recordDeletes>
+        <name>Eliminar_Opportunity_Team</name>
+        <label>Eliminar Opportunity Team</label>
+        <locationX>248</locationX>
+        <locationY>647</locationY>
         <connector>
             <targetReference>Tiene_Intermediary</targetReference>
         </connector>
+        <inputReference>Obtener_OTMs</inputReference>
+    </recordDeletes>
+    <recordLookups>
+        <name>Obtener_ATMs</name>
+        <label>Obtener ATMs</label>
+        <locationX>182</locationX>
+        <locationY>1247</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>ATMs</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Name</field>
+            <field>AccountId</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Intermediary</stringValue>
+                <elementReference>$Record.IntermediaryId__c</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>RecordType</object>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AccountTeamMember</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Obtener_OTMs</name>
+        <label>Obtener OTMs</label>
+        <locationX>380</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Informar_fecha_estimada</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OpportunityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>OpportunityTeamMember</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
         <name>Delete_Intermediary_Group</name>
         <label>Delete Intermediary Group</label>
         <locationX>578</locationX>
-        <locationY>503</locationY>
+        <locationY>947</locationY>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Informar_fecha_estimada</name>
+        <label>Informar fecha estimada</label>
+        <locationX>380</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Existen_OTMs</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>EffectiveDate__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>EstimatedDate__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>EstimatedDate__c</field>
+            <value>
+                <elementReference>$Record.EffectiveDate__c</elementReference>
+            </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
@@ -110,7 +279,10 @@ GDPR Bypass</description>
         <name>Set_Account</name>
         <label>Set Account</label>
         <locationX>314</locationX>
-        <locationY>611</locationY>
+        <locationY>1055</locationY>
+        <connector>
+            <targetReference>Obtener_ATMs</targetReference>
+        </connector>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
             <value>
@@ -123,7 +295,10 @@ GDPR Bypass</description>
         <name>Set_Parent_Account</name>
         <label>Set Parent Account</label>
         <locationX>50</locationX>
-        <locationY>611</locationY>
+        <locationY>1055</locationY>
+        <connector>
+            <targetReference>Obtener_ATMs</targetReference>
+        </connector>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
             <value>
@@ -136,9 +311,9 @@ GDPR Bypass</description>
         <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Intermediary_Record_Type_Id</targetReference>
+            <targetReference>Obtener_OTMs</targetReference>
         </connector>
-        <filterLogic>((1 AND 2) OR 3) AND (4 AND 5 AND 6 AND 7)</filterLogic>
+        <filterLogic>((1 AND 2) OR 3 OR (4 AND 5)) AND (6 AND 7 AND 8 AND 9)</filterLogic>
         <filters>
             <field>Intermediary_Group__c</field>
             <operator>IsNull</operator>
@@ -156,6 +331,20 @@ GDPR Bypass</description>
         <filters>
             <field>IntermediaryId__c</field>
             <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>EffectiveDate__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>EstimatedDate__c</field>
+            <operator>IsNull</operator>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
@@ -190,7 +379,23 @@ GDPR Bypass</description>
         </filters>
         <object>Opportunity</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
-        <triggerType>RecordBeforeSave</triggerType>
+        <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
+    <variables>
+        <name>OpportunityTeamMembers</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>OpportunityTeamMember</objectType>
+    </variables>
+    <variables>
+        <name>OTM</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>OpportunityTeamMember</objectType>
+    </variables>
 </Flow>
