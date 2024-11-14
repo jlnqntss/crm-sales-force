@@ -3122,6 +3122,33 @@ public with sharing class TestDataFactory
         return claims;
     }
 
+     /**
+    * @description Método que genera registros de competencia para una lista de cuentas
+    *
+    * @author dmunoz
+    * @date 16-10-20234
+    * @return List<Competitor__c>
+    **/
+    public static List<Competitor__c> generateCompetitors(List<Account> accountsList, Integer numCompetitors) {
+
+        List<Competitor__c> result = new List<Competitor__c>();
+        Competitor__c competitor = null;
+
+        if (!accountsList.isEmpty() && numCompetitors > 0) {
+            for (Account account: accountsList) {
+                for (Integer i = 0; i < numCompetitors; i++) {
+                    competitor = new Competitor__c();
+                    competitor.Account__c = account.Id;
+                    competitor.ProductType__c = 'NEG';
+                    competitor.InsuranceCompany__c = 'AXA';
+                    competitor.ProductBranch__c = '0000000005';
+                    result.add(competitor);
+                }
+            }
+        }
+        return result;
+    }
+
     /**
      * Genera Campaigns para una entidad legal
      **
