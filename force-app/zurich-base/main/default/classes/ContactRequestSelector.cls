@@ -128,7 +128,7 @@ public with sharing class ContactRequestSelector extends RecordsSelector
 
         if ( interactionIds != null && !interactionIds.isEmpty() )
         {
-            this.baseQuery.selectReadableFields()
+            this.baseQuery.selectReadableFields('GenesysCloudQueueId__r.Name')
             .addConditionIn(ContactRequest.GenesysInteractionId__c, interactionIds);
 
             contactRequests = (List<ContactRequest>) this.baseQuery.run();
