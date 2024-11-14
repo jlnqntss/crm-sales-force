@@ -14,19 +14,19 @@ public with sharing class GetRecordsExportButton
      public static ContentVersion getRecordExport(List<String> flowInputs)
     {
         String infoRecordsDisplay, fieldsQuery;
+        Export_CSV_Field__mdt metadataFieldObject = new Export_CSV_Field__mdt();
+
         Id idObjetToExport = (Id) flowInputs[0]; 
         // Se recupera el tipo de dato del objeto de la lista de vista desde la que se inicia la acción.
         String objetExportName = getObjectTypeRecordsToExport(idObjetToExport);
         //Se recupera el registro de metadato correcto en función del objeto a exportar         
-        Export_CSV_Field__mdt metadataFieldObject =[SELECT FieldToExport__c,Labels__c FROM Export_CSV_Field__mdt WHERE Object__c='Case'];
+        List<Export_CSV_Field__mdt> listaMetadataFieldObject= new DynamicSelector(metadataFieldObject.getsobjectType()).getQueryStringMetadataInfoToExport('Case');
+        metadataFieldObject=listaMetadataFieldObject[0];
         //Campos solicitados en Query
         fieldsQuery = metadataFieldObject.FieldToExport__c.replace(';',',');
         //Cabeceras fichero Excel 
         infoRecordsDisplay=metadataFieldObject.Labels__c+ '\n';
-
-        String query= 'SELECT '+ fieldsQuery +' '+'FROM '+ objetExportName +' WHERE Id IN: flowInputs';
-        List<SObject> listRecords = Database.query(query);
-
+        List<SObject> listRecords= new DynamicSelector(idObjetToExport.getsobjectType()).getListSobjectToExport(fieldsQuery,objetExportName,flowInputs);
         //Split campos para obtener su valor desde el Sobject 
         List<String> fieldsQueryList = fieldsQuery.split(',');
         // Agrega los datos de cada registro al CSV

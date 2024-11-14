@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ClaimNotificationDate__c</fullName>
+    <description>Fecha en la que se notifica el siniestro a la aseguradora.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Fecha en la que se recibió la notificación del siniestro.</inlineHelpText>
+    <label>Notification Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>
