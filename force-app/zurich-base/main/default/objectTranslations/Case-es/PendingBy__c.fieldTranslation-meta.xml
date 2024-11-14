@@ -23,6 +23,10 @@
         <translation>Diferido</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Expert</masterLabel>
+        <translation>Perito</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Incident Resolution</masterLabel>
         <translation>Resolución de incidencia</translation>
     </picklistValues>
@@ -39,12 +43,20 @@
         <translation>Otras áreas Zurich</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Other professionals</masterLabel>
+        <translation>Otros profesionales</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Others</masterLabel>
         <translation>Otros</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Partner</masterLabel>
         <translation>Partner</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Processing center</masterLabel>
+        <translation>Centro tramitador</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Subscription</masterLabel>
@@ -69,6 +81,10 @@
     <picklistValues>
         <masterLabel>Territorial Direction</masterLabel>
         <translation>Dirección Territorial</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Tracking</masterLabel>
+        <translation>Seguimiento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>USP Scaled</masterLabel>
