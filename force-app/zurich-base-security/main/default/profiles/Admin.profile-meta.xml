@@ -2544,7 +2544,7 @@
         <field>Account.ZRMPermission__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.ZRMPermisionDecission__c</field>
         <readable>true</readable>
@@ -4110,6 +4110,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.ClaimCreatedDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.ClaimId__c</field>
         <readable>true</readable>
@@ -4272,6 +4277,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.GoogleAddress__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Guarantees__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4527,6 +4537,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.OwnerUser__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.CaseOwnerRoutingTeam__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5314,7 +5329,7 @@
         <field>Case.WorkUnit__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.ZoneDirector__c</field>
         <readable>true</readable>

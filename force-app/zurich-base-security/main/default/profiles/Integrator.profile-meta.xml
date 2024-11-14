@@ -2579,7 +2579,7 @@
         <field>Account.ZRMPermission__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.ZRMPermisionDecission__c</field>
         <readable>true</readable>
@@ -3991,6 +3991,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.Guarantees__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.EconomicImpact__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4821,6 +4826,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.ClaimCreatedDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.ClaimDetail__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4940,6 +4950,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.CaseOwnerRoutingTeam__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.PortfolioMonth__c</field>
         <readable>true</readable>
@@ -4979,7 +4994,7 @@
         <field>Case.WorkUnit__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.ZoneDirector__c</field>
         <readable>true</readable>
@@ -11781,4 +11796,4 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <userLicense>Salesforce</userLicense>
-</Profile> 
+</Profile>
