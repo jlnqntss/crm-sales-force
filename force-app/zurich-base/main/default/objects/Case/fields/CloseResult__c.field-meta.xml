@@ -758,6 +758,86 @@
                 <default>false</default>
                 <label>Realizado Consulta Siniestros</label>
             </value>
+            <value>
+                <fullName>Completed</fullName>
+                <default>false</default>
+                <label>Completed</label>
+            </value>
+            <value>
+                <fullName>Returned lack of documentation / does not comply with regulations</fullName>
+                <default>false</default>
+                <label>Returned lack of documentation / does not comply with regulations</label>
+            </value>
+            <value>
+                <fullName>Allegations with formalities</fullName>
+                <default>false</default>
+                <label>Allegations with formalities</label>
+            </value>
+            <value>
+                <fullName>Allegations without formalities</fullName>
+                <default>false</default>
+                <label>Allegations without formalities</label>
+            </value>
+            <value>
+                <fullName>Change of criterion</fullName>
+                <default>false</default>
+                <label>Change of criterion</label>
+            </value>
+            <value>
+                <fullName>Maintains criteria</fullName>
+                <default>false</default>
+                <label>Maintains criteria</label>
+            </value>
+            <value>
+                <fullName>Transfer to processing center</fullName>
+                <default>false</default>
+                <label>Transfer to processing center</label>
+            </value>
+            <value>
+                <fullName>Managed by the center</fullName>
+                <default>false</default>
+                <label>Managed by the center</label>
+            </value>
+            <value>
+                <fullName>Does not correspond to us and referred to competent center</fullName>
+                <default>false</default>
+                <label>Does not correspond to us and referred to competent center</label>
+            </value>
+            <value>
+                <fullName>Follow-up carried out</fullName>
+                <default>false</default>
+                <label>Follow-up carried out</label>
+            </value>
+            <value>
+                <fullName>Returned to mediator for management with center</fullName>
+                <default>false</default>
+                <label>Returned to mediator for management with center</label>
+            </value>
+            <value>
+                <fullName>Transfer to center with indications for action</fullName>
+                <default>false</default>
+                <label>Transfer to center with indications for action</label>
+            </value>
+            <value>
+                <fullName>Archived</fullName>
+                <default>false</default>
+                <label>Archived</label>
+            </value>
+            <value>
+                <fullName>Index documentation/note</fullName>
+                <default>false</default>
+                <label>Index documentation/note</label>
+            </value>
+            <value>
+                <fullName>Resolved</fullName>
+                <default>false</default>
+                <label>Resolved</label>
+            </value>
+            <value>
+                <fullName>Referred to other areas</fullName>
+                <default>false</default>
+                <label>Referred to other areas</label>
+            </value>        
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
@@ -1598,6 +1678,278 @@
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <valueName>Cerrado por gestión Car NB</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PG - Disconformity refusal</controllingFieldValue>
+            <controllingFieldValue>PG - Disagreement with indemnity</controllingFieldValue>
+            <controllingFieldValue>PG - Disconformity with Resolution</controllingFieldValue>
+            <valueName>Completed</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PG - Disconformity refusal</controllingFieldValue>
+            <controllingFieldValue>PG - Disagreement with indemnity</controllingFieldValue>
+            <controllingFieldValue>PG - Disconformity with Resolution</controllingFieldValue>
+            <valueName>Returned lack of documentation / does not comply with regulations</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PA - Customer Defense Service</controllingFieldValue>
+            <controllingFieldValue>PA - DGS</controllingFieldValue>
+            <controllingFieldValue>PABS - Customer Defense Service</controllingFieldValue>
+            <controllingFieldValue>PABS- DGS</controllingFieldValue>
+            <valueName>Allegations with formalities</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PA - Customer Defense Service</controllingFieldValue>
+            <controllingFieldValue>PA - DGS</controllingFieldValue>
+            <controllingFieldValue>PABS - Customer Defense Service</controllingFieldValue>
+            <controllingFieldValue>PABS- DGS</controllingFieldValue>
+            <valueName>Allegations without formalities</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Disconformity with Resolution</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with indemnity</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>REP - Disagreement with refusal</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>REP - Lack of information</controllingFieldValue>
+            <controllingFieldValue>REP - Compensation delay</controllingFieldValue>
+            <controllingFieldValue>REP - Expert Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Repairer Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Response Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Processing Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Extension Request</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with resolution</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with compensation</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>RECL - Refusal Disagreement</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>RECL - Lack of information</controllingFieldValue>
+            <controllingFieldValue>RECL - Expert&apos;s delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Repairer delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Response delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Processing delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Request for extension</controllingFieldValue>
+            <valueName>Change of criterion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Disconformity with Resolution</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with indemnity</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>REP - Disagreement with refusal</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>REP - Lack of information</controllingFieldValue>
+            <controllingFieldValue>REP - Compensation delay</controllingFieldValue>
+            <controllingFieldValue>REP - Expert Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Repairer Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Response Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Processing Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Extension Request</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with resolution</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with compensation</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>RECL - Refusal Disagreement</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>RECL - Lack of information</controllingFieldValue>
+            <controllingFieldValue>RECL - Expert&apos;s delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Repairer delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Response delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Processing delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Request for extension</controllingFieldValue>
+            <valueName>Maintains criteria</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Disconformity with Resolution</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with indemnity</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>REP - Disagreement with refusal</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>REP - Lack of information</controllingFieldValue>
+            <controllingFieldValue>REP - Compensation delay</controllingFieldValue>
+            <controllingFieldValue>REP - Expert Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Repairer Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Response Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Processing Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Extension Request</controllingFieldValue>
+            <controllingFieldValue>DOC - Provide new documentation</controllingFieldValue>
+            <controllingFieldValue>DOC - Provide new information</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with resolution</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with compensation</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>RECL - Refusal Disagreement</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>RECL - Lack of information</controllingFieldValue>
+            <controllingFieldValue>RECL - Expert&apos;s delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Repairer delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Response delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Processing delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Request for extension</controllingFieldValue>
+            <valueName>Transfer to processing center</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Disconformity with Resolution</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with indemnity</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>REP - Disagreement with refusal</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>REP - Lack of information</controllingFieldValue>
+            <controllingFieldValue>REP - Compensation delay</controllingFieldValue>
+            <controllingFieldValue>REP - Expert Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Repairer Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Response Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Processing Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Extension Request</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with resolution</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with compensation</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>RECL - Refusal Disagreement</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>RECL - Lack of information</controllingFieldValue>
+            <controllingFieldValue>RECL - Expert&apos;s delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Repairer delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Response delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Processing delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Request for extension</controllingFieldValue>
+            <valueName>Managed by the center</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Disconformity with Resolution</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with indemnity</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>REP - Disagreement with refusal</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>REP - Lack of information</controllingFieldValue>
+            <controllingFieldValue>REP - Compensation delay</controllingFieldValue>
+            <controllingFieldValue>REP - Expert Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Repairer Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Response Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Processing Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Extension Request</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with resolution</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with compensation</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>RECL - Refusal Disagreement</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>RECL - Lack of information</controllingFieldValue>
+            <controllingFieldValue>RECL - Expert&apos;s delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Repairer delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Response delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Processing delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Request for extension</controllingFieldValue>
+            <valueName>Does not correspond to us and referred to competent center</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Disconformity with Resolution</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with indemnity</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>REP - Disagreement with refusal</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>REP - Lack of information</controllingFieldValue>
+            <controllingFieldValue>REP - Compensation delay</controllingFieldValue>
+            <controllingFieldValue>REP - Expert Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Repairer Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Response Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Processing Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Extension Request</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with resolution</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with compensation</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>RECL - Refusal Disagreement</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>RECL - Lack of information</controllingFieldValue>
+            <controllingFieldValue>RECL - Expert&apos;s delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Repairer delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Response delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Processing delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Request for extension</controllingFieldValue>
+            <valueName>Follow-up carried out</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Disconformity with Resolution</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with indemnity</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>REP - Disagreement with refusal</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>REP - Lack of information</controllingFieldValue>
+            <controllingFieldValue>REP - Compensation delay</controllingFieldValue>
+            <controllingFieldValue>REP - Expert Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Repairer Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Response Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Processing Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Extension Request</controllingFieldValue>
+            <controllingFieldValue>DOC - Provide new documentation</controllingFieldValue>
+            <controllingFieldValue>DOC - Provide new information</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with resolution</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with compensation</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>RECL - Refusal Disagreement</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>RECL - Lack of information</controllingFieldValue>
+            <controllingFieldValue>RECL - Expert&apos;s delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Repairer delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Response delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Processing delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Request for extension</controllingFieldValue>
+            <valueName>Returned to mediator for management with center</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>REP - Disconformity with Resolution</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with indemnity</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>REP - Disagreement with refusal</controllingFieldValue>
+            <controllingFieldValue>REP - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>REP - Lack of information</controllingFieldValue>
+            <controllingFieldValue>REP - Compensation delay</controllingFieldValue>
+            <controllingFieldValue>REP - Expert Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Repairer Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Response Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Processing Delay</controllingFieldValue>
+            <controllingFieldValue>REP - Extension Request</controllingFieldValue>
+            <controllingFieldValue>DOC - Provide new documentation</controllingFieldValue>
+            <controllingFieldValue>DOC - Provide new information</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with resolution</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with compensation</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with appraisal</controllingFieldValue>
+            <controllingFieldValue>RECL - Refusal Disagreement</controllingFieldValue>
+            <controllingFieldValue>RECL - Disconformity with procedure</controllingFieldValue>
+            <controllingFieldValue>RECL - Lack of information</controllingFieldValue>
+            <controllingFieldValue>RECL - Expert&apos;s delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Repairer delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Response delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Processing delay</controllingFieldValue>
+            <controllingFieldValue>RECL - Request for extension</controllingFieldValue>
+            <controllingFieldValue>RSDC - Estimated</controllingFieldValue>
+            <controllingFieldValue>RSDC - Estimated center</controllingFieldValue>
+            <controllingFieldValue>RSDC - Partial Estimate</controllingFieldValue>
+            <controllingFieldValue>RSDC - Rejected</controllingFieldValue>
+            <controllingFieldValue>RSDC - Inadmitted</controllingFieldValue>
+            <valueName>Transfer to center with indications for action</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RESP - Acknowledgement of Receipt</controllingFieldValue>
+            <controllingFieldValue>RESP - Automatic Response</controllingFieldValue>
+            <controllingFieldValue>RESP - Plant Information</controllingFieldValue>
+            <controllingFieldValue>RESP - Compliance with SDC resolution</controllingFieldValue>
+            <valueName>Archived</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RSDC - Estimated</controllingFieldValue>
+            <controllingFieldValue>RSDC - Estimated center</controllingFieldValue>
+            <controllingFieldValue>RSDC - Partial Estimate</controllingFieldValue>
+            <controllingFieldValue>RSDC - Rejected</controllingFieldValue>
+            <controllingFieldValue>RSDC - Inadmitted</controllingFieldValue>
+            <valueName>Index documentation/note</valueName>
+        </valueSettings>
+		 <valueSettings>
+            <controllingFieldValue>CONS - Guarantees / Coverage</controllingFieldValue>
+            <controllingFieldValue>CONS - Processes / Tools</controllingFieldValue>
+            <controllingFieldValue>CONS - Processing Status</controllingFieldValue>
+            <valueName>Resolved</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CONS - Guarantees / Coverage</controllingFieldValue>
+            <controllingFieldValue>CONS - Processes / Tools</controllingFieldValue>
+            <controllingFieldValue>CONS - Processing Status</controllingFieldValue>
+            <valueName>Referred to other areas</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
