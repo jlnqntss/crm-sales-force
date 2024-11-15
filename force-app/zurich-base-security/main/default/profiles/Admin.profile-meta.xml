@@ -5394,12 +5394,12 @@
         <field>Claim__c.ClaimDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
-        <field>Claim__c.ClaimNotificationDate__c</field> 
+        <field>Claim__c.ClaimNotificationDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Claim__c.ClaimReinstatementDate__c</field>
         <readable>true</readable>
