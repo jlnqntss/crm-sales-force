@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>ContactPointAddress</label>
+    <protected>false</protected>
+    <values>
+        <field>Data_Field_1__c</field>
+        <value xsi:type="xsd:string">{
+    &quot;street&quot;: &quot;111 John Street&quot;,
+    &quot;city&quot;: &quot;San Francisco&quot;,
+    &quot;state&quot;: &quot;CA&quot;,
+    &quot;postalCode&quot;: &quot;94111&quot;,
+    &quot;country&quot;: &quot;United States&quot;
+}</value>
+    </values>
+    <values>
+        <field>Data_Field_2__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Data_Field_3__c</field>
+        <value xsi:nil="true"/>
+    </values>
+</CustomMetadata>

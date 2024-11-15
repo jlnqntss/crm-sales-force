@@ -734,6 +734,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>CasePendingBy__c</field>
+            <value>
+                <elementReference>pendingByTask</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Description</field>
             <value>
                 <elementReference>comments</elementReference>
@@ -1540,6 +1546,16 @@
         <isOutput>false</isOutput>
         <value>
             <stringValue>Other areas Zurich</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>pendingByTask</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>EscalationSettingRecord.PendienteDe__c</elementReference>
         </value>
     </variables>
     <variables>

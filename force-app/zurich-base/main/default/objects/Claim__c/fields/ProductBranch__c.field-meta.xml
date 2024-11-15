@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProductBranch__c</fullName>
+    <description>Obtiene el ramo de la poliza asociada</description>
+    <externalId>false</externalId>
+    <formula>Policy__r.ProductBranch__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Ramo de la póliza asociada</inlineHelpText>
+    <label>Product Branch</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

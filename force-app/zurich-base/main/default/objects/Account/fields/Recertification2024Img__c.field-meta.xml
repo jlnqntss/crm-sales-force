@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Recertification2024Img__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE(TEXT(Recertification2024__c), 
+					&apos;Pendiente&apos;, IMAGE(&quot;/resource/RecertificacionPendiente&quot;, &apos;&apos;, 15, 15) + &apos; Pendiente&apos;,   
+					&apos;En curso&apos;, IMAGE(&quot;/resource/RecertificacionEnCurso&quot;, &apos;&apos;, 15, 15) + &apos; En curso&apos;,
+					&apos;Completado&apos;, IMAGE(&quot;/resource/RecertificacionCompletado&quot;, &apos;&apos;, 15, 15) + &apos; Completado&apos;,
+					&quot;&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Recertificación 2024</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

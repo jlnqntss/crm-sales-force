@@ -2,8 +2,8 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 29/04/2024
- * @last modified by  : rserrano
+ * @last modified on  : 11-11-2024
+ * @last modified by  : mfernandezcarrera
  **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -20,7 +20,7 @@ public with sharing class AccountsSelector extends RecordsSelector
     public static final String SDM_MAINEMAIL_FIELD = 'MainEmail__c';
     public static final String SDM_MAINMOBILEPHONE_FIELD = 'MainMobilePhone__c';
     public static final String SDM_RN_FIELD = 'TerritorialDirection__c';
-    
+
     private static final Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
     //#region Contructores
 
@@ -870,14 +870,25 @@ public with sharing class AccountsSelector extends RecordsSelector
     /**
      * Método que obtiene los cuentas tipo Lead que no tengan ofertas asociadas para borrarlas
      **
-     * @author mfernandezcarrera
+     * @autor mfernandezcarrera
      * @date 28/06/2023
      **/
-    public static String getAccountsToDelete()
+    public static List<Id> getAccountsToDelete()
     {
-        String query =
-            'SELECT Id from Account WHERE Id NOT IN (select AccountId from Opportunity) AND RecordType.Name=\'Lead\'';
-        return query;
+        // Realizamos la consulta SOQL directamente y obtenemos los AccountId__c
+        List<Scope__c> scopeRecords = [SELECT AccountId__c
+                                       FROM Scope__c
+                                       WHERE Scope__c = 'ZE'
+                                                        AND AccountId__r.RecordType.Name = 'Lead'
+                                                                                           AND AccountId__c NOT IN (SELECT AccountId FROM Opportunity)];
+
+        // Añadimos los AccountId__c obtenidos a la lista de ids
+        List<Id> ids = new List<Id>();
+        for (Scope__c scope : scopeRecords)
+        {
+            ids.add(scope.AccountId__c);
+        }
+        return ids;
     }
 
     /**
@@ -1211,16 +1222,21 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
     /**
-     * @description        : Método que devuelve cuentas tipo lead en base a una serie de criterios
+     * @description        : Método que devuelve cuentas a partir de una lista de identificadores con sus ofertas (filtradas por opportunityList que no las buscará) 
+     * y recupera si lo tuviera un único caso
      * @author rserrano    | 24/04/2024
-     * @param days         : Antigüedad mínima del lead para ser borrado
-     * @param stageName    : Etapa en la que se tiene que encontrar la oportunidad del lead para ser borrado
-     * @param businessCode : Código de negocio de la oportunidad del lead para ser borrado
-     * @return String
-     * update igarcia 25/06/2024: Se ha añadido la condición para que se recoga las oportunidades que no sean de Vida 
+     * @param accountsIds  : Lista de ids de cuentas
+     * @param opportunityList    : Lista de ofertas que no hemos de traer en la consulta
+     * @return List<Account> SELECT Id, (SELECT StageName, BusinessCode__c, Scope__c FROM Opportunities WHERE Id NOT IN :opportunityList), 
+     *                                  (SELECT Id FROM Cases LIMIT 1)
+     *                                  FROM Account
+     *                                  WHERE Id IN: accountsIds
      **/
-    public String findZRMOldLeads(Integer days, String stageName, String businessCode)
+    public List<Account> findLeadsWithOpportunitiesAndCaseFiltered(List<Id> accountsIds, List<Opportunity> opportunityList)
     {
+
+        List<Account> result = new List<Account>();
+
         Set<Schema.SObjectField> accountfieldsToRetrieve = new Set<Schema.SObjectField>
         {
             Account.Id
@@ -1228,29 +1244,33 @@ public with sharing class AccountsSelector extends RecordsSelector
         Set<Schema.SObjectField> opportunityFieldsToRetrieve = new Set<Schema.SObjectField>
         {
             Opportunity.StageName,
-            Opportunity.BusinessCode__c
+            Opportunity.BusinessCode__c,
+            Opportunity.Scope__c,
+            Opportunity.CreatedDate
+        };
+        Set<Schema.SObjectField> caseFieldsToRetrieve = new Set<Schema.SObjectField>
+        {
+            Case.Id
         };
 
-        String query = this.baseQuery
+        result = this.baseQuery
                        .selectFields(accountfieldsToRetrieve)
-                       .addConditionEq(Account.RecordtypeId, rtLeadId)
-                       .addConditionLt( Account.CreatedDate, Query.LAST_N_DAYS(days) )
+                       .addConditionIn(Account.Id, accountsIds)                       
                        .addSubquery
                        (
-            Query.subquery('Opportunities')
-            .selectFields(opportunityFieldsToRetrieve)
-            .addConditionEq(Opportunity.StageName, stageName)
-            .addConditionNotEq(Opportunity.RecordTypeId, rtOpportunityLifeId)
-            .addCondition(
-                query.doOr
-                (
-                    Query.conditionEq('BusinessCode__c', businessCode),
-                    Query.conditionEq('BusinessCode__c', null)
-                ) )
-            .setlimit(2)
+                        Query.subquery('Opportunities')
+                        .selectFields(opportunityFieldsToRetrieve) 
+                        .addConditionNotIn(Opportunity.Id, opportunityList)                       
                        )
-                       .toQueryString();
-        return query;
+                       .addSubquery
+                       (
+                        Query.subquery('Cases')
+                        .selectFields(caseFieldsToRetrieve)
+                        .setlimit(1)                     
+                       )
+                       .enforceSecurity()
+                       .run();
+        return result;
     }
 
     /**
@@ -1350,5 +1370,131 @@ public with sharing class AccountsSelector extends RecordsSelector
         .addConditionIn(Account.Id, accountIds);
 
         return (List<Account>) this.baseQuery.run();
+    }
+
+    /**
+     * @description Método que obtiene los scopes de una cuenta
+     * 
+     * SELECT id, descriptioncustomersegment__c, scorecltv_nolife__c, 
+     * (SELECT PrimaryPhone__c, PrimaryEmail__c FROM Scopes__r WHERE (Name = 'Zurich Ventas')), 
+        (SELECT telephonenumber FROM ContactPointPhones WHERE (IsPrimary = TRUE)), 
+        (SELECT emailaddress FROM ContactPointEmails WHERE (IsPrimary = TRUE)), 
+        (SELECT name, stagename, productbranch__c, infoquotenumber__c, createddate__c FROM Opportunities ORDER BY CreatedDate__c DESC NULLS LAST LIMIT 10), 
+        (SELECT name, policystatus__c, productbranch__c, assetidentifier__c, enddate__c, totalpremium__c, accidentrate__c FROM PoliciesHolder__r WHERE (PolicyStatus__c = 'V')), 
+        (SELECT name, status__c, productbranch__c, assetidentifier__c, dateofoccurrence__c, opendate__c, faultfactor__c FROM Claims__r ORDER BY DateOfOccurrence__c DESC NULLS LAST LIMIT 10), 
+        (SELECT name, productbranch__c, productbranchdetail__c, propensity__c FROM Propensiones__r), 
+        (SELECT name, productbranch__c, expirationdate__c, premium__c, insurancecompany__c FROM Competitors__r WHERE (OfferWon__c = TRUE)), 
+        (SELECT name, relationshiptype__c, accountrelationship__c.relatedaccount__r.name FROM Accounts_Relationships__r) 
+        FROM Account WHERE (Id IN :conditionArgs4) 
+        WITH SECURITY_ENFORCED
+     * 
+     * @author dmunoz
+     * @date 15-05-2024
+     * @param List<String> accountIds : Conjunto de ids de cuentas
+     **/
+    public List<Account> selectAccountAndRelatedInfo(List<String> accountIds)
+    {
+
+        List<Account> result = new List<Account>();
+        
+        // Cargo en listas los campos a consultar de cada entidad
+        List<Schema.SObjectField> scopeFields = new List<Schema.SObjectField> {
+            Scope__c.PrimaryPhone__c,
+            Scope__c.PrimaryEmail__c
+        };
+        List<Schema.SObjectField> contactpointPhonesFields = new List<Schema.SObjectField> {
+            ContactPointPhone.TelephoneNumber
+        };
+
+        List<Schema.SObjectField> contactpointEmailsFields = new List<Schema.SObjectField> {
+            ContactPointEmail.EmailAddress
+        };
+
+        List<Schema.SObjectField> opportunitiesFields = new List<Schema.SObjectField> {
+            Opportunity.Name,
+            Opportunity.StageName,
+            Opportunity.ProductBranch__c,
+            Opportunity.InfoQuoteNumber__c,
+            Opportunity.CreatedDate__c
+        };
+
+        List<Schema.SObjectField> policiesFields = new List<Schema.SObjectField> {
+            Policy__c.Name,
+            Policy__c.PolicyStatus__c,
+            Policy__c.ProductBranch__c,
+            Policy__c.AssetIdentifier__c,
+            Policy__c.EndDate__c,
+            Policy__c.TotalPremium__c,
+            Policy__c.AccidentRate__c
+        };
+
+        List<Schema.SObjectField> claimsFields = new List<Schema.SObjectField> {
+            Claim__c.Name,
+            Claim__c.Status__c,
+            Claim__c.ProductBranch__c,
+            Claim__c.AssetIdentifier__c,
+            Claim__c.DateOfOccurrence__c,
+            Claim__c.OpenDate__c,
+            Claim__c.FaultFactor__c
+        };
+
+        List<Schema.SObjectField> propensitiesFields = new List<Schema.SObjectField> {
+            Propensity__c.Name,
+            Propensity__c.ProductBranch__c,
+            Propensity__c.ProductBranchDetail__c,
+            Propensity__c.Propensity__c
+        };
+
+        List<Schema.SObjectField> competitorsFields = new List<Schema.SObjectField> {
+            Competitor__c.Name,
+            Competitor__c.ProductBranch__c,
+            Competitor__c.ExpirationDate__c,
+            Competitor__c.Premium__c,
+            Competitor__c.InsuranceCompany__c
+        };
+
+        List<Schema.SObjectField> accountRelationshipsFields = new List<Schema.SObjectField> {
+            AccountRelationship__c.Name,            
+            AccountRelationship__c.RelationshipType__c
+        };
+
+        if ( accountIds != null && !accountIds.isEmpty())
+        {
+            result = this.baseQuery.selectFields(new Set<Schema.SObjectField> {
+                Account.Id,
+                Account.DescriptionCustomerSegment__c,
+                Account.ScoreCLTV_NoLife__c
+            })
+            .addSubQuery(Query.subquery('Scope__r').selectFields(scopeFields)
+                .addConditionEq(Scope__c.Name, GlobalConfigUtil.getGlobalConfigurationValue('Scope_Name_Zurich_Ventas'))
+            )
+            .addSubQuery(Query.subquery('ContactPointPhones').selectFields(contactpointPhonesFields)
+                .addConditionEq(ContactPointPhone.IsPrimary, true)
+            )
+            .addSubQuery(Query.subquery('ContactPointEmails').selectFields(contactpointEmailsFields)
+                .addConditionEq(ContactPointEmail.IsPrimary, true)
+            )
+            .addSubQuery(Query.subquery('Opportunities').selectFields(opportunitiesFields)
+                .orderBy('CreatedDate__c', 'DESC', FALSE)
+                .setLimit(10) 
+            )
+            .addSubQuery(Query.subquery('PoliciesHolder__r').selectFields(policiesFields)
+                .addConditionEq(Policy__c.PolicyStatus__c, GlobalConfigUtil.getGlobalConfigurationValue('Policy_PolicyStatus_V'))
+            )
+            .addSubQuery(Query.subquery('Claims__r').selectFields(claimsFields)
+                .orderBy('DateOfOccurrence__c', 'DESC', FALSE)
+                .setLimit(10) 
+            )
+            .addSubQuery(Query.subquery('Propensiones__r').selectFields(propensitiesFields))
+            .addSubQuery(Query.subquery('Competitors__r').selectFields(competitorsFields)
+                .addConditionEq(Competitor__c.OfferWon__c, FALSE)
+            )
+            .addSubQuery(Query.subquery('Accounts_Relationships__r').selectFields(accountRelationshipsFields).selectField('AccountRelationship__c.RelatedAccount__r.Name'))
+            .addConditionIn(Account.Id, accountIds)
+            .enforceSecurity()
+            .run();
+
+        }
+        return result;
     }
 }
