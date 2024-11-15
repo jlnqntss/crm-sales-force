@@ -1258,50 +1258,67 @@
       * @date 12/11/2024
       * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
       */
-     public static void relateCasesWithMediatedAccount(List<Case> insertedCases)
-     {
-         //1- construimos un set con los emails a buscar
-         Set<String> emailsToSearch = new Set<String>();
-         for(Case insertedCase : insertedCases)
-         {
-             if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.SuppliedEmail != null)
-             {
-                 emailsToSearch.add(insertedCase.SuppliedEmail);
-             }
-         }
- 
-         if ( emailsToSearch.isEmpty() )
-         {
-             //si no hay nada que buscar, no hay nada que relacionar ==> FIN
-             return;
-         }
- 
-         List<Account> intermediaryAccs = new AccountsSelector().findIntermediariesByMainEmail(emailsToSearch);
-         if ( intermediaryAccs.isEmpty() )
-         {
-             //no se ha encontrado ninguna cuenta, no hay nada que relacionar ==> FIN
-             return;
-         }
-         //2- Agrupamos casos por ticketId
-         Map<String, List<Account> > accByEmail = (Map<String, List<Account> >) CollectionUtil.groupListBy( intermediaryAccs, Account.fields.MainEmail__c.getDescribe().getName() );
-         List<Account> emailAccounts;
-         for(Case insertedCase : insertedCases)
-         {
-             if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.SuppliedEmail != null)
-             {
-                 emailAccounts = accByEmail?.get(insertedCase.SuppliedEmail);
-                 if (emailAccounts != null && emailAccounts.size() == 1)
-                 {
-                     insertedCase.AccountId = emailAccounts[0].Id;
- 
-                     if (emailAccounts[0].IsSpecialist__c && String.isNotBlank(insertedCase.CuTicketId__c))
-                     {
-                         CuTicketIdOpenedBySpecialist.add(insertedCase.CuTicketId__c);
-                     }
-                 }
-                 //else: no se han encontrado cuentas o hay mas de una. No se vincula
-             }
-         }
+      public static void relateCasesWithMediatedAccount(List<Case> insertedCases)
+      {
+          //1- construimos un set con los emails a buscar
+          Set<String> emailsToSearch = new Set<String>();
+          for(Case insertedCase : insertedCases)
+          {
+              if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.SuppliedEmail != null)
+              {
+                  emailsToSearch.add(insertedCase.SuppliedEmail);
+              }
+          }
+  
+          if ( emailsToSearch.isEmpty() )
+          {
+              //si no hay nada que buscar, no hay nada que relacionar ==> FIN
+              return;
+          }
+  
+          List<Account> intermediaryAccs = new AccountsSelector().findIntermediariesByMainEmail(emailsToSearch);
+          if ( intermediaryAccs.isEmpty() )
+          {
+              //no se ha encontrado ninguna cuenta, no hay nada que relacionar ==> FIN
+              return;
+          }
+  
+          //2- Con los intermediarios recuperados, procesamos los casos
+          processCaseIfRelatedWithIntermediaryAccountZDA(insertedCases, intermediaryAccs);
+      }
+  
+      /**
+       * Procesa los casos y mediadores suministrados por relateCasesWithMediatedAccount para vincularlos al mediador
+       * y añadirlos a la lista de especialistas si procede
+       *
+       * @author juanfrancisco.herrero@seidor.com
+       * @date 15/11/2024
+       * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
+       * @param intermediaryAccs Colección de accounts de mediadores recuperados para los casos.
+       */
+      private static void processCaseIfRelatedWithIntermediaryAccountZDA(List<Case> insertedCases, List<Account> intermediaryAccs)
+      {
+          //Agrupamos casos por ticketId
+          Map<String, List<Account> > accByEmail = (Map<String, List<Account> >) CollectionUtil.groupListBy( intermediaryAccs, Account.fields.MainEmail__c.getDescribe().getName() );
+          List<Account> emailAccounts;
+          
+          for(Case insertedCase : insertedCases)
+          {
+              if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.SuppliedEmail != null)
+              {
+                  emailAccounts = accByEmail?.get(insertedCase.SuppliedEmail);
+                  if (emailAccounts != null && emailAccounts.size() == 1)
+                  {
+                      insertedCase.AccountId = emailAccounts[0].Id;
+  
+                      if (emailAccounts[0].IsSpecialist__c && String.isNotBlank(insertedCase.CuTicketId__c))
+                      {
+                          CuTicketIdOpenedBySpecialist.add(insertedCase.CuTicketId__c);
+                      }
+                  }
+                  //else: no se han encontrado cuentas o hay mas de una. No se vincula
+              }
+          }
      }
  
      /**
