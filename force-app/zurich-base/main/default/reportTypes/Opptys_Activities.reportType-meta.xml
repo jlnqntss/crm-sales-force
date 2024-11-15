@@ -703,7 +703,6 @@
             <field>GenesysQueue__c</field>
             <table>Opportunity.Activities</table>
         </columns>
-        <columns>
         <masterLabel>Activities</masterLabel>
     </sections>
     <sections>
