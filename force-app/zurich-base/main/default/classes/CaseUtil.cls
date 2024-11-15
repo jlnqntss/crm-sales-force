@@ -1250,7 +1250,7 @@ public with sharing class CaseUtil
     /**
      * Para aquellos casos que sean de ZDA y el origen sea Canal unico (llegan via API estandar), se comprueba si
      * para el campo SuppliedEmail existe cuenta de tipo mediador, y en caso afirmativo, se vincula el caso
-     * mediante el AccountId
+     * mediante el AccountId. Guardamos el número de caso para ver si debemos derivar a una cola de especialistas o no
      *
      * @author mario.navarro@seidor.com
      * @date 10/04/2024
@@ -3008,6 +3008,7 @@ public with sharing class CaseUtil
      * @author aberuete
      * @date 04/06/2024
      */
+    @TestVisible
     public static void setCaseZDAQueue(List<Case> newList)
     {
         for(Case caso : newList)
@@ -3017,8 +3018,19 @@ public with sharing class CaseUtil
                 Robot_Hegeo_Field_Mapping__mdt caseTipificacionByPeticion = mapCaseZDATypificationMetadata.get(caso.IdTipologiaBs__c);
 
                 if(caseTipificacionByPeticion != null)
-                {
-                    caso.Industry__c = caseTipificacionByPeticion.GenesysQueue__c;
+                {          
+                    // Cambiamos el reparto de la cola "Soporte a Especialistas" (antes llamada "Email_ZDA_Cotizacion")
+                    // Si no lo abre un especialista, se desviará a "Soporte a la red" (antes llamada "Email_ZDA_Suplementos_y_cot_comercios")
+                    if(caseTipificacionByPeticion.GenesysQueue__c == ZDA_QUEUE_SOPORTE_ESPECIALISTAS &&
+                        !CuTicketIdOpenedBySpecialist.contains(caso.CuTicketId__c))
+                    {
+                        caso.Industry__c = ZDA_QUEUE_SOPORTE_RED;
+                    }
+                    // En caso contrario, respetamos los repartos actuales
+                    else
+                    {
+                        caso.Industry__c = caseTipificacionByPeticion.GenesysQueue__c;
+                    }
                 }
             }
         }
