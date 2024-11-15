@@ -446,7 +446,8 @@ public with sharing class UsersSelector extends RecordsSelector
         {
             User.Id,
             User.AssignedCases__c,
-            User.Capacity__c
+            User.Capacity__c,
+            User.RoutingTeam__c
         }
         )
         .addConditionEq(User.ActiveAgent__c, true)
@@ -455,7 +456,7 @@ public with sharing class UsersSelector extends RecordsSelector
 
         return (List<User>) this.baseQuery.run();
     }
-
+    
     /**
      * Método selector que devuelve el número de agentes activos que no tienen una capacidad
      * @author aberuete
