@@ -10295,6 +10295,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.GenesysQueue__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Tipificacion_NLU_Field_Mapping__mdt.Nombre_etiqueta_NLU__c</field>
         <readable>true</readable>
     </fieldPermissions>
