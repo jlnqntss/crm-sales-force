@@ -1279,7 +1279,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Case.CreatedDateInfo__c</field>
         <readable>true</readable>

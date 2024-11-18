@@ -136,7 +136,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Case.CreatedOffer__c</field>
         <readable>true</readable>
