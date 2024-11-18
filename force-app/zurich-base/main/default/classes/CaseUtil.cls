@@ -43,6 +43,8 @@ public with sharing class CaseUtil
     public static final String ZDA_REASON_RECHAZAR = '1';
     public static final String ZDA_REASON_DESESTIMAR = '2';
     public static final String ZDA_REASON_RESPUESTA_SOPORTE = '3';
+    public static final String ZDA_QUEUE_SOPORTE_ESPECIALISTAS = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_SoporteEspecialistas');
+    public static final String ZDA_QUEUE_SOPORTE_RED = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_SoporteRed');
     public static final String BLANK_SPACE = ' ';
     public static final String ORIGIN_WEB = 'Web';
     @TestVisible
@@ -67,6 +69,7 @@ public with sharing class CaseUtil
     public static List<Group> queuePostventaRRSS = new List<Group>();
     public static List<Group> queueSiniestrosRRSS = new List<Group>();
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
+    public static List<String> CuTicketIdOpenedBySpecialist = new List<String>();
     public static Map<String, Case> notClosedCaseByPolicyIdMap = new Map<String, Case>();
     
     //Este mapa servira para actualizar en el finally los casos creados con Leads creados en el after insert
@@ -1247,10 +1250,12 @@ public with sharing class CaseUtil
     /**
      * Para aquellos casos que sean de ZDA y el origen sea Canal unico (llegan via API estandar), se comprueba si
      * para el campo SuppliedEmail existe cuenta de tipo mediador, y en caso afirmativo, se vincula el caso
-     * mediante el AccountId
+     * mediante el AccountId. Guardamos el número de caso para ver si debemos derivar a una cola de especialistas o no
      *
      * @author mario.navarro@seidor.com
      * @date 10/04/2024
+     * @lastmodifiedby juanfrancisco.herrero@seidor.com
+     * @date 12/11/2024
      * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
      */
     public static void relateCasesWithMediatedAccount(List<Case> insertedCases)
@@ -1277,9 +1282,26 @@ public with sharing class CaseUtil
             //no se ha encontrado ninguna cuenta, no hay nada que relacionar ==> FIN
             return;
         }
-        //2- Agrupamos casos por ticketId
+
+        //2- Con los intermediarios recuperados, procesamos los casos
+        processCaseIfRelatedWithIntermediaryAccountZDA(insertedCases, intermediaryAccs);
+    }
+
+    /**
+     * Procesa los casos y mediadores suministrados por relateCasesWithMediatedAccount para vincularlos al mediador
+     * y añadirlos a la lista de especialistas si procede
+     *
+     * @author juanfrancisco.herrero@seidor.com
+     * @date 15/11/2024
+     * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
+     * @param intermediaryAccs Colección de accounts de mediadores recuperados para los casos.
+     */
+    private static void processCaseIfRelatedWithIntermediaryAccountZDA(List<Case> insertedCases, List<Account> intermediaryAccs)
+    {
+        //Agrupamos casos por ticketId
         Map<String, List<Account> > accByEmail = (Map<String, List<Account> >) CollectionUtil.groupListBy( intermediaryAccs, Account.fields.MainEmail__c.getDescribe().getName() );
         List<Account> emailAccounts;
+
         for(Case insertedCase : insertedCases)
         {
             if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.SuppliedEmail != null)
@@ -1288,6 +1310,11 @@ public with sharing class CaseUtil
                 if (emailAccounts != null && emailAccounts.size() == 1)
                 {
                     insertedCase.AccountId = emailAccounts[0].Id;
+
+                    if (emailAccounts[0].IsSpecialist__c && String.isNotBlank(insertedCase.CuTicketId__c))
+                    {
+                        CuTicketIdOpenedBySpecialist.add(insertedCase.CuTicketId__c);
+                    }
                 }
                 //else: no se han encontrado cuentas o hay mas de una. No se vincula
             }
@@ -2981,6 +3008,7 @@ public with sharing class CaseUtil
      * @author aberuete
      * @date 04/06/2024
      */
+    @TestVisible
     public static void setCaseZDAQueue(List<Case> newList)
     {
         for(Case caso : newList)
@@ -2990,8 +3018,19 @@ public with sharing class CaseUtil
                 Robot_Hegeo_Field_Mapping__mdt caseTipificacionByPeticion = mapCaseZDATypificationMetadata.get(caso.IdTipologiaBs__c);
 
                 if(caseTipificacionByPeticion != null)
-                {
-                    caso.Industry__c = caseTipificacionByPeticion.GenesysQueue__c;
+                {          
+                    // Cambiamos el reparto de la cola "Soporte a Especialistas" (antes llamada "Email_ZDA_Cotizacion")
+                    // Si no lo abre un especialista, se desviará a "Soporte a la red" (antes llamada "Email_ZDA_Suplementos_y_cot_comercios")
+                    if(caseTipificacionByPeticion.GenesysQueue__c == ZDA_QUEUE_SOPORTE_ESPECIALISTAS &&
+                        !CuTicketIdOpenedBySpecialist.contains(caso.CuTicketId__c))
+                    {
+                        caso.Industry__c = ZDA_QUEUE_SOPORTE_RED;
+                    }
+                    // En caso contrario, respetamos los repartos actuales
+                    else
+                    {
+                        caso.Industry__c = caseTipificacionByPeticion.GenesysQueue__c;
+                    }
                 }
             }
         }

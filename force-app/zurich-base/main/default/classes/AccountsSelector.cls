@@ -20,7 +20,7 @@ public with sharing class AccountsSelector extends RecordsSelector
     public static final String SDM_MAINEMAIL_FIELD = 'MainEmail__c';
     public static final String SDM_MAINMOBILEPHONE_FIELD = 'MainMobilePhone__c';
     public static final String SDM_RN_FIELD = 'TerritorialDirection__c';
-
+    
     private static final Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
     //#region Contructores
 
@@ -985,7 +985,8 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         String intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
         this.baseQuery.selectFields(new Set<Schema.SObjectField> {
-            Account.MainEmail__c
+            Account.MainEmail__c,
+            Account.IsSpecialist__c
         })
         .addConditionEq(Account.RecordTypeId,intermediaryRecordTypeId)
         .addConditionIn(Account.MainEmail__c, emails);
@@ -1371,7 +1372,7 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         return (List<Account>) this.baseQuery.run();
     }
-
+    
     /**
      * @description Método que obtiene los scopes de una cuenta
      *

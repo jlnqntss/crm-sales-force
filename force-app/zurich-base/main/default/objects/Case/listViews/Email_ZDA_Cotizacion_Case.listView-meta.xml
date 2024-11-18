@@ -14,8 +14,8 @@
     <columns>CommercialProductCode__c</columns>
     <columns>CASES.CLOSED_DATE</columns>
     <filterScope>Queue</filterScope>
-    <label>Email_ZDA_Cotizacion</label>
-    <queue>Email_ZDA_Cotizacion</queue>
+    <label>Soporte a Especialistas</label>
+    <queue>Email_Soporte_a_Especialistas</queue>
     <sharedTo>
         <allInternalUsers></allInternalUsers>
     </sharedTo>
