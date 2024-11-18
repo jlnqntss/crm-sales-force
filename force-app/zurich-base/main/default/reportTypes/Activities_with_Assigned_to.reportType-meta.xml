@@ -450,6 +450,11 @@
             <field>Owner.Profile.Name</field>
             <table>Activity</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>GenesysQueue__c</field>
+            <table>Activity</table>
+        </columns>
         <masterLabel>Activities</masterLabel>
     </sections>
     <sections>

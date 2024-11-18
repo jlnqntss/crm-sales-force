@@ -66,12 +66,12 @@ public with sharing class TaskUtil
         {
             if (updatedTask.WhatId != null)
             {
-                relatedIds.add(updatedTask.WhatId.toString());
+                relatedIds.add( updatedTask.WhatId.toString() );
             }
         }
         List<Case> relatedCases = new CasesSelector().findById(relatedIds, true);
 
-        if (relatedCases.isEmpty())
+        if ( relatedCases.isEmpty() )
         {
             //nada que revisar, al no tener casos relacionados
             return;
@@ -82,10 +82,10 @@ public with sharing class TaskUtil
         for (Task updatedTask : updatedTasks)
         {
             relatedCase = casesById.get(updatedTask.WhatId);
-            if (relatedCase != null && relatedCase.RecordTypeId == CaseUtil.RT_ID_ZDA &&
+            if ( relatedCase != null && relatedCase.RecordTypeId == CaseUtil.RT_ID_ZDA &&
                  relatedCase.Status != CaseUtil.estadoCerrado &&
-                 isScaledTaskAndClosed(updatedTask, oldMap.get(updatedTask.Id)) &&
-                 String.isBlank(updatedTask.Response__c))
+                 isScaledTaskAndClosed( updatedTask, oldMap.get(updatedTask.Id) ) &&
+                 String.isBlank(updatedTask.Response__c) )
             {
                 //se agrega un error al campo Response__c si esta vacio
                 updatedTask.addError(Task.fields.Response__c.getDescribe().getName(), Label.ZDANotAllowedCloseScaledWithoutResponse);
@@ -115,14 +115,17 @@ public with sharing class TaskUtil
      *
      * @param List<Task> newList : Lista de tareas a actualizar
      */
-    public static List<Task> completeTaskByWhatId(Set<Id> opportuniesList) {
+    public static List<Task> completeTaskByWhatId(Set<Id> opportuniesList)
+    {
 
         List<Task> result = new List<Task>();
 
-        if (opportuniesList != null && !opportuniesList.isEmpty()) {
+        if ( opportuniesList != null && !opportuniesList.isEmpty() )
+        {
             result = ActivitySelector.selectOpenTasksByWhatId(opportuniesList);
 
-            for (Task t: result) {
+            for (Task t: result)
+            {
                 t.Status = 'Cerrada';
             }
         }
@@ -132,14 +135,15 @@ public with sharing class TaskUtil
 
 
     /**
-     * Método que informa en el caso el Id Genesys 
+     * Método que informa en el caso el Id Genesys
      *
      * @author LRODRIGUEZ
      * @date 14/05/2024
      *
      * @param List<Task> newList : Lista de tareas a actualizar
      */
-    public static void checkIdGenesys(List<Task> newList) {
+    public static void checkIdGenesys(List<Task> newList)
+    {
 
 
         Set<String> taskId = new Set<String>();
@@ -148,9 +152,9 @@ public with sharing class TaskUtil
 
         for(Task newEmail:newList)
         {
-            if(newEmail.CallObject!=null)
+            if(newEmail.CallObject != null)
             {
-                taskId.add(newEmail.WhatId); 
+                taskId.add(newEmail.WhatId);
                 mapaGenesys.put(newEmail.WhatId,newEmail.CallObject);
             }
         }
@@ -159,12 +163,43 @@ public with sharing class TaskUtil
 
         for (Case relatedCase:casesToUpdate)
         {
-            if(relatedCase.RecordTypeId==uspRecordTypeId)
-            relatedCase.GenesysID__c=mapaGenesys.get(relatedCase.Id);
+            if(relatedCase.RecordTypeId == uspRecordTypeId)
+                relatedCase.GenesysID__c=mapaGenesys.get(relatedCase.Id);
         }
 
         update casesToUpdate;
 
-        
+
+    }
+
+    /**
+     * Vincula una tarea con un elemento padre de tipología ContactRequest.
+     * La solicitud de contacto desencadena el alta de un registro de Tarea que agrupa la información sobre la llamada o comunicación saliente.
+     * Las comunicaciones salientes se emiten desde el CRM.
+     * Se utiliza el id de interacción de la plataforma Genesys Cloud para identificar la relación entre la solicitud de contacto y la llamada realizada por un agente.
+     *
+     * @author pitt.olvera@seidor.com
+     * @date 12/11/2024
+     * @param tasksByInterationId Nuevos registros de la tabla de tareas insertados en la BBDD agrupados por id de interacción Genesys Cloud.
+     * @param contactRequestsByInterationId Registros de ContactRequest existentes en la BBDD agrupados por id de la interacción Genesys Cloud
+     */
+    public static void linkContactRequestsWithTasks(Map<String, List<Task> > tasksByInterationId, Map<String, List<ContactRequest> > contactRequestsByInterationId)
+    {
+        if (tasksByInterationId == null || contactRequestsByInterationId == null)
+            return;
+
+        for ( String interationId : tasksByInterationId.keySet() )
+        {
+            if ( String.isBlank(interationId) )
+                continue;
+
+            Task newTask  = tasksByInterationId.get(interationId)?.get(0);
+            ContactRequest existingContactRequest = contactRequestsByInterationId.get(interationId)?.get(0);
+
+            if (newTask == null || existingContactRequest == null)
+                continue;
+
+            newTask.GenesysQueue__c = existingContactRequest.GenesysCloudQueueId__r.Name;
+        }
     }
 }

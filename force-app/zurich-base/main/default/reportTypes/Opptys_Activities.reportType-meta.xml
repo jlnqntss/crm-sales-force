@@ -698,6 +698,11 @@
             <field>ActivityDateTime</field>
             <table>Opportunity.Activities</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>GenesysQueue__c</field>
+            <table>Opportunity.Activities</table>
+        </columns>
         <masterLabel>Activities</masterLabel>
     </sections>
     <sections>
