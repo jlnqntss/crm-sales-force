@@ -301,22 +301,28 @@ public with sharing class OpportunityUtil
      */
     public static void setStageNameOpen(List<Opportunity> newList)
     {
+        Boolean isZRMUser = ProfilesSelector.PROFILE_AGENTE_VENTAS.equals(userLoggedProfile) || ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR.equals(userLoggedProfile);
+
         for(Opportunity opty : newList)
         {
             if( String.isBlank(opty.StageName) )
             {
-
                 // Comprobamos las condiciones del Código de negocio
-                if( String.isBlank(opty.BusinessCode__c) || ( !mapBusinessCodes.containsKey(opty.BusinessCode__c) ) || (mapBusinessCodes.get(opty.BusinessCode__c) == 'Ventas') )
+                if (isZRMUser) {
+                    opty.StageName = GlobalConfigUtil.getGlobalConfigurationValue('Opportunity_Stage_Name_Legit_Lead');
+                }
+                else if(String.isBlank(opty.BusinessCode__c) || ( !mapBusinessCodes.containsKey(opty.BusinessCode__c) ) || (mapBusinessCodes.get(opty.BusinessCode__c) == 'Ventas') )
                 {
                     opty.StageName = 'Quoted';
-                }
+                } 
+                
                 else
                 {
                     opty.StageName = 'Open';
                 }
             }
         }
+
     }
 
     /**BEFOREUPDATE

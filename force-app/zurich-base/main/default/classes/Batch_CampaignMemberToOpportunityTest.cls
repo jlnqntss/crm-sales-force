@@ -93,6 +93,8 @@
         List<Campaign> campaignTest = [SELECT Id FROM Campaign WHERE ExternalId__c = 'TestCampaign'];
         List<String> newStatusList = new List<String>();
         newStatusList.add('Pdte. Revisión Mediador');
+        newStatusList.add('Gestión Mediador');
+        newStatusList.add('Mediador Sin Visibilidad');
         newStatusList.add('Gestión CC');
 
         List<CampaignMemberStatus> cmsList = TestDataFactory.generateCampaignStatus(newStatusList, campaignTest.get(0).Id);
@@ -151,6 +153,63 @@
                             WHERE Campaign.Type = 'Cross Selling'];
          
          System.assert(opportunitiesGenerated.size() > 0, 'Se han de crear ofertas asociadas a las campañas de cross selling' );
+     }
+
+
+     @IsTest
+     private static void test_CampaignMemberToOpportunityTest_MediadorSinVisibilidad()
+     {
+        // Insertamos campaign members
+        // Obtener datos
+        List<Campaign> campaignTest = [SELECT Id FROM Campaign WHERE ExternalId__c = 'TestCampaign'];
+        Policy__c policy = [SELECT Id, PolicyHolder__c, PolicyHolder__r.PersonContactId, IntermediaryId__c FROM Policy__c LIMIT 1];
+        List<Account> accounts = new List<Account>([SELECT Id, PersonContactId FROM Account WHERE Id = :policy.PolicyHolder__c]);
+        List<Account> intermediaryNoVisibility = new List<Account>([SELECT Id, INFOIntermediaryCode__c FROM Account WHERE Id != :policy.IntermediaryId__c LIMIT 1]);
+
+
+        // Generar CampaignMember
+        // generate campaign member
+        List<CampaignMember> campaignMembersToInsert = TestDataFactory.generateCampaignMembersForEachCampaign(accounts, campaignTest, 'Pdte. Revisión Mediador');
+        for (CampaignMember cm: campaignMembersToInsert) {
+            cm.LeadPhone__c = '600000000';
+            cm.OfferAssignedCode__c = intermediaryNoVisibility.get(0).INFOIntermediaryCode__c;
+            cm.OfferAssignedType__c = 'CC';
+        }
+        insert campaignMembersToInsert;
+
+         
+        // Primero se van a borrar las oportunidades que se pudiesen haber generado automáticamente por el flow
+        
+        List<Opportunity> opportunitiesGenerated = [SELECT Id, CampaignId, OwnerId, IntermediaryId__c, IntermediaryCode__c, CreatedDate, CreatedBy.Name FROM Opportunity];
+        
+        delete opportunitiesGenerated;
+        
+        // Recuperamos los miembros de campaña para lanzar el batch
+        
+        List<CampaignMember> campaignMembers = [SELECT Id, ContactId, CampaignId, OfferAssignedCode__c
+                                                FROM CampaignMember WHERE Id IN : campaignMembersToInsert];
+        
+        Set<Id> campaignMembersIdSet = ( new Map<Id,CampaignMember>(campaignMembers) ).keySet();
+        
+        // Ejecución del test
+        Test.startTest();
+        
+        Batch_CampaignMemberToOpportunity batch = new Batch_CampaignMemberToOpportunity(campaignMembersIdSet);
+        Database.executeBatch(batch);
+        
+        Test.stopTest();
+        
+        // Obtención de los datos para hacer la comprobación de las inserciones
+        // Hay que tener en cuenta que sólo se crean ofertas para campañas de venta cruzada
+        
+        opportunitiesGenerated = [SELECT Id, CampaignId, OwnerId, IntermediaryId__c, IntermediaryCode__c, CreatedDate, CreatedBy.Name FROM Opportunity];
+        
+        campaignMembers = [SELECT Id, ContactId, Status, CampaignId, OfferAssignedCode__c
+                        FROM CampaignMember
+                        WHERE Campaign.Type = 'Cross Selling'];
+        
+        Assert.isTrue(opportunitiesGenerated.size() == 0, 'No se han de crear ofertas asociadas a las campañas de cross selling' );
+        Assert.isTrue('Mediador Sin Visibilidad'.equals(campaignMembers.get(0).Status), 'Debe estar en etapa mediador sin visibildad');
      }
  
  }

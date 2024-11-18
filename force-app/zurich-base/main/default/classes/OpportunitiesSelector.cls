@@ -499,49 +499,90 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * Método devuelve las ofertas de un mediador, obviando las que tengan como cliente a cualquiera de los que se incluyen en la lista recibida (accountsIDsNotToQuery)
      * y excluyendo las que no pertenezcan a los campaign member recibidos (campaignMembers)
      *
-     * SELECT AccountId FROM Opportunity
-     * WHERE IntermediaryId__c = :intermediaryID
+     * SELECT AccountId, IntermediaryId__r.INFOIntermediaryCode__c 
+     * FROM Opportunity
+     * WHERE IntermediaryId__r.INFOIntermediaryCode__c IN :intermediaryCodes
+     *   AND AccountId IN: accountIds
      *   AND Account.Blocked__c = false
      *   AND Account.Anonymized__c = false
      *   AND Blocked__c = false
      *   AND Anonymized__c = false
      *   AND AccountId != null
-     * IF (accountIDsNotToQuery != null && !accountIDsNotToQuery.isEmpty())
-     *   AND AccountId NOT IN :accountIDsNotToQuery
-     * IF (campaignIDsToExcludeMembers != null && !campaignIDsToExcludeMembers.isEmpty())
-     *   AND CampaignId NOT IN :campaignIDsToExcludeMembers
      *
      *
-     * @author fpalomo
-     * @date 04/04/2024
+     * @author dmunoz
+     * @date 13/11/2024
      *
      * @return List<Opportunities>
      */
-    public List<Opportunity> getIntermediaryOtherOffersByCampaignMembers(Set<String> campaignIDsToExcludeMembers, Set<String> accountIDsNotToQuery, String intermediaryID)
+    public List<Opportunity> findOpportunitiesByAccountIdAndIntermediary(Set<Id> accountIds, Set<String> intermediaryCodes)
     {
 
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>
-        {
-            Opportunity.AccountId
-        })
-        .addConditionEq(Opportunity.IntermediaryId__c, intermediaryID)
-        .addConditionEq(Account.Blocked__c, false)
-        .addConditionEq(Account.Anonymized__c, false)
-        .addConditionEq(Opportunity.Blocked__c, false)
-        .addConditionEq(Opportunity.Anonymized__c, false)
-        .addConditionNotEq(Opportunity.AccountId, null);
+        List<Opportunity> result = new List<Opportunity>();
 
-        if ( accountIDsNotToQuery != null && !accountIDsNotToQuery.isEmpty() )
-        {
-            this.baseQuery.addConditionNotIn(Opportunity.AccountId, accountIDsNotToQuery);
+        if (!accountIds.isEmpty() && !intermediaryCodes.isEmpty()) {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>
+            {
+                Opportunity.AccountId
+            }).selectfields('IntermediaryId__r.INFOIntermediaryCode__c')
+            .addConditionIn('IntermediaryId__r.INFOIntermediaryCode__c', intermediaryCodes)
+            .addConditionIn(Opportunity.AccountId, accountIds)
+            .addConditionEq(Account.Blocked__c, false)
+            .addConditionEq(Account.Anonymized__c, false)
+            .addConditionEq(Opportunity.Blocked__c, false)
+            .addConditionEq(Opportunity.Anonymized__c, false)
+            .addConditionNotEq(Opportunity.AccountId, null);
+    
+            result = (List<Opportunity>) this.baseQuery.enforceSecurity().run();
+
         }
 
-        if ( campaignIDsToExcludeMembers != null && !campaignIDsToExcludeMembers.isEmpty() )
-        {
-            this.baseQuery.addConditionNotIn(Opportunity.CampaignId, campaignIDsToExcludeMembers);
+        return result;
+    }
+
+     /**
+     * Método devuelve las ofertas de un mediador, obviando las que tengan como cliente a cualquiera de los que se incluyen en la lista recibida (accountsIDsNotToQuery)
+     * y excluyendo las que no pertenezcan a los campaign member recibidos (campaignMembers)
+     *
+     * SELECT AccountId, ntermediaryId__r.IntermediaryGroup__r.INFOIntermediaryGroupCode__c 
+     * FROM Opportunity
+     * WHERE ntermediaryId__r.IntermediaryGroup__r.INFOIntermediaryGroupCode__c IN :intermediaryGroupCodes
+     *   AND AccountId IN: accountIds
+     *   AND Account.Blocked__c = false
+     *   AND Account.Anonymized__c = false
+     *   AND Blocked__c = false
+     *   AND Anonymized__c = false
+     *   AND AccountId != null
+     *
+     *
+     * @author dmunoz
+     * @date 13/11/2024
+     *
+     * @return List<Opportunities>
+     */
+    public List<Opportunity> findOpportunitiesByAccountIdAndIntermediaryGroup(Set<Id> accountIds, Set<String> intermediaryGroupCodes)
+    {
+
+        List<Opportunity> result = new List<Opportunity>();
+
+        if (!accountIds.isEmpty() && !intermediaryGroupCodes.isEmpty()) {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>
+            {
+                Opportunity.AccountId
+            }).selectfields('IntermediaryId__r.IntermediaryGroup__r.INFOIntermediaryGroupCode__c')
+            .addConditionIn('IntermediaryId__r.IntermediaryGroup__r.INFOIntermediaryGroupCode__c', intermediaryGroupCodes)
+            .addConditionIn(Opportunity.AccountId, accountIds)
+            .addConditionEq(Account.Blocked__c, false)
+            .addConditionEq(Account.Anonymized__c, false)
+            .addConditionEq(Opportunity.Blocked__c, false)
+            .addConditionEq(Opportunity.Anonymized__c, false)
+            .addConditionNotEq(Opportunity.AccountId, null);
+    
+            result = (List<Opportunity>) this.baseQuery.run();
+
         }
 
-        return (List<Opportunity>) this.baseQuery.run();
+        return result;
     }
 
 
