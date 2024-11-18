@@ -6,12 +6,12 @@
         <name>Set_Motivo_P_rdida_Venta</name>
         <label>Set Motivo Pérdida Venta</label>
         <locationX>50</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <assignmentItems>
             <assignToReference>GetRelatedOfferAction.Sales_Loss_Reason__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Canceled Policy</stringValue>
+                <elementReference>Opportunity_Sales_Loss_Reason_Canceled_Policy</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -22,12 +22,12 @@
         <name>UpdateOfferClosedLostAssignment</name>
         <label>Cambiar Oferta a Closed Lost</label>
         <locationX>182</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>GetRelatedOfferAction.StageName</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Closed Lost</stringValue>
+                <elementReference>Opportunity_StageName_Close_Lost</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -49,10 +49,40 @@
         </connector>
     </assignments>
     <decisions>
+        <description>Compara la fecha de inicio de póliza con la de movimiento</description>
+        <name>Anulada_sin_efecto</name>
+        <label>Anulada sin efecto</label>
+        <locationX>941</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Si</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StartDate__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.MovementStartDate__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.MovementType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Policy_MovementType_3</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CheckPreviousStatusDecision</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>CheckPreviousStatusDecision</name>
         <label>Verificar si antes estaba en vigor</label>
         <locationX>600</locationX>
-        <locationY>323</locationY>
+        <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>WasValid</name>
@@ -61,7 +91,7 @@
                 <leftValueReference>$Record__Prior.PolicyStatus__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>V</stringValue>
+                    <elementReference>Policy_PolicyStatus_V</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -82,7 +112,7 @@
         <name>Es_Ventas</name>
         <label>Es Ventas</label>
         <locationX>182</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <defaultConnector>
             <targetReference>UpdateOfferAction</targetReference>
         </defaultConnector>
@@ -94,21 +124,21 @@
                 <leftValueReference>GetRelatedOfferAction.Owner.Profile.Name</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Ventas User</stringValue>
+                    <elementReference>User_Profile_Name_Ventas_User</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>GetRelatedOfferAction.CreatedBy.Profile.Name</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Agente Ventas</stringValue>
+                    <elementReference>User_Profile_Name_Agente_Ventas</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>GetRelatedOfferAction.CreatedBy.Profile.Name</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Agente Ventas - AGR</stringValue>
+                    <elementReference>User_Profile_Name_Agente_Ventas_AGR</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -119,6 +149,46 @@
     </decisions>
     <description>Se añade el seteo de campos de oferta desde la póliza por el match de ofertas huérfanas cuando llega una póliza anulada (proceso batch) y corrección visibilidad</description>
     <environments>Default</environments>
+    <formulas>
+        <name>Opportunity_Sales_Loss_Reason_Canceled_Policy</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Opportunity_Sales_Loss_Reason_Canceled_P.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Opportunity_StageName_Close_Lost</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Opportunity_Stage_Name_Closed_Lost.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Policy_MovementType_3</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Policy_MovementType_3.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Policy_PolicyStatus_A</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Policy_PolicyStatus_A.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Policy_PolicyStatus_V</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Policy_PolicyStatus_V.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>User_Profile_Name_Agente_Ventas</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Agente_Ventas.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>User_Profile_Name_Agente_Ventas_AGR</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Agente_Ventas_AGR.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>User_Profile_Name_Ventas_User</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Ventas_User.Value__c}</expression>
+    </formulas>
     <interviewLabel>Póliza Trigger - After update - Anular Póliza {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Póliza Trigger - After update - Anular Póliza</label>
     <processMetadataValues>
@@ -145,7 +215,7 @@
         <name>CreateErrorLogAction</name>
         <label>Registrar Error</label>
         <locationX>490</locationX>
-        <locationY>1055</locationY>
+        <locationY>1163</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -189,7 +259,7 @@
         <name>GetRelatedOfferAction</name>
         <label>Conseguir Oferta Relacionada</label>
         <locationX>182</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>UpdateOfferClosedLostAssignment</targetReference>
@@ -214,17 +284,17 @@
         <name>UpdateOfferAction</name>
         <label>Actualizar Oferta</label>
         <locationX>182</locationX>
-        <locationY>947</locationY>
+        <locationY>1055</locationY>
         <faultConnector>
             <targetReference>CreateErrorLogAction</targetReference>
         </faultConnector>
         <inputReference>GetRelatedOfferAction</inputReference>
     </recordUpdates>
     <start>
-        <locationX>474</locationX>
+        <locationX>815</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>CheckPreviousStatusDecision</targetReference>
+            <targetReference>Anulada_sin_efecto</targetReference>
         </connector>
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
@@ -240,6 +310,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>A</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>MovementType__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>3</stringValue>
             </value>
         </filters>
         <object>Policy__c</object>
