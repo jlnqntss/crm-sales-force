@@ -11058,6 +11058,10 @@
         <recordType>Case.OCSInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Case Default CDEX</layout>
+        <recordType>Case.CDEXInquiry</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Case Default Sprinklr</layout>
         <recordType>Case.OCSSprinklr</recordType>
     </layoutAssignments>
@@ -12124,6 +12128,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Case.Claim</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Case.CDEXInquiry</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
