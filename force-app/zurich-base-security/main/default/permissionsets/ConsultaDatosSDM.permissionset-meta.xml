@@ -439,7 +439,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.NameAndIntermediaryCode__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
