@@ -102,6 +102,11 @@
         <label>Incidencia</label>
     </standardValue>
     <standardValue>
+        <fullName>Interno</fullName>
+        <default>false</default>
+        <label>Interno</label>
+    </standardValue>
+    <standardValue>
         <fullName>Marca (No info provided)</fullName>
         <default>false</default>
         <label>Marca (No info provided)</label>
@@ -180,6 +185,11 @@
         <fullName>Siniestros (Claims)</fullName>
         <default>false</default>
         <label>Siniestros (Claims)</label>
+    </standardValue>
+    <standardValue>
+        <fullName>SPAM</fullName>
+        <default>false</default>
+        <label>SPAM</label>
     </standardValue>
     <standardValue>
         <fullName>Tareas</fullName>

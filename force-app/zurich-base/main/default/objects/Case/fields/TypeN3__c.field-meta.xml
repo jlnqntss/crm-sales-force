@@ -15,14 +15,14 @@
         <valueSetDefinition>
             <sorted>true</sorted>
             <value>
-                <fullName>Abrir</fullName>
-                <default>false</default>
-                <label>Abrir</label>
-            </value>
-            <value>
                 <fullName>Acceso Descargas</fullName>
                 <default>false</default>
                 <label>Acceso Descargas</label>
+            </value>
+            <value>
+                <fullName>Activar usuario</fullName>
+                <default>false</default>
+                <label>Activar usuario</label>
             </value>
             <value>
                 <fullName>Activation failure</fullName>
@@ -212,11 +212,6 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Cartera</label>
-            </value>
-            <value>
-                <fullName>Cerrar</fullName>
-                <default>false</default>
-                <label>Cerrar</label>
             </value>
             <value>
                 <fullName>Certificado póliza</fullName>
@@ -594,11 +589,6 @@
                 <fullName>Gestión</fullName>
                 <default>false</default>
                 <label>Gestión</label>
-            </value>
-            <value>
-                <fullName>Gestionar</fullName>
-                <default>false</default>
-                <label>Gestionar</label>
             </value>
             <value>
                 <fullName>Gestión competencias</fullName>
@@ -1127,6 +1117,11 @@
                 <label>Proteo client</label>
             </value>
             <value>
+                <fullName>Proveedor</fullName>
+                <default>false</default>
+                <label>Proveedor</label>
+            </value>
+            <value>
                 <fullName>Queja</fullName>
                 <default>false</default>
                 <label>Queja</label>
@@ -1274,6 +1269,11 @@
                 <label>Return</label>
             </value>
             <value>
+                <fullName>Revisar trazas</fullName>
+                <default>false</default>
+                <label>Revisar trazas</label>
+            </value>
+            <value>
                 <fullName>Revisar Usuario</fullName>
                 <default>false</default>
                 <label>Revisar Usuario</label>
@@ -1347,6 +1347,11 @@
                 <label>Sistemas</label>
             </value>
             <value>
+                <fullName>Solicitar trazas</fullName>
+                <default>false</default>
+                <label>Solicitar trazas</label>
+            </value>
+            <value>
                 <fullName>Solicitud Alta</fullName>
                 <default>false</default>
                 <label>Solicitud Alta</label>
@@ -1365,6 +1370,11 @@
                 <fullName>Soporte informático</fullName>
                 <default>false</default>
                 <label>Soporte informático</label>
+            </value>
+            <value>
+                <fullName>Soporte Producción</fullName>
+                <default>false</default>
+                <label>Soporte Producción</label>
             </value>
             <value>
                 <fullName>Soporte Recertificación</fullName>
@@ -1814,6 +1824,7 @@
             <controllingFieldValue>INFO</controllingFieldValue>
             <controllingFieldValue>Recertificación Usuarios</controllingFieldValue>
             <controllingFieldValue>Software Obsoleto</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
             <valueName>Otros</valueName>
         </valueSettings>
         <valueSettings>
@@ -2013,6 +2024,14 @@
             <valueName>Consulta</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Proveedor</controllingFieldValue>
+            <valueName>Proveedor</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Soporte Producción</controllingFieldValue>
+            <valueName>Soporte Producción</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Recibos</controllingFieldValue>
             <valueName>Consulta / cobro / pago</valueName>
         </valueSettings>
@@ -2098,6 +2117,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencia</controllingFieldValue>
+            <controllingFieldValue>Incidencia Service Now</controllingFieldValue>
             <valueName>Incidencia</valueName>
         </valueSettings>
         <valueSettings>
@@ -2133,6 +2153,10 @@
             <valueName>Revocación saneamiento</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>ZRM</controllingFieldValue>
+            <controllingFieldValue>ZVGO</controllingFieldValue>
+            <controllingFieldValue>WS</controllingFieldValue>
+            <controllingFieldValue>PPVV</controllingFieldValue>
             <controllingFieldValue>Banca Seguros</controllingFieldValue>
             <controllingFieldValue>Correo Corporativo</controllingFieldValue>
             <controllingFieldValue>Mediación</controllingFieldValue>
@@ -2141,6 +2165,10 @@
             <valueName>Alta</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>ZRM</controllingFieldValue>
+            <controllingFieldValue>ZVGO</controllingFieldValue>
+            <controllingFieldValue>WS</controllingFieldValue>
+            <controllingFieldValue>PPVV</controllingFieldValue>
             <controllingFieldValue>Banca Seguros</controllingFieldValue>
             <controllingFieldValue>Correo Corporativo</controllingFieldValue>
             <controllingFieldValue>Mediación</controllingFieldValue>
@@ -2149,6 +2177,10 @@
             <valueName>Baja</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>ZRM</controllingFieldValue>
+            <controllingFieldValue>ZVGO</controllingFieldValue>
+            <controllingFieldValue>WS</controllingFieldValue>
+            <controllingFieldValue>PPVV</controllingFieldValue>
             <controllingFieldValue>Banca Seguros</controllingFieldValue>
             <controllingFieldValue>Correo Corporativo</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
@@ -2213,6 +2245,10 @@
         <valueSettings>
             <controllingFieldValue>Genious Bar</controllingFieldValue>
             <valueName>Web Corporativa</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>IAM</controllingFieldValue>
+            <valueName>Activar usuario</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificación</controllingFieldValue>
@@ -2293,18 +2329,6 @@
         <valueSettings>
             <controllingFieldValue>Modificación</controllingFieldValue>
             <valueName>Suplemento no económico</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencia Service Now</controllingFieldValue>
-            <valueName>Abrir</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencia Service Now</controllingFieldValue>
-            <valueName>Cerrar</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencia Service Now</controllingFieldValue>
-            <valueName>Gestionar</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Información</controllingFieldValue>
@@ -2442,6 +2466,14 @@
         <valueSettings>
             <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
             <valueName>Cambio de intermediario</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Webservices</controllingFieldValue>
+            <valueName>Revisar trazas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Webservices</controllingFieldValue>
+            <valueName>Solicitar trazas</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
