@@ -4,13 +4,15 @@
 @IsTest
 global with sharing class SiteLoginControllerTest
 {
-    @IsTest(SeeAllData = true)
+    @IsTest
     global static void testSiteLoginController()
     {
+        String username = TestDataFactory.getRandomUsername();
+        String password = TestDataFactory.getRandomString(6);
         // Instantiate a new controller with all parameters in the page
         SiteLoginController controller = new SiteLoginController();
-        controller.username = 'test@salesforce.com';
-        controller.password = '123456';
+        controller.username = username;
+        controller.password = password;
 
         System.assertEquals(controller.login(), null);
     }
