@@ -3741,7 +3741,7 @@ public with sharing class TestDataFactory
         }
         return randomString;
     }
-
+    
     /**
      * @description Método que genera un nombre
      * de usuario aleatorio
@@ -3753,9 +3753,8 @@ public with sharing class TestDataFactory
     public static String getRandomUsername()
     {
         return string.format('{0}@{1}.com', new string[] {
-            TestDataFactory.getRandomString(4),
-            UserInfo.getOrganizationId()
-        }
-                             );
+            TestDataFactory.getRandomString(4), 
+            UserInfo.getOrganizationId()}
+        );
     }
 }
