@@ -24,6 +24,7 @@
     <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <permissionSets>Ventas_Campa_a_de_la_Actividad_Read_Only</permissionSets>
     <permissionSets>Ventas_Consulta_Datos</permissionSets>
+    <permissionSets>View_all_Reports_and_Dashboards</permissionSets>
     <permissionSets>ZRM_Consulta_Datos</permissionSets>
     <permissionSets>ZRM_Consulta_Informes</permissionSets>
     <status>Updated</status>
