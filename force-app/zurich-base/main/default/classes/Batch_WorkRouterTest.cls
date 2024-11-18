@@ -4,7 +4,7 @@
  * @date 01/07/2024
  */
 @isTest
-private with sharing class Batch_WorkRouterTest 
+private with sharing class Batch_WorkRouterTest
 {
     private static final string PROFILE_INTEGRATOR = 'Integrator';
     private static final string PROFILE_USP_USER = 'USP User';
@@ -49,7 +49,7 @@ private with sharing class Batch_WorkRouterTest
 
         List<User> userAgentActiveAfterUpdate = [Select id from User where Lastname = 'Integrator work router'];
         List<Case> casesWithoutBestAgent = [Select id,OwnerId from Case where WithoutBestAgent__c = true];
-        Assert.isTrue (casesWithoutBestAgent.size()==1, 'El número de casos sin gestor preferente es incorrecto');
+        Assert.isTrue (casesWithoutBestAgent.size() == 1, 'El número de casos sin gestor preferente es incorrecto');
     }
 
     /**
@@ -62,11 +62,11 @@ private with sharing class Batch_WorkRouterTest
     private static void test_UpdateCasesToAssignOwnerWithQuery()
     {
         Test.startTest();
-        database.executeBatch(new Batch_WorkRouter(new CasesSelector().selectCasesWithoutBestAgent()), 200);
+        database.executeBatch(new Batch_WorkRouter( new CasesSelector().selectCasesWithoutBestAgent() ), 200);
         Test.stopTest();
 
         List<User> userAgentActiveAfterUpdate = [Select id from User where Lastname = 'Integrator work router'];
         List<Case> casesWithoutBestAgent = [Select id,OwnerId from Case where WithoutBestAgent__c = true];
-        Assert.isTrue (casesWithoutBestAgent.size()==1, 'El número de casos sin gestor preferente es incorrecto');
+        Assert.isTrue (casesWithoutBestAgent.size() == 1, 'El número de casos sin gestor preferente es incorrecto');
     }
 }

@@ -6,11 +6,13 @@
  * @last modified on  : 16-10-2024
  **/
 @isTest
-public with sharing class CompetitorsSelectorTest {
-    
+public with sharing class CompetitorsSelectorTest
+{
+
 
     @TestSetup
-    private static void makeData(){
+    private static void makeData()
+    {
 
         // se añade porque se ejecuta un flujo de visibildad para competencias
         TestDataFactory.insertCrossSellingCustomSetting();
@@ -23,13 +25,15 @@ public with sharing class CompetitorsSelectorTest {
     }
 
     @isTest
-    private static void getCompetitorsRelatedWithAccauntIds_OK() {
+    private static void getCompetitorsRelatedWithAccauntIds_OK()
+    {
 
         List<Account> accounts = new List<Account>([SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Customer' LIMIT 1]);
         List<String> accountsIdsList = new List<String>();
 
-        for (Account account: accounts) {
-            accountsIdsList.add(account.Id); 
+        for (Account account: accounts)
+        {
+            accountsIdsList.add(account.Id);
         }
 
         Test.startTest();

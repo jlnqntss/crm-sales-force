@@ -1,10 +1,10 @@
 /**
-* Clase de test para la lógica de la clase RoutingTeamQueueConfigUtil
-* @author fjbelmonte
-* @date: 24/10/2024
-*/
+ * Clase de test para la lógica de la clase RoutingTeamQueueConfigUtil
+ * @author fjbelmonte
+ * @date: 24/10/2024
+ */
 @isTest
-private with sharing class RoutingTeamQueueConfigUtilTest 
+private with sharing class RoutingTeamQueueConfigUtilTest
 {
     /**
      * Devuelve en forma de mapa todas las colas con su correspondiente equipo de enrutamiento
@@ -16,8 +16,8 @@ private with sharing class RoutingTeamQueueConfigUtilTest
     {
         Map<String, String> mRoutingTeamQueueConfigValues = null;
         Test.startTest();
-            mRoutingTeamQueueConfigValues = RoutingTeamQueueConfigUtil.getRoutingTeamQueueConfigValues();
+        mRoutingTeamQueueConfigValues = RoutingTeamQueueConfigUtil.getRoutingTeamQueueConfigValues();
         Test.stopTest();
-        Assert.isNotNull(mRoutingTeamQueueConfigValues , 'mRoutingTeamQueueConfigValues debería contener la tabla de configuración de colas y equipos');
+        Assert.isNotNull(mRoutingTeamQueueConfigValues, 'mRoutingTeamQueueConfigValues debería contener la tabla de configuración de colas y equipos');
     }
 }

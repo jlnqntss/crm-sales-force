@@ -3,7 +3,7 @@
  * @author aberuete
  * @date 24/06/2024
  */
-public with sharing class WorkRouter 
+public with sharing class WorkRouter
 {
     private static final string NB_DAMAGES_RC_ROUTING_TEAM_NAME = 'NB Damages RC';
     private static final string INTEGRATOR_PROFILE_NAME = 'Profile_Name_Integrator';
@@ -24,13 +24,13 @@ public with sharing class WorkRouter
     }
 
     /**
-    * Clase wrapper interna para almacenar la lista de usuarios (con y sin capaciddad finita) y la lista de casos que se reparten en base al equipo de 
-    * enrutamiento al que pertenecen
-    * @author fjbelmonte
-    * @date 24/10/2024
-    */
+     * Clase wrapper interna para almacenar la lista de usuarios (con y sin capaciddad finita) y la lista de casos que se reparten en base al equipo de
+     * enrutamiento al que pertenecen
+     * @author fjbelmonte
+     * @date 24/10/2024
+     */
     @testvisible
-    private with sharing class RoutingTeamWrapper 
+    private with sharing class RoutingTeamWrapper
     {
         public List<User>  lUsersWithAgentActive = new List<User>();
         public List<Case> lCasesToAssign = new List<Case>();
@@ -46,7 +46,7 @@ public with sharing class WorkRouter
     public void assignCasesAndAgentsByRoutingTeam(List<sObject> lScope)
     {   //Creamos un mapa que asocie el equipo con un objeto RoutingTeamWrapper
         Map<String, RoutingTeamWrapper> mRoutingTeamWrapper = new Map<String, RoutingTeamWrapper>();
-        try 
+        try
         {
             List<Case> casesToAssign = (List<Case>) lScope;
             //Almacenamos los casos al mapa de mRoutingTeamWrapper separados por equipos de enrutamiento
@@ -63,14 +63,14 @@ public with sharing class WorkRouter
                 integratorWrapper.lUsersWithAgentActive.addAll(usersWithAgentActive);
                 mRoutingTeamWrapper.put(profileIntegrator, integratorWrapper);
             }
-            //Se recorre el mapa  (Equipo de enrutamiento, RoutingTeamWrapper ) y se llama a la lógica (ya existente) de reparto por cada entrada del mapa, proporcionando su lista de casos y  de usuarios. 
-            for (RoutingTeamWrapper routingTeamWrapperItem : mRoutingTeamWrapper.values()) 
+            //Se recorre el mapa  (Equipo de enrutamiento, RoutingTeamWrapper ) y se llama a la lógica (ya existente) de reparto por cada entrada del mapa, proporcionando su lista de casos y  de usuarios.
+            for ( RoutingTeamWrapper routingTeamWrapperItem : mRoutingTeamWrapper.values() )
             {
                 assignCasesWithoutBestAgentToActiveAgent(routingTeamWrapperItem.lCasesToAssign, routingTeamWrapperItem.lUsersWithAgentActive);
             }
 
-        } 
-        catch (Exception ex) 
+        }
+        catch (Exception ex)
         {
             ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, ex.getMessage() + ' LineNumber: ' + ex.getLineNumber(), 'WorkRouter - assignCasesAndAgentsByRoutingTeam');
             throw new IllegalArgumentException(ex);
@@ -87,18 +87,18 @@ public with sharing class WorkRouter
      */
     @testvisible
     private void allocateAssignCasesByRoutingTeam(List<Case> lCases, Map<String, RoutingTeamWrapper> mRoutingTeamWrapper)
-    {   
+    {
         //Recuperamos la tabla de colas y equipo correspondiente
         Map<String, String> mRoutingTeamQueueConfig = RoutingTeamQueueConfigUtil.getRoutingTeamQueueConfigValues();
-        try 
+        try
         {
             String routingTeam;
             RoutingTeamWrapper routingTeamWpp;
-            for (Case caseItem : lCases) 
+            for (Case caseItem : lCases)
             {
-                if(!Test.isRunningTest())
+                if( !Test.isRunningTest() )
                 {
-                    if(caseItem.Owner.Profile.Name == GlobalConfigUtil.getGlobalConfigurationValue('Profile_Name_Integrator'))
+                    if( caseItem.Owner.Profile.Name == GlobalConfigUtil.getGlobalConfigurationValue('Profile_Name_Integrator') )
                     {
                         routingTeam = caseItem.Owner.Profile.Name;
                     }
@@ -119,8 +119,8 @@ public with sharing class WorkRouter
                 //Añadimos el objeto wrapper actualzado al mapa
                 mRoutingTeamWrapper.put(routingTeam, routingteamWpp);
             }
-        } 
-        catch (Exception ex) 
+        }
+        catch (Exception ex)
         {
             ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, ex.getMessage() + ' LineNumber: ' + ex.getLineNumber(), 'WorkRouter - allocateAssignCasesByRoutingTeam');
             throw ex;
@@ -137,12 +137,12 @@ public with sharing class WorkRouter
      */
     @testvisible
     private void allocateActiveAgentsByRoutingTeam(List<User> lUsers, Map<String, RoutingTeamWrapper> mRoutingTeamWrapper)
-    {   
-        try 
+    {
+        try
         {
             String routingTeam;
             RoutingTeamWrapper routingTeamWpp;
-            for (User userItem : lUsers) 
+            for (User userItem : lUsers)
             {
                 //Recuperamos a que equipo corresponde el usuario en base al campo RoutingTeam__c
                 if(mRoutingTeamWrapper.get(userItem.RoutingTeam__c) != null)
@@ -155,8 +155,8 @@ public with sharing class WorkRouter
                     mRoutingTeamWrapper.put(userItem.RoutingTeam__c, routingteamWpp);
                 }
             }
-        } 
-        catch (Exception ex) 
+        }
+        catch (Exception ex)
         {
             ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, ex.getMessage() + ' LineNumber: ' + ex.getLineNumber(), 'WorkRouter - allocateActiveAgentsByRoutingTeam');
             throw ex;
@@ -164,9 +164,9 @@ public with sharing class WorkRouter
     }
 
     /**
-     * Método que reparte equitativamente los casos que no tienen gestor preferente (WithoutBestAgent__c sea verdadero) 
-     * y cuyo owner sea una cola o el usuario integrador, a los usuarios que son gestores activos (ActiveAgent__c a true) teniendo en cuenta que no 
-     * excedan su capacidad siempre y cuando tengan asignada una. 
+     * Método que reparte equitativamente los casos que no tienen gestor preferente (WithoutBestAgent__c sea verdadero)
+     * y cuyo owner sea una cola o el usuario integrador, a los usuarios que son gestores activos (ActiveAgent__c a true) teniendo en cuenta que no
+     * excedan su capacidad siempre y cuando tengan asignada una.
      * @author: aberuete
      * @date: 27/06/2024
      * @param List<Case> casesToAssign: Lista de casos a actualizar por el batch
@@ -183,15 +183,15 @@ public with sharing class WorkRouter
         {
             anyUserWithCapacityInfinity = true;
         }
-        else 
+        else
         {
             sumOfCapacities = calculateSumOfCapacitiesLeft(usersWithAgentActive);
         }
-        
+
         List<Case> caseToUpdate = calculateDistributionOfCases (casesToAssign, anyUserWithCapacityInfinity, sumOfCapacities, usersWithAgentActive );
         updateCases(caseToUpdate);
     }
-    
+
     /**
      * Devuelve el número de usuarios con capacidad infinita
      * @author: fjbelmonte
@@ -200,19 +200,19 @@ public with sharing class WorkRouter
      */
     @testvisible
     private Integer getNumberOfUsersActiveWithInfiniteCapacity(List<User> usersWithAgentActive)
-    {   
+    {
         Integer numberOfUsersWithInfiniteCapacity = 0;
-        try 
+        try
         {
-            for (User userItem : usersWithAgentActive) 
+            for (User userItem : usersWithAgentActive)
             {
-                if (userItem.Capacity__c == null) 
+                if (userItem.Capacity__c == null)
                 {
-                    numberOfUsersWithInfiniteCapacity ++;
+                    numberOfUsersWithInfiniteCapacity++;
                 }
             }
-        } 
-        catch (Exception ex) 
+        }
+        catch (Exception ex)
         {
             ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, ex.getMessage() + ' LineNumber: ' + ex.getLineNumber(), 'WorkRouter - getNumberOfUsersActiveWithInfiniteCapacity');
             throw ex;
@@ -239,17 +239,17 @@ public with sharing class WorkRouter
             {
                 sumOfCapacities = sumOfCapacities + capacityLeft;
             }
-        }  
-        return sumOfCapacities;  
+        }
+        return sumOfCapacities;
     }
 
     /**
-     * Método que calcula la distribución de los casos sin gestor preferente (WithoutBestAgent__c sea verdadero) 
-     * y cuyo owner sea una cola o el usuario integrador, a los usuarios que son gestores activos (ActiveAgent__c a true) teniendo en cuenta que no 
-     * excedan su capacidad siempre y cuando tengan asignada una. 
+     * Método que calcula la distribución de los casos sin gestor preferente (WithoutBestAgent__c sea verdadero)
+     * y cuyo owner sea una cola o el usuario integrador, a los usuarios que son gestores activos (ActiveAgent__c a true) teniendo en cuenta que no
+     * excedan su capacidad siempre y cuando tengan asignada una.
      * @author: aberuete
      * @date: 27/06/2024
-     * @param List<Case> casesToAssign: Lista de casos para asignar owner 
+     * @param List<Case> casesToAssign: Lista de casos para asignar owner
      * @param Boolean anyUserWithCapacityInfinity: Booleano que indica si existe algun usuario con gestor activo sin capacidad asignada
      * @param Integer sumOfCapacities: Número de casos totales que pueden gestionar los usuarios si todos tienen una capacidad asignada
      * @param List<User> usersWithAgentActive: Lista de usuarios con agente activo
@@ -262,11 +262,11 @@ public with sharing class WorkRouter
         Integer capacityLeft;
         Map<Id,Integer> userIdByCapacityLeft = new Map<Id,Integer>();
 
-        while (casesToAssign.size() != 0 && (anyUserWithCapacityInfinity == true || sumOfCapacities > 0))
+        while ( casesToAssign.size() != 0 && (anyUserWithCapacityInfinity == true || sumOfCapacities > 0) )
         {
             if (usersWithAgentActive[contador].Capacity__c == null)
             {
-                casesToAssign[0].OwnerId =usersWithAgentActive[contador].Id; 
+                casesToAssign[0].OwnerId =usersWithAgentActive[contador].Id;
                 caseToUpdate.add(casesToAssign[0]);
                 casesToAssign.remove(0);
             }
@@ -275,16 +275,16 @@ public with sharing class WorkRouter
                 capacityLeft = usersWithAgentActive[contador].Capacity__c.intValue() - usersWithAgentActive[contador].AssignedCases__c.intValue();
                 if (!userIdByCapacityLeft.containsKey(usersWithAgentActive[contador].id) && capacityLeft > 0)
                 {
-                    userIdByCapacityLeft.put(usersWithAgentActive[contador].Id,capacityLeft -1);
-                    casesToAssign[0].OwnerId =usersWithAgentActive[contador].Id; 
+                    userIdByCapacityLeft.put(usersWithAgentActive[contador].Id,capacityLeft - 1);
+                    casesToAssign[0].OwnerId =usersWithAgentActive[contador].Id;
                     caseToUpdate.add(casesToAssign[0]);
                     casesToAssign.remove(0);
                     sumOfCapacities--;
                 }
-                else if (userIdByCapacityLeft.containsKey(usersWithAgentActive[contador].id) && (userIdByCapacityLeft.get(usersWithAgentActive[contador].id) > 0))
+                else if ( userIdByCapacityLeft.containsKey(usersWithAgentActive[contador].id) && (userIdByCapacityLeft.get(usersWithAgentActive[contador].id) > 0) )
                 {
-                    userIdByCapacityLeft.put(usersWithAgentActive[contador].Id,userIdByCapacityLeft.get(usersWithAgentActive[contador].id) -1); 
-                    casesToAssign[0].OwnerId =usersWithAgentActive[contador].Id; 
+                    userIdByCapacityLeft.put(usersWithAgentActive[contador].Id,userIdByCapacityLeft.get(usersWithAgentActive[contador].id) - 1);
+                    casesToAssign[0].OwnerId =usersWithAgentActive[contador].Id;
                     caseToUpdate.add(casesToAssign[0]);
                     casesToAssign.remove(0);
                     sumOfCapacities--;
@@ -292,11 +292,11 @@ public with sharing class WorkRouter
             }
 
             contador++;
-            if (contador == usersWithAgentActive.size())
-            { 
-                contador = 0;   
+            if ( contador == usersWithAgentActive.size() )
+            {
+                contador = 0;
             }
-        }  
+        }
 
         return caseToUpdate;
     }
@@ -310,23 +310,23 @@ public with sharing class WorkRouter
     @testvisible
     private void updateCases(List<Case> caseToUpdate)
     {
-        if (caseToUpdate.size()!= 0)
+        if (caseToUpdate.size() != 0)
         {
             try
             {
                 Database.SaveResult [] resultList = Database.update(caseToUpdate, false);
-                ErrorLogUtil.generateMessageByError(resultList,'Se ha producido un error actualizando los casos', WorkRouter.class.getName());
+                ErrorLogUtil.generateMessageByError( resultList,'Se ha producido un error actualizando los casos', WorkRouter.class.getName() );
 
             }
             catch (Exception e)
             {
-                ErrorLogUtil.commitError(e, WorkRouter.class.getName());
+                ErrorLogUtil.commitError( e, WorkRouter.class.getName() );
             }
         }
     }
 
     /**
-     * Método que calcula el número de casos asignados para los usuarios que son gestores activos (ActiveAgent__c a true). 
+     * Método que calcula el número de casos asignados para los usuarios que son gestores activos (ActiveAgent__c a true).
      * Si el usuario está en la lista ownerIdsByNumberOfCases, se añade el número de casos asignados, si no está en dicha lista el número de casos que tiene es cero.
      * @author: aberuete
      * @date: 27/06/2024
@@ -340,12 +340,12 @@ public with sharing class WorkRouter
 
         for (AggregateResult ownerIdByNumberOfCases : ownerIdsByNumberOfCases)
         {
-            numberOfCasesById.put(String.valueOf(ownerIdByNumberOfCases.get('OwnerId')),(Integer)ownerIdByNumberOfCases.get('numCases'));
+            numberOfCasesById.put( String.valueOf( ownerIdByNumberOfCases.get('OwnerId') ),(Integer) ownerIdByNumberOfCases.get('numCases') );
         }
 
         for (User userWithAgentActive:usersWithAgentActive)
         {
-            if (numberOfCasesById.containsKey(userWithAgentActive.Id))
+            if ( numberOfCasesById.containsKey(userWithAgentActive.Id) )
             {
                 userWithAgentActive.AssignedCases__c = numberOfCasesById.get(userWithAgentActive.Id);
                 usersToUpdate.add(userWithAgentActive);
@@ -372,11 +372,11 @@ public with sharing class WorkRouter
             try
             {
                 Database.SaveResult [] resultList = Database.update(usersToUpdate, false);
-                ErrorLogUtil.generateMessageByError(resultList, 'Se ha producido un error actualizando los usuarios', WorkRouter.class.getName());
+                ErrorLogUtil.generateMessageByError( resultList, 'Se ha producido un error actualizando los usuarios', WorkRouter.class.getName() );
             }
             catch (Exception e)
             {
-                ErrorLogUtil.commitError(e, WorkRouter.class.getName());
+                ErrorLogUtil.commitError( e, WorkRouter.class.getName() );
             }
         }
     }

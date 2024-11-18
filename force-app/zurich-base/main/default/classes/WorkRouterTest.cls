@@ -4,7 +4,7 @@
  * @date 01/07/2024
  */
 @isTest
-private with sharing class WorkRouterTest 
+private with sharing class WorkRouterTest
 {
     private static final string PROFILE_USP_USER = 'USP User';
     private static final string MESSAGE_NUMBER_OF_ASSIGNED_CASES_INCORRECT = 'El número de casos asignados del agente no es correcto';
@@ -39,8 +39,8 @@ private with sharing class WorkRouterTest
     }
 
     /**
-     * Test del método que calcula y actualiza el número de casos 
-     * asignados para los usuarios que son gestores activos (ActiveAgent__c a true) 
+     * Test del método que calcula y actualiza el número de casos
+     * asignados para los usuarios que son gestores activos (ActiveAgent__c a true)
      * @author aberuete
      * @date 01/07/2024
      */
@@ -58,7 +58,7 @@ private with sharing class WorkRouterTest
     }
 
     /**
-     * Test del método que calcula y actualiza el número de casos asignados para los usuarios 
+     * Test del método que calcula y actualiza el número de casos asignados para los usuarios
      * que son gestores activos (ActiveAgent__c a true) y no tienen casos asignados.Es decir, actualiza el número a 0.
      * @author aberuete
      * @date 01/07/2024
@@ -77,7 +77,7 @@ private with sharing class WorkRouterTest
     }
 
     /**
-     * Test del método que calcula el número de casos totales que pueden gestionar los usuarios 
+     * Test del método que calcula el número de casos totales que pueden gestionar los usuarios
      * si todos tienen una capacidad asignada
      * @author aberuete
      * @date 01/07/2024
@@ -111,37 +111,37 @@ private with sharing class WorkRouterTest
         new WorkRouter().updateNumberOfCaseByUser(ownerIdsByNumberOfCases);
 
         User user0 = [Select id,AssignedCases__c,Capacity__c from User where Lastname = 'Work router'];
-        Assert.areEqual(1,user0.AssignedCases__c, MESSAGE_NUMBER_OF_ASSIGNED_CASES_INCORRECT);   
+        Assert.areEqual(1,user0.AssignedCases__c, MESSAGE_NUMBER_OF_ASSIGNED_CASES_INCORRECT);
 
         User user1 = [Select id,AssignedCases__c,Capacity__c from User where Lastname = 'Work router 2'];
-        Assert.areEqual(0,user1.AssignedCases__c, MESSAGE_NUMBER_OF_ASSIGNED_CASES_INCORRECT);  
+        Assert.areEqual(0,user1.AssignedCases__c, MESSAGE_NUMBER_OF_ASSIGNED_CASES_INCORRECT);
 
         usersWithAgentActive.add(user0);
         usersWithAgentActive.add(user1);
 
         List<Case> casesToAssignOwner = [Select id,OwnerId from case where WithoutBestAgent__c = true and owner.profile.name !=: PROFILE_USP_USER];
         Assert.areEqual(4, casesToAssignOwner.size(),'El número de casos a asignar no es correcto');
-    
+
         Test.startTest();
         List<Case> casesToUpdate = new WorkRouter().calculateDistributionOfCases (casesToAssignOwner, true, 0, usersWithAgentActive );
         Test.stopTest();
 
-        Map<Id,List<Case>> mapOwnerByCases = new Map<Id,List<Case>>();
+        Map<Id,List<Case> > mapOwnerByCases = new Map<Id,List<Case> >();
 
         for (Case caseToUpdate: casesToUpdate)
         {
-            if (mapOwnerByCases.containsKey(caseToUpdate.OwnerId))
+            if ( mapOwnerByCases.containsKey(caseToUpdate.OwnerId) )
             {
                 mapOwnerByCases.get(caseToUpdate.OwnerId).add(caseToUpdate);
             }
             else
             {
-                mapOwnerByCases.put(caseToUpdate.OwnerId,new List<Case>{caseToUpdate});  
+                mapOwnerByCases.put(caseToUpdate.OwnerId,new List<Case> {caseToUpdate});
             }
         }
 
-        Assert.areEqual(2,mapOwnerByCases.get(user0.id).size(), 'El número de casos asignados del agente 0 no es correcto');   
-        Assert.areEqual(2,mapOwnerByCases.get(user1.id).size(), 'El número de casos asignados del agente 1 no es correcto');  
+        Assert.areEqual(2,mapOwnerByCases.get(user0.id).size(), 'El número de casos asignados del agente 0 no es correcto');
+        Assert.areEqual(2,mapOwnerByCases.get(user1.id).size(), 'El número de casos asignados del agente 1 no es correcto');
     }
 
     /**
@@ -155,12 +155,12 @@ private with sharing class WorkRouterTest
         User user0 = [Select id,AssignedCases__c,Capacity__c from User where Lastname = 'Work router'];
         List<Case> casesToAssignOwner = [Select id,OwnerId from case where WithoutBestAgent__c = true and owner.profile.name !=: PROFILE_USP_USER];
         casesToAssignOwner[0].OwnerId = user0.id;
-        
+
         Test.startTest();
         new WorkRouter().updateCases(casesToAssignOwner);
         Test.stopTest();
 
-        List<Case> casesAfterUpdate = [Select id,OwnerId from case where id =:casesToAssignOwner[0].id];
+        List<Case> casesAfterUpdate = [Select id,OwnerId from case where id =: casesToAssignOwner[0].id];
 
         Assert.areEqual (user0.id, casesAfterUpdate[0].OwnerId, 'El caso no se ha actualizado correctamente');
     }
@@ -257,7 +257,7 @@ private with sharing class WorkRouterTest
 
         Assert.isNotNull(expectedError, 'No se ha lanzado ninguna excepción');
     }
-    
+
     /**
      * Test del método que gestiona la lista de usuarios por equipos haciendo uso del wrapper
      * RoutingTeamManager
@@ -324,7 +324,7 @@ private with sharing class WorkRouterTest
         Test.startTest();
         Integer numberOfUsersWithInfiniteCapacity = new WorkRouter().getNumberOfUsersActiveWithInfiniteCapacity(lUserAgentActive);
         Test.stopTest();
-        Assert.areEqual(1, numberOfUsersWithInfiniteCapacity , 'número de usuarios con capacidad infinita incorrecto');
+        Assert.areEqual(1, numberOfUsersWithInfiniteCapacity, 'número de usuarios con capacidad infinita incorrecto');
     }
 
     /**

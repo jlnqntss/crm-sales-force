@@ -10,7 +10,7 @@ public with sharing class CompetitorsSelector extends RecordsSelector
     //#region Contructores
     public CompetitorsSelector()
     {
-        super( Competitor__c.getSObjectType() ); 
+        super( Competitor__c.getSObjectType() );
     }
 
     //#endregion
@@ -39,7 +39,7 @@ public with sharing class CompetitorsSelector extends RecordsSelector
             result = (List<Competitor__c>) this.baseQuery.run();
         }
 
-        return result; 
+        return result;
 
     }
 }
