@@ -6,8 +6,10 @@ private with sharing class GenesysCloudTest
     @isTest
     private static void test_GenesysCloudRoutingService_route_email_ok()
     {
+		Test_Data__mdt testdata = Test_Data__mdt.getInstance('GenesysCloudRoutingService');
+        String body = testdata.Data_Field_1__c;
+		String mockId = testdata.Data_Field_2__c; 
 
-        String body = '{"id":"1JB9ZmJnCCKXlerwxAOZXC"}';
         Integer code = 200; //Se va a probar un retorno bueno
 
         GenesysCloud.RoutingService.mock = new GenesysCloudMocks(body, code);
@@ -27,7 +29,7 @@ private with sharing class GenesysCloudTest
         GenesysCloud.Email updatedEmail = (GenesysCloud.Email) GenesysCloud.RoutingService.route(email);
         Test.stopTest();
 
-        System.assertEquals('1JB9ZmJnCCKXlerwxAOZXC', updatedEmail.interactionId); //ID que devuelve el mock
+        System.assertEquals(mockId, updatedEmail.interactionId); //ID que devuelve el mock
     }
 
     @isTest
@@ -63,7 +65,8 @@ private with sharing class GenesysCloudTest
     private static void test_GenesysCloudRoutingService_route_emailList_ok()
     {
         // When
-        String body = '{"id":"1JB9ZmJnCCKXlerwxAOZXC"}';
+        String body = Test_Data__mdt.getInstance('GenesysCloudRoutingService').Data_Field_1__c;
+		
         Integer code = 200; //Se va a probar un retorno bueno
 
         GenesysCloud.RoutingService.mock = new GenesysCloudMocks(body, code);
@@ -105,7 +108,7 @@ private with sharing class GenesysCloudTest
     private static void test_GenesysCloudRoutingService_route_emailList_ko()
     {
         // When
-        String body = '{"id":"1JB9ZmJnCCKXlerwxAOZXC"}';
+        String body = Test_Data__mdt.getInstance('GenesysCloudRoutingService').Data_Field_1__c;
         Integer code = 400;
 
         GenesysCloud.RoutingService.mock = new GenesysCloudMocks(body, code);
@@ -141,11 +144,12 @@ private with sharing class GenesysCloudTest
     {
         public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
         {
+            Test_Data__mdt testData = Test_Data__mdt.getInstance('GenesysCloudRoutingService');
             for(Object result : results)
             {
                 GenesysCloud.Email email = (GenesysCloud.Email) result;
 
-                System.assertEquals('1JB9ZmJnCCKXlerwxAOZXC', email.interactionId);
+                System.assertEquals(testData.Data_Field_2__c, email.interactionId);
             }
         }
 
@@ -161,9 +165,12 @@ private with sharing class GenesysCloudTest
     @isTest
     private static void test_GenesysCloudCallbacksService_create_callback_ok()
     {
-        String body = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},' +
-                      '"callbackIdentifiers":[{"type":"EXTERNAL","id":"4b005d83-8246-4eb5-a89c-3f948751632b"},{"type":"ACD","id":"9f359553-e45b-42c3-8420-99bb01582eb9"}]}';
-        Integer code = 202; //Se va a probar un retorno bueno
+        //Retrieve Test_Data__mdt throught SOQL to avoid getInstance longtext truncation
+        Test_Data__mdt testData = [SELECT Data_Field_1__c, Data_Field_2__c FROM Test_Data__mdt WHERE DeveloperName = 'Genesys_Conversation' LIMIT 1];
+        
+        String body = testData.Data_Field_1__c;
+
+		Integer code = 202; //Se va a probar un retorno bueno
 
         //Set MOCK
         GenesysCloud.CallbacksService.mock = new GenesysCloudMocks(body, code);
@@ -189,7 +196,7 @@ private with sharing class GenesysCloudTest
         GenesysCloud.Callback updatedCallback = (GenesysCloud.Callback) GenesysCloud.CallbacksService.create(callback);
         Test.stopTest();
 
-        System.assertEquals('7e131fcf-1639-45b2-89e5-9c3787b5dc75', updatedCallback.genesysId); //ID que devuelve el mock
+        System.assertEquals(testData.Data_Field_2__c, updatedCallback.genesysId); //ID que devuelve el mock
     }
 
     @isTest
@@ -219,9 +226,10 @@ private with sharing class GenesysCloudTest
     @isTest
     private static void test_GenesysCloudCallbacksService_create_callbackList_ok()
     {
+        Test_Data__mdt testData = [SELECT Data_Field_1__c, Data_Field_2__c FROM Test_Data__mdt WHERE DeveloperName = 'Genesys_Conversation' LIMIT 1];
+        
         // When
-        String body = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},' +
-                      '"callbackIdentifiers":[{"type":"EXTERNAL","id":"4b005d83-8246-4eb5-a89c-3f948751632b"},{"type":"ACD","id":"9f359553-e45b-42c3-8420-99bb01582eb9"}]}';
+        String body = testData.Data_Field_1__c;
         Integer code = 202; //Se va a probar un retorno bueno
 
         //Set MOCK
@@ -279,11 +287,13 @@ private with sharing class GenesysCloudTest
     {
         public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
         {
+            Test_Data__mdt testData = Test_Data__mdt.getInstance('Genesys_Conversation');
             for(Object result : results)
             {
+                
                 GenesysCloud.Callback callback = (GenesysCloud.Callback) result;
 
-                System.assertEquals('7e131fcf-1639-45b2-89e5-9c3787b5dc75', callback.genesysId);
+                System.assertEquals(testData.Data_Field_2__c, callback.genesysId);
             }
         }
 
@@ -297,7 +307,8 @@ private with sharing class GenesysCloudTest
     private static void test_CallBacksService_cancel()
     {
         // Id de interaccion generado por Genesys
-        String interactionId = '30136822-029b-4582-a171-25297a793326';
+        Test_Data__mdt testData = Test_Data__mdt.getInstance('Genesys_Interaction');
+        String interactionId = testData.Data_Field_1__c;
 
         // Mock
         GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
@@ -318,7 +329,8 @@ private with sharing class GenesysCloudTest
     private static void test_CallBackService_cancelList()
     {
         // Id de interaccion generado por Genesys
-        String interactionId = '30136822-029b-4582-a171-25297a793326';
+        Test_Data__mdt testData = Test_Data__mdt.getInstance('Genesys_Interaction');
+        String interactionId = testData.Data_Field_1__c;
 
         // Creamos el ContactRequest que provocaria la creacion del call me back en Genesys
         // Informamos el interactionId directamente aunque se informaria tras llamar a create en Genesys
@@ -398,7 +410,8 @@ private with sharing class GenesysCloudTest
     private static void test_CallBackService_cancelList_ko()
     {
         // Id de interaccion generado por Genesys
-        String interactionId = '30136822-029b-4582-a171-25297a793326';
+        Test_Data__mdt testData = Test_Data__mdt.getInstance('Genesys_Interaction');
+        String interactionId = testData.Data_Field_1__c;
 
         // Creamos el ContactRequest que provocaria la creacion del call me back en Genesys
         // Informamos el interactionId directamente aunque se informaria tras llamar a create en Genesys
@@ -445,7 +458,8 @@ private with sharing class GenesysCloudTest
     private static void test_DisconnectionService_close()
     {
         // Id de interaccion generado por Genesys
-        String interactionId = '30136822-029b-4582-a171-25297a793326';
+        Test_Data__mdt testData = Test_Data__mdt.getInstance('Genesys_Interaction');
+        String interactionId = testData.Data_Field_1__c;
 
         // Mock
         GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
@@ -466,7 +480,8 @@ private with sharing class GenesysCloudTest
     private static void test_DisconnectionService_cancelList()
     {
         // Id de interaccion generado por Genesys
-        String interactionId = '30136822-029b-4582-a171-25297a793326';
+        Test_Data__mdt testData = Test_Data__mdt.getInstance('Genesys_Interaction');
+        String interactionId = testData.Data_Field_1__c;
 
         // Creamos el ContactRequest que provocaria la creacion del call me back en Genesys
         // Informamos el interactionId directamente aunque se informaria tras llamar a create en Genesys
@@ -551,7 +566,8 @@ private with sharing class GenesysCloudTest
     @isTest
     private static void test_GenesysCloudSMSService_send_ok()
     {
-        String body = '{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75"}';
+        Test_Data__mdt testData = Test_Data__mdt.getInstance('Genesys_Conversation');
+        String body = testData.Data_Field_3__c;
         Integer code = 202; //Se va a probar un retorno bueno
 
         //Set MOCK
@@ -567,7 +583,7 @@ private with sharing class GenesysCloudTest
         GenesysCloud.SmsData updatedCallback = (GenesysCloud.SmsData) GenesysCloud.SMSService.send(message);
         Test.stopTest();
 
-        System.assertEquals('7e131fcf-1639-45b2-89e5-9c3787b5dc75', updatedCallback.smsId); //ID que devuelve el mock
+        System.assertEquals(testData.Data_Field_2__c, updatedCallback.smsId); //ID que devuelve el mock
     }
 
     @isTest
@@ -596,7 +612,8 @@ private with sharing class GenesysCloudTest
     @isTest
     private static void test_GenesysCloudSMSService_sendList_ok()
     {
-        String body = '{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75"}';
+        Test_Data__mdt testData = Test_Data__mdt.getInstance('Genesys_Conversation');
+        String body = testData.Data_Field_3__c;
         Integer code = 202; //Se va a probar un retorno bueno
 
         //Set MOCK
@@ -646,11 +663,12 @@ private with sharing class GenesysCloudTest
     {
         public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
         {
+            Test_Data__mdt testData = Test_Data__mdt.getInstance('Genesys_Conversation');
             for(Object result : results)
             {
                 GenesysCloud.SmsData message = (GenesysCloud.SmsData) result;
 
-                System.assertEquals('7e131fcf-1639-45b2-89e5-9c3787b5dc75', message.smsId);
+                System.assertEquals(testData.Data_Field_2__c, message.smsId);
             }
         }
 
@@ -671,7 +689,8 @@ private with sharing class GenesysCloudTest
         GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
 
         // Respuesta al getActive
-        String conversationId = '9d720887-910f-402d-b102-946c2c273992';
+        Test_Data__mdt testData = Test_Data__mdt.getInstance('Genesys_Conversation_2');
+        String conversationId = testData.Data_Field_1__c;
 
         responsesMock.addActiveConversationsMockResponse(conversationId);
 
@@ -697,7 +716,8 @@ private with sharing class GenesysCloudTest
         GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
 
         // Respuesta al getActive
-        String conversationId = '9d720887-910f-402d-b102-946c2c273992';
+        Test_Data__mdt testData = Test_Data__mdt.getInstance('Genesys_Conversation_2');
+        String conversationId = testData.Data_Field_1__c;
 
         responsesMock.addRawMockResponse(
             'api/v2/conversations/calls',
@@ -738,7 +758,9 @@ private with sharing class GenesysCloudTest
     private static void test_CallsService_ConferenceTo()
     {
         // Respuesta al getActive
-        String conversationId = '9d720887-910f-402d-b102-946c2c273992';
+        Test_Data__mdt testData = Test_Data__mdt.getInstance('Genesys_Conversation_2');
+        String conversationId = testData.Data_Field_1__c;
+
         Map<String, String> attributes = new Map<String, String>{
             'parentConversationId' => conversationId
         };
@@ -768,8 +790,11 @@ private with sharing class GenesysCloudTest
     private static void test_CallsService_getCall()
     {
         // Respuesta al getActive
-        String interactionId = '30136822-029b-4582-a171-25297a793326';
-        String conversationId = '9d720887-910f-402d-b102-946c2c273992';
+        Test_Data__mdt conversationTestData = Test_Data__mdt.getInstance('Genesys_Conversation_2');
+        Test_Data__mdt interactionTestData = Test_Data__mdt.getInstance('Genesys_Interaction');
+
+        String interactionId =interactionTestData.Data_Field_1__c;
+        String conversationId = conversationTestData.Data_Field_1__c;
 
         // Mock
         GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
@@ -816,7 +841,9 @@ private with sharing class GenesysCloudTest
     @isTest
     private static void test_disconnectBulk()
     {
-        String body = '{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75"}';
+        
+        Test_Data__mdt testData = Test_Data__mdt.getInstance('Genesys_Conversation');
+        String body = testData.Data_Field_3__c;
         Integer code = 202;
  
         GenesysCloud.CallbacksService.mock = new GenesysCloudMocks(body, code);
