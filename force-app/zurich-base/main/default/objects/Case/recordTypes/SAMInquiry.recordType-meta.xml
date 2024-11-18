@@ -1384,6 +1384,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>IAM</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>INFO</fullName>
             <default>false</default>
         </values>
@@ -1432,11 +1436,19 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>PPVV</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Partner</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Password</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Proveedor</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1496,6 +1508,14 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Soporte Producción</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Spam</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Sugerencia</fullName>
             <default>false</default>
         </values>
@@ -1509,6 +1529,10 @@
         </values>
         <values>
             <fullName>Transferencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WS</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1551,11 +1575,19 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Interno</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Partner</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Proveedor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SPAM</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1566,7 +1598,7 @@
     <picklistValues>
         <picklist>TypeN3__c</picklist>
         <values>
-            <fullName>Abrir</fullName>
+            <fullName>Activar usuario</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1647,10 +1679,6 @@
         </values>
         <values>
             <fullName>Capitales</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cerrar</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1778,10 +1806,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Gestionar</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Gestión competencias</fullName>
             <default>false</default>
         </values>
@@ -1791,6 +1815,10 @@
         </values>
         <values>
             <fullName>Herramientas Zurich</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incidencia</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1878,6 +1906,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Proveedor</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Queja</fullName>
             <default>false</default>
         </values>
@@ -1946,6 +1978,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Revisar trazas</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Revocación saneamiento</fullName>
             <default>false</default>
         </values>
@@ -1970,7 +2006,15 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Solicitar trazas</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Soporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Soporte Producción</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1986,6 +2030,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Spam</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Sugerencia</fullName>
             <default>false</default>
         </values>
@@ -1995,6 +2043,25 @@
         </values>
         <values>
             <fullName>Web Corporativa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zona Zurich</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>UsedTools__c</picklist>
+        <values>
+            <fullName>Correo electrónico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Otros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZRM</fullName>
             <default>false</default>
         </values>
         <values>

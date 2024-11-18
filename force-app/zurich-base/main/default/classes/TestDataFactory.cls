@@ -58,8 +58,8 @@ public with sharing class TestDataFactory
     {
         if (
             String.isBlank(customerType) ||
-            (!customerType.equalsIgnoreCase('F') &&
-             !customerType.equalsIgnoreCase('J') )
+            ( !customerType.equalsIgnoreCase('F') &&
+              !customerType.equalsIgnoreCase('J') )
             )
         {
             throw new TestException('incorrect value for customerType parameter');
@@ -274,11 +274,11 @@ public with sharing class TestDataFactory
                 'cliente_valor' => String.valueOf(
                     Integer.valueof( (Math.random() * 6) ) + 1
                     ), // String -> valor cliente de 1 al 7
-                'cliente_fecha_nac' => String.valueOf(auxDate.year() ) +
+                'cliente_fecha_nac' => String.valueOf( auxDate.year() ) +
                                       '-' +
-                                      String.valueOf(auxDate.month() ).leftPad(2, '0') +
+                                      String.valueOf( auxDate.month() ).leftPad(2, '0') +
                                       '-' +
-                                      String.valueOf(auxDate.day() ).leftPad(2, '0'), // Fecha nacimiento o constitución -> 'YYYY-MM-DD'
+                                      String.valueOf( auxDate.day() ).leftPad(2, '0'), // Fecha nacimiento o constitución -> 'YYYY-MM-DD'
                 'cliente_idioma' => languages[
                     Integer.valueof( (Math.random() * languages.size() - 1) ) // Idioma correspondencia
                                    ],
@@ -288,10 +288,10 @@ public with sharing class TestDataFactory
                 'cliente_codigo_cnae_cno' => commercialActivities[
                     Integer.valueof( (Math.random() * commercialActivities.size() - 1) ) // cno o cnae
                                             ],
-                'cliente_restringido' => (10 * Math.random()) > 5 ? true : false,
-                'cliente_morosidad' => (10 * Math.random()) > 5 ? true : false,
-                'cliente_registro_mizurich' => (10 * Math.random()) > 5 ? true : false,
-                'cliente_bloqueo_gdpr' => (10 * Math.random()) > 5 ? true : false
+                'cliente_restringido' => ( 10 * Math.random() ) > 5 ? true : false,
+                'cliente_morosidad' => ( 10 * Math.random() ) > 5 ? true : false,
+                'cliente_registro_mizurich' => ( 10 * Math.random() ) > 5 ? true : false,
+                'cliente_bloqueo_gdpr' => ( 10 * Math.random() ) > 5 ? true : false
             }
                 );
         }
@@ -316,11 +316,11 @@ public with sharing class TestDataFactory
     {
         if (
             String.isBlank(contactPointType) ||
-            (!contactPointType.equalsIgnoreCase('A') &&
-             !contactPointType.equalsIgnoreCase('B') &&
-             !contactPointType.equalsIgnoreCase('E') &&
-             !contactPointType.equalsIgnoreCase('P') &&
-             !contactPointType.equalsIgnoreCase('T') )
+            ( !contactPointType.equalsIgnoreCase('A') &&
+              !contactPointType.equalsIgnoreCase('B') &&
+              !contactPointType.equalsIgnoreCase('E') &&
+              !contactPointType.equalsIgnoreCase('P') &&
+              !contactPointType.equalsIgnoreCase('T') )
             )
         {
             throw new TestException('incorrect value for contactPointType parameter');
@@ -344,7 +344,7 @@ public with sharing class TestDataFactory
         List<Schema.PicklistEntry> homeTypeValues = homeTypeFieldResult.getPicklistValues();
 
         Schema.DescribeFieldResult streetTypeFieldResult = ContactPointAddress.StreetType__c.getDescribe();
-		List<Schema.PicklistEntry> streetTypeValues = streetTypeFieldResult.getPicklistValues();
+        List<Schema.PicklistEntry> streetTypeValues = streetTypeFieldResult.getPicklistValues();
 
         List<String> flagType = new List<String> { 'S', 'N', null };
 
@@ -470,16 +470,16 @@ public with sharing class TestDataFactory
                     'numero_prefijo_pais' => '',
                     'numero_tel' => '',
                     'numero_extension_tel' => '',
-                    'fecha_alta' => String.valueOf(auxDate.year() ) +
+                    'fecha_alta' => String.valueOf( auxDate.year() ) +
                                    '-' +
-                                   String.valueOf(auxDate.month() ).leftPad(2, '0') +
+                                   String.valueOf( auxDate.month() ).leftPad(2, '0') +
                                    '-' +
-                                   String.valueOf(auxDate.day() ).leftPad(2, '0') // Fecha alta registro -> 'YYYY-MM-DD'
+                                   String.valueOf( auxDate.day() ).leftPad(2, '0') // Fecha alta registro -> 'YYYY-MM-DD'
                 }
                     );
             }
         }
-        else if (contactPointType.equalsIgnoreCase('T') )
+        else if ( contactPointType.equalsIgnoreCase('T') )
         {
             for (Integer i = 0; i < totalItems; i++)
             {
@@ -516,16 +516,16 @@ public with sharing class TestDataFactory
                         Math.round( (Math.random() * (900000000) + 100000000) )
                         ),
                     'numero_extension_tel' => '',
-                    'fecha_alta' => String.valueOf(auxDate.year() ) +
+                    'fecha_alta' => String.valueOf( auxDate.year() ) +
                                    '-' +
-                                   String.valueOf(auxDate.month() ).leftPad(2, '0') +
+                                   String.valueOf( auxDate.month() ).leftPad(2, '0') +
                                    '-' +
-                                   String.valueOf(auxDate.day() ).leftPad(2, '0') // Fecha alta registro -> 'YYYY-MM-DD'
+                                   String.valueOf( auxDate.day() ).leftPad(2, '0') // Fecha alta registro -> 'YYYY-MM-DD'
                 }
                     );
             }
         }
-        else if (contactPointType.equalsIgnoreCase('E') )
+        else if ( contactPointType.equalsIgnoreCase('E') )
         {
             for (Integer i = 0; i < totalItems; i++)
             {
@@ -561,11 +561,11 @@ public with sharing class TestDataFactory
                     'numero_prefijo_pais' => '',
                     'numero_tel' => '',
                     'numero_extension_tel' => '',
-                    'fecha_alta' => String.valueOf(auxDate.year() ) +
+                    'fecha_alta' => String.valueOf( auxDate.year() ) +
                                    '-' +
-                                   String.valueOf(auxDate.month() ).leftPad(2, '0') +
+                                   String.valueOf( auxDate.month() ).leftPad(2, '0') +
                                    '-' +
-                                   String.valueOf(auxDate.day() ).leftPad(2, '0') // Fecha alta registro -> 'YYYY-MM-DD'
+                                   String.valueOf( auxDate.day() ).leftPad(2, '0') // Fecha alta registro -> 'YYYY-MM-DD'
                 }
                     );
             }
@@ -646,19 +646,19 @@ public with sharing class TestDataFactory
         }
 
         Schema.DescribeFieldResult movTypeFieldResult = Policy__c.MovementType__c.getDescribe();
-		List<Schema.PicklistEntry> movTypeValues = movTypeFieldResult.getPicklistValues();
+        List<Schema.PicklistEntry> movTypeValues = movTypeFieldResult.getPicklistValues();
 
         Schema.DescribeFieldResult movReasonFieldResult = Policy__c.MovementReason__c.getDescribe();
-		List<Schema.PicklistEntry> movReasonValues = movReasonFieldResult.getPicklistValues();
+        List<Schema.PicklistEntry> movReasonValues = movReasonFieldResult.getPicklistValues();
 
         Schema.DescribeFieldResult paymentTypeFieldResult = Policy__c.PaymentType__c.getDescribe();
-		List<Schema.PicklistEntry> paymentTypeValues = paymentTypeFieldResult.getPicklistValues();
+        List<Schema.PicklistEntry> paymentTypeValues = paymentTypeFieldResult.getPicklistValues();
 
         Schema.DescribeFieldResult statusFieldResult = Policy__c.PolicyStatus__c.getDescribe();
         List<Schema.PicklistEntry> statusValues = statusFieldResult.getPicklistValues();
 
         Schema.DescribeFieldResult legalEntityFieldResult = Policy__c.LegalEntity__c.getDescribe();
-		List<Schema.PicklistEntry> legalEntityValues = legalEntityFieldResult.getPicklistValues();
+        List<Schema.PicklistEntry> legalEntityValues = legalEntityFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -739,7 +739,7 @@ public with sharing class TestDataFactory
         }
 
         Schema.DescribeFieldResult objectTypeFieldResult = Asset.ObjectType__c.getDescribe();
-		List<Schema.PicklistEntry> objectTypeValues = objectTypeFieldResult.getPicklistValues();
+        List<Schema.PicklistEntry> objectTypeValues = objectTypeFieldResult.getPicklistValues();
         String objectType =
             objectTypeValues[Integer.valueof( (Math.random() * objectTypeValues.size() - 1) )].getValue();
 
@@ -807,7 +807,7 @@ public with sharing class TestDataFactory
         }
 
         Schema.DescribeFieldResult faultFactorFieldResult = Claim__c.FaultFactor__c.getDescribe();
-		List<Schema.PicklistEntry> faultFactorValues = faultFactorFieldResult.getPicklistValues();
+        List<Schema.PicklistEntry> faultFactorValues = faultFactorFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -816,20 +816,20 @@ public with sharing class TestDataFactory
             /* REGISTRO SINIESTRO*/
             jsonElementsList.add(
                 new Map<String, Object> {
-                    'siniestro_id' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'siniestro_fecha_ocurrencia' => '2020-11-05',
-                    'siniestro_factor_culpa' => faultFactorValues[Integer.valueof( (Math.random() * faultFactorValues.size() - 1) )].getValue(),
-                    'siniestro_factor_culpa_desc' => '',
-                    'poliza_id' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'poliza_version' => '',
-                    'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0'),
-                    'siniestro_situacion' => '',
-                    'siniestro_situacion_desc' => '',
-                    'siniestro_situacion_tecnica' => '',
-                    'siniestro_situacion_tecnica_desc' => '',
-                    'siniestro_motivo' => '',
-                    'siniestro_motivo_desc' => '',
-                    'riesgo_asegurado' => String.valueOf(i + 1).leftPad(9, '0')
+                'siniestro_id' => String.valueOf(i + 1).leftPad(9, '0'),
+                'siniestro_fecha_ocurrencia' => '2020-11-05',
+                'siniestro_factor_culpa' => faultFactorValues[Integer.valueof( (Math.random() * faultFactorValues.size() - 1) )].getValue(),
+                'siniestro_factor_culpa_desc' => '',
+                'poliza_id' => String.valueOf(i + 1).leftPad(9, '0'),
+                'poliza_version' => '',
+                'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0'),
+                'siniestro_situacion' => '',
+                'siniestro_situacion_desc' => '',
+                'siniestro_situacion_tecnica' => '',
+                'siniestro_situacion_tecnica_desc' => '',
+                'siniestro_motivo' => '',
+                'siniestro_motivo_desc' => '',
+                'riesgo_asegurado' => String.valueOf(i + 1).leftPad(9, '0')
             }
                 );
         }
@@ -863,7 +863,7 @@ public with sharing class TestDataFactory
         }
 
         Schema.DescribeFieldResult rolFieldResult = Relationship__c.Role__c.getDescribe();
-		List<Schema.PicklistEntry> rolValues = rolFieldResult.getPicklistValues();
+        List<Schema.PicklistEntry> rolValues = rolFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -912,7 +912,7 @@ public with sharing class TestDataFactory
         }
 
         Schema.DescribeFieldResult rolFieldResult = Relationship__c.Role__c.getDescribe();
-		List<Schema.PicklistEntry> rolValues = rolFieldResult.getPicklistValues();
+        List<Schema.PicklistEntry> rolValues = rolFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -961,7 +961,7 @@ public with sharing class TestDataFactory
         }
 
         Schema.DescribeFieldResult rolFieldResult = Relationship__c.Role__c.getDescribe();
-		List<Schema.PicklistEntry> rolValues = rolFieldResult.getPicklistValues();
+        List<Schema.PicklistEntry> rolValues = rolFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -974,7 +974,7 @@ public with sharing class TestDataFactory
                 'siniestro_id' => String.valueOf(i + 1).leftPad(9, '0'),
                 'siniestro_rol' => rolValues[
                     Integer.valueof( (Math.random() * rolValues.size() - 1) )
-                               ].getValue(),
+                                  ].getValue(),
                 'siniestro_rol_desc' => 'Test',
                 'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0')
             }
@@ -1008,7 +1008,7 @@ public with sharing class TestDataFactory
         }
 
         Schema.DescribeFieldResult legalEntityFieldResult = Opportunity.LegalEntity__c.getDescribe();
-		List<Schema.PicklistEntry> legalEntityValues = legalEntityFieldResult.getPicklistValues();
+        List<Schema.PicklistEntry> legalEntityValues = legalEntityFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -1070,7 +1070,7 @@ public with sharing class TestDataFactory
         }
 
         Schema.DescribeFieldResult statusFieldResult = Account.Status__c.getDescribe();
-		List<Schema.PicklistEntry> statusValues = statusFieldResult.getPicklistValues();
+        List<Schema.PicklistEntry> statusValues = statusFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -1079,16 +1079,16 @@ public with sharing class TestDataFactory
             /* REGISTRO OFERTA*/
             jsonElementsList.add(
                 new Map<String, Object> {
-                    'partner_id' => 'Partner' + String.valueOf(i + 1).leftPad(3, '0'),
-                    'partner_desc' => 'Partner' + i,
-                    'partner_estado' => statusValues[Integer.valueof( (Math.random() * statusValues.size() - 1) )].getValue(),
-                    'partner_estado_desc' => 'Test',
-                    'partner_padre_id' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'partner_padre_desc' => 'Test',
-                    'partner_estructura' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'partner_estructura_desc' => 'Test',
-                    'partner_nombre_persona_contacto' => 'Contact' + i,
-                    'partner_telefono_persona_contacto' => '123456789'
+                'partner_id' => 'Partner' + String.valueOf(i + 1).leftPad(3, '0'),
+                'partner_desc' => 'Partner' + i,
+                'partner_estado' => statusValues[Integer.valueof( (Math.random() * statusValues.size() - 1) )].getValue(),
+                'partner_estado_desc' => 'Test',
+                'partner_padre_id' => String.valueOf(i + 1).leftPad(9, '0'),
+                'partner_padre_desc' => 'Test',
+                'partner_estructura' => String.valueOf(i + 1).leftPad(9, '0'),
+                'partner_estructura_desc' => 'Test',
+                'partner_nombre_persona_contacto' => 'Contact' + i,
+                'partner_telefono_persona_contacto' => '123456789'
             }
                 );
         }
@@ -1126,7 +1126,7 @@ public with sharing class TestDataFactory
         List<Schema.PicklistEntry> typeValues = typeFieldResult.getPicklistValues();
 
         Schema.DescribeFieldResult statusFieldResult = Account.Status__c.getDescribe();
-		List<Schema.PicklistEntry> statusValues = statusFieldResult.getPicklistValues();
+        List<Schema.PicklistEntry> statusValues = statusFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -1135,36 +1135,36 @@ public with sharing class TestDataFactory
             /* REGISTRO OFERTA*/
             jsonElementsList.add(
                 new Map<String, Object> {
-                    'mediador_id' => 'Inter' + String.valueOf(i + 1).leftPad(3, '0'),
-                    'mediador_desc' => 'Test' + i,
-                    'mediador_nombre' => 'Test' + i,
-                    'mediador_tipo_documento' => nationalTypeValues[Integer.valueof( (Math.random() * nationalTypeValues.size() - 1) )].getValue(),
-                    'mediador_nif_tipo' => 'Test',
-                    'mediador_nif_tipo_desc' => 'Test',
-                    'mediador_tipo' => typeValues[Integer.valueof( (Math.random() * typeValues.size() - 1) )].getValue(),
-                    'mediador_tipo_desc' => 'Test',
-                    'mediador_segmento_comercial' => 'Test',
-                    'mediador_segmento_comercial_desc' => 'Test',
-                    'mediador_codigo dsg' => 'Test',
-                    'mediador_codigo_dt' => 'Test',
-                    'mediador_codigo_dt_desc' => 'Test',
-                    'mediador_zona' => 'Test',
-                    'mediador_zona_desc' => 'Test',
-                    'mediador_negocio_cod_filiacion' => '',
-                    'mediador_negocio_nombre' => 'ParentBusiness' + i,
-                    'mediador_tipo_estado' => statusValues[Integer.valueof( (Math.random() * statusValues.size() - 1) )].getValue(),
-                    'mediador_tipo_estado_desc' => 'Test',
-                    'mediador_fecha_asignacion' => '2021-10-15',
-                    'mediador_domicilio' => 'Dom' + i,
-                    'mediador_poblacion' => 'Pobl' + i,
-                    'mediador_provincia' => 'Prov' + i,
-                    'mediador_provincia_desc' => 'Intermediary' + i,
-                    'mediador_email_principal' => 'testInter' + i + '@test.com',
-                    'mediador_email_contratacion' => 'testInter' + i + '@test.com',
-                    'mediador_email_siniestros' => 'testInter' + i + '@test.com',
-                    'mediador_email_admin' => 'testInter' + i + '@test.com',
-                    'mediador_telefono_principal' => '123456789',
-                    'mediador_telefono_movil' => '123456789'
+                'mediador_id' => 'Inter' + String.valueOf(i + 1).leftPad(3, '0'),
+                'mediador_desc' => 'Test' + i,
+                'mediador_nombre' => 'Test' + i,
+                'mediador_tipo_documento' => nationalTypeValues[Integer.valueof( (Math.random() * nationalTypeValues.size() - 1) )].getValue(),
+                'mediador_nif_tipo' => 'Test',
+                'mediador_nif_tipo_desc' => 'Test',
+                'mediador_tipo' => typeValues[Integer.valueof( (Math.random() * typeValues.size() - 1) )].getValue(),
+                'mediador_tipo_desc' => 'Test',
+                'mediador_segmento_comercial' => 'Test',
+                'mediador_segmento_comercial_desc' => 'Test',
+                'mediador_codigo dsg' => 'Test',
+                'mediador_codigo_dt' => 'Test',
+                'mediador_codigo_dt_desc' => 'Test',
+                'mediador_zona' => 'Test',
+                'mediador_zona_desc' => 'Test',
+                'mediador_negocio_cod_filiacion' => '',
+                'mediador_negocio_nombre' => 'ParentBusiness' + i,
+                'mediador_tipo_estado' => statusValues[Integer.valueof( (Math.random() * statusValues.size() - 1) )].getValue(),
+                'mediador_tipo_estado_desc' => 'Test',
+                'mediador_fecha_asignacion' => '2021-10-15',
+                'mediador_domicilio' => 'Dom' + i,
+                'mediador_poblacion' => 'Pobl' + i,
+                'mediador_provincia' => 'Prov' + i,
+                'mediador_provincia_desc' => 'Intermediary' + i,
+                'mediador_email_principal' => 'testInter' + i + '@test.com',
+                'mediador_email_contratacion' => 'testInter' + i + '@test.com',
+                'mediador_email_siniestros' => 'testInter' + i + '@test.com',
+                'mediador_email_admin' => 'testInter' + i + '@test.com',
+                'mediador_telefono_principal' => '123456789',
+                'mediador_telefono_movil' => '123456789'
 
             }
                 );
@@ -1203,15 +1203,15 @@ public with sharing class TestDataFactory
         {
             /* REGISTRO INTERMEDIARY_GROUP*/
             jsonElementsList.add(
-                new Map<String, Object> {                    
-                    'grupo_mediador_id' => '00000' + i,
-                    'grupo_mediador_desc' => 'Group' + i,
-                    'grupo_mediador_fecha_alta' => '2023-10-28',
-                    'grupo_mediador_fecha_baja' => '',
-                    'grupo_mediador_tipo' => '004',
-                    'mediador_id' => intermediaryAccounts.get(i).INFOIntermediaryCode__c
-                }
-            );
+                new Map<String, Object> {
+                'grupo_mediador_id' => '00000' + i,
+                'grupo_mediador_desc' => 'Group' + i,
+                'grupo_mediador_fecha_alta' => '2023-10-28',
+                'grupo_mediador_fecha_baja' => '',
+                'grupo_mediador_tipo' => '004',
+                'mediador_id' => intermediaryAccounts.get(i).INFOIntermediaryCode__c
+            }
+                );
         }
 
         return jsonElementsList;
@@ -1250,14 +1250,14 @@ public with sharing class TestDataFactory
         {
             /* REGISTRO INTERMEDIARY_GROUP*/
             jsonElementsList.add(
-                new Map<String, Object> {                    
-                    'mediador_id' => intermediaryAccounts.get(i).INFOIntermediaryCode__c,
-                    'grupo_mediador_id' => agrupaciones.get(i).INFOIntermediaryGroupCode__c,
-                    'mediador_sec_agrupado' => '001',
-                    'mediador_fecha_alta_agrupado' => '2023-10-28',
-                    'mediador_fecha_baja_agrupado' => ''
-                }
-            );
+                new Map<String, Object> {
+                'mediador_id' => intermediaryAccounts.get(i).INFOIntermediaryCode__c,
+                'grupo_mediador_id' => agrupaciones.get(i).INFOIntermediaryGroupCode__c,
+                'mediador_sec_agrupado' => '001',
+                'mediador_fecha_alta_agrupado' => '2023-10-28',
+                'mediador_fecha_baja_agrupado' => ''
+            }
+                );
         }
 
         return jsonElementsList;
@@ -1293,16 +1293,16 @@ public with sharing class TestDataFactory
             /* REGISTRO OFERTA*/
             jsonElementsList.add(
                 new Map<String, Object> {
-                    'id_unico_opcion' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'oferta_id' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'objeto_tipo' => 'Test',
-                    'objeto_cod_secuencial' => 'Test',
-                    'opcion' => 'Test',
-                    'opcion_desc' => 'Test',
-                    'opcion_seleccion' => 'Test',
-                    'opcion_paquete_desc' => 'Test',
-                    'importe_acumulado' => 10 * Math.random(),
-                    'prima_neta' => 10 * Math.random()
+                'id_unico_opcion' => String.valueOf(i + 1).leftPad(9, '0'),
+                'oferta_id' => String.valueOf(i + 1).leftPad(9, '0'),
+                'objeto_tipo' => 'Test',
+                'objeto_cod_secuencial' => 'Test',
+                'opcion' => 'Test',
+                'opcion_desc' => 'Test',
+                'opcion_seleccion' => 'Test',
+                'opcion_paquete_desc' => 'Test',
+                'importe_acumulado' => 10 * Math.random(),
+                'prima_neta' => 10 * Math.random()
             }
                 );
         }
@@ -1343,26 +1343,26 @@ public with sharing class TestDataFactory
             /* REGISTRO SINIESTRO*/
             jsonElementsList.add(
                 new Map<String, Object> {
-                    'note_fec_alta' => '2021-02-15',
-                    'note_usuario' => 'noteUser',
-                    'note_desc_aviso' => 'case subject',
-                    'note_texto' => 'case description',
-                    'note_cod_oferta' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'note_cod_poliza_incompleta' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'note_num_recibo' => '1234',
-                    'note_cod_siniestro' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'note_cod_poliza' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'note_producto_tecnico' => '',
-                    'note_producto_comercial' => '',
-                    'note_intermediario' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'note_cod_tarea' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'note_indicador_tarea' => '',
-                    'note_cod_agrupacion_TA' => '',
-                    'note_desc_grupo' => '',
-                    'note_desc_tipo_envio' => tipo,
-                    'note_desc_subtipo' => subtype,
-                    'note_desc_nivel_division' => typeN3,
-                    'note_cod_agrupacion' => '17'
+                'note_fec_alta' => '2021-02-15',
+                'note_usuario' => 'noteUser',
+                'note_desc_aviso' => 'case subject',
+                'note_texto' => 'case description',
+                'note_cod_oferta' => String.valueOf(i + 1).leftPad(9, '0'),
+                'note_cod_poliza_incompleta' => String.valueOf(i + 1).leftPad(9, '0'),
+                'note_num_recibo' => '1234',
+                'note_cod_siniestro' => String.valueOf(i + 1).leftPad(9, '0'),
+                'note_cod_poliza' => String.valueOf(i + 1).leftPad(9, '0'),
+                'note_producto_tecnico' => '',
+                'note_producto_comercial' => '',
+                'note_intermediario' => String.valueOf(i + 1).leftPad(9, '0'),
+                'note_cod_tarea' => String.valueOf(i + 1).leftPad(9, '0'),
+                'note_indicador_tarea' => '',
+                'note_cod_agrupacion_TA' => '',
+                'note_desc_grupo' => '',
+                'note_desc_tipo_envio' => tipo,
+                'note_desc_subtipo' => subtype,
+                'note_desc_nivel_division' => typeN3,
+                'note_cod_agrupacion' => '17'
             }
                 );
         }
@@ -1370,7 +1370,7 @@ public with sharing class TestDataFactory
         return jsonElementsList;
     }
 
-     /**
+    /**
      * Obtener estructura json del sistema de origen MiZurich para registros
      * de entidad Form Inc
      **
@@ -1379,7 +1379,7 @@ public with sharing class TestDataFactory
      * @author nts (aberuete)
      * @date 12/05/2023
      */
-    public static List<Map<String, Object>> getMiZurichFormIncJson (Integer totalItems)
+    public static List<Map<String, Object> > getMiZurichFormIncJson (Integer totalItems)
     {
         return buildMiZurichFromIncJson(totalItems);
     }
@@ -1391,33 +1391,33 @@ public with sharing class TestDataFactory
             throw new TestException('totalItems debe ser igual o mayor que 1');
         }
 
-         // From Metadata Robot_Hegeo_Field_Mapping__mdt
-         String tipo = '';
-         String subtype = 'No puedo registrarme';
-         String typeN3 = 'Mis datos introducidos son erróneos';
+        // From Metadata Robot_Hegeo_Field_Mapping__mdt
+        String tipo = '';
+        String subtype = 'No puedo registrarme';
+        String typeN3 = 'Mis datos introducidos son erróneos';
 
-         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
-         for (Integer i = 0; i < totalItems; i++)
-         {
-             /* REGISTRO FORM INC*/
-             jsonElementsList.add(
-                 new Map<String, Object> {
-                     'miZurich_description' => 'Descripcion del caso'+ i,
-                     'miZurich_nif' => '73562398D',
-                     'miZurich_inputForm1' => tipo,
-                     'miZurich_inputForm2' => subtype,
-                     'miZurich_inputForm3' => typeN3,
-                     'miZurich_telf' => '602543627',
-                     'miZurich_email' => 'mizruchemail@gmail.com'
-                    }
+        for (Integer i = 0; i < totalItems; i++)
+        {
+            /* REGISTRO FORM INC*/
+            jsonElementsList.add(
+                new Map<String, Object> {
+                'miZurich_description' => 'Descripcion del caso' + i,
+                'miZurich_nif' => '73562398D',
+                'miZurich_inputForm1' => tipo,
+                'miZurich_inputForm2' => subtype,
+                'miZurich_inputForm3' => typeN3,
+                'miZurich_telf' => '602543627',
+                'miZurich_email' => 'mizruchemail@gmail.com'
+            }
                 );
-         }
+        }
 
-         return jsonElementsList;
+        return jsonElementsList;
     }
 
-    private static List<ExternalRequest__c> addExternalRequestToList (List<Map<String, Object>> jsonElementList, List<ExternalRequest__c> externalRequestList, String origin,String entity, Id infoRecordTypeId, Integer numIntentos)
+    private static List<ExternalRequest__c> addExternalRequestToList (List<Map<String, Object> > jsonElementList, List<ExternalRequest__c> externalRequestList, String origin,String entity, Id infoRecordTypeId, Integer numIntentos)
     {
         for ( Map<String, Object> payload : jsonElementList)
         {
@@ -1465,12 +1465,12 @@ public with sharing class TestDataFactory
             /* REGISTRO SPECIAL CONDITION*/
             jsonElementsList.add(
                 new Map<String, Object> {
-                    'id_unico_cond_esp' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'partner_id' => 'Partner' + String.valueOf(i + 1).leftPad(3, '0'), //debe coincidir por ExternalId
-                    'cond_esp_tipo_desc' => 'Test Tipo',
-                    'cond_esp_desc' => 'Test Descripción',
-                    'cond_esp_fecha_inicio' => Date.today(),
-                    'cond_esp_fecha_fin' =>  Date.today().addDays(10)
+                'id_unico_cond_esp' => String.valueOf(i + 1).leftPad(9, '0'),
+                'partner_id' => 'Partner' + String.valueOf(i + 1).leftPad(3, '0'),     //debe coincidir por ExternalId
+                'cond_esp_tipo_desc' => 'Test Tipo',
+                'cond_esp_desc' => 'Test Descripción',
+                'cond_esp_fecha_inicio' => Date.today(),
+                'cond_esp_fecha_fin' =>  Date.today().addDays(10)
             }
                 );
         }
@@ -1506,67 +1506,68 @@ public with sharing class TestDataFactory
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
-        for (Integer i = 0; i < totalItems; i++) {
+        for (Integer i = 0; i < totalItems; i++)
+        {
             /* REGISTRO KPI*/
             jsonElementsList.add(
                 new Map<String, Object> {
-                    'ano_calculo' => '2021',
-                    'mes_calculo' => '7',
-                    'intermediario' => 'Inter' + String.valueOf(i + 1).leftPad(3, '0'), // external id del mediador (Account)
-                    'temporalidad' => 'Mensual',
-                    'agrupacion_productos' => 'COMERCIOS',
-                    'lob_agrupado' => 'Non Motor Fleet',
-                    'segmento_cliente_detalle' => 'Pymes',
-                    'cartera_entrada' => 0.0,
-                    'cartera_entrada_pa' => 0.0,
-                    'pn' => 0.0,
-                    'pn_pa' => 0.0,
-                    'suplementos' => 0.0,
-                    'suplementos_pa' => 0.0,
-                    'anulaciones' => 0.0,
-                    'anulaciones_pa' => 0.0,
-                    'cartera' => 0.0,
-                    'cartera_pa' => 0.0,
-                    'ingresos' => 36.62,
-                    'ingresos_pa' => 34.29,
-                    'carga_total' => 0.0,
-                    'carga_total_pa' => 0.0,
-                    'carga_cay' => 0.0,
-                    'carga_cay_pa' => 0.0,
-                    'comision' => 0.0,
-                    'comision_pa' => 0.0,
-                    'revised_baseline' => 0.0,
-                    'cartera_renovada' => 0.0,
-                    'polizas_pn' => 0,
-                    'polizas_pn_pa' => 0,
-                    'polizas_vigor' => 1,
-                    'polizas_vigor_pa' => 1,
-                    'descuento_total' => 0.0,
-                    'descuento_total_pa' => 0.0,
-                    'apes' => 0.0,
-                    'apes_pa' => 0.0,
-                    'derechos_consolidados' => 0.0,
-                    'derechos_consolidados_pa' => 0.0,
-                    'reserva_matematica' => 0.0,
-                    'reserva_matematica_pa' => 0.0,
-                    'clientes' => 1,
-                    'clientes_pa' => 1,
-                    'id_unico_kpi' => 'Inter' + String.valueOf(i + 1).leftPad(3, '0') + '-Non Motor Fleet-COMERCIOS-Pymes-Mensual-2021-7' // La primera parte debe conincidir con el external id del mediador
-                }
-            );
+                'ano_calculo' => '2021',
+                'mes_calculo' => '7',
+                'intermediario' => 'Inter' + String.valueOf(i + 1).leftPad(3, '0'),     // external id del mediador (Account)
+                'temporalidad' => 'Mensual',
+                'agrupacion_productos' => 'COMERCIOS',
+                'lob_agrupado' => 'Non Motor Fleet',
+                'segmento_cliente_detalle' => 'Pymes',
+                'cartera_entrada' => 0.0,
+                'cartera_entrada_pa' => 0.0,
+                'pn' => 0.0,
+                'pn_pa' => 0.0,
+                'suplementos' => 0.0,
+                'suplementos_pa' => 0.0,
+                'anulaciones' => 0.0,
+                'anulaciones_pa' => 0.0,
+                'cartera' => 0.0,
+                'cartera_pa' => 0.0,
+                'ingresos' => 36.62,
+                'ingresos_pa' => 34.29,
+                'carga_total' => 0.0,
+                'carga_total_pa' => 0.0,
+                'carga_cay' => 0.0,
+                'carga_cay_pa' => 0.0,
+                'comision' => 0.0,
+                'comision_pa' => 0.0,
+                'revised_baseline' => 0.0,
+                'cartera_renovada' => 0.0,
+                'polizas_pn' => 0,
+                'polizas_pn_pa' => 0,
+                'polizas_vigor' => 1,
+                'polizas_vigor_pa' => 1,
+                'descuento_total' => 0.0,
+                'descuento_total_pa' => 0.0,
+                'apes' => 0.0,
+                'apes_pa' => 0.0,
+                'derechos_consolidados' => 0.0,
+                'derechos_consolidados_pa' => 0.0,
+                'reserva_matematica' => 0.0,
+                'reserva_matematica_pa' => 0.0,
+                'clientes' => 1,
+                'clientes_pa' => 1,
+                'id_unico_kpi' => 'Inter' + String.valueOf(i + 1).leftPad(3, '0') + '-Non Motor Fleet-COMERCIOS-Pymes-Mensual-2021-7'     // La primera parte debe conincidir con el external id del mediador
+            }
+                );
         }
 
         return jsonElementsList;
     }
 
     /**
-    * @description 
-    *
-    * @author amiranda
-    * @date 20-02-2024 
-    * @param totalItems Número total de elementos a generar
-    * @return List<Map<String, Object>> Listado de elementos simulando un JSON
-    **/
+     * @description
+     *
+     * @author amiranda
+     * @date 20-02-2024
+     * @param totalItems Número total de elementos a generar
+     * @return List<Map<String, Object>> Listado de elementos simulando un JSON
+     **/
     public static List<Map<String, Object> > getINFOConsentJson(Integer totalItems)
     {
         return buildINFOConsentJson(totalItems);
@@ -1658,19 +1659,19 @@ public with sharing class TestDataFactory
             /* REGISTRO ACCOUNT_SCORE_KPI*/
             jsonElementsList.add(
                 new Map<String, Object> {
-                    'cdfiliac' => 'F' +
-                                            String.valueOf(i + 1).leftPad(9, '0'),
-                    'system' => '',
-                    'segme_cli' => 'Segmento Cliente Value',
-                    'desc_segme_cli' => 'Desc Segmento Cliente Value',
-                    'cltv_gi' => 4,
-                    'cltv_vida' => 3,
-                    'score_cltv_gi' => 'score_cltv__gi Value',
-                    'desc_score_cltv_gi' => 'Tres Estrellas',
-                    'score_cltv_vida' => 'score_cltv_vida Value',
-                    'desc_score_cltv_vida' => 'Cuatro Estrellas'
-                }
-            );
+                'cdfiliac' => 'F' +
+                             String.valueOf(i + 1).leftPad(9, '0'),
+                'system' => '',
+                'segme_cli' => 'Segmento Cliente Value',
+                'desc_segme_cli' => 'Desc Segmento Cliente Value',
+                'cltv_gi' => 4,
+                'cltv_vida' => 3,
+                'score_cltv_gi' => 'score_cltv__gi Value',
+                'desc_score_cltv_gi' => 'Tres Estrellas',
+                'score_cltv_vida' => 'score_cltv_vida Value',
+                'desc_score_cltv_vida' => 'Cuatro Estrellas'
+            }
+                );
         }
 
         return jsonElementsList;
@@ -1704,16 +1705,17 @@ public with sharing class TestDataFactory
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
-        for (Integer i = 0; i < totalItems; i++) {
+        for (Integer i = 0; i < totalItems; i++)
+        {
             /* REGISTRO INTERMEDIARY_TNPS*/
             jsonElementsList.add(
                 new Map<String, Object> {
-                    'puntuacion' => 7.81,
-                    'n_encuestas' => 300,
-                    'codigo_intermediario' => 'Inter' + String.valueOf(i + 1).leftPad(3, '0'), // external id del mediador (Account)
-                    'objetivo' => 8.04
-                }
-            );
+                'puntuacion' => 7.81,
+                'n_encuestas' => 300,
+                'codigo_intermediario' => 'Inter' + String.valueOf(i + 1).leftPad(3, '0'),     // external id del mediador (Account)
+                'objetivo' => 8.04
+            }
+                );
         }
 
         return jsonElementsList;
@@ -1886,7 +1888,7 @@ public with sharing class TestDataFactory
     {
         List<Opportunity> opportunitiesGenerated = new List<Opportunity>();
 
-        if(String.isBlank(stage))
+        if( String.isBlank(stage) )
         {
             stage = 'Qualification';
         }
@@ -1896,11 +1898,12 @@ public with sharing class TestDataFactory
             numRecords = 1;
         }
 
-        switch on type.toLowerCase() {
+        switch on type.toLowerCase()
+        {
             when 'ze' {
                 for(Account relatedAccount: accounts)
                 {
-                    for(Integer i=0; i<numRecords; i++)
+                    for(Integer i=0; i < numRecords; i++)
                     {
                         opportunitiesGenerated.add(
                             new Opportunity(
@@ -1908,15 +1911,16 @@ public with sharing class TestDataFactory
                                 Name = 'Test Opportunity ' + i,
                                 StageName = stage,
                                 CloseDate = closeDate
-                            )
-                        );
+                                )
+                            );
                     }
                 }
             }
-            when else {
+            when else
+            {
                 for(Account relatedAccount: accounts)
                 {
-                    for(Integer i=0; i<numRecords; i++)
+                    for(Integer i=0; i < numRecords; i++)
                     {
                         opportunitiesGenerated.add(
                             new Opportunity(
@@ -1925,8 +1929,8 @@ public with sharing class TestDataFactory
                                 StageName = stage,
                                 CloseDate = closeDate,
                                 Scope__c = type
-                            )
-                        );
+                                )
+                            );
                     }
                 }
             }
@@ -1953,15 +1957,15 @@ public with sharing class TestDataFactory
             numRecords = 1;
         }
 
-        for(Integer i=0; i<numRecords; i++)
+        for(Integer i=0; i < numRecords; i++)
         {
             emailMessagesGenerated.add(
                 new EmailMessage(
                     Subject = 'testsubject' + i,
                     FromAddress = 'fromaddress' + i + '@nts-solutions.com.invalid',
                     ToAddress = 'toaddress' + i + '@nts-solutions.com.invalid'
-                )
-            );
+                    )
+                );
         }
 
         return emailMessagesGenerated;
@@ -1988,7 +1992,7 @@ public with sharing class TestDataFactory
 
         for(EmailMessage relatedEmailMessage: emailMessages)
         {
-            for(Integer i=0; i<numRecords; i++)
+            for(Integer i=0; i < numRecords; i++)
             {
                 emailMessagesGenerated.add(
                     new EmailMessage(
@@ -1996,8 +2000,8 @@ public with sharing class TestDataFactory
                         FromAddress = relatedEmailMessage.ToAddress,
                         ToAddress = relatedEmailMessage.FromAddress,
                         MessageIdentifier = relatedEmailMessage.Id
-                    )
-                );
+                        )
+                    );
             }
         }
 
@@ -2025,9 +2029,9 @@ public with sharing class TestDataFactory
 
         for(Opportunity opportunity: opportunities)
         {
-            if(String.isNotBlank(opportunity.Name))
+            if( String.isNotBlank(opportunity.Name) )
             {
-                for(Integer i=0; i<numRecords; i++)
+                for(Integer i=0; i < numRecords; i++)
                 {
                     emailMessagesGenerated.add(
                         new EmailMessage(
@@ -2035,8 +2039,8 @@ public with sharing class TestDataFactory
                             RelatedToId = opportunity.Id,
                             FromAddress = 'fromaddress' + i + '@nts-solutions.com.invalid',
                             ToAddress = 'toaddress' + i + '@nts-solutions.com.invalid'
-                        )
-                    );
+                            )
+                        );
                 }
             }
         }
@@ -2067,8 +2071,8 @@ public with sharing class TestDataFactory
                     EmailMessageId = relationEmail.Id,
                     RelationId = personId,
                     RelationType = relationType
-                )
-            );
+                    )
+                );
         }
 
         return emailMessageRelationsGenerated;
@@ -2138,8 +2142,8 @@ public with sharing class TestDataFactory
                             NationalId__c = generateSpanishFormatDNI(),
                             NationalIdType__c = 'N',
                             RecordTypeId = recordTypeId
-                        )
-                    );
+                            )
+                        );
                 }
             }
             when 'Intermediary' {
@@ -2154,8 +2158,8 @@ public with sharing class TestDataFactory
                             NationalId__c = 'C',
                             RecordTypeId = recordTypeId,
                             Zone__c = PlanComercialSelector.ZONE_11_BARCELONA
-                        )
-                    );
+                            )
+                        );
                 }
             }
             when 'PartnerOCS' {
@@ -2171,8 +2175,8 @@ public with sharing class TestDataFactory
                             PartnerSector__c = 'Sector' + i,
                             PartnerSFCode__c = 'Code' + i,
                             GrandparentBusinessName__c = 'grandparentName' + i
-                        )
-                    );
+                            )
+                        );
                 }
             }
             when 'Customer' { // PersonalAccount
@@ -2185,8 +2189,8 @@ public with sharing class TestDataFactory
                             NationalId__c = generateSpanishFormatDNI(),
                             NationalIdType__c = 'N',
                             RecordTypeId = recordTypeId
-                        )
-                    );
+                            )
+                        );
                 }
             }
             when 'Lead' { // Lead
@@ -2199,8 +2203,8 @@ public with sharing class TestDataFactory
                             NationalId__c = generateSpanishFormatDNI(),
                             NationalIdType__c = 'N',
                             RecordTypeId = recordTypeId
-                        )
-                    );
+                            )
+                        );
                 }
             }
             when 'AgrupacionMediador' { // SDM: agrupacion mediadores
@@ -2214,11 +2218,12 @@ public with sharing class TestDataFactory
                             RecordTypeId = recordTypeId,
                             INFOIntermediaryGroupCode__c = '11111' + i,
                             Zone__c = PlanComercialSelector.ZONE_11_BARCELONA
-                        )
-                    );
+                            )
+                        );
                 }
             }
-            when else {
+            when else
+            {
                 for (Integer i = 0; i < numRecords; i++)
                 {
                     accounts.add(
@@ -2227,8 +2232,8 @@ public with sharing class TestDataFactory
                             LegalEntity__c = legalEntity,
                             NationalId__c = generateSpanishFormatDNI(),
                             NationalIdType__c = 'N'
-                        )
-                    );
+                            )
+                        );
                 }
             }
         }
@@ -2262,7 +2267,7 @@ public with sharing class TestDataFactory
             recordTypeId = contactRecordTypeInfo.getRecordTypeId();
         }
 
-        for(Integer i=0; i<numRecords; i++)
+        for(Integer i=0; i < numRecords; i++)
         {
             for(Account relatedAccount: accounts)
             {
@@ -2271,8 +2276,8 @@ public with sharing class TestDataFactory
                         LastName = 'testlastname' + i,
                         AccountId = relatedAccount.Id,
                         RecordTypeId = recordTypeId
-                    )
-                );
+                        )
+                    );
             }
         }
 
@@ -2336,7 +2341,7 @@ public with sharing class TestDataFactory
 
         for(Account relatedAccount: accounts)
         {
-            for(Integer i=0; i<numRecords; i++)
+            for(Integer i=0; i < numRecords; i++)
             {
                 Integer phoneNumber = (Math.random() * 1000000000).intValue();
                 contactPointAddresses.add(
@@ -2344,8 +2349,8 @@ public with sharing class TestDataFactory
                         Name = 'Address' + i,
                         ParentId = relatedAccount.Id,
                         Street = 'Street ' + i
-                    )
-                );
+                        )
+                    );
             }
         }
 
@@ -2373,15 +2378,15 @@ public with sharing class TestDataFactory
 
         for(Account relatedAccount: accounts)
         {
-            for(Integer i=0; i<numRecords; i++)
+            for(Integer i=0; i < numRecords; i++)
             {
                 Integer phoneNumber = (Math.random() * 1000000000).intValue();
                 contactPointPhones.add(
                     new ContactPointPhone(
                         ParentId = relatedAccount.Id,
                         TelephoneNumber = String.valueOf(phoneNumber)
-                    )
-                );
+                        )
+                    );
             }
         }
 
@@ -2409,15 +2414,15 @@ public with sharing class TestDataFactory
 
         for(Account relatedAccount: accounts)
         {
-            for(Integer i=0; i<numRecords; i++)
+            for(Integer i=0; i < numRecords; i++)
             {
                 Integer phoneNumber = (Math.random() * 1000000000).intValue();
                 contactPointEmails.add(
                     new ContactPointEmail(
                         ParentId = relatedAccount.Id,
                         EmailAddress = relatedAccount.Name + '@nts-solutions.com'
-                    )
-                );
+                        )
+                    );
             }
         }
 
@@ -2445,14 +2450,14 @@ public with sharing class TestDataFactory
 
         for(Account relatedAccount: accounts)
         {
-            for(Integer i=0; i<numRecords; i++)
+            for(Integer i=0; i < numRecords; i++)
             {
                 cases.add(
                     new Case(
                         OwnerId = USerInfo.getUserid(),
                         AccountId = relatedAccount.Id
-                    )
-                );
+                        )
+                    );
             }
         }
 
@@ -2480,19 +2485,19 @@ public with sharing class TestDataFactory
 
         for(Account relatedAccount: accounts)
         {
-            for(Integer i=0; i<numRecords; i++)
+            for(Integer i=0; i < numRecords; i++)
             {
                 opportunities.add(
                     new Opportunity(
                         OwnerId = USerInfo.getUserid(),
                         AccountId = relatedAccount.Id,
-                        Name = 'opp'+i,
+                        Name = 'opp' + i,
                         StageName = stage,
                         CloseDate = closeDate,
                         Scope__c = scope,
-                        InfoQuoteNumber__c = 'opp'+relatedAccount.Id+i
-                    )
-                );
+                        InfoQuoteNumber__c = 'opp' + relatedAccount.Id + i
+                        )
+                    );
             }
         }
 
@@ -2520,22 +2525,22 @@ public with sharing class TestDataFactory
         }
 
 
-        if(String.isBlank(scope))
+        if( String.isBlank(scope) )
         {
             scope = 'General';
         }
 
         for(Account relatedAccount: accounts)
         {
-            for(Integer i=0; i<numRecords; i++)
+            for(Integer i=0; i < numRecords; i++)
             {
                 scopes.add(
                     new Scope__c(
                         Name = scope + i,
                         Scope__c = scope,
                         AccountId__c = relatedAccount.Id
-                    )
-                );
+                        )
+                    );
             }
         }
 
@@ -2564,7 +2569,7 @@ public with sharing class TestDataFactory
         for(Scope__c relatedScope: scopes)
         {
             Boolean isPrimary = true;
-            for(Integer i=0; i<numRecords; i++)
+            for(Integer i=0; i < numRecords; i++)
             {
                 contactPointEmails.add(
                     new ContactPointEmail(
@@ -2573,8 +2578,8 @@ public with sharing class TestDataFactory
                         ScopeId__c = relatedScope.Id,
                         Scope__c = relatedScope.Scope__c,
                         IsPrimary = isPrimary
-                    )
-                );
+                        )
+                    );
                 isPrimary = false;
             }
         }
@@ -2604,7 +2609,7 @@ public with sharing class TestDataFactory
         for(Scope__c relatedScope: scopes)
         {
             Boolean isPrimary = true;
-            for(Integer i=0; i<numRecords; i++)
+            for(Integer i=0; i < numRecords; i++)
             {
                 Integer phoneNumber = (Math.random() * 1000000000).intValue();
                 contactPointPhones.add(
@@ -2614,8 +2619,8 @@ public with sharing class TestDataFactory
                         ScopeId__c = relatedScope.Id,
                         Scope__c = relatedScope.Scope__c,
                         IsPrimary = isPrimary
-                    )
-                );
+                        )
+                    );
                 isPrimary = false;
             }
         }
@@ -2637,7 +2642,7 @@ public with sharing class TestDataFactory
         Map<String, Object> jsonInformation = new Map<String, Object>();
 
         //Datos comunes
-        jsonInformation.put('timeStamp', datetimeToISOString(System.now()));
+        jsonInformation.put( 'timeStamp', datetimeToISOString( System.now() ) );
         jsonInformation.put('webEmail', email);
         jsonInformation.put('sessionId', '1234567890'); // Math.random());
         jsonInformation.put('businessCode', businessCode);
@@ -2665,8 +2670,8 @@ public with sharing class TestDataFactory
             when 'CRM-03' {
                 jsonInformation.put('webPhone', phone);
                 jsonInformation.put('status', 'Activo');
-                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
-                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
+                jsonInformation.put( 'bestTimeFrom', datetimeToISOString( System.now() ) );
+                jsonInformation.put( 'bestTimeUntil', datetimeToISOString( System.now().addHours(4) ) );
 
                 jsonInformation.put('accountInformation', new Map<String, Object>
                 {
@@ -2677,28 +2682,28 @@ public with sharing class TestDataFactory
                 });
 
 
-                jsonInformation.put('offers', new List<Map<String, Object>>{
-                    new Map<String, Object>{
-                        'commercialPC' => (!products.isEmpty() ? products.get(0).CommercialCode__c : String.valueOf((Math.random() * 100000).intValue())),
-                        'technicalPC' => (!products.isEmpty() ? products.get(0).TechnicalCode__c : String.valueOf((Math.random() * 100000).intValue()))
+                jsonInformation.put('offers', new List<Map<String, Object> > {
+                    new Map<String, Object> {
+                        'commercialPC' => ( !products.isEmpty() ? products.get(0).CommercialCode__c : String.valueOf( (Math.random() * 100000).intValue() ) ),
+                        'technicalPC' => ( !products.isEmpty() ? products.get(0).TechnicalCode__c : String.valueOf( (Math.random() * 100000).intValue() ) )
                     },
-                    new Map<String, Object>{
-                        'commercialPC' => (!products.isEmpty() && products.get(1) != null ? products.get(1).CommercialCode__c : String.valueOf((Math.random() * 100000).intValue())),
-                        'technicalPC' => (!products.isEmpty() && products.get(1) != null ? products.get(1).TechnicalCode__c : String.valueOf((Math.random() * 100000).intValue()))
+                    new Map<String, Object> {
+                        'commercialPC' => ( !products.isEmpty() && products.get(1) != null ? products.get(1).CommercialCode__c : String.valueOf( (Math.random() * 100000).intValue() ) ),
+                        'technicalPC' => ( !products.isEmpty() && products.get(1) != null ? products.get(1).TechnicalCode__c : String.valueOf( (Math.random() * 100000).intValue() ) )
                     }
                 });
             }
             when 'CRM-04' {
                 jsonInformation.put('webPhone', phone);
                 jsonInformation.put('status', 'Abandono');
-                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
-                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
-                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+                jsonInformation.put( 'bestTimeFrom', datetimeToISOString( System.now() ) );
+                jsonInformation.put( 'bestTimeUntil', datetimeToISOString( System.now().addHours(4) ) );
+                jsonInformation.put( 'accountInformation', generateCompleteAccountInformation(nationalId) );
 
-                jsonInformation.put('offers', new List<Map<String, Object>>{
-                    new Map<String, Object>{
-                        'commercialPC' => (!products.isEmpty() ? products.get(0).CommercialCode__c : String.valueOf((Math.random() * 100000).intValue())),
-                        'technicalPC' => (!products.isEmpty() ? products.get(0).TechnicalCode__c : String.valueOf((Math.random() * 100000).intValue())),
+                jsonInformation.put('offers', new List<Map<String, Object> > {
+                    new Map<String, Object> {
+                        'commercialPC' => ( !products.isEmpty() ? products.get(0).CommercialCode__c : String.valueOf( (Math.random() * 100000).intValue() ) ),
+                        'technicalPC' => ( !products.isEmpty() ? products.get(0).TechnicalCode__c : String.valueOf( (Math.random() * 100000).intValue() ) ),
                         'offerRiskInformation' => generateOfferRiskInformation()
                     }
                 });
@@ -2706,50 +2711,50 @@ public with sharing class TestDataFactory
             when 'CRM-05' {
                 jsonInformation.put('webPhone', phone);
                 jsonInformation.put('status', 'Abandono');
-                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
-                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
-                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+                jsonInformation.put( 'bestTimeFrom', datetimeToISOString( System.now() ) );
+                jsonInformation.put( 'bestTimeUntil', datetimeToISOString( System.now().addHours(4) ) );
+                jsonInformation.put( 'accountInformation', generateCompleteAccountInformation(nationalId) );
 
-                jsonInformation.put('offers', new List<Map<String, Object>>{
+                jsonInformation.put('offers', new List<Map<String, Object> > {
                     generateOfferWithRisk(products, businessCode)
                 });
             }
             when 'CRM-06' {
                 jsonInformation.put('webPhone', phone);
                 jsonInformation.put('status', 'Activo');
-                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
-                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
-                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+                jsonInformation.put( 'bestTimeFrom', datetimeToISOString( System.now() ) );
+                jsonInformation.put( 'bestTimeUntil', datetimeToISOString( System.now().addHours(4) ) );
+                jsonInformation.put( 'accountInformation', generateCompleteAccountInformation(nationalId) );
 
-                jsonInformation.put('offers', new List<Map<String, Object>>{
+                jsonInformation.put('offers', new List<Map<String, Object> > {
                     generateOfferWithRisk(products, businessCode)
                 });
             }
             when 'CRM-07' {
                 jsonInformation.put('webPhone', phone);
                 jsonInformation.put('status', 'Abandono');
-                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
-                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
-                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+                jsonInformation.put( 'bestTimeFrom', datetimeToISOString( System.now() ) );
+                jsonInformation.put( 'bestTimeUntil', datetimeToISOString( System.now().addHours(4) ) );
+                jsonInformation.put( 'accountInformation', generateCompleteAccountInformation(nationalId) );
 
-                jsonInformation.put('offers', new List<Map<String, Object>>{
+                jsonInformation.put('offers', new List<Map<String, Object> > {
                     generateOfferWithRisk(products, businessCode)
                 });
 
-                jsonInformation.put('manager', generateManagerInformation(email, phone));
+                jsonInformation.put( 'manager', generateManagerInformation(email, phone) );
             }
             when 'CRM-08' {
                 jsonInformation.put('webPhone', phone);
                 jsonInformation.put('status', 'ACtivo');
-                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
-                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
-                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+                jsonInformation.put( 'bestTimeFrom', datetimeToISOString( System.now() ) );
+                jsonInformation.put( 'bestTimeUntil', datetimeToISOString( System.now().addHours(4) ) );
+                jsonInformation.put( 'accountInformation', generateCompleteAccountInformation(nationalId) );
 
-                jsonInformation.put('offers', new List<Map<String, Object>>{
+                jsonInformation.put('offers', new List<Map<String, Object> > {
                     generateOfferWithRisk(products, businessCode)
                 });
 
-                jsonInformation.put('manager', generateManagerInformation(email, phone));
+                jsonInformation.put( 'manager', generateManagerInformation(email, phone) );
             }
         }
 
@@ -2758,109 +2763,109 @@ public with sharing class TestDataFactory
 
     public static String datetimeToISOString(Datetime datetimeToConvert)
     {
-        return  datetimeToConvert.year() + '-' +
-                ('0'+datetimeToConvert.month()).right(2) + '-' +
-                ('0'+datetimeToConvert.day()).right(2) +
-                'T' +
-                ('0'+datetimeToConvert.hour()).right(2) +
-                ':' +
-                ('0'+datetimeToConvert.minute()).right(2) +
-                ':' +
-                ('0'+datetimeToConvert.second()).right(2) +
-                '.' +
-                ('00'+datetimeToConvert.millisecond()).right(3) + 'Z';
+        return datetimeToConvert.year() + '-' +
+               ( '0' + datetimeToConvert.month() ).right(2) + '-' +
+               ( '0' + datetimeToConvert.day() ).right(2) +
+               'T' +
+               ( '0' + datetimeToConvert.hour() ).right(2) +
+               ':' +
+               ( '0' + datetimeToConvert.minute() ).right(2) +
+               ':' +
+               ( '0' + datetimeToConvert.second() ).right(2) +
+               '.' +
+               ( '00' + datetimeToConvert.millisecond() ).right(3) + 'Z';
     }
 
     private static Map<String, Object> generateCompleteAccountInformation(String nationalId)
     {
         return new Map<String, String>
-        {
-            'firstName'  => 'FirstName',
-            'lastName' => 'LastName',
-            'family' => '10',
-            'commercialActivity' => '101100',
-            'annualRevenue' => '200000.10',
-            'numberOfEmployees' => '150',
-            'tradeName' => 'TradeName',
-            'companyName' => 'CompanyName',
-            'nationalIdentifier' => nationalId,
-            'webIdentifier' => 'ABC123'
-        };
+               {
+                   'firstName'  => 'FirstName',
+                   'lastName' => 'LastName',
+                   'family' => '10',
+                   'commercialActivity' => '101100',
+                   'annualRevenue' => '200000.10',
+                   'numberOfEmployees' => '150',
+                   'tradeName' => 'TradeName',
+                   'companyName' => 'CompanyName',
+                   'nationalIdentifier' => nationalId,
+                   'webIdentifier' => 'ABC123'
+               };
     }
 
     private static Map<String, Object> generateOfferRiskInformation()
     {
-        return new Map<String, Object>{
-            'propertyStreetType' => 'VI',
-            'propertyStreet' => 'Via Augusta',
-            'propertyStreetNumber' => '12',
-            'propertyAdditionalInfo' => '',
-            'propertyPostalCode' => '08006',
-            'propertyCity' => 'Barcelona',
-            'propertyState' => '8',
-            'propertyCountry' => 'ESP',
-            'yearOfConstruction' => '1960',
-            'ownership' => 'P',
-            'insuredType' => 'I',
-            'buildingType' => 'I',
-            'height' => 'AL',
-            'riskFactor01' => '0001',
-            'riskFactor02' => '',
-            'riskFactor03' => '',
-            'riskFactor04' => '',
-            'riskFactor05' => '',
-            'riskFactor06' => '',
-            'riskFactor07' => '',
-            'riskFactor08' => '0039',
-            'riskFactor09' => '',
-            'area' => '50',
-            'lockType' => true,
-            'securityDoor' => false,
-            'bulletproofDoor' => false,
-            'connectedAlarm' => false,
-            'fireHydrant' => false,
-            'surveillance' => false,
-            'smokeDetector' => false,
-            'sprayer' => false,
-            'fireExtinguisher' => true,
-            'typeOfWindows' => '2',
-            'strongbox' => 'N'
+        return new Map<String, Object> {
+                   'propertyStreetType' => 'VI',
+                   'propertyStreet' => 'Via Augusta',
+                   'propertyStreetNumber' => '12',
+                   'propertyAdditionalInfo' => '',
+                   'propertyPostalCode' => '08006',
+                   'propertyCity' => 'Barcelona',
+                   'propertyState' => '8',
+                   'propertyCountry' => 'ESP',
+                   'yearOfConstruction' => '1960',
+                   'ownership' => 'P',
+                   'insuredType' => 'I',
+                   'buildingType' => 'I',
+                   'height' => 'AL',
+                   'riskFactor01' => '0001',
+                   'riskFactor02' => '',
+                   'riskFactor03' => '',
+                   'riskFactor04' => '',
+                   'riskFactor05' => '',
+                   'riskFactor06' => '',
+                   'riskFactor07' => '',
+                   'riskFactor08' => '0039',
+                   'riskFactor09' => '',
+                   'area' => '50',
+                   'lockType' => true,
+                   'securityDoor' => false,
+                   'bulletproofDoor' => false,
+                   'connectedAlarm' => false,
+                   'fireHydrant' => false,
+                   'surveillance' => false,
+                   'smokeDetector' => false,
+                   'sprayer' => false,
+                   'fireExtinguisher' => true,
+                   'typeOfWindows' => '2',
+                   'strongbox' => 'N'
         };
     }
 
     private static Map<String, Object> generateOfferWithRisk(List<Product2> products, String businessCode)
     {
         Datetime twoWeeks = System.today().addDays(15);
-        return new Map<String, Object>{
-            'policyNumber' => '000000222',
-            'quoteNumberINFO' => '456789456',
-            'quoteNumberJRE' => '789989799',
-            'operationCode' => 'P1',
-            'businessCode' => businessCode,
-            'effectiveDate' => twoWeeks.year()+'-'+('0'+twoWeeks.month()).right(2)+'-'+('0'+twoWeeks.day()).right(2),
-            'commercialPC' => (!products.isEmpty() ? products.get(0).CommercialCode__c : String.valueOf((Math.random() * 100000).intValue())),
-            'technicalPC' => (!products.isEmpty() ? products.get(0).TechnicalCode__c : String.valueOf((Math.random() * 100000).intValue())),
-            'paymentType' => 'A',
-            'paymentTypeSucc' => 'A',
-            'paymentChannel' => 'CC',
-            'paymentChannelSucc' => 'CC',
-            'language' => 'ES',
-            'buildingCapital' => '120000',
-            'contentCapital' => '12000',
-            'generalLiabilityLimit' => '12000',
-            'netPremium' => '12000',
-            'validationErrors' => '',
-            'offerRiskInformation' => generateOfferRiskInformation()
+        return new Map<String, Object> {
+                   'policyNumber' => '000000222',
+                   'quoteNumberINFO' => '456789456',
+                   'quoteNumberJRE' => '789989799',
+                   'operationCode' => 'P1',
+                   'businessCode' => businessCode,
+                   'effectiveDate' => twoWeeks.year() + '-' + ( '0' + twoWeeks.month() ).right(2) + '-' + ( '0' + twoWeeks.day() ).right(2),
+                   'commercialPC' => ( !products.isEmpty() ? products.get(0).CommercialCode__c : String.valueOf( (Math.random() * 100000).intValue() ) ),
+                   'technicalPC' => ( !products.isEmpty() ? products.get(0).TechnicalCode__c : String.valueOf( (Math.random() * 100000).intValue() ) ),
+                   'paymentType' => 'A',
+                   'paymentTypeSucc' => 'A',
+                   'paymentChannel' => 'CC',
+                   'paymentChannelSucc' => 'CC',
+                   'language' => 'ES',
+                   'buildingCapital' => '120000',
+                   'contentCapital' => '12000',
+                   'generalLiabilityLimit' => '12000',
+                   'netPremium' => '12000',
+                   'validationErrors' => '',
+                   'offerRiskInformation' => generateOfferRiskInformation()
         };
     }
 
     private static Map<String, Object> generateManagerInformation(String email, String phone)
     {
-        return new Map<String, Object>{
-            'email' => email,
-            'phone' => phone,
-            'firstName' => 'ManagerFirstName',
-            'lastName' => 'ManagerLastName'
+        return new Map<String, Object> {
+                   'email' => email,
+                   'phone' => phone,
+                   'firstName' => 'ManagerFirstName',
+                   'lastName' => 'ManagerLastName'
         };
     }
 
@@ -2873,15 +2878,15 @@ public with sharing class TestDataFactory
             numRecords = 1;
         }
 
-        for(Integer i=0; i<numRecords; i++)
+        for(Integer i=0; i < numRecords; i++)
         {
             products.add(
                 new Product2(
                     Name = 'Product Name ' + i,
-                    CommercialCode__c = String.valueOf((Math.random() * 100000).intValue()),
-                    TechnicalCode__c = String.valueOf((Math.random() * 100000).intValue())
-                )
-            );
+                    CommercialCode__c = String.valueOf( (Math.random() * 100000).intValue() ),
+                    TechnicalCode__c = String.valueOf( (Math.random() * 100000).intValue() )
+                    )
+                );
         }
 
         return products;
@@ -2889,7 +2894,7 @@ public with sharing class TestDataFactory
 
     /**
      * Genera una lista de casos de ZDA
-     * 
+     *
      * @param numRecords número de casos a generar
      * @return listado de casos generados
      */
@@ -2902,42 +2907,42 @@ public with sharing class TestDataFactory
             numRecords = 1;
         }
 
-        for(Integer i=0; i<numRecords; i++)
+        for(Integer i=0; i < numRecords; i++)
         {
             cases.add(
                 new Case(
-                    CuTicketId__c = ''+(i+1),
+                    CuTicketId__c = '' + (i + 1),
                     Origin = CaseUtil.ORIGIN_CANAL_UNICO,
                     RecordTypeId = CaseUtil.RT_ID_ZDA,
-                    Subject = 'Subject del caso '+(i+1)
-                )
-            );
+                    Subject = 'Subject del caso ' + (i + 1)
+                    )
+                );
         }
 
         return cases;
     }
 
     /*
-    * Genera Casos con un OwnerId determinado (Cola o Usuario)
-    * @param ownerId ID de Cola o User
-    * @param Integer numRecords número de registros a generar POR CADA CUENTA
-    * @return List<Case> listado de registros generados
-    */
-   public static List<Case> generateCasesWithOwnerId(Id ownerId, Integer numRecords)
-   {
-       List<Case> cases = new List<Case>();
+     * Genera Casos con un OwnerId determinado (Cola o Usuario)
+     * @param ownerId ID de Cola o User
+     * @param Integer numRecords número de registros a generar POR CADA CUENTA
+     * @return List<Case> listado de registros generados
+     */
+    public static List<Case> generateCasesWithOwnerId(Id ownerId, Integer numRecords)
+    {
+        List<Case> cases = new List<Case>();
 
-       if(numRecords == null || numRecords < 1)
+        if(numRecords == null || numRecords < 1)
         {
             numRecords = 1;
         }
-        for(Integer i=0; i<numRecords; i++)
+        for(Integer i=0; i < numRecords; i++)
         {
             cases.add(
                 new Case(
                     OwnerId = ownerId
-                )
-            );
+                    )
+                );
         }
 
         return cases;
@@ -3023,7 +3028,7 @@ public with sharing class TestDataFactory
 
         for(Account relatedAccount: accounts)
         {
-            for(Integer i=0; i<numRecords; i++)
+            for(Integer i=0; i < numRecords; i++)
             {
                 Integer policyNumber = (Math.random() * 1000000000).intValue();
                 policies.add(
@@ -3032,8 +3037,8 @@ public with sharing class TestDataFactory
                         PolicyHolder__c = relatedAccount.Id,
                         InfoPolicyNumber__c = String.valueOf(policyNumber).leftPad(14, '0'),
                         PolicyStatus__c= 'V'
-                    )
-                );
+                        )
+                    );
             }
         }
 
@@ -3064,7 +3069,7 @@ public with sharing class TestDataFactory
 
         for(Policy__c relatedPolicy: policies)
         {
-            for(Integer i=0; i<numRecords; i++)
+            for(Integer i=0; i < numRecords; i++)
             {
                 Integer insuredObjectNumber = (Math.random() * 1000000000).intValue();
                 insuredObjects.add(
@@ -3075,8 +3080,8 @@ public with sharing class TestDataFactory
                         RegistrationNumber__c = 'RegistrationNumber' + i,
                         PolicyId__c = relatedPolicy.Id,
                         RecordTypeId = recordTypeId
-                    )
-                );
+                        )
+                    );
             }
         }
 
@@ -3103,7 +3108,7 @@ public with sharing class TestDataFactory
         {
             for(Asset relatedInsuredObject: insuredObjects)
             {
-                for(Integer i=0; i<numRecords; i++)
+                for(Integer i=0; i < numRecords; i++)
                 {
                     Integer claimNumber = (Math.random() * 1000000000).intValue();
                     claims.add(
@@ -3113,8 +3118,8 @@ public with sharing class TestDataFactory
                             Policy__c = relatedPolicy.Id,
                             InsuredObject__c = relatedInsuredObject.Id,
                             INFOClaimNumber__c = String.valueOf(claimNumber)
-                        )
-                    );
+                            )
+                        );
                 }
             }
         }
@@ -3122,21 +3127,25 @@ public with sharing class TestDataFactory
         return claims;
     }
 
-     /**
-    * @description Método que genera registros de competencia para una lista de cuentas
-    *
-    * @author dmunoz
-    * @date 16-10-20234
-    * @return List<Competitor__c>
-    **/
-    public static List<Competitor__c> generateCompetitors(List<Account> accountsList, Integer numCompetitors) {
+    /**
+     * @description Método que genera registros de competencia para una lista de cuentas
+     *
+     * @author dmunoz
+     * @date 16-10-20234
+     * @return List<Competitor__c>
+     **/
+    public static List<Competitor__c> generateCompetitors(List<Account> accountsList, Integer numCompetitors)
+    {
 
         List<Competitor__c> result = new List<Competitor__c>();
         Competitor__c competitor = null;
 
-        if (!accountsList.isEmpty() && numCompetitors > 0) {
-            for (Account account: accountsList) {
-                for (Integer i = 0; i < numCompetitors; i++) {
+        if (!accountsList.isEmpty() && numCompetitors > 0)
+        {
+            for (Account account: accountsList)
+            {
+                for (Integer i = 0; i < numCompetitors; i++)
+                {
                     competitor = new Competitor__c();
                     competitor.Account__c = account.Id;
                     competitor.ProductType__c = 'NEG';
@@ -3168,14 +3177,14 @@ public with sharing class TestDataFactory
             numRecords = 1;
         }
 
-        for(Integer i=0; i<numRecords; i++)
+        for(Integer i=0; i < numRecords; i++)
         {
             campaigns.add(
                 new Campaign(
                     Name = 'TestCampaign ' + i,
                     LegalEntity__c = legalEntity
-                )
-            );
+                    )
+                );
         }
 
         return campaigns;
@@ -3204,8 +3213,8 @@ public with sharing class TestDataFactory
                         ContactId = member.Id,
                         CampaignId = campaign.Id,
                         Status = status
-                    )
-                );
+                        )
+                    );
             }
         }
 
@@ -3237,8 +3246,8 @@ public with sharing class TestDataFactory
                             ContactId = member.PersonContactId,
                             CampaignId = campaign.Id,
                             Status = status
-                        )
-                    );
+                            )
+                        );
                 }
             }
         }
@@ -3257,11 +3266,13 @@ public with sharing class TestDataFactory
      * @author dmunoz
      * @date 14/08/2023
      */
-    public static List<CampaignMemberStatus> generateCampaignStatus(List<String> newStatusList, Id campaignId) {
+    public static List<CampaignMemberStatus> generateCampaignStatus(List<String> newStatusList, Id campaignId)
+    {
         List<CampaignMemberStatus> result = new List<CampaignMemberStatus>();
         CampaignMemberStatus cms;
 
-        for (String newStatus: newStatusList) {
+        for (String newStatus: newStatusList)
+        {
             cms = new CampaignMemberStatus();
             cms.Label = newStatus;
             cms.campaignId = campaignId;
@@ -3294,20 +3305,20 @@ public with sharing class TestDataFactory
 
         for(Scope__c relatedScope: scopes)
         {
-            for(Integer i=0; i<numRecords; i++)
+            for(Integer i=0; i < numRecords; i++)
             {
                 opportunities.add(
                     new Opportunity(
                         OwnerId = USerInfo.getUserid(),
                         AccountId = relatedScope.AccountId__c,
-                        Name = 'opp'+i,
+                        Name = 'opp' + i,
                         StageName = stage,
                         CloseDate = closeDate,
                         Scope__c = relatedScope.Scope__c,
                         ScopeId__c = relatedScope.Id,
-                        InfoQuoteNumber__c = 'opp'+relatedScope.AccountId__c+i
-                    )
-                );
+                        InfoQuoteNumber__c = 'opp' + relatedScope.AccountId__c + i
+                        )
+                    );
             }
         }
 
@@ -3331,7 +3342,7 @@ public with sharing class TestDataFactory
 
         for(Opportunity relatedOpportunity: opportunities)
         {
-            for(Integer i=0; i<numRecords; i++)
+            for(Integer i=0; i < numRecords; i++)
             {
                 Integer policyNumber = (Math.random() * 1000000000).intValue();
                 policies.add(
@@ -3342,8 +3353,8 @@ public with sharing class TestDataFactory
                         OpportunityName__c = relatedOpportunity.Id,
                         InfoQuoteNumber__c = relatedOpportunity.InfoQuoteNumber__c,
                         PolicyStatus__c = 'V'
-                    )
-                );
+                        )
+                    );
             }
         }
 
@@ -3369,24 +3380,24 @@ public with sharing class TestDataFactory
             numRecords = 1;
         }
 
-        for(Integer i=0; i<numRecords; i++)
+        for(Integer i=0; i < numRecords; i++)
         {
-            if(String.isNotBlank(profileId))
+            if( String.isNotBlank(profileId) )
             {
-                String email = 'testuser'+i+'@nts-solutions.com.invalid';
+                String email = 'testuser' + i + '@nts-solutions.com.invalid';
                 users.add(
                     new User(
                         Username=email + profileId,
-                        LastName='User'+i,
+                        LastName='User' + i,
                         Email=email,
-                        Alias='user'+i,
+                        Alias='user' + i,
                         ProfileId=profileId,
                         TimeZoneSidKey='Europe/Rome',
                         LocaleSidKey='es_ES',
                         EmailEncodingKey='UTF-8',
                         LanguageLocaleKey='es'
-                    )
-                );
+                        )
+                    );
             }
         }
 
@@ -3407,16 +3418,16 @@ public with sharing class TestDataFactory
             numRecords = 1;
         }
 
-        for(Integer i=0; i<numRecords; i++)
+        for(Integer i=0; i < numRecords; i++)
         {
             genesysQueues.add(
                 new purecloud__PureCloud_Queue__c(
-                    Name='GenesysQueueName'+i,
-                    purecloud__PureCloud_Queue_ID__c='GenesysQueueId'+i,
+                    Name='GenesysQueueName' + i,
+                    purecloud__PureCloud_Queue_ID__c='GenesysQueueId' + i,
                     isSurveyable__c=false,
                     scope__c= 'Z'
-                )
-            );
+                    )
+                );
         }
         return genesysQueues;
     }
@@ -3443,9 +3454,9 @@ public with sharing class TestDataFactory
         }
 
         Id rtId = SystemUtil.getOrderRecordTypeIdByName(recordTypeName);
-        for(Integer i=0; i<numRecords; i++)
+        for(Integer i=0; i < numRecords; i++)
         {
-            String email = 'testuser'+i+'@nts-solutions.com.invalid';
+            String email = 'testuser' + i + '@nts-solutions.com.invalid';
             orders.add(
                 new Order(
                     EffectiveDate = Date.valueOf('1994-01-01'),
@@ -3457,9 +3468,9 @@ public with sharing class TestDataFactory
                     AccountId = accountId,
                     ContactId__c = contactId, //Importante
                     PolicyStatus__c = Label.PolicyStatusActive, //Importante
-                    PolicyNum__c = '8989'+i //debe ser único
-                )
-            );
+                    PolicyNum__c = '8989' + i //debe ser único
+                    )
+                );
         }
 
         return orders;
@@ -3479,14 +3490,15 @@ public with sharing class TestDataFactory
     {
         List<ContactRequest> contactReqs = new List<ContactRequest>();
 
-        for (Integer i = 0; i < num; i++) {
+        for (Integer i = 0; i < num; i++)
+        {
             contactReqs.add(
                 new ContactRequest(
                     GenesysInteractionId__c= 'b5d554e7-94b7-4fe1-8041-bfd9992a569' + i,
                     Status= 'New',
                     WhoId= accountId
-                )
-            );
+                    )
+                );
         }
 
         return contactReqs;
@@ -3502,12 +3514,14 @@ public with sharing class TestDataFactory
      * @return {List<ContactRequest>} la lista creada
      * @change amiranda 04/01/2023 Se añade el campo 'RecordTypeId' con el Id del tipo de registro 'Objectives'
      */
-    public static List<Objective__c> generateObjectives(String year, Integer num) {
+    public static List<Objective__c> generateObjectives(String year, Integer num)
+    {
 
         Id objectiveRTId = Schema.SObjectType.Objective__c.getRecordTypeInfosByDeveloperName().get('Objectives')?.getRecordTypeId();
 
         List<Objective__c> result = new List<Objective__c>();
-        for (Integer i = 0; i < num; i++) {
+        for (Integer i = 0; i < num; i++)
+        {
             result.add(
                 new Objective__c(
                     Year__c = year,
@@ -3518,8 +3532,8 @@ public with sharing class TestDataFactory
                     January__c = 100,
                     ExternalId__c = String.valueOf(i),
                     RecordTypeId = objectiveRTId
-                )
-            );
+                    )
+                );
         }
 
         return result;
@@ -3537,32 +3551,33 @@ public with sharing class TestDataFactory
      * @change amiranda 04/01/2023 Se añade el campo 'RecordTypeId' con el Id del tipo de registro 'Objectives'
      */
     public static Objective__c generateObjective(Integer year, String indicator, String segment, String product, String zone, Decimal january, Decimal february, Decimal march, Decimal april,
-                                                    Decimal may, Decimal june, Decimal july, Decimal august, Decimal september,
-                                                    Decimal october, Decimal november, Decimal december) {
+                                                 Decimal may, Decimal june, Decimal july, Decimal august, Decimal september,
+                                                 Decimal october, Decimal november, Decimal december)
+    {
 
         Id objectiveRTId = Schema.SObjectType.Objective__c.getRecordTypeInfosByDeveloperName().get('Objectives')?.getRecordTypeId();
 
         Objective__c obj = new Objective__c(
-                    Year__c = String.valueOf(year),
-                    Indicator__c = indicator,
-                    Segment__c = segment,
-                    Product__c = product,
-                    Zone__c = zone,
-                    January__c = january,
-                    February__c = february,
-                    March__c = march,
-                    April__c = april,
-                    May__c = may,
-                    June__c = june,
-                    July__c = july,
-                    August__c = august,
-                    September__c = september,
-                    October__c = october,
-                    November__c = november,
-                    December__c = december,
-                    Active__c = true,
-                    RecordTypeId = objectiveRTId
-                );
+            Year__c = String.valueOf(year),
+            Indicator__c = indicator,
+            Segment__c = segment,
+            Product__c = product,
+            Zone__c = zone,
+            January__c = january,
+            February__c = february,
+            March__c = march,
+            April__c = april,
+            May__c = may,
+            June__c = june,
+            July__c = july,
+            August__c = august,
+            September__c = september,
+            October__c = october,
+            November__c = november,
+            December__c = december,
+            Active__c = true,
+            RecordTypeId = objectiveRTId
+            );
 
         return obj;
     }
@@ -3574,7 +3589,8 @@ public with sharing class TestDataFactory
      * @date 23/12/2022
      * @return {Event}
      */
-    public static Event generateEvent() {
+    public static Event generateEvent()
+    {
         Event e = new Event();
         e.subject = 'EventTest';
         e.EventType__c = 'Call';
@@ -3593,7 +3609,8 @@ public with sharing class TestDataFactory
      * @date 23/12/2022
      * @return {Event}
      */
-    public static Acta__c generateActa(Event event) {
+    public static Acta__c generateActa(Event event)
+    {
 
         Acta__c acta = new Acta__c();
         acta.Attendees__c = 'Attendee';
@@ -3610,15 +3627,15 @@ public with sharing class TestDataFactory
         return acta;
     }
 
-    
+
     /**
-    * @description Método que genera un registro para el Custom Setting 'Lead_Offers__c'
-    * con la información necesaria.
-    *
-    * @author amiranda
-    * @date 21-09-2023 
-    * @return Lead_Offers__c custom setting con la información necesaria informada
-    **/
+     * @description Método que genera un registro para el Custom Setting 'Lead_Offers__c'
+     * con la información necesaria.
+     *
+     * @author amiranda
+     * @date 21-09-2023
+     * @return Lead_Offers__c custom setting con la información necesaria informada
+     **/
     public static Lead_Offers__c generateLeadOfferCS()
     {
         // Crear cola de Genesys
@@ -3630,7 +3647,7 @@ public with sharing class TestDataFactory
 
         // Usuario genérico del Contact Center necesario para el Custom Setting
         Id ventasUserProfileId = [SELECT Id FROM Profile
-                                   WHERE Name = :ProfilesSelector.PROFILE_VENTAS_USER LIMIT 1].Id;
+                                  WHERE Name = : ProfilesSelector.PROFILE_VENTAS_USER LIMIT 1].Id;
         List<User> contactCenterUser = generateUsersByProfile(ventasUserProfileId, 1);
         insert contactCenterUser;
 
@@ -3643,10 +3660,10 @@ public with sharing class TestDataFactory
             DaysToReassignOffer__c = 10,
             ContactCenterUser__c = contactCenterUser.get(0).Alias
             );
-        
+
         return leadOffers;
     }
-    
+
     public static void insertCrossSellingCustomSetting()
     {
         // Crear custom setting que indica el usuario genérico
@@ -3667,11 +3684,11 @@ public with sharing class TestDataFactory
         String rtLanguageId     = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('LanguageAssignment')?.getRecordTypeId();
         String rtMunicipalityId = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('MunicipalityAssignment')?.getRecordTypeId();
         String rtProvinceId     = Schema.SObjectType.LeadAssignmentConfiguration__c.getRecordTypeInfosByDeveloperName().get('ProvinceAssignment')?.getRecordTypeId();
-        
+
         //LANGUAGE
         List<LeadAssignmentConfiguration__c> testLanguageAssignmentMetadata = new List<LeadAssignmentConfiguration__c>();
-        testLanguageAssignmentMetadata.add( new LeadAssignmentConfiguration__c(Language__c = 'Spanich', AssignTo__c = 'N/A',        RecordTypeId = rtLanguageId));
-        testLanguageAssignmentMetadata.add( new LeadAssignmentConfiguration__c(Language__c = 'French',  AssignTo__c = '0000002251', RecordTypeId = rtLanguageId));
+        testLanguageAssignmentMetadata.add( new LeadAssignmentConfiguration__c(Language__c = 'Spanich', AssignTo__c = 'N/A',        RecordTypeId = rtLanguageId) );
+        testLanguageAssignmentMetadata.add( new LeadAssignmentConfiguration__c(Language__c = 'French',  AssignTo__c = '0000002251', RecordTypeId = rtLanguageId) );
 
 
         insert testLanguageAssignmentMetadata;
@@ -3684,7 +3701,7 @@ public with sharing class TestDataFactory
         testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Municipality',   AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario pymes',            RecordTypeId = rtForumOriginId) );
         testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Municipality',   AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario embarcaciones',    RecordTypeId = rtForumOriginId) );
         testforumOriginAssignmentMetadata.add( new LeadAssignmentConfiguration__c(AssignmentType__c = 'Municipality',   AssignTo__c ='0000044625',  ForumOrigin__c = 'formulario salud',            RecordTypeId = rtForumOriginId) );
-       
+
 
         insert testforumOriginAssignmentMetadata;
 
@@ -3692,7 +3709,7 @@ public with sharing class TestDataFactory
         //MUNICIPALITY ASSIGNMENT
         List<LeadAssignmentConfiguration__c> testMunicipalityAssignmentMetadata = new List<LeadAssignmentConfiguration__c>();
         testMunicipalityAssignmentMetadata.add( new LeadAssignmentConfiguration__c(ZIPRanges__c= '{"25999": "0000031570"}', ProvinceCode__c='25', RecordTypeId = rtMunicipalityId) );
-        
+
 
         insert testMunicipalityAssignmentMetadata;
 
@@ -3706,34 +3723,35 @@ public with sharing class TestDataFactory
     }
 
     /**
-    * @description Método que genera un string aleatorio con
-    * la longitud especificada en el parámetro
-    *
-    * @author mcasanova
-    * @date 29-10-2024 
-    * @return String
-    **/
-    public static String getRandomString(Integer length) 
+     * @description Método que genera un string aleatorio con
+     * la longitud especificada en el parámetro
+     *
+     * @author mcasanova
+     * @date 29-10-2024
+     * @return String
+     **/
+    public static String getRandomString(Integer length)
     {
         String characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         String randomString = '';
         for(Integer i = 0; i < length; i++)
         {
-            Integer randomIndex = (Integer)(Math.random() * characters.length());
+            Integer randomIndex = (Integer) ( Math.random() * characters.length() );
             randomString += characters.substring(randomIndex, randomIndex + 1);
         }
         return randomString;
     }
     
     /**
-    * @description Método que genera un nombre 
-    * de usuario aleatorio
-    *
-    * @author mcasanova
-    * @date 31-10-2024 
-    * @return String
-    **/
-    public static String getRandomUsername() {
+     * @description Método que genera un nombre
+     * de usuario aleatorio
+     *
+     * @author mcasanova
+     * @date 31-10-2024
+     * @return String
+     **/
+    public static String getRandomUsername()
+    {
         return string.format('{0}@{1}.com', new string[] {
             TestDataFactory.getRandomString(4), 
             UserInfo.getOrganizationId()}

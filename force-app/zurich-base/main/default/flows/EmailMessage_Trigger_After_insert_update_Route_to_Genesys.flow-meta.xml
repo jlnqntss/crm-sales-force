@@ -4,7 +4,7 @@
         <name>Enrutar_a_Flow_Genesys</name>
         <label>Enrutar a Flow Genesys</label>
         <locationX>3614</locationX>
-        <locationY>2040</locationY>
+        <locationY>2448</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -79,7 +79,7 @@
         <name>FlowGenesysRoutingInvocableAction</name>
         <label>Enrutar a Flow Genesys</label>
         <locationX>2822</locationX>
-        <locationY>2256</locationY>
+        <locationY>2664</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -161,8 +161,8 @@
     <actionCalls>
         <name>QueueGenesysRoutingInvocableAction</name>
         <label>Enrutar a Queue Genesys</label>
-        <locationX>4142</locationX>
-        <locationY>1932</locationY>
+        <locationX>4406</locationX>
+        <locationY>2340</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -232,6 +232,22 @@
     </actionCalls>
     <apiVersion>53.0</apiVersion>
     <assignments>
+        <name>Actualizar_variable_EsporEquipos</name>
+        <label>Actualizar variable EsporEquipos</label>
+        <locationX>3086</locationX>
+        <locationY>600</locationY>
+        <assignmentItems>
+            <assignToReference>EsUSPEquipos</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>GetGenesysQueueAndParentIdFromEmailSubflow</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Asignar_informaci_n_cola1</name>
         <label>Asignar información cola</label>
         <locationX>50</locationX>
@@ -257,8 +273,8 @@
     <assignments>
         <name>Asignar_variables_del_registro</name>
         <label>Asignar variables del registro</label>
-        <locationX>3878</locationX>
-        <locationY>708</locationY>
+        <locationX>4010</locationX>
+        <locationY>1116</locationY>
         <assignmentItems>
             <assignToReference>genesysFlowId</assignToReference>
             <operator>Assign</operator>
@@ -303,8 +319,8 @@
     <assignments>
         <name>Modificar_variables_cola</name>
         <label>Modificar variables cola</label>
-        <locationX>3614</locationX>
-        <locationY>708</locationY>
+        <locationX>3746</locationX>
+        <locationY>1116</locationY>
         <assignmentItems>
             <assignToReference>genesysFlowId</assignToReference>
             <operator>Assign</operator>
@@ -372,8 +388,8 @@
     <decisions>
         <name>Cambia_de_cola_para_enrutar_a_genesys</name>
         <label>¿Cambia de cola para enrutar a genesys?</label>
-        <locationX>3746</locationX>
-        <locationY>600</locationY>
+        <locationX>3878</locationX>
+        <locationY>1008</locationY>
         <defaultConnector>
             <targetReference>Asignar_variables_del_registro</targetReference>
         </defaultConnector>
@@ -405,7 +421,7 @@
         <name>CaseClosedDecision</name>
         <label>Is Case Closed</label>
         <locationX>3086</locationX>
-        <locationY>2040</locationY>
+        <locationY>2448</locationY>
         <defaultConnectorLabel>Closed</defaultConnectorLabel>
         <rules>
             <name>NotClosedOutcome</name>
@@ -500,7 +516,7 @@
         <name>hasParentCase</name>
         <label>¿Tenemos caso asociado?</label>
         <locationX>3350</locationX>
-        <locationY>1932</locationY>
+        <locationY>2340</locationY>
         <defaultConnector>
             <targetReference>Enrutar_a_Flow_Genesys</targetReference>
         </defaultConnector>
@@ -524,8 +540,8 @@
     <decisions>
         <name>Hay_Algun_Agente_activo</name>
         <label>¿Hay Algún Agente activo?</label>
-        <locationX>3944</locationX>
-        <locationY>1116</locationY>
+        <locationX>4076</locationX>
+        <locationY>1524</locationY>
         <defaultConnector>
             <targetReference>GenerateScreenPopURLSubflow</targetReference>
         </defaultConnector>
@@ -556,8 +572,8 @@
     <decisions>
         <name>Hay_que_actualizar_best_agent_ZDA</name>
         <label>¿Hay que actualizar best agent ZDA?</label>
-        <locationX>3746</locationX>
-        <locationY>2856</locationY>
+        <locationX>3878</locationX>
+        <locationY>3264</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Actualizar_best_agent</name>
@@ -599,8 +615,8 @@
     <decisions>
         <name>Hay_que_actualizar_owner</name>
         <label>¿Hay que actualizar owner?</label>
-        <locationX>3746</locationX>
-        <locationY>900</locationY>
+        <locationX>3878</locationX>
+        <locationY>1308</locationY>
         <defaultConnector>
             <targetReference>ObtenerUsuarioGestorActivo</targetReference>
         </defaultConnector>
@@ -609,7 +625,7 @@
             <name>Actualizar</name>
             <conditionLogic>1 AND (2 OR ( ( 3 OR 4) AND 5) ) AND 6</conditionLogic>
             <conditions>
-                <leftValueReference>GetGenesysQueueAndParentIdFromEmailSubflow.EsMediadorPanelizadoVentaDanosRC</leftValueReference>
+                <leftValueReference>GetGenesysQueueAndParentIdFromEmailSubflow.EsMediadorPanelizadoVenta</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -644,7 +660,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>GetGenesysQueueAndParentIdFromEmailSubflow.idUsuarioDanosRcVenta</leftValueReference>
+                <leftValueReference>GetGenesysQueueAndParentIdFromEmailSubflow.idUsuarioPanelizadoVenta</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -681,8 +697,8 @@
     <decisions>
         <name>IsFlowOrQueueDecision</name>
         <label>¿Flow o Queue?</label>
-        <locationX>3746</locationX>
-        <locationY>1824</locationY>
+        <locationX>3878</locationX>
+        <locationY>2232</locationY>
         <defaultConnector>
             <targetReference>QueueGenesysRoutingInvocableAction</targetReference>
         </defaultConnector>
@@ -694,10 +710,29 @@
                 <leftValueReference>$Record.GenesysFlowID__c</leftValueReference>
                 <operator>NotEqualTo</operator>
             </conditions>
+            <conditions>
+                <leftValueReference>EsUSPEquipos</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>hasParentCase</targetReference>
             </connector>
             <label>Flow</label>
+        </rules>
+        <rules>
+            <name>Parar_Enrutamiento_a_Genesys</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EsUSPEquipos</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Parar Enrutamiento a Genesys</label>
         </rules>
     </decisions>
     <decisions>
@@ -879,10 +914,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Pertenece_a_una_cola_de_enrutamiento_USP_por_equipos</name>
+        <label>¿Pertenece a una cola de enrutamiento USP por equipos?</label>
+        <locationX>3218</locationX>
+        <locationY>492</locationY>
+        <defaultConnector>
+            <targetReference>GetGenesysQueueAndParentIdFromEmailSubflow</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_es_usp_Si_es_usp_por_equipospor_equipos</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Obtener_metadata_Cola_USP_de_Enrutado.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Actualizar_variable_EsporEquipos</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>ResponsableNegocioEncontradoDecision</name>
         <label>¿Responsable de Negocio Encontrado?</label>
-        <locationX>3152</locationX>
-        <locationY>492</locationY>
+        <locationX>3218</locationX>
+        <locationY>900</locationY>
         <defaultConnector>
             <targetReference>Cambia_de_cola_para_enrutar_a_genesys</targetReference>
         </defaultConnector>
@@ -1118,7 +1178,7 @@
         <name>CreateRoutingErrorAction</name>
         <label>Generar error enrutamiento</label>
         <locationX>3086</locationX>
-        <locationY>2364</locationY>
+        <locationY>2772</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -1328,11 +1388,11 @@
     <recordLookups>
         <name>GetGenesysQueueAsyncAction</name>
         <label>Obtener cola Genesys Async</label>
-        <locationX>3152</locationX>
+        <locationX>3218</locationX>
         <locationY>276</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>GetGenesysQueueAndParentIdFromEmailSubflow</targetReference>
+            <targetReference>Obtener_metadata_Cola_USP_de_Enrutado</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1349,8 +1409,8 @@
     <recordLookups>
         <name>GetRecordTypeUSPAction</name>
         <label>Get RecordType USP</label>
-        <locationX>3746</locationX>
-        <locationY>1716</locationY>
+        <locationX>3878</locationX>
+        <locationY>2124</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsFlowOrQueueDecision</targetReference>
@@ -1430,10 +1490,32 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <description>Obtiene un registro de la custom metadata que coincida en nombre con un cola de enrutamiento USP</description>
+        <name>Obtener_metadata_Cola_USP_de_Enrutado</name>
+        <label>Obtener metadata Cola USP de Enrutado</label>
+        <locationX>3218</locationX>
+        <locationY>384</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Pertenece_a_una_cola_de_enrutamiento_USP_por_equipos</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.GenesysQueueName__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RoutingTeamQueueConfig__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>ObtenerUsuarioGestorActivo</name>
         <label>ObtenerUsuarioGestorActivo</label>
-        <locationX>3944</locationX>
-        <locationY>1008</locationY>
+        <locationX>4076</locationX>
+        <locationY>1416</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Hay_Algun_Agente_activo</targetReference>
@@ -1460,8 +1542,8 @@
     <recordUpdates>
         <name>ActualizaCampoWithOutBestAgent</name>
         <label>Actualiza Campo WithOutBestAgent</label>
-        <locationX>3812</locationX>
-        <locationY>1224</locationY>
+        <locationX>3944</locationX>
+        <locationY>1632</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1481,8 +1563,8 @@
     <recordUpdates>
         <name>Actualizar_best_agent_caso_ZDA</name>
         <label>Actualizar best agent caso ZDA</label>
-        <locationX>3614</locationX>
-        <locationY>2964</locationY>
+        <locationX>3746</locationX>
+        <locationY>3372</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1534,7 +1616,7 @@
         <name>DesactivarCampoEstadoInteraccion</name>
         <label>Desactivar Campo Estado Interaccion</label>
         <locationX>2822</locationX>
-        <locationY>2364</locationY>
+        <locationY>2772</locationY>
         <connector>
             <targetReference>Hay_que_actualizar_best_agent_ZDA</targetReference>
         </connector>
@@ -1564,8 +1646,8 @@
     <recordUpdates>
         <name>DesactivarCampoEstadoInteraccionQueue</name>
         <label>Desactivar Campo Estado Interaccion Queue</label>
-        <locationX>4142</locationX>
-        <locationY>2040</locationY>
+        <locationX>4406</locationX>
+        <locationY>2448</locationY>
         <connector>
             <targetReference>Hay_que_actualizar_best_agent_ZDA</targetReference>
         </connector>
@@ -1595,8 +1677,8 @@
     <recordUpdates>
         <name>Update_case_owner</name>
         <label>Update case owner</label>
-        <locationX>3548</locationX>
-        <locationY>1008</locationY>
+        <locationX>3680</locationX>
+        <locationY>1416</locationY>
         <connector>
             <targetReference>GenerateScreenPopURLSubflow</targetReference>
         </connector>
@@ -1611,7 +1693,7 @@
         <inputAssignments>
             <field>OwnerId</field>
             <value>
-                <elementReference>GetGenesysQueueAndParentIdFromEmailSubflow.idUsuarioDanosRcVenta</elementReference>
+                <elementReference>GetGenesysQueueAndParentIdFromEmailSubflow.idUsuarioPanelizadoVenta</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -1630,7 +1712,7 @@
         <name>UpdateOwnerResponsableNegocioAction</name>
         <label>Update Owner Responsable Negocio</label>
         <locationX>2558</locationX>
-        <locationY>600</locationY>
+        <locationY>1008</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1648,7 +1730,7 @@
         <object>Case</object>
     </recordUpdates>
     <start>
-        <locationX>2217</locationX>
+        <locationX>2250</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>USPDecision</targetReference>
@@ -1727,7 +1809,7 @@
         <name>Calculamos_prioridad</name>
         <label>Calculamos prioridad</label>
         <locationX>2822</locationX>
-        <locationY>2148</locationY>
+        <locationY>2556</locationY>
         <connector>
             <targetReference>FlowGenesysRoutingInvocableAction</targetReference>
         </connector>
@@ -1755,8 +1837,8 @@
     <subflows>
         <name>GenerateScreenPopURLSubflow</name>
         <label>Generate Screen Pop URL</label>
-        <locationX>3746</locationX>
-        <locationY>1608</locationY>
+        <locationX>3878</locationX>
+        <locationY>2016</locationY>
         <connector>
             <targetReference>GetRecordTypeUSPAction</targetReference>
         </connector>
@@ -1784,8 +1866,8 @@
     <subflows>
         <name>GetGenesysQueueAndParentIdFromEmailSubflow</name>
         <label>Comprobar Cola Genesys y ParentID del Email</label>
-        <locationX>3152</locationX>
-        <locationY>384</locationY>
+        <locationX>3218</locationX>
+        <locationY>792</locationY>
         <connector>
             <targetReference>ResponsableNegocioEncontradoDecision</targetReference>
         </connector>
@@ -1815,7 +1897,13 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <name>GenesysDanosQueue</name>
+            <name>EsPorEquipos</name>
+            <value>
+                <elementReference>EsUSPEquipos</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>GenesysUSPQueue</name>
             <value>
                 <elementReference>$Record.GenesysQueueName__c</elementReference>
             </value>
@@ -1952,6 +2040,16 @@
         <objectType>Case</objectType>
     </variables>
     <variables>
+        <name>EsUSPEquipos</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
         <name>genesysFlowId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -1964,6 +2062,16 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>NoEnrutar</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <name>USPRecordtype</name>

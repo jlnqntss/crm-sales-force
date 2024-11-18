@@ -10,10 +10,10 @@
         String lastName = TestDataFactory.getRandomString(9);
         String email = TestDataFactory.getRandomUsername();
         String nickname = TestDataFactory.getRandomString(4);
-        
+
         String password1 = TestDataFactory.getRandomString(6);
         String password2 = TestDataFactory.getRandomString(5);
-        
+
         CommunitiesSelfRegController controller = new CommunitiesSelfRegController();
         controller.firstName = firstName;
         controller.lastName = lastName;

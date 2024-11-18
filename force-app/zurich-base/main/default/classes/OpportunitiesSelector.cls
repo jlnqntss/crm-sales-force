@@ -8,7 +8,7 @@
 public with sharing class OpportunitiesSelector extends RecordsSelector
 {
     private static final String OPPORTUNITY_INTERMEDIARY_GROUP= 'Opportunity.IntermediaryId__r.IntermediaryGroup__c';
-    
+
     //#region Contructores
     public OpportunitiesSelector()
     {
@@ -499,49 +499,90 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * Método devuelve las ofertas de un mediador, obviando las que tengan como cliente a cualquiera de los que se incluyen en la lista recibida (accountsIDsNotToQuery)
      * y excluyendo las que no pertenezcan a los campaign member recibidos (campaignMembers)
      *
-     * SELECT AccountId FROM Opportunity
-     * WHERE IntermediaryId__c = :intermediaryID
+     * SELECT AccountId, IntermediaryId__r.INFOIntermediaryCode__c 
+     * FROM Opportunity
+     * WHERE IntermediaryId__r.INFOIntermediaryCode__c IN :intermediaryCodes
+     *   AND AccountId IN: accountIds
      *   AND Account.Blocked__c = false
      *   AND Account.Anonymized__c = false
      *   AND Blocked__c = false
      *   AND Anonymized__c = false
      *   AND AccountId != null
-     * IF (accountIDsNotToQuery != null && !accountIDsNotToQuery.isEmpty())
-     *   AND AccountId NOT IN :accountIDsNotToQuery
-     * IF (campaignIDsToExcludeMembers != null && !campaignIDsToExcludeMembers.isEmpty())
-     *   AND CampaignId NOT IN :campaignIDsToExcludeMembers
      *
      *
-     * @author fpalomo
-     * @date 04/04/2024
+     * @author dmunoz
+     * @date 13/11/2024
      *
      * @return List<Opportunities>
      */
-    public List<Opportunity> getIntermediaryOtherOffersByCampaignMembers(Set<String> campaignIDsToExcludeMembers, Set<String> accountIDsNotToQuery, String intermediaryID)
+    public List<Opportunity> findOpportunitiesByAccountIdAndIntermediary(Set<Id> accountIds, Set<String> intermediaryCodes)
     {
 
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>
-        {
-            Opportunity.AccountId
-        })
-        .addConditionEq(Opportunity.IntermediaryId__c, intermediaryID)
-        .addConditionEq(Account.Blocked__c, false)
-        .addConditionEq(Account.Anonymized__c, false)
-        .addConditionEq(Opportunity.Blocked__c, false)
-        .addConditionEq(Opportunity.Anonymized__c, false)
-        .addConditionNotEq(Opportunity.AccountId, null);
+        List<Opportunity> result = new List<Opportunity>();
 
-        if ( accountIDsNotToQuery != null && !accountIDsNotToQuery.isEmpty() )
-        {
-            this.baseQuery.addConditionNotIn(Opportunity.AccountId, accountIDsNotToQuery);
+        if (!accountIds.isEmpty() && !intermediaryCodes.isEmpty()) {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>
+            {
+                Opportunity.AccountId
+            }).selectfields('IntermediaryId__r.INFOIntermediaryCode__c')
+            .addConditionIn('IntermediaryId__r.INFOIntermediaryCode__c', intermediaryCodes)
+            .addConditionIn(Opportunity.AccountId, accountIds)
+            .addConditionEq(Account.Blocked__c, false)
+            .addConditionEq(Account.Anonymized__c, false)
+            .addConditionEq(Opportunity.Blocked__c, false)
+            .addConditionEq(Opportunity.Anonymized__c, false)
+            .addConditionNotEq(Opportunity.AccountId, null);
+    
+            result = (List<Opportunity>) this.baseQuery.enforceSecurity().run();
+
         }
 
-        if ( campaignIDsToExcludeMembers != null && !campaignIDsToExcludeMembers.isEmpty() )
-        {
-            this.baseQuery.addConditionNotIn(Opportunity.CampaignId, campaignIDsToExcludeMembers);
+        return result;
+    }
+
+     /**
+     * Método devuelve las ofertas de un mediador, obviando las que tengan como cliente a cualquiera de los que se incluyen en la lista recibida (accountsIDsNotToQuery)
+     * y excluyendo las que no pertenezcan a los campaign member recibidos (campaignMembers)
+     *
+     * SELECT AccountId, ntermediaryId__r.IntermediaryGroup__r.INFOIntermediaryGroupCode__c 
+     * FROM Opportunity
+     * WHERE ntermediaryId__r.IntermediaryGroup__r.INFOIntermediaryGroupCode__c IN :intermediaryGroupCodes
+     *   AND AccountId IN: accountIds
+     *   AND Account.Blocked__c = false
+     *   AND Account.Anonymized__c = false
+     *   AND Blocked__c = false
+     *   AND Anonymized__c = false
+     *   AND AccountId != null
+     *
+     *
+     * @author dmunoz
+     * @date 13/11/2024
+     *
+     * @return List<Opportunities>
+     */
+    public List<Opportunity> findOpportunitiesByAccountIdAndIntermediaryGroup(Set<Id> accountIds, Set<String> intermediaryGroupCodes)
+    {
+
+        List<Opportunity> result = new List<Opportunity>();
+
+        if (!accountIds.isEmpty() && !intermediaryGroupCodes.isEmpty()) {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>
+            {
+                Opportunity.AccountId
+            }).selectfields('IntermediaryId__r.IntermediaryGroup__r.INFOIntermediaryGroupCode__c')
+            .addConditionIn('IntermediaryId__r.IntermediaryGroup__r.INFOIntermediaryGroupCode__c', intermediaryGroupCodes)
+            .addConditionIn(Opportunity.AccountId, accountIds)
+            .addConditionEq(Account.Blocked__c, false)
+            .addConditionEq(Account.Anonymized__c, false)
+            .addConditionEq(Opportunity.Blocked__c, false)
+            .addConditionEq(Opportunity.Anonymized__c, false)
+            .addConditionNotEq(Opportunity.AccountId, null);
+    
+            result = (List<Opportunity>) this.baseQuery.run();
+
         }
 
-        return (List<Opportunity>) this.baseQuery.run();
+        return result;
     }
 
 
@@ -660,9 +701,9 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
     /**
      * Obtenemos las polizas de un mediador y las de una agrupacion con excepcion de un conjunto de polizas (necesario para el calculo de visibilidad)
-     * QUERY: 
-     * SELECT Id, AccountId, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c 
-                                            FROM Opportunity 
+     * QUERY:
+     * SELECT Id, AccountId, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c
+                                            FROM Opportunity
                                             WHERE
                                             ID NOT IN: offersToExclude
                                             AND AccountId IN :accountIdsSet
@@ -677,47 +718,47 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                                             AND AccountId != NULL
      * @author dmunoz
      * @date 08/04/2024
-     * 
-     * 
+     *
+     *
      */
     public List<Opportunity> selectByIntermediaryAndIntermediaryGroupExcludingOffers(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> accountIdsSet, Set<String> offersToExclude)
     {
         List<Opportunity> result = new List<Opportunity>();
 
-        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && accountIdsSet != null && !accountIdsSet.isEmpty())
+        if ( intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && accountIdsSet != null && !accountIdsSet.isEmpty() )
         {
-            this.baseQuery.selectFields(new List<Schema.SObjectField>{
+            this.baseQuery.selectFields(new List<Schema.SObjectField> {
                 Opportunity.Id,
                 Opportunity.AccountId,
                 Opportunity.IntermediaryId__c
             }).selectFields(OPPORTUNITY_INTERMEDIARY_GROUP);
 
-            this.baseQuery                            
-                            .addConditionNotIn(Opportunity.Id, offersToExclude)
-                            .addConditionIn(Opportunity.AccountId, accountIdsSet)
-                            .addConditionEq('Account.Blocked__c', FALSE) 
-                            .addConditionEq('Account.Anonymized__c', FALSE)
-                            .addConditionEq(Opportunity.Blocked__c, FALSE)
-                            .addConditionEq(Opportunity.Anonymized__c, FALSE)
-                            .addConditionNotNull(Opportunity.AccountId);
+            this.baseQuery
+            .addConditionNotIn(Opportunity.Id, offersToExclude)
+            .addConditionIn(Opportunity.AccountId, accountIdsSet)
+            .addConditionEq('Account.Blocked__c', FALSE)
+            .addConditionEq('Account.Anonymized__c', FALSE)
+            .addConditionEq(Opportunity.Blocked__c, FALSE)
+            .addConditionEq(Opportunity.Anonymized__c, FALSE)
+            .addConditionNotNull(Opportunity.AccountId);
 
             // si no tiene agrupación podemos traer solo 1 resultado
-            if (intermediaryGroupIdsSet.isEmpty())
+            if ( intermediaryGroupIdsSet.isEmpty() )
             {
                 this.baseQuery.addConditionIn(Opportunity.IntermediaryId__c, intermediaryIdsSet)
-                            .setLimit(1);
+                .setLimit(1);
             }
 
             else
             {
-                this.baseQuery.addCondition(Query.doOr(
-                    Query.conditionIn('IntermediaryId__c', intermediaryIdsSet),
-                    Query.conditionIn('IntermediaryId__r.IntermediaryGroup__c', intermediaryGroupIdsSet)
-                ));
+                this.baseQuery.addCondition( Query.doOr(
+                                                 Query.conditionIn('IntermediaryId__c', intermediaryIdsSet),
+                                                 Query.conditionIn('IntermediaryId__r.IntermediaryGroup__c', intermediaryGroupIdsSet)
+                                                 ) );
             }
 
             result = this.baseQuery.enforceSecurity().run();
-        }        
+        }
 
         return result;
     }
@@ -725,49 +766,51 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
     /**
      * Obtenemos las ofertas que han sufrido un cambio de mediador o cliente en las ultimas 24 horas y que el numero de reintentos sea menor al de la metadata
-     * QUERY: 
+     * QUERY:
      * SELECT Id, AccountId, IntermediaryId__c, ZRMMovementType__c, LastAccountId__c
-                                            FROM Opportunity 
+                                            FROM Opportunity
                                             WHERE
                                             LastDateIntermediaryOrAccountChange__c = YESTERDAY
                                             AND VisibilityRetry__c <= :numMaxRetries
-                                            
+
      * @author dmunoz
      * @date 08/04/2024
-     * 
-     * 
+     *
+     *
      */
-    public List<Opportunity> getOffersToProcessIntermediaryOrAccountChange(Integer numMaxRetries) {
+    public List<Opportunity> getOffersToProcessIntermediaryOrAccountChange(Integer numMaxRetries)
+    {
 
         List<Opportunity> result = new List<Opportunity>();
 
         // añado un valor por defecto por si viniera nulo el parámetro
-        if (numMaxRetries == null || numMaxRetries <= 0) {
+        if (numMaxRetries == null || numMaxRetries <= 0)
+        {
             numMaxRetries = 3;
         }
 
         this.baseQuery.selectFields
-            (
-                new List<Schema.SObjectField>
-                {
-                    Opportunity.Id,
-                    Opportunity.AccountId,
-                    Opportunity.IntermediaryId__c,
-                    Opportunity.ZRMMovementType__c,
-                    Opportunity.LastAccountId__c,
-                    Opportunity.VisibilityRetry__c
-                }
-            );
+        (
+            new List<Schema.SObjectField>
+        {
+            Opportunity.Id,
+            Opportunity.AccountId,
+            Opportunity.IntermediaryId__c,
+            Opportunity.ZRMMovementType__c,
+            Opportunity.LastAccountId__c,
+            Opportunity.VisibilityRetry__c
+        }
+        );
 
-            this.baseQuery                            
-                            .addConditionEq(Opportunity.LastDateIntermediaryOrAccountChange__c, Query.YESTERDAY)
-                            .addConditionLe(Opportunity.VisibilityRetry__c, numMaxRetries);
-           
-            result = this.baseQuery.enforceSecurity().run();
+        this.baseQuery
+        .addConditionEq(Opportunity.LastDateIntermediaryOrAccountChange__c, Query.YESTERDAY)
+        .addConditionLe(Opportunity.VisibilityRetry__c, numMaxRetries);
+
+        result = this.baseQuery.enforceSecurity().run();
 
         return result;
     }
-    
+
     /**
      * Obtenemos las polizas de un mediador y las de una agrupacion con excepcion de un conjunto de polizas (necesario para el calculo de visibilidad)
      * QUERY:
@@ -787,7 +830,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * @author dmunoz
      * @date 09/04/2024
      */
-    public List<Opportunity> findMatchOffers(Set<String> productBranchSet, Set<String> accountIdsSet, Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet) 
+    public List<Opportunity> findMatchOffers(Set<String> productBranchSet, Set<String> accountIdsSet, Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet)
     {
 
         List<Opportunity> result = new List<Opportunity>();
@@ -815,7 +858,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             .addConditionIn(Opportunity.StageName, new Set<String> {'Legit Lead', 'App Submitted'})
             .addConditionEq(Opportunity.InfoQuoteNumber__c, null)
             .addConditionEq(Opportunity.PotentialMatch__c, false)
-            .addConditionEq(Opportunity.CreatedDate, Query.last_n_days(60));
+            .addConditionEq( Opportunity.CreatedDate, Query.last_n_days(60) );
 
             // si la lista de agrupacion no está vacia buscamos en ambas
             if ( intermediaryGroupIdsSet != null && !intermediaryGroupIdsSet.isEmpty() )
@@ -839,12 +882,12 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     }
 
     /**
-    * @description Método que devuelve una query en formato String para recuperar
-    * oportunidades que sean 'match potenciales' (PotentialMatch__c = true)
-    * @author amiranda 
-    * @date 10-04-2024 
-    * @return String query en formato String
-    **/
+     * @description Método que devuelve una query en formato String para recuperar
+     * oportunidades que sean 'match potenciales' (PotentialMatch__c = true)
+     * @author amiranda
+     * @date 10-04-2024
+     * @return String query en formato String
+     **/
     public String getQueryStringPotentialMatchOpportunities()
     {
         Set<Schema.SObjectField> fields = new Set<Schema.SObjectField>
@@ -860,81 +903,82 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         return this.baseQuery
                .selectFields(fields)
                .selectFields('Opportunity.IntermediaryId__r.IntermediaryGroup__c')
-               .addConditionEq(Opportunity.PotentialMatch__c, true) 
+               .addConditionEq(Opportunity.PotentialMatch__c, true)
                .enforceSecurity()
                .toQueryString();
     }
 
     /**
-    * @description Método que devuelve la póliza más reciente de un cliente.
-    *
-        SELECT ID, IntermediaryId__c, IntermediaryId__r.INFOIntermediaryCode__c, CreatedDate__c 
+     * @description Método que devuelve la póliza más reciente de un cliente.
+     *
+        SELECT ID, IntermediaryId__c, IntermediaryId__r.INFOIntermediaryCode__c, CreatedDate__c
         FROM Opportunity
         WHERE AccountId = :accountId
         ORDER BY CreatedDate__c DESC
         LIMIT 1
-    * @author dmunoz 
-    * @date  14/10/2024
-    * @return List<Opportunity> lista de póliza con una sola poliza.
-    **/
+     * @author dmunoz
+     * @date  14/10/2024
+     * @return List<Opportunity> lista de póliza con una sola poliza.
+     **/
     public List<Opportunity> getMostRecentlyOfferByAccountId(String accountId)
     {
         List<Opportunity> result = new List<Opportunity>();
 
 
         this.baseQuery.selectFields
-            (
-                new List<Schema.SObjectField>
-                {
-                    Opportunity.Id,
-                    Opportunity.IntermediaryId__c,
-                    Opportunity.CreatedDate__c
-                }
-            ).selectFields('Opportunity.IntermediaryId__r.INFOIntermediaryCode__c');
+        (
+            new List<Schema.SObjectField>
+        {
+            Opportunity.Id,
+            Opportunity.IntermediaryId__c,
+            Opportunity.CreatedDate__c
+        }
+        ).selectFields('Opportunity.IntermediaryId__r.INFOIntermediaryCode__c');
 
-            this.baseQuery                            
-                .addConditionEq(Opportunity.AccountId, accountId)
-                .addConditionNotEq(Opportunity.CreatedDate__c, null)
-                .orderBy('Opportunity.CreatedDate__c','DESC')
-                .setLimit(1);
+        this.baseQuery
+        .addConditionEq(Opportunity.AccountId, accountId)
+        .addConditionNotEq(Opportunity.CreatedDate__c, null)
+        .orderBy('Opportunity.CreatedDate__c','DESC')
+        .setLimit(1);
 
-            result = this.baseQuery.enforceSecurity().run();
-            
+        result = this.baseQuery.enforceSecurity().run();
+
         return result;
     }
 
     /**
-    * @description Obtenemos aquellas ofertas de ventas/ZRM que estén relacionadas con un lead y en una etapa determinada.
-    * Uso principal para metodo start de la clasel Batch_DeleteOldLeads 
-    * @author dmunoz 
-    * @date 24-10-2024 
-    * @return String query en formato String
-    * SELECT Id, AccountId FROM Opportunity
+     * @description Obtenemos aquellas ofertas de ventas/ZRM que estén relacionadas con un lead y en una etapa determinada.
+     * Uso principal para metodo start de la clasel Batch_DeleteOldLeads
+     * @author dmunoz
+     * @date 24-10-2024
+     * @return String query en formato String
+     * SELECT Id, AccountId FROM Opportunity
         WHERE Account.RecordTypeId = AccountSelector.LeadId
         AND StageName =: stage
         AND CreatedDate < days
         AND (Scope__c = 'Ventas' OR BusinessCode__c = null)
-    **/
-    public String getVentasOpportunitiesWithLeads(Integer numDays, String stage, String ventasScope) {
-        
+     **/
+    public String getVentasOpportunitiesWithLeads(Integer numDays, String stage, String ventasScope)
+    {
+
         Set<Schema.SObjectField> opportunityFieldsToRetrieve = new Set<Schema.SObjectField>
         {
             Opportunity.Id,
             Opportunity.AccountId
         };
-        
+
         String query = this.baseQuery
                        .selectFields(opportunityFieldsToRetrieve)
                        .addConditionEq('Account.RecordtypeId', new AccountsSelector().rtLeadId)
                        .addConditionEq(Opportunity.StageName, stage)
-                       .addConditionLt( Opportunity.CreatedDate, Query.LAST_N_DAYS(numDays))
+                       .addConditionLt( Opportunity.CreatedDate, Query.LAST_N_DAYS(numDays) )
                        .addCondition(
-                            query.doOr
-                            (
-                                Query.conditionEq(Opportunity.Scope__c, ventasScope),
-                                Query.conditionEq(Opportunity.BusinessCode__c, null)
-                            )
-                       )
+            query.doOr
+            (
+                Query.conditionEq(Opportunity.Scope__c, ventasScope),
+                Query.conditionEq(Opportunity.BusinessCode__c, null)
+            )
+            )
                        .toQueryString();
         return query;
     }

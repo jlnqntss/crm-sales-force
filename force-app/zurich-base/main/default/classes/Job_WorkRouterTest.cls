@@ -4,7 +4,7 @@
  * @date 01/07/2024
  */
 @isTest
-private with sharing class Job_WorkRouterTest 
+private with sharing class Job_WorkRouterTest
 {
     private static final string PROFILE_INTEGRATOR = 'Integrator';
     private static final string PROFILE_USP_USER = 'USP User';

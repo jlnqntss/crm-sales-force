@@ -1,17 +1,17 @@
 /**
- * @description       : 
+ * @description       :
  * @author            : aberuete
- * @group             : 
+ * @group             :
  * @last modified on  : 16-07-2024
  * @last modified by  : lgonzalez
-**/
+ **/
 public with sharing class CasesSelector extends RecordsSelector
 {
     //#region Contructores
 
     public CasesSelector()
     {
-        super(Case.getSObjectType());
+        super( Case.getSObjectType() );
     }
 
     //#endregion
@@ -28,7 +28,7 @@ public with sharing class CasesSelector extends RecordsSelector
     public static final String CASE_OWNER_TYPE = 'Case.Owner.Type';
     public static final String CASE_OWNER_PROFILE_NAME = 'Case.Owner.Profile.Name';
     public static final String CASE_OWNER_NAME = 'Case.Owner.Name';
-    
+
     String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
     String filterCallCenter = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Call_Center_USP');
     String filterStatusCerrado = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Status_Cerrado');
@@ -47,13 +47,13 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public CasesSelector setScope(RecordsSelector.Scope scope)
     {
-        switch on scope 
+        switch on scope
         {
-            when Z 
+            when Z
             {
                 this.baseQuery.addConditionEq(Case.Scope__c, 'Z');
             }
-            when ZE  
+            when ZE
             {
                 this.baseQuery.addConditionEq(Case.Scope__c, 'ZE');
             }
@@ -61,7 +61,7 @@ public with sharing class CasesSelector extends RecordsSelector
             {
                 this.baseQuery.addConditionEq(Case.Scope__c, 'ZEO');
             }
-            when else 
+            when else
             {
                 // else code
             }
@@ -79,13 +79,13 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public CasesSelector setLegalEntity(RecordsSelector.LegalEntity legalEntity)
     {
-        switch on legalEntity 
+        switch on legalEntity
         {
             when GI, LIFE
             {
-                this.baseQuery.addConditionEq(Case.LegalEntity__c, RecordsSelector.getLegalEntity(legalEntity));
+                this.baseQuery.addConditionEq( Case.LegalEntity__c, RecordsSelector.getLegalEntity(legalEntity) );
             }
-            when else 
+            when else
             {
                 // else code
             }
@@ -103,7 +103,7 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public List<Case> findOpenByAccount(String[] accountIds)
     {
-        if(accountIds != null && !accountIds.isEmpty() )
+        if( accountIds != null && !accountIds.isEmpty() )
         {
             this.baseQuery.addConditionEq(Case.isClosed, false).addConditionIn(Case.AccountId, accountIds).orderBy('CreatedDate', 'DESC');
 
@@ -125,28 +125,29 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public List<Case> findById(Set<String> caseIds, Boolean allData)
     {
-        if(caseIds != null && !caseIds.isEmpty() )
+        if( caseIds != null && !caseIds.isEmpty() )
         {
             if (allData == false) //Si no hay que obtener todos los datos se especifican cuales
             {
-                this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                     Case.Id,
-                    Case.OwnerId, 
-                    Case.Query__c, 
-                    Case.RecordTypeId, 
+                    Case.OwnerId,
+                    Case.Query__c,
+                    Case.RecordTypeId,
                     Case.Status
-                 })
+                })
                 .selectFields('Owner.Type')
                 .selectFields('Owner.Profile.Name');
             }
-            else {
+            else
+            {
                 this.baseQuery.selectReadableFields();
             }
             this.baseQuery.addConditionString('Case.Id IN (\'' + String.join(new List<String>(caseIds), '\',\'') + '\')');
 
             this.baseQuery.debug();
 
-            return (List<Case>) this.baseQuery.run(); 
+            return (List<Case>) this.baseQuery.run();
         }
         else
         {
@@ -174,9 +175,9 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public String getQueryStringCasesToRelateToNewAccounts(String days)
     {
-        if(days != null && !String.isBlank(days) )
+        if( days != null && !String.isBlank(days) )
         {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                 Case.Id,
                 Case.RobotDocumentId__c,
                 Case.MediatedCustomer__c
@@ -193,9 +194,9 @@ public with sharing class CasesSelector extends RecordsSelector
             return '';
         }
     }
-    
+
     /**
-     * Método utilizado por la clase EmailMessageutil 
+     * Método utilizado por la clase EmailMessageutil
      * @author lrodriguez6@seidor.es
      * @date 01/04/2024
      * @param String days para filtrar la query
@@ -203,20 +204,20 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public List<Case> findByIdControlCC(Set<String> caseIds)
     {
-        Set<Schema.SObjectField> setFields =  new Set<Schema.SObjectField>{
+        Set<Schema.SObjectField> setFields =  new Set<Schema.SObjectField> {
             Case.Id,
             Case.ControlEmailCC__c,
             Case.RecordTypeId,
             Case.GenesysID__c
         };
 
-        if(caseIds != null && !caseIds.isEmpty() )
+        if( caseIds != null && !caseIds.isEmpty() )
         {
-            
+
             this.baseQuery.selectFields(setFields)
             .addConditionIn(Case.Id,caseIds);
-          
-            return (List<Case>) this.baseQuery.run(); 
+
+            return (List<Case>) this.baseQuery.run();
         }
         else
         {
@@ -232,17 +233,17 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public List<Case> getCasesToCloseInteractions()
     {
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
             Case.Id
         })
         .addConditionEq(Case.RecordTypeId, CaseUtil.RT_ID_USPINQUIRY)
         .addConditionEq(Case.CloseInteractionBatch__c,true)
-        .addConditionEq(Case.ExpectedClosingDate__c,System.TODAY())
+        .addConditionEq( Case.ExpectedClosingDate__c,System.TODAY() )
         .addConditionEq(Case.CloseByBatch__c,false);
 
-        System.debug('Casos recuperados desde Selector: '+(List<Case>)this.baseQuery.run());
+        System.debug( 'Casos recuperados desde Selector: ' + (List<Case>) this.baseQuery.run() );
         return (List<Case>) this.baseQuery.run();
-        
+
     }
 
     /**
@@ -254,9 +255,9 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public String getQueryStringCasesToRelateToNewOffers(String days)
     {
-        if(days != null && !String.isBlank(days) )
+        if( days != null && !String.isBlank(days) )
         {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                 Case.Id,
                 Case.CreatedOffer__c,
                 Case.OfferId__c
@@ -284,9 +285,9 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public List<Case> getQueryCasesConversionRatio(List<Account> accountsIntermediary,String statusCombinado,String closeResult, String typeVenta, String rtCasesUSPId, String queryDays, String cerrado)
     {
-        if(accountsIntermediary != null && closeResult!=null && statusCombinado!=null && !String.isBlank(statusCombinado) && typeVenta!=null && !String.isBlank(typeVenta) && rtCasesUSPId!=null && !String.isBlank(rtCasesUSPId) )
+        if( accountsIntermediary != null && closeResult != null && statusCombinado != null && !String.isBlank(statusCombinado) && typeVenta != null && !String.isBlank(typeVenta) && rtCasesUSPId != null && !String.isBlank(rtCasesUSPId) )
         {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                 Case.AccountId,
                 Case.QuotationStage__c
             })
@@ -296,7 +297,7 @@ public with sharing class CasesSelector extends RecordsSelector
             .addConditionNotEq(Case.CloseResult__c, closeResult)
             .addConditionNotEq(Case.AutomaticNotifications__c,true)
             .addConditionEq(Case.Type, typeVenta)
-            .addConditionString(CASES_MODIFY_LAST_DATE+queryDays)
+            .addConditionString(CASES_MODIFY_LAST_DATE + queryDays)
             .addConditionEq(Case.RecordTypeId,rtCasesUSPId )
             .addConditionEq(Case.Status,cerrado);
 
@@ -304,12 +305,12 @@ public with sharing class CasesSelector extends RecordsSelector
         }
         else
         {
-            return new List<Case>() ;
+            return new List<Case>();
         }
     }
 
     /**
-     * Método utilizado por el batch Batch_RatioConversionIntermediary para obtener los casos hijos que se encuentran en estado ganado para 
+     * Método utilizado por el batch Batch_RatioConversionIntermediary para obtener los casos hijos que se encuentran en estado ganado para
      * calcular el ratio sobre el mediador.
      * @author lrodriguez6@seidor.es
      * @date 18/12/2023
@@ -317,12 +318,12 @@ public with sharing class CasesSelector extends RecordsSelector
      * @return Map Casos Padre que tienen Casos Hijos Ganados
      */
     public Map <Id, Decimal> getMapChildCasesConversionRatio(List<Case> parentCases,String statusWon,String closeResult,String statusCombinado, String typeVenta, String rtCasesUSPId, String queryDays, String cerrado)
-    {   
+    {
         List<Case> childCases = new List<Case>();
         Map <Id, Decimal> mapAllChildCases= new Map <Id,Decimal>();
-        if(parentCases != null && statusWon!=null && !String.isBlank(statusWon) && closeResult!=null && !String.isBlank(closeResult) && statusCombinado!=null && !String.isBlank(statusCombinado) && typeVenta!=null && !String.isBlank(typeVenta) && rtCasesUSPId!=null && !String.isBlank(rtCasesUSPId) )
+        if( parentCases != null && statusWon != null && !String.isBlank(statusWon) && closeResult != null && !String.isBlank(closeResult) && statusCombinado != null && !String.isBlank(statusCombinado) && typeVenta != null && !String.isBlank(typeVenta) && rtCasesUSPId != null && !String.isBlank(rtCasesUSPId) )
         {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                 Case.QuotationStage__c,
                 Case.ParentId
             })
@@ -332,7 +333,7 @@ public with sharing class CasesSelector extends RecordsSelector
             .addConditionNotEq(Case.CloseResult__c, closeResult)
             .addConditionNotEq(Case.AutomaticNotifications__c,true)
             .addConditionEq(Case.Type, typeVenta)
-            .addConditionString(CASES_MODIFY_LAST_DATE+queryDays)
+            .addConditionString(CASES_MODIFY_LAST_DATE + queryDays)
             .addConditionEq(Case.RecordTypeId,rtCasesUSPId )
             .addConditionEq(Case.Status,cerrado);
 
@@ -340,12 +341,12 @@ public with sharing class CasesSelector extends RecordsSelector
 
             for (Case c:childCases)
             {
-                if(mapAllChildCases.get(c.ParentId)==null)
+                if(mapAllChildCases.get(c.ParentId) == null)
                 {
                     mapAllChildCases.put(c.ParentId,0);
                 }
 
-                mapAllChildCases.put(c.ParentId,(mapAllChildCases.get(c.ParentId)+1));
+                mapAllChildCases.put( c.ParentId,(mapAllChildCases.get(c.ParentId) + 1) );
 
             }
 
@@ -353,7 +354,7 @@ public with sharing class CasesSelector extends RecordsSelector
         }
         else
         {
-            return new Map <Id, Decimal>() ;
+            return new Map <Id, Decimal>();
         }
     }
 
@@ -368,9 +369,9 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public String getQueryStringCasesWithoutPolicyOffer(String days, List<String> origins, List<String> recordTypes)
     {
-        if(days != null && !String.isBlank(days) )
+        if( days != null && !String.isBlank(days) )
         {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                 Case.Id,
                 Case.PolicyId__c,
                 Case.OfferId__c,
@@ -382,12 +383,12 @@ public with sharing class CasesSelector extends RecordsSelector
             .addConditionNull(Case.OfferId__c)
             .addConditionString(CASES_LAST_DATE + days);
 
-            if(origins != null && !origins.isEmpty())
+            if( origins != null && !origins.isEmpty() )
             {
                 this.baseQuery.addConditionIn(Case.Origin, origins);
             }
 
-            if(recordTypes != null && !recordTypes.isEmpty())
+            if( recordTypes != null && !recordTypes.isEmpty() )
             {
                 List<String> idsRecordType = new List<String>();
                 for(String rt : recordTypes)
@@ -398,7 +399,7 @@ public with sharing class CasesSelector extends RecordsSelector
                 this.baseQuery.addConditionIn(Case.RecordTypeId, idsRecordType);
             }
 
-            System.debug('++++: ' + this.baseQuery.toQueryString());
+            System.debug( '++++: ' + this.baseQuery.toQueryString() );
 
             return this.baseQuery.toQueryString();
         }
@@ -410,7 +411,7 @@ public with sharing class CasesSelector extends RecordsSelector
 
     /**
      * Busca los casos (de recordtype ZDA) cuyo CuTicketId__c coincide con los pasados por parametro
-     * 
+     *
      * @author mario.navarro@seidor.com
      * @date 09/04/2029
      * @param ticketIds lista de CuTicketId__c a buscar
@@ -418,11 +419,11 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public List<Case> getCasesByTicketId(Set<String> ticketIds)
     {
-        if (ticketIds == null || ticketIds.isEmpty())
+        if ( ticketIds == null || ticketIds.isEmpty() )
         {
             return new List<Case>();
         }
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
             Case.CuTicketId__c
         })
         .addConditionEq(Case.RecordTypeId,CaseUtil.RT_ID_ZDA)
@@ -434,13 +435,13 @@ public with sharing class CasesSelector extends RecordsSelector
     /**
      * Busca casos de tipo ZDA cuyo campo RelatedCuTicketId__c este informado
      * con alguno de los proporcionados en el set
-     * 
+     *
      * Query que se ejecuta:
      * SELECT CuTicketId__c, Status, RelatedCuTicketId__c
      * FROM Case
      * WHERE RecordTypeId = :CaseUtil.RT_ID_ZDA
      * AND RelatedCuTicketId__c IN :relatedCuTicketIds
-     * 
+     *
      * @author mario.navarro@seidor.com
      * @date 05/06/2024
      * @param relatedCuTicketIds lista de identificadores a buscar
@@ -448,11 +449,11 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public List<Case> getZdaChildCases(Set<String> relatedCuTicketIds)
     {
-        if (relatedCuTicketIds == null || relatedCuTicketIds.isEmpty())
+        if ( relatedCuTicketIds == null || relatedCuTicketIds.isEmpty() )
         {
             return new List<Case>();
         }
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
             Case.CuTicketId__c,
             Case.Status,
             Case.RelatedCuTicketId__c
@@ -466,7 +467,7 @@ public with sharing class CasesSelector extends RecordsSelector
     /**
      * Busca el caso por identificador filtrando por (aparte del id) el recordtype de ZDA.
      * Retorna el caso con los campos CuTicketId__c, CaseNumber, Status, PendingBy__c, Owner.Name
-     * 
+     *
      * @author mario.navarro@seidor.com
      * @date 25/04/2024
      * @param caseId identificador del caso a buscar
@@ -479,7 +480,7 @@ public with sharing class CasesSelector extends RecordsSelector
         {
             return caseFound;
         }
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
             Case.CuTicketId__c,
             Case.CaseNumber,
             Case.Status,
@@ -493,7 +494,7 @@ public with sharing class CasesSelector extends RecordsSelector
         .addConditionEq(Case.RecordTypeId,CaseUtil.RT_ID_ZDA)
         .addConditionEq(Case.Id, caseId);
         List<Case> casesFound = (List<Case>) this.baseQuery.run();
-        if (casesFound != null && !casesFound.isEmpty())
+        if ( casesFound != null && !casesFound.isEmpty() )
         {
             caseFound = casesFound[0];
         }
@@ -506,10 +507,10 @@ public with sharing class CasesSelector extends RecordsSelector
      * @date 06/03/2024
      * @param List<Case> caseList : lista de casos a filtrar
      * @param List<String> recordTypeNamesAccount : lista de nombres de record types de cuenta a filtrar
-    */
+     */
     public List<Case> getCasesFilterByRecordTypeNamesAccount (List<Case> caseList, List<String> recordTypeNamesAccount)
     {
-        if (recordTypeNamesAccount != null && !recordTypeNamesAccount.isEmpty() && caseList != null && !caseList.isEmpty() )
+        if ( recordTypeNamesAccount != null && !recordTypeNamesAccount.isEmpty() && caseList != null && !caseList.isEmpty() )
         {
             this.baseQuery.selectFields(new Set<Schema.SObjectField>
             {
@@ -523,7 +524,7 @@ public with sharing class CasesSelector extends RecordsSelector
 
             return (List<Case>) this.baseQuery.run();
         }
-        
+
         return new List<Case>();
     }
 
@@ -531,16 +532,16 @@ public with sharing class CasesSelector extends RecordsSelector
      * Método que obtiene una lista de casos abiertos de Retenciones ZRM filtrados por las pólizas asociadas.
      * @author ivan.garcia.belen@seidor.com
      * @date 22/04/2024
-     * @param relatedPolicyIds identificadores de póliza a filtrar 
-    */
+     * @param relatedPolicyIds identificadores de póliza a filtrar
+     */
     public List<Case> getNotClosedZrmCasesByRelatedPolicy (Set<String> relatedPolicyIds)
     {
-        if(relatedPolicyIds != null && !relatedPolicyIds.isEmpty())
+        if( relatedPolicyIds != null && !relatedPolicyIds.isEmpty() )
         {
             Query.Condition andCondition = Query.doAnd(
                 Query.conditionNotEq(Case.Status, CASE_STATUS_LOOSE_CLOSED),
-                Query.conditionNotEq(Case.Status, CASE_STATUS_WIN_CLOSED));
-                
+                Query.conditionNotEq(Case.Status, CASE_STATUS_WIN_CLOSED) );
+
             this.baseQuery.selectFields(new Set<Schema.SObjectField>
             {
                 Case.Id,
@@ -552,8 +553,8 @@ public with sharing class CasesSelector extends RecordsSelector
             .addConditionIn(Case.PolicyId__c, relatedPolicyIds)
             .addConditionEq(CASE_RT_NAME_FIELD, CASE_ZRM_RT_NAME)
             .addCondition(andCondition);
-            
-        
+
+
             return (List<Case>) this.baseQuery.run();
         }
 
@@ -571,10 +572,10 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public String getQueryStringZRMExpiredAndNotClosedCasesWithPolicy(String recordTypeName, String months)
     {
-        if(months != null && String.isNotEmpty(months) 
-        && recordTypeName != null && String.isNotEmpty(recordTypeName) && recordTypeName == CaseUtil.RT_NAME_ZRM)
+        if(months != null && String.isNotEmpty(months)
+           && recordTypeName != null && String.isNotEmpty(recordTypeName) && recordTypeName == CaseUtil.RT_NAME_ZRM)
         {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                 Case.Id,
                 Case.Status,
                 Case.RecordTypeId,
@@ -588,10 +589,10 @@ public with sharing class CasesSelector extends RecordsSelector
             .addConditionString(CASES_END_DATE + months);
 
             return this.baseQuery.toQueryString();
-        } 
-        else 
+        }
+        else
         {
-            return '';    
+            return '';
         }
     }
 
@@ -602,10 +603,10 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public List<AggregateResult> selectNumberOfAssignedCasesGroupById()
     {
-        Query subquery = new Query (User.getSObjectType());
-        subquery.selectFields((new List<Schema.SObjectField> {
+        Query subquery = new Query ( User.getSObjectType() );
+        subquery.selectFields( (new List<Schema.SObjectField> {
             User.Id
-        }));
+        }) );
         subquery.addConditionEq(User.ActiveAgent__c, true);
 
         this.baseQuery.selectFields(new Set<Schema.SObjectField>
@@ -618,7 +619,7 @@ public with sharing class CasesSelector extends RecordsSelector
         .addConditionIn(Case.OwnerId,subquery)
         .groupBy('OwnerId');
 
-        return this.baseQuery.aggregate(); 
+        return this.baseQuery.aggregate();
     }
 
     /**
@@ -626,25 +627,25 @@ public with sharing class CasesSelector extends RecordsSelector
      * cuyo campo WithoutBestAgent__c sea verdadero, que el caso no esté cerrado y que el owner sea una de las colas de enrutamiento por equipos
      * @author aberuete
      * @date 27/06/2024
-     * @change 
-     * @author lgonzalez 
+     * @change
+     * @author lgonzalez
      * @date 16/07/2024
-     * description: Se modifica la condición para asignar los casos no tomando en cuenta el tipo caso queue 
+     * description: Se modifica la condición para asignar los casos no tomando en cuenta el tipo caso queue
      * sino directamente la queue Email_USP_Daños_RC
      */
     public String selectCasesWithoutBestAgent()
     {
-        //Construimos la query 
+        //Construimos la query
         Query.Condition andCondition = Query.doOr(
-                Query.conditionIn(CASE_OWNER_NAME, RoutingTeamQueueConfigUtil.getRoutingTeamQueueConfigValues().keySet()),
-                Query.conditionEq(CASE_OWNER_PROFILE_NAME, profileIntegrator));   
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Query.conditionIn( CASE_OWNER_NAME, RoutingTeamQueueConfigUtil.getRoutingTeamQueueConfigValues().keySet() ),
+            Query.conditionEq(CASE_OWNER_PROFILE_NAME, profileIntegrator) );
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
             Case.Id,
             Case.OwnerId
         })
         .selectFields(CASE_OWNER_NAME)
         .selectFields(CASE_OWNER_PROFILE_NAME)
-        .addConditionEq(Case.WithoutBestAgent__c , true)
+        .addConditionEq(Case.WithoutBestAgent__c, true)
         .addConditionEq(Case.isClosed, false)
         .addCondition(andCondition)
         .orderBy('Case.Priority__c', 'DESC')
@@ -652,7 +653,7 @@ public with sharing class CasesSelector extends RecordsSelector
 
         return this.baseQuery.toQueryString();
     }
-    
+
     /**
      * Método utilizado por Batch_CloseInteractions para definir el scope automaticamente (sin botón)
      * @author lrodriguez6@seidor.es
@@ -661,7 +662,7 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public List<Case> getCasesToCloseInteractionsAutomatic()
     {
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
             Case.Id
         })
         .addConditionEq(Case.RecordTypeId,uSPRecordTypeId)
@@ -675,7 +676,7 @@ public with sharing class CasesSelector extends RecordsSelector
         .addConditionNotEq(Case.Type,filterTypeVenta)
         .addConditionEq(Case.OwnerUser__c,true)
         .addConditionEq(Case.SourceArea__c,filterSourceMediator);
-        
+
 
         return (List<Case>) this.baseQuery.run();
     }
@@ -688,15 +689,15 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public List<Case> getCaseByCuTicketId(List<String> lstIdCanalUnico)
     {
-        if(lstIdCanalUnico.isEmpty())
+        if( lstIdCanalUnico.isEmpty() )
         {
             return new List<Case>();
         }
 
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
-            Case.Id, 
-            Case.RecordTypeId, 
-            Case.OwnerId, 
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
+            Case.Id,
+            Case.RecordTypeId,
+            Case.OwnerId,
             Case.OwnerIdPrior__c
         })
         .selectFields(CASE_OWNER_NAME)

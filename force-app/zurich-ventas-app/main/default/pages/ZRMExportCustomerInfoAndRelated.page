@@ -1,242 +1,464 @@
-<apex:page standardController="Account" extensions="ZRMExportCustomerInfoController" renderAs="pdf" showHeader="false">
+<apex:page
+  standardController="Account"
+  extensions="ZRMExportCustomerInfoController"
+  renderAs="pdf"
+  showHeader="false"
+>
+  <head>
+    <apex:stylesheet value="{!$Resource.ZRMExportCustomerInfoAndRelated}" />
+  </head>
 
-    <head>
-        <apex:stylesheet value="{!$Resource.ZRMExportCustomerInfoAndRelated}" />   
-    </head>
+  <body>
+    <apex:outputPanel styleClass="no-page-break" layout="block">
+      <apex:panelGrid
+        columns="3"
+        id="customerSummaryHeader"
+        styleClass="customerSummaryHeader"
+      >
+        <apex:image
+          id="zurichLogo"
+          value="{!$Resource.ZRMExportCustomerInfoAndRelatedLogo}"
+          width="40"
+          height="40"
+          styleClass="customerSummarySpacing"
+          alt="logo"
+        />
+        <apex:outputText
+          id="customerSummaryText"
+          styleClass="customerSummarySpacing"
+          value="{!$Label.ZRM_ExportClientData_CustomerSummary}"
+        />
+        <apex:outputText id="today" value="{0,date,dd/MM/yyyy}">
+          <apex:param value="{!TODAY()}" />
+        </apex:outputText>
+      </apex:panelGrid>
 
-    <body>
+      <!-- Información de la cuenta -->
+      <apex:panelGrid columns="2" id="customerSummary">
+        <apex:outputText
+          value="{!Account.Name}"
+          style="font-weight: bold"
+          styleClass="customerCellPadding"
+          id="name"
+        />
+        <apex:outputText
+          value="{!$Label.ZRM_ExportClientData_Segment}: {!accountCustomerSegment}"
+          styleClass="customerCellPadding"
+          id="segment"
+        />
+        <apex:outputText
+          value="{!Account.NationalId__c}"
+          styleClass="customerCellPadding"
+          id="nationalId"
+        />
+        <apex:outputText
+          value="{!$Label.ZRM_ExportClientData_CustomeValue}: {!accountCustomerValue}"
+          styleClass="customerCellPadding"
+          id="value"
+        />
+        <apex:outputField
+          value="{!Account.BirthDate__c}"
+          styleClass="customerCellPadding"
+          id="birthdate"
+        />
+        <apex:outputText value="" id="empty1" />
 
-        <apex:outputPanel styleClass="no-page-break" layout="block">
-            <apex:panelGrid columns="3" id="customerSummaryHeader" styleClass="customerSummaryHeader">
-                <apex:image id="zurichLogo" value="{!$Resource.ZRMExportCustomerInfoAndRelatedLogo}" width="40" height="40" styleClass="customerSummarySpacing" alt="logo"/> 
-                <apex:outputText id="customerSummaryText" styleClass="customerSummarySpacing" value="{!$Label.ZRM_ExportClientData_CustomerSummary}"/>
-                <apex:outputText id="today" value="{0,date,dd/MM/yyyy}">
-                   <apex:param value="{!TODAY()}" />
-                </apex:outputText>
-            </apex:panelGrid>   
-        
-            <!-- Información de la cuenta -->
-            <apex:panelGrid columns="2" id="customerSummary">
-                <apex:outputText value="{!Account.Name}" style="font-weight: bold" styleClass="customerCellPadding" id="name"/>
-                <apex:outputText value="{!$Label.ZRM_ExportClientData_Segment}: {!accountCustomerSegment}" styleClass="customerCellPadding" id="segment"/>
-                <apex:outputText value="{!Account.NationalId__c}" styleClass="customerCellPadding" id="nationalId"/>
-                <apex:outputText value="{!$Label.ZRM_ExportClientData_CustomeValue}: {!accountCustomerValue}" styleClass="customerCellPadding" id="value"/>
-                <apex:outputField value="{!Account.BirthDate__c}" styleClass="customerCellPadding" id="birthdate"/>
-                <apex:outputText value="" id="empty1"/>
-        
-                <!-- Dirección la cuenta -->
-                <apex:outputText value="{!$Label.ZRM_ExportClientData_Address}" styleClass="customerAddressHeader" id="addressHeader"/>
-                <apex:outputText value="{!$Label.ZRM_ExportClientData_ContactData}" styleClass="customerAddressHeader" id="contactData"/>
-                <apex:outputField value="{!Account.BillingStreet}" styleClass="customerCellPadding" id="street"/>
-                <apex:outputText value="{!accountPhone}" styleClass="customerCellPadding" id="phone"/>
-                <apex:outputText value="{!Account.BillingPostalCode} {!Account.BillingCity}" styleClass="customerCellPadding" id="postalCodeCity"/>
-                <apex:outputText value="{!accountEmail}" styleClass="customerCellPadding" id="email"/>
-                <apex:outputField value="{!Account.BillingCountry}" styleClass="customerCellPadding" id="country"/>
-            
-            </apex:panelGrid>
+        <!-- Dirección la cuenta -->
+        <apex:outputText
+          value="{!$Label.ZRM_ExportClientData_Address}"
+          styleClass="customerAddressHeader"
+          id="addressHeader"
+        />
+        <apex:outputText
+          value="{!$Label.ZRM_ExportClientData_ContactData}"
+          styleClass="customerAddressHeader"
+          id="contactData"
+        />
+        <apex:outputField
+          value="{!Account.BillingStreet}"
+          styleClass="customerCellPadding"
+          id="street"
+        />
+        <apex:outputText
+          value="{!accountPhone}"
+          styleClass="customerCellPadding"
+          id="phone"
+        />
+        <apex:outputText
+          value="{!Account.BillingPostalCode} {!Account.BillingCity}"
+          styleClass="customerCellPadding"
+          id="postalCodeCity"
+        />
+        <apex:outputText
+          value="{!accountEmail}"
+          styleClass="customerCellPadding"
+          id="email"
+        />
+        <apex:outputField
+          value="{!Account.BillingCountry}"
+          styleClass="customerCellPadding"
+          id="country"
+        />
+      </apex:panelGrid>
+    </apex:outputPanel>
+
+    <!-- Sección de Pólizas -->
+    <apex:outputPanel
+      styleClass="no-page-break"
+      layout="block"
+      rendered="{!policies.size > 0}"
+    >
+      <apex:pageBlock id="policies">
+        <apex:outputPanel layout="block" styleClass="relatedTableTitle">
+          <apex:outputText
+            value="{!$Label.ZRM_ExportClientData_PolicyTitle}"
+          ></apex:outputText>
         </apex:outputPanel>
-        
-        <!-- Sección de Pólizas -->
-        <apex:outputPanel styleClass="no-page-break" layout="block" rendered="{!policies.size > 0}">
-            <apex:pageBlock id="policies">
-                <apex:outputPanel layout="block" styleClass="relatedTableTitle">
-                    <apex:outputText value="{!$Label.ZRM_ExportClientData_PolicyTitle}" ></apex:outputText>
-                </apex:outputPanel>
-                <apex:pageBlockTable value="{!policies}" headerClass="relatedHeaderTable" cellpadding="5px" columnClasses="relatedColumnTable" var="policy">
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_PolicyNumber}">
-                        <apex:outputField value="{!policy.Name}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_PolicyStatus}">
-                        <apex:outputField value="{!policy.PolicyStatus__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_PolicyProductBranch}">
-                        <apex:outputField value="{!policy.ProductBranch__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_PolicyIdentifier}">
-                        <apex:outputField value="{!policy.AssetIdentifier__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_PolicyEndDate}">
-                        <apex:outputText value="{0,date,dd/MM/yyyy}">
-                            <apex:param value="{!policy.EndDate__c}" />
-                        </apex:outputText>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_PolicyTotalPremium}">
-                        <apex:outputField value="{!policy.TotalPremium__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_PolicyAccidentRate}">
-                        <apex:outputField value="{!policy.AccidentRate__c}"/>
-                    </apex:column>
-                </apex:pageBlockTable>
-            </apex:pageBlock>
+        <apex:pageBlockTable
+          value="{!policies}"
+          headerClass="relatedHeaderTable"
+          cellpadding="5px"
+          columnClasses="relatedColumnTable"
+          var="policy"
+        >
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_PolicyNumber}"
+          >
+            <apex:outputField value="{!policy.Name}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_PolicyStatus}"
+          >
+            <apex:outputField value="{!policy.PolicyStatus__c}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_PolicyProductBranch}"
+          >
+            <apex:outputField value="{!policy.ProductBranch__c}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_PolicyIdentifier}"
+          >
+            <apex:outputField value="{!policy.AssetIdentifier__c}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_PolicyEndDate}"
+          >
+            <apex:outputText value="{0,date,dd/MM/yyyy}">
+              <apex:param value="{!policy.EndDate__c}" />
+            </apex:outputText>
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_PolicyTotalPremium}"
+          >
+            <apex:outputField value="{!policy.TotalPremium__c}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_PolicyAccidentRate}"
+          >
+            <apex:outputField value="{!policy.AccidentRate__c}" />
+          </apex:column>
+        </apex:pageBlockTable>
+      </apex:pageBlock>
+    </apex:outputPanel>
+
+    <!-- Sección de Siniestros -->
+    <apex:outputPanel
+      styleClass="no-page-break"
+      layout="block"
+      rendered="{!claims.size > 0}"
+    >
+      <apex:pageBlock id="claims">
+        <apex:outputPanel layout="block" styleClass="relatedTableTitle">
+          <apex:outputText
+            value="{!$Label.ZRM_ExportClientData_ClaimTitle}"
+          ></apex:outputText>
         </apex:outputPanel>
-        
-        <!-- Sección de Siniestros -->
-        <apex:outputPanel styleClass="no-page-break" layout="block" rendered="{!claims.size > 0}">
-            <apex:pageBlock id="claims">
-                <apex:outputPanel layout="block" styleClass="relatedTableTitle">
-                    <apex:outputText value="{!$Label.ZRM_ExportClientData_ClaimTitle}" ></apex:outputText>
-                </apex:outputPanel>
-                <apex:pageBlockTable value="{!claims}" headerClass="relatedHeaderTable" cellpadding="5px" columnClasses="relatedColumnTable" var="claim">
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_ClaimNumber}">
-                        <apex:outputField value="{!claim.Name}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_ClaimStatus}">
-                        <apex:outputField value="{!claim.Status__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_ClaimProductBranch}">
-                        <apex:outputField value="{!claim.ProductBranch__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_ClaimIdentifier}">
-                        <apex:outputField value="{!claim.AssetIdentifier__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_ClaimDateOfOccurence}">
-                        <apex:outputText value="{0,date,dd/MM/yyyy}">
-                            <apex:param value="{!claim.DateOfOccurrence__c}" />
-                        </apex:outputText>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_ClaimOpenDate}">
-                        <apex:outputText value="{0,date,dd/MM/yyyy}">
-                            <apex:param value="{!claim.OpenDate__c}" />
-                        </apex:outputText>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_ClaimFaultFactor}">
-                        <apex:outputField value="{!claim.FaultFactor__c}"/>
-                    </apex:column>
-                </apex:pageBlockTable>
-            </apex:pageBlock>
+        <apex:pageBlockTable
+          value="{!claims}"
+          headerClass="relatedHeaderTable"
+          cellpadding="5px"
+          columnClasses="relatedColumnTable"
+          var="claim"
+        >
+          <apex:column headerValue="{!$Label.ZRM_ExportClientData_ClaimNumber}">
+            <apex:outputField value="{!claim.Name}" />
+          </apex:column>
+          <apex:column headerValue="{!$Label.ZRM_ExportClientData_ClaimStatus}">
+            <apex:outputField value="{!claim.Status__c}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_ClaimProductBranch}"
+          >
+            <apex:outputField value="{!claim.ProductBranch__c}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_ClaimIdentifier}"
+          >
+            <apex:outputField value="{!claim.AssetIdentifier__c}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_ClaimDateOfOccurence}"
+          >
+            <apex:outputText value="{0,date,dd/MM/yyyy}">
+              <apex:param value="{!claim.DateOfOccurrence__c}" />
+            </apex:outputText>
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_ClaimOpenDate}"
+          >
+            <apex:outputText value="{0,date,dd/MM/yyyy}">
+              <apex:param value="{!claim.OpenDate__c}" />
+            </apex:outputText>
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_ClaimFaultFactor}"
+          >
+            <apex:outputField value="{!claim.FaultFactor__c}" />
+          </apex:column>
+        </apex:pageBlockTable>
+      </apex:pageBlock>
+    </apex:outputPanel>
+
+    <!-- Sección de Ofertas -->
+    <apex:outputPanel
+      styleClass="no-page-break"
+      layout="block"
+      rendered="{!opportunities.size > 0}"
+    >
+      <apex:pageBlock id="offers">
+        <apex:outputPanel layout="block" styleClass="relatedTableTitle">
+          <apex:outputText
+            value="{!$Label.ZRM_ExportClientData_OfferTitle}"
+          ></apex:outputText>
         </apex:outputPanel>
-    
-        <!-- Sección de Ofertas -->
-        <apex:outputPanel styleClass="no-page-break" layout="block" rendered="{!opportunities.size > 0}">
-            <apex:pageBlock id="offers">
-                <apex:outputPanel layout="block" styleClass="relatedTableTitle">
-                    <apex:outputText value="{!$Label.ZRM_ExportClientData_OfferTitle}" ></apex:outputText>
-                </apex:outputPanel>
-                <apex:pageBlockTable value="{!opportunities}" headerClass="relatedHeaderTable" cellpadding="5px" columnClasses="relatedColumnTable" var="offer">
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_OfferNumber}">
-                        <apex:outputField value="{!offer.Name}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_OfferStage}">
-                        <apex:outputField value="{!offer.StageName}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_OfferProductBranch}">
-                        <apex:outputField value="{!offer.ProductBranch__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_OfferNumberINFO}">
-                        <apex:outputField value="{!offer.InfoQuoteNumber__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_OfferCreatedDateINFO}">
-                        <apex:outputText value="{0,date,dd/MM/yyyy}">
-                            <apex:param value="{!offer.CreatedDate__c}" />
-                        </apex:outputText>
-                    </apex:column>
-                </apex:pageBlockTable>
-            </apex:pageBlock>
+        <apex:pageBlockTable
+          value="{!opportunities}"
+          headerClass="relatedHeaderTable"
+          cellpadding="5px"
+          columnClasses="relatedColumnTable"
+          var="offer"
+        >
+          <apex:column headerValue="{!$Label.ZRM_ExportClientData_OfferNumber}">
+            <apex:outputField value="{!offer.Name}" />
+          </apex:column>
+          <apex:column headerValue="{!$Label.ZRM_ExportClientData_OfferStage}">
+            <apex:outputField value="{!offer.StageName}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_OfferProductBranch}"
+          >
+            <apex:outputField value="{!offer.ProductBranch__c}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_OfferNumberINFO}"
+          >
+            <apex:outputField value="{!offer.InfoQuoteNumber__c}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_OfferCreatedDateINFO}"
+          >
+            <apex:outputText value="{0,date,dd/MM/yyyy}">
+              <apex:param value="{!offer.CreatedDate__c}" />
+            </apex:outputText>
+          </apex:column>
+        </apex:pageBlockTable>
+      </apex:pageBlock>
+    </apex:outputPanel>
+
+    <!-- Sección de Campañas -->
+
+    <apex:outputPanel
+      styleClass="no-page-break"
+      layout="block"
+      rendered="{!campaignMembers.size > 0}"
+    >
+      <apex:pageBlock id="campaignMembers">
+        <apex:outputPanel layout="block" styleClass="relatedTableTitle">
+          <apex:outputText
+            value="{!$Label.ZRM_ExportClientData_CampaignTitle}"
+          ></apex:outputText>
         </apex:outputPanel>
-    
-        <!-- Sección de Campañas -->
-        
-        <apex:outputPanel styleClass="no-page-break" layout="block" rendered="{!campaignMembers.size > 0}">
-            <apex:pageBlock id="campaignMembers" >
-                <apex:outputPanel layout="block" styleClass="relatedTableTitle">
-                    <apex:outputText value="{!$Label.ZRM_ExportClientData_CampaignTitle}" ></apex:outputText>
-                </apex:outputPanel>
-                <apex:pageBlockTable value="{!campaignMembers}" headerClass="relatedHeaderTable" cellpadding="5px" columnClasses="relatedColumnTable" var="campaignMember">
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_CampaignName}">
-                        <apex:outputField value="{!campaignMember.Campaign.Name}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_CampaignProductBranch}">
-                        <apex:outputField value="{!campaignMember.Campaign.ProductBranch__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_CampaignType}">
-                        <apex:outputField value="{!campaignMember.Campaign.Type}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_CampaignStartDate}">
-                        <apex:outputText value="{0,date,dd/MM/yyyy}">
-                            <apex:param value="{!campaignMember.Campaign.StartDate}" />
-                        </apex:outputText>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_CampaignEndDate}">
-                        <apex:outputText value="{0,date,dd/MM/yyyy}">
-                            <apex:param value="{!campaignMember.Campaign.EndDate}" />
-                        </apex:outputText>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_CampaignStatus}">
-                        <apex:outputField value="{!campaignMember.Status}"/>
-                    </apex:column>
-                </apex:pageBlockTable>
-            </apex:pageBlock>    
+        <apex:pageBlockTable
+          value="{!campaignMembers}"
+          headerClass="relatedHeaderTable"
+          cellpadding="5px"
+          columnClasses="relatedColumnTable"
+          var="campaignMember"
+        >
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_CampaignName}"
+          >
+            <apex:outputField value="{!campaignMember.Campaign.Name}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_CampaignProductBranch}"
+          >
+            <apex:outputField
+              value="{!campaignMember.Campaign.ProductBranch__c}"
+            />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_CampaignType}"
+          >
+            <apex:outputField value="{!campaignMember.Campaign.Type}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_CampaignStartDate}"
+          >
+            <apex:outputText value="{0,date,dd/MM/yyyy}">
+              <apex:param value="{!campaignMember.Campaign.StartDate}" />
+            </apex:outputText>
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_CampaignEndDate}"
+          >
+            <apex:outputText value="{0,date,dd/MM/yyyy}">
+              <apex:param value="{!campaignMember.Campaign.EndDate}" />
+            </apex:outputText>
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_CampaignStatus}"
+          >
+            <apex:outputField value="{!campaignMember.Status}" />
+          </apex:column>
+        </apex:pageBlockTable>
+      </apex:pageBlock>
+    </apex:outputPanel>
+
+    <!-- Sección de Propensiones -->
+    <apex:outputPanel
+      styleClass="no-page-break"
+      layout="block"
+      rendered="{!propensities.size > 0}"
+    >
+      <apex:pageBlock id="propensities">
+        <apex:outputPanel layout="block" styleClass="relatedTableTitle">
+          <apex:outputText
+            value="{!$Label.ZRM_ExportClientData_PropensityTitle}"
+          ></apex:outputText>
         </apex:outputPanel>
-    
-        <!-- Sección de Propensiones -->
-        <apex:outputPanel styleClass="no-page-break" layout="block" rendered="{!propensities.size > 0}">
-            <apex:pageBlock id="propensities">
-                <apex:outputPanel layout="block" styleClass="relatedTableTitle">
-                    <apex:outputText value="{!$Label.ZRM_ExportClientData_PropensityTitle}" ></apex:outputText>
-                </apex:outputPanel>
-                <apex:pageBlockTable value="{!propensities}" headerClass="relatedHeaderTable" cellpadding="5px" columnClasses="relatedColumnTable" var="propensity">
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_PropensityIdentifier}">
-                        <apex:outputField value="{!propensity.Name}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_PropensityProductBranch}">
-                        <apex:outputField value="{!propensity.ProductBranch__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_PropensityProductBranchDetail}">
-                        <apex:outputField value="{!propensity.ProductBranchDetail__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_PropensityValue}">
-                        <apex:outputField value="{!propensity.Propensity__c}"/>
-                    </apex:column>
-                </apex:pageBlockTable>
-            </apex:pageBlock>    
+        <apex:pageBlockTable
+          value="{!propensities}"
+          headerClass="relatedHeaderTable"
+          cellpadding="5px"
+          columnClasses="relatedColumnTable"
+          var="propensity"
+        >
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_PropensityIdentifier}"
+          >
+            <apex:outputField value="{!propensity.Name}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_PropensityProductBranch}"
+          >
+            <apex:outputField value="{!propensity.ProductBranch__c}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_PropensityProductBranchDetail}"
+          >
+            <apex:outputField value="{!propensity.ProductBranchDetail__c}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_PropensityValue}"
+          >
+            <apex:outputField value="{!propensity.Propensity__c}" />
+          </apex:column>
+        </apex:pageBlockTable>
+      </apex:pageBlock>
+    </apex:outputPanel>
+
+    <!-- Sección de Competencia -->
+    <apex:outputPanel
+      styleClass="no-page-break"
+      layout="block"
+      rendered="{!competitors.size > 0}"
+    >
+      <apex:pageBlock id="competitors">
+        <apex:outputPanel layout="block" styleClass="relatedTableTitle">
+          <apex:outputText
+            value="{!$Label.ZRM_ExportClientData_CompetitorTitle}"
+          ></apex:outputText>
         </apex:outputPanel>
-    
-        <!-- Sección de Competencia -->
-        <apex:outputPanel styleClass="no-page-break" layout="block" rendered="{!competitors.size > 0}">
-            <apex:pageBlock id="competitors">
-                <apex:outputPanel layout="block" styleClass="relatedTableTitle">
-                    <apex:outputText value="{!$Label.ZRM_ExportClientData_CompetitorTitle}" ></apex:outputText>
-                </apex:outputPanel>
-                <apex:pageBlockTable value="{!competitors}" headerClass="relatedHeaderTable" cellpadding="5px" columnClasses="relatedColumnTable" var="competitor">
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_CompetitorIdentifier}">
-                        <apex:outputField value="{!competitor.Name}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_CompetitorProductBranch}">
-                        <apex:outputField value="{!competitor.ProductBranch__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_CompetitorExpirationDate}">
-                        <apex:outputText value="{0,date,dd/MM/yyyy}">
-                            <apex:param value="{!competitor.ExpirationDate__c}" />
-                        </apex:outputText>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_CompetitorPremium}">
-                        <apex:outputField value="{!competitor.Premium__c}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_CompetitorCompany}">
-                        <apex:outputField value="{!competitor.InsuranceCompany__c}"/>
-                    </apex:column>
-                </apex:pageBlockTable>
-            </apex:pageBlock>
+        <apex:pageBlockTable
+          value="{!competitors}"
+          headerClass="relatedHeaderTable"
+          cellpadding="5px"
+          columnClasses="relatedColumnTable"
+          var="competitor"
+        >
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_CompetitorIdentifier}"
+          >
+            <apex:outputField value="{!competitor.Name}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_CompetitorProductBranch}"
+          >
+            <apex:outputField value="{!competitor.ProductBranch__c}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_CompetitorExpirationDate}"
+          >
+            <apex:outputText value="{0,date,dd/MM/yyyy}">
+              <apex:param value="{!competitor.ExpirationDate__c}" />
+            </apex:outputText>
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_CompetitorPremium}"
+          >
+            <apex:outputField value="{!competitor.Premium__c}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_CompetitorCompany}"
+          >
+            <apex:outputField value="{!competitor.InsuranceCompany__c}" />
+          </apex:column>
+        </apex:pageBlockTable>
+      </apex:pageBlock>
+    </apex:outputPanel>
+
+    <!-- Sección de Cuentas Relacionadas -->
+    <apex:outputPanel
+      styleClass="no-page-break"
+      layout="block"
+      rendered="{!accountsRelationships.size > 0}"
+    >
+      <apex:pageBlock id="accountRelationships">
+        <apex:outputPanel layout="block" styleClass="relatedTableTitle">
+          <apex:outputText
+            value="{!$Label.ZRM_ExportClientData_AccountRelationshipTitle}"
+          ></apex:outputText>
         </apex:outputPanel>
-    
-        <!-- Sección de Cuentas Relacionadas -->
-        <apex:outputPanel styleClass="no-page-break" layout="block" rendered="{!accountsRelationships.size > 0}">
-            <apex:pageBlock id="accountRelationships">
-                <apex:outputPanel layout="block" styleClass="relatedTableTitle">
-                    <apex:outputText value="{!$Label.ZRM_ExportClientData_AccountRelationshipTitle}" ></apex:outputText>
-                </apex:outputPanel>
-                <apex:pageBlockTable value="{!accountsRelationships}" headerClass="relatedHeaderTable" cellpadding="5px" columnClasses="relatedColumnTable" var="accountRelationship">
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_AccountRelationshipIdentifier}">
-                        <apex:outputField value="{!accountRelationship.Name}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_RelatedAccountName}">
-                        <apex:outputField value="{!accountRelationship.RelatedAccount__r.Name}"/>
-                    </apex:column>
-                    <apex:column headerValue="{!$Label.ZRM_ExportClientData_RelationshipType}">
-                        <apex:outputField value="{!accountRelationship.RelationshipType__c}"/>
-                    </apex:column>            
-                </apex:pageBlockTable>        
-            </apex:pageBlock>    
-        </apex:outputPanel>
-    </body>
+        <apex:pageBlockTable
+          value="{!accountsRelationships}"
+          headerClass="relatedHeaderTable"
+          cellpadding="5px"
+          columnClasses="relatedColumnTable"
+          var="accountRelationship"
+        >
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_AccountRelationshipIdentifier}"
+          >
+            <apex:outputField value="{!accountRelationship.Name}" />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_RelatedAccountName}"
+          >
+            <apex:outputField
+              value="{!accountRelationship.RelatedAccount__r.Name}"
+            />
+          </apex:column>
+          <apex:column
+            headerValue="{!$Label.ZRM_ExportClientData_RelationshipType}"
+          >
+            <apex:outputField
+              value="{!accountRelationship.RelationshipType__c}"
+            />
+          </apex:column>
+        </apex:pageBlockTable>
+      </apex:pageBlock>
+    </apex:outputPanel>
+  </body>
 </apex:page>

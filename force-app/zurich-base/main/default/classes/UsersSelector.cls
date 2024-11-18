@@ -267,7 +267,7 @@ public with sharing class UsersSelector extends RecordsSelector
         {
             result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
                                      FROM User
-                                     WHERE Profile.Name IN (:ProfilesSelector.PROFILE_AGENTE_VENTAS, :ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
+                                     WHERE Profile.Name IN (: ProfilesSelector.PROFILE_AGENTE_VENTAS, : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
                                      AND (Contact.AccountId IN: intermediariesSet OR Contact.Account.IntermediaryGroup__c IN: intermediaryGroupIdList)
                                      AND IsActive = TRUE]);
         }
@@ -288,7 +288,7 @@ public with sharing class UsersSelector extends RecordsSelector
         {
             result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
                                      FROM User
-                                     WHERE Profile.Name IN (:ProfilesSelector.PROFILE_AGENTE_VENTAS, :ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
+                                     WHERE Profile.Name IN (: ProfilesSelector.PROFILE_AGENTE_VENTAS, : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
                                      AND Contact.Account.IntermediaryGroup__c IN: intermediaryGroupIdList
                                      AND IsActive = TRUE]);
         }
@@ -309,7 +309,7 @@ public with sharing class UsersSelector extends RecordsSelector
         {
             result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
                                      FROM User
-                                     WHERE Profile.Name IN (:ProfilesSelector.PROFILE_AGENTE_VENTAS, :ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
+                                     WHERE Profile.Name IN (: ProfilesSelector.PROFILE_AGENTE_VENTAS, : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
                                      AND Contact.AccountId IN: intermediaryIdList
                                      AND IsActive = TRUE]);
         }
@@ -331,15 +331,15 @@ public with sharing class UsersSelector extends RecordsSelector
         {
             result = new List<User>([SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User
                                      WHERE(
-                                         ( Contact.AccountId IN: intermediariesSet AND Profile.Name IN (:ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR, :ProfilesSelector.PROFILE_AGENTE_VENTAS) )
-                                         OR (Contact.Account.IntermediaryGroup__c IN: intermediaryGroupIdList AND Profile.Name = :ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
+                                         ( Contact.AccountId IN: intermediariesSet AND Profile.Name IN (: ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR, : ProfilesSelector.PROFILE_AGENTE_VENTAS) )
+                                         OR (Contact.Account.IntermediaryGroup__c IN: intermediaryGroupIdList AND Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
                                          )
                                      AND IsActive = TRUE]);
         }
         else if ( intermediariesSet != null && !intermediariesSet.isEmpty() )   // Si no hay agrupaciones buscamos solo los usuarios del conjunto de mediadores
         {
             result = new List<User>([SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User
-                                     WHERE Contact.AccountId IN: intermediariesSet AND Profile.Name IN (:ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR, :ProfilesSelector.PROFILE_AGENTE_VENTAS)
+                                     WHERE Contact.AccountId IN: intermediariesSet AND Profile.Name IN (: ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR, : ProfilesSelector.PROFILE_AGENTE_VENTAS)
                                      AND IsActive = TRUE]);
         }
 
@@ -360,7 +360,7 @@ public with sharing class UsersSelector extends RecordsSelector
         {
             result = [SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Contact.Account.INFOIntermediaryCode__c, Profile.Name
                       FROM User
-                      WHERE Id = :userId
+                      WHERE Id = : userId
                                  AND IsActive = TRUE];
 
         }
@@ -381,7 +381,7 @@ public with sharing class UsersSelector extends RecordsSelector
         {
             result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
                                      FROM User
-                                     WHERE Profile.Name IN (:ProfilesSelector.PROFILE_AGENTE_VENTAS, :ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
+                                     WHERE Profile.Name IN (: ProfilesSelector.PROFILE_AGENTE_VENTAS, : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
                                      AND (Contact.AccountId = : intermediaryId OR Contact.Account.IntermediaryGroup__c = : idIntermediaryGroupId)
                                      AND IsActive = TRUE]);
         }
@@ -402,7 +402,7 @@ public with sharing class UsersSelector extends RecordsSelector
         {
             result = new List<User>([SELECT Id
                                      FROM User
-                                     WHERE Profile.Name = :ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
+                                     WHERE Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
                                                           AND Contact.AccountId = : intermediaryId
                                                                                   AND IsActive = TRUE]);
         }
@@ -423,7 +423,7 @@ public with sharing class UsersSelector extends RecordsSelector
         {
             result = new List<User>([SELECT Id
                                      FROM User
-                                     WHERE Profile.Name = :ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
+                                     WHERE Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
                                                           AND Contact.Account.IntermediaryGroup__c = : intermediaryGroupId
                                                                                                      AND Contact.AccountId != : intermediaryId
                                                                                                      AND IsActive = TRUE]);
@@ -433,7 +433,7 @@ public with sharing class UsersSelector extends RecordsSelector
     }
 
     /**
-     * Método selector que devuelve los ids de usuarios, los casos asignados y la capacidad 
+     * Método selector que devuelve los ids de usuarios, los casos asignados y la capacidad
      * de aquellos usuarios que tengan el campo gestor activo a true ordenador por menos número de casos asignados
      * @author aberuete
      * @date 27/06/2024
@@ -456,7 +456,7 @@ public with sharing class UsersSelector extends RecordsSelector
 
         return (List<User>) this.baseQuery.run();
     }
-    
+
     /**
      * Método selector que devuelve el número de agentes activos que no tienen una capacidad
      * @author aberuete
@@ -466,7 +466,7 @@ public with sharing class UsersSelector extends RecordsSelector
     {
         this.baseQuery.addConditionEq(User.ActiveAgent__c, true);
         this.baseQuery.addConditionEq(User.IsActive, true);
-        this.baseQuery.addConditionEq(User.Capacity__c , null);
+        this.baseQuery.addConditionEq(User.Capacity__c, null);
         return this.baseQuery.countQuery();
     }
 }

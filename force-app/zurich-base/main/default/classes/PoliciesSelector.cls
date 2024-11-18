@@ -479,8 +479,9 @@ public with sharing class PoliciesSelector extends RecordsSelector
                 Policy__c.PolicyHolder__c
             };
 
-            result = this.baseQuery
+            result = this.baseQuery 
                             .selectFields(fieldsToRetrieve)
+                            .selectFields(POLICY_INTERMEDIARY_GROUP)
                             .addConditionIn(Policy__c.PolicyHolder__c, policyHolderIdSet)
                             .addConditionEq(POLICY_INTERMEDIARY_GROUP, intermediaryGroupId)
                             .addConditionEq(Policy__c.PolicyHolder__r.Blocked__c, false)
