@@ -58,6 +58,12 @@
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
                 <identifier>console_relatedRecord8</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.RPAProposal__r.Name}</leftValue>
+                        <operator>NE</operator>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>

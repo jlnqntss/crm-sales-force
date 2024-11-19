@@ -2515,10 +2515,6 @@
     <picklistValues>
         <picklist>TypeN3__c</picklist>
         <values>
-            <fullName>Abrir</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Acceso Descargas</fullName>
             <default>false</default>
         </values>
