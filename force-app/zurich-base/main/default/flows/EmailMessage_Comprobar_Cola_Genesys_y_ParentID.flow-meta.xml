@@ -70,12 +70,16 @@
         <locationX>5594</locationX>
         <locationY>1382</locationY>
         <assignmentItems>
-            <assignToReference>GestorPreferente</assignToReference>
+            <assignToReference>emailGestorPreferente</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>NombreConstruccionCartera</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Buscar_Si_Existe_Gestor_Preferente_Cartera</targetReference>
+        </connector>
     </assignments>
     <assignments>
         <name>Asignar_Construccion_Cartera_flujo_normal</name>
@@ -182,12 +186,15 @@
         <locationX>4010</locationX>
         <locationY>1274</locationY>
         <assignmentItems>
-            <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>emailGestorPreferente</assignToReference>
+            <operator>Assign</operator>
             <value>
                 <elementReference>EmailPropietarioCaso</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>Buscar_Si_Existe_Gestor_Preferente_Cartera</targetReference>
+        </connector>
     </assignments>
     <assignments>
         <name>Asignar_Gestor_Preferente_Usuario</name>
@@ -311,6 +318,19 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Asignar_Sin_Gestor_Preferente_Cartera</name>
+        <label>Asignar Sin Gestor Preferente</label>
+        <locationX>4010</locationX>
+        <locationY>1682</locationY>
+        <assignmentItems>
+            <assignToReference>SinGestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>Asignar_Sin_Gestor_Preferente_Construccion</name>
         <label>Asignar Sin Gestor Preferente</label>
         <locationX>2822</locationX>
@@ -348,12 +368,16 @@
         <locationX>4802</locationX>
         <locationY>1382</locationY>
         <assignmentItems>
-            <assignToReference>GestorPreferente</assignToReference>
+            <assignToReference>emailGestorPreferente</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>NombreSpecialtiesCartera</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Buscar_Si_Existe_Gestor_Preferente_Cartera</targetReference>
+        </connector>
     </assignments>
     <assignments>
         <name>Asignar_Specialties_Venta</name>
@@ -554,12 +578,16 @@
         <locationX>842</locationX>
         <locationY>1382</locationY>
         <assignmentItems>
-            <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>emailGestorPreferente</assignToReference>
+            <operator>Assign</operator>
             <value>
                 <elementReference>EmailPropietarioCaso</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Buscar_Si_Existe_Gestor_Preferente_Cartera</targetReference>
+        </connector>
     </assignments>
     <assignments>
         <name>AsignarGestorPreferenteOwner</name>
@@ -567,12 +595,16 @@
         <locationX>6386</locationX>
         <locationY>1274</locationY>
         <assignmentItems>
-            <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>emailGestorPreferente</assignToReference>
+            <operator>Assign</operator>
             <value>
                 <elementReference>EmailPropietarioCaso</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Buscar_Si_Existe_Gestor_Preferente_Cartera</targetReference>
+        </connector>
     </assignments>
     <assignments>
         <name>AsignarVariableResponsableNegocioSalida</name>
@@ -661,12 +693,15 @@
         <locationX>4274</locationX>
         <locationY>1274</locationY>
         <assignmentItems>
-            <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>emailGestorPreferente</assignToReference>
+            <operator>Assign</operator>
             <value>
                 <elementReference>NombreDanosRCCartera</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>Buscar_Si_Existe_Gestor_Preferente_Cartera</targetReference>
+        </connector>
     </assignments>
     <assignments>
         <name>DanosRCVentaSuscripcionDanosAssignment</name>
@@ -1245,6 +1280,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Gestor_preferente_encontrado_Cartera</name>
+        <label>¿Gestor preferente encontrado?</label>
+        <locationX>4142</locationX>
+        <locationY>1574</locationY>
+        <defaultConnector>
+            <targetReference>Update_case_Owner</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No_encontrado_gestor_preferente_Cartera</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Buscar_Si_Existe_Gestor_Preferente_Cartera.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Sin_Gestor_Preferente_Cartera</targetReference>
+            </connector>
+            <label>No encontrado gestor preferente</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Gestor_preferente_encontrado_construccion</name>
         <label>¿Gestor preferente encontrado?</label>
         <locationX>2954</locationX>
@@ -1641,6 +1701,10 @@
                     <elementReference>Beggining_Id_User</elementReference>
                 </rightValue>
             </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Asignar_Sin_Gestor_Preferente_Cartera</targetReference>
+            </connector>
             <label>Owner no usuario</label>
         </rules>
     </decisions>
@@ -2387,6 +2451,34 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Buscar_Si_Existe_Gestor_Preferente_Cartera</name>
+        <label>Buscar Si Existe Gestor Preferente</label>
+        <locationX>4142</locationX>
+        <locationY>1466</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Gestor_preferente_encontrado_Cartera</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Email</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>emailGestorPreferente</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Buscar_Si_Existe_Gestor_Preferente_Construccion</name>
         <label>Buscar Si Existe Gestor Preferente</label>
         <locationX>2954</locationX>
@@ -2551,6 +2643,27 @@
         <object>purecloud__PureCloud_Queue__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>Update_case_Owner</name>
+        <label>Update case Owner</label>
+        <locationX>4274</locationX>
+        <locationY>1682</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>idCaso</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>Buscar_Si_Existe_Gestor_Preferente_Cartera.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
     <start>
         <locationX>7527</locationX>
         <locationY>0</locationY>
@@ -2593,6 +2706,13 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>emailGestorPreferente</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
