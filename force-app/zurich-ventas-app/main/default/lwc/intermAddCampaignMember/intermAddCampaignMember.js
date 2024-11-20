@@ -282,6 +282,7 @@ export default class IntermAddCampaignMember extends LightningElement {
    */
   handleCancel() {
     this.closeModal();
+    this.clearSearch();
   }
 
   // #endregion
@@ -322,6 +323,12 @@ export default class IntermAddCampaignMember extends LightningElement {
   closeModal() {
     this.showModal = false;
     this.selectedRows = [];
+  }
+
+  clearSearch() {
+    this.queryTerm = "";
+    this.selectedRows = [];
+    this.filteredAccounts = this.accounts;
   }
 
   showError(title, message) {
