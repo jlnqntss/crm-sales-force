@@ -5,7 +5,7 @@
         <name>Asignar_mediador</name>
         <label>Asignar mediador</label>
         <locationX>798</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>recordId</assignToReference>
             <operator>Assign</operator>
@@ -21,7 +21,7 @@
         <name>Asignar_totales</name>
         <label>Asignar totales</label>
         <locationX>798</locationX>
-        <locationY>1082</locationY>
+        <locationY>1190</locationY>
         <assignmentItems>
             <assignToReference>SumCartera</assignToReference>
             <operator>Add</operator>
@@ -51,7 +51,7 @@
         <name>Informar_asignado_1</name>
         <label>Informar asignado 1</label>
         <locationX>50</locationX>
-        <locationY>2006</locationY>
+        <locationY>2114</locationY>
         <assignmentItems>
             <assignToReference>EmailAsignado</assignToReference>
             <operator>Assign</operator>
@@ -67,7 +67,7 @@
         <name>Informar_asignado_2</name>
         <label>Informar asignado 2</label>
         <locationX>314</locationX>
-        <locationY>2006</locationY>
+        <locationY>2114</locationY>
         <assignmentItems>
             <assignToReference>EmailAsignado</assignToReference>
             <operator>Assign</operator>
@@ -83,7 +83,7 @@
         <name>Informar_asignado_3</name>
         <label>Informar asignado 3</label>
         <locationX>578</locationX>
-        <locationY>2006</locationY>
+        <locationY>2114</locationY>
         <assignmentItems>
             <assignToReference>EmailAsignado</assignToReference>
             <operator>Assign</operator>
@@ -99,7 +99,7 @@
         <name>Informar_asignado_4</name>
         <label>Informar asignado 4</label>
         <locationX>842</locationX>
-        <locationY>2006</locationY>
+        <locationY>2114</locationY>
         <assignmentItems>
             <assignToReference>EmailAsignado</assignToReference>
             <operator>Assign</operator>
@@ -115,7 +115,7 @@
         <name>Informar_asignado_DZ</name>
         <label>Informar asignado DZ</label>
         <locationX>1106</locationX>
-        <locationY>2006</locationY>
+        <locationY>2114</locationY>
         <assignmentItems>
             <assignToReference>EmailAsignado</assignToReference>
             <operator>Assign</operator>
@@ -602,7 +602,7 @@
         <name>A_quien_se_asigna_el_caso</name>
         <label>A quien se asigna el caso</label>
         <locationX>710</locationX>
-        <locationY>1898</locationY>
+        <locationY>2006</locationY>
         <defaultConnector>
             <targetReference>Obtener_record_Type_Id</targetReference>
         </defaultConnector>
@@ -736,7 +736,7 @@
         <name>AdjuntarFichero</name>
         <label>Adjuntar?</label>
         <locationX>710</locationX>
-        <locationY>2522</locationY>
+        <locationY>2630</locationY>
         <defaultConnector>
             <targetReference>Mensaje_caso_creado</targetReference>
         </defaultConnector>
@@ -763,7 +763,7 @@
         <locationX>710</locationX>
         <locationY>350</locationY>
         <defaultConnector>
-            <targetReference>Introducir_mediador</targetReference>
+            <targetReference>Obtener_Mediadores_Activos</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -786,7 +786,7 @@
         <name>Poliza_obligatoria</name>
         <label>Póliza obligatoria</label>
         <locationX>710</locationX>
-        <locationY>1382</locationY>
+        <locationY>1490</locationY>
         <defaultConnector>
             <targetReference>Datos_peticion</targetReference>
         </defaultConnector>
@@ -831,24 +831,10 @@
         <picklistObject>Case</picklistObject>
     </dynamicChoiceSets>
     <dynamicChoiceSets>
-        <name>MediadoresActivos</name>
+        <name>Mediadores</name>
+        <collectionReference>Obtener_Mediadores_Activos</collectionReference>
         <dataType>String</dataType>
         <displayField>NameAndIntermediaryCode__c</displayField>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>RecordTypeId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>IntermediaryRecordTypeId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>StatusIntermediary__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>AccountStatusIntermediaryActive</elementReference>
-            </value>
-        </filters>
         <object>Account</object>
         <valueField>Id</valueField>
     </dynamicChoiceSets>
@@ -966,7 +952,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Totales_KPI</name>
         <label>Totales KPI</label>
         <locationX>710</locationX>
-        <locationY>974</locationY>
+        <locationY>1082</locationY>
         <collectionReference>Obtener_KPI</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -999,7 +985,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Crear_caso</name>
         <label>Crear caso</label>
         <locationX>710</locationX>
-        <locationY>2306</locationY>
+        <locationY>2414</locationY>
         <connector>
             <targetReference>Obtener_Caso</targetReference>
         </connector>
@@ -1148,7 +1134,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Obtener_Caso</name>
         <label>Obtener Caso</label>
         <locationX>710</locationX>
-        <locationY>2414</locationY>
+        <locationY>2522</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AdjuntarFichero</targetReference>
@@ -1169,7 +1155,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Obtener_cuenta</name>
         <label>Obtener cuenta</label>
         <locationX>710</locationX>
-        <locationY>758</locationY>
+        <locationY>866</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Obtener_KPI</targetReference>
@@ -1190,7 +1176,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Obtener_DZ</name>
         <label>Obtener DZ</label>
         <locationX>710</locationX>
-        <locationY>1274</locationY>
+        <locationY>1382</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Poliza_obligatoria</targetReference>
@@ -1218,7 +1204,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Obtener_KPI</name>
         <label>Obtener KPI</label>
         <locationX>710</locationX>
-        <locationY>866</locationY>
+        <locationY>974</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Totales_KPI</targetReference>
@@ -1278,10 +1264,38 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Obtener_Mediadores_Activos</name>
+        <label>Obtener Mediadores Activos</label>
+        <locationX>798</locationX>
+        <locationY>458</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Introducir_mediador</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>IntermediaryRecordTypeId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StatusIntermediary__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>AccountStatusIntermediaryActive</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Obtener_record_Type_Id</name>
         <label>Obtener record Type Id</label>
         <locationX>710</locationX>
-        <locationY>2198</locationY>
+        <locationY>2306</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Crear_caso</targetReference>
@@ -1302,7 +1316,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Adjuntar_fichero</name>
         <label>Adjuntar fichero</label>
         <locationX>578</locationX>
-        <locationY>2630</locationY>
+        <locationY>2738</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1357,7 +1371,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Datos_peticion</name>
         <label>Datos petición</label>
         <locationX>710</locationX>
-        <locationY>1790</locationY>
+        <locationY>1898</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1819,7 +1833,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Introducir_mediador</name>
         <label>Introducir mediador</label>
         <locationX>798</locationX>
-        <locationY>458</locationY>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1828,7 +1842,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         </connector>
         <fields>
             <name>Mediadores_Activos</name>
-            <choiceReferences>MediadoresActivos</choiceReferences>
+            <choiceReferences>Mediadores</choiceReferences>
             <extensionName>flowruntime:choiceLookup</extensionName>
             <fieldText>Mediador</fieldText>
             <fieldType>ComponentChoice</fieldType>
@@ -1849,7 +1863,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Introducir_poliza</name>
         <label>Introducir póliza</label>
         <locationX>578</locationX>
-        <locationY>1490</locationY>
+        <locationY>1598</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1870,7 +1884,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Mensaje_caso_creado</name>
         <label>Mensaje caso creado</label>
         <locationX>710</locationX>
-        <locationY>2822</locationY>
+        <locationY>2930</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -2026,7 +2040,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Buscar_poliza_Flow</name>
         <label>Buscar póliza Flow</label>
         <locationX>578</locationX>
-        <locationY>1598</locationY>
+        <locationY>1706</locationY>
         <connector>
             <targetReference>Datos_peticion</targetReference>
         </connector>
