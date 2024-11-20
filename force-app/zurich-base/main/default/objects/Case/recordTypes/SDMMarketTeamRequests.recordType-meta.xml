@@ -2515,10 +2515,6 @@
     <picklistValues>
         <picklist>TypeN3__c</picklist>
         <values>
-            <fullName>Abrir</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Acceso Descargas</fullName>
             <default>false</default>
         </values>
@@ -2608,10 +2604,6 @@
         </values>
         <values>
             <fullName>Capitales</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cerrar</fullName>
             <default>false</default>
         </values>
         <values>
@@ -2784,10 +2776,6 @@
         </values>
         <values>
             <fullName>General</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestionar</fullName>
             <default>false</default>
         </values>
         <values>
