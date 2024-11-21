@@ -322,6 +322,8 @@ export default class IntermAddCampaignMember extends LightningElement {
   closeModal() {
     this.showModal = false;
     this.selectedRows = [];
+    this.queryTerm = "";
+    this.filteredAccounts = this.accounts;
   }
 
   showError(title, message) {
