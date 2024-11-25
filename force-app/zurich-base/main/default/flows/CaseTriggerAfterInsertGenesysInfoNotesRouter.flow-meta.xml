@@ -398,7 +398,7 @@
     <decisions>
         <name>Es_mediador_panelizado_de_USP</name>
         <label>¿Es mediador panelizado de USP?</label>
-        <locationX>1097</locationX>
+        <locationX>1141</locationX>
         <locationY>3012</locationY>
         <defaultConnector>
             <targetReference>Update_case_owner</targetReference>
@@ -432,6 +432,35 @@
                 <targetReference>Actualizar_owner_a_usuario_panelizado</targetReference>
             </connector>
             <label>Es mediador Panelizado</label>
+        </rules>
+        <rules>
+            <name>Tiene_usuario_cartera</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>EsPorEquipos</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WithoutBestAgent__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CasoUSPSinGestorPreferente</targetReference>
+            </connector>
+            <label>Tiene usuario cartera</label>
         </rules>
     </decisions>
     <decisions>
@@ -1235,7 +1264,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <recordUpdates>
         <name>Actualizar_owner_a_usuario_panelizado</name>
         <label>Actualizar owner a usuario panelizado</label>
-        <locationX>965</locationX>
+        <locationX>921</locationX>
         <locationY>3120</locationY>
         <connector>
             <targetReference>CasoUSPSinGestorPreferente</targetReference>
@@ -1251,7 +1280,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <recordUpdates>
         <name>Update_case_owner</name>
         <label>Update case owner</label>
-        <locationX>1229</locationX>
+        <locationX>1361</locationX>
         <locationY>3120</locationY>
         <connector>
             <targetReference>CasoUSPSinGestorPreferente</targetReference>
